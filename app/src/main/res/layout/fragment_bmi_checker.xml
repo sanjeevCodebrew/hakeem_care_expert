@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.dashboard.settings.BmiCheckerFragment">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:elevation="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_back_white"
+            app:titleTextAppearance="@style/Toolbar.TitleText" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHeader"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:elevation="@dimen/dp_4"
+            android:fontFamily="@font/campton_semibold"
+            android:gravity="center"
+            android:text="@string/health_tool_1_desc"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/dp_24"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <FrameLayout
+                android:id="@+id/flCardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:layout_marginEnd="@dimen/dp_8"
+                    android:layout_marginBottom="@dimen/dp_36"
+                    android:background="@color/colorWhite"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvBmiCal"
+                            style="TextViewcolorBlack600"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/health_tool_1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvGender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_36"
+                            android:text="@string/gender"
+                            app:layout_constraintEnd_toStartOf="@+id/view"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvBmiCal" />
+
+                        <Spinner
+                            android:id="@+id/spinnerGender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/dp_36"
+                            android:gravity="center"
+                            app:layout_constraintEnd_toStartOf="@+id/view"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvGender" />
+
+                        <View
+                            android:id="@+id/view"
+                            android:layout_width="2dp"
+                            android:layout_height="48dp"
+                            android:layout_marginStart="@dimen/dp_24"
+                            android:layout_marginTop="@dimen/dp_36"
+                            android:alpha="0.12"
+                            android:background="@color/colorBlack"
+                            app:layout_constraintEnd_toStartOf="@+id/view1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvBmiCal" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvWeightTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_36"
+                            android:text="@string/weight"
+                            app:layout_constraintEnd_toStartOf="@+id/tvHeightTitle"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/tvGender"
+                            app:layout_constraintTop_toBottomOf="@+id/tvBmiCal" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/etWeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@null"
+                            android:digits="0123456789"
+                            android:hint="00"
+                            android:imeOptions="actionNext"
+                            android:inputType="number|none"
+                            android:maxLength="3"
+                            android:paddingStart="@dimen/dp_10"
+                            android:paddingEnd="@dimen/dp_10"
+                            android:textColor="@color/colorBlack"
+                            app:layout_constraintStart_toStartOf="@+id/tvWeightTitle"
+                            app:layout_constraintTop_toBottomOf="@+id/tvWeightTitle" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvWeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:fontFamily="@font/campton_semibold"
+                            android:text="Kg"
+                            android:textSize="@dimen/sp_16"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/etWeight"
+                            app:layout_constraintTop_toTopOf="@+id/etWeight"
+                            app:layout_constraintBottom_toBottomOf="@+id/etWeight"/>
+
+                        <View
+                            android:id="@+id/view1"
+                            android:layout_width="2dp"
+                            android:layout_height="48dp"
+                            android:layout_marginStart="@dimen/dp_24"
+                            android:layout_marginTop="@dimen/dp_36"
+                            android:alpha="0.12"
+                            android:background="@color/colorBlack"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/view"
+                            app:layout_constraintTop_toBottomOf="@+id/tvBmiCal" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvHeightTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_36"
+                            android:text="@string/height"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/view1"
+                            app:layout_constraintTop_toBottomOf="@+id/tvBmiCal" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/etHeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@null"
+                            android:digits="0123456789"
+                            android:gravity="center"
+                            android:hint="00"
+                            android:imeOptions="actionDone"
+                            android:inputType="number|none"
+                            android:maxLength="3"
+                            android:paddingStart="@dimen/dp_10"
+                            android:paddingEnd="@dimen/dp_10"
+                            android:textColor="@color/colorBlack"
+                            app:layout_constraintEnd_toStartOf="@+id/tvHeight"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toEndOf="@+id/view1"
+                            app:layout_constraintTop_toBottomOf="@+id/tvHeightTitle" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvHeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/campton_semibold"
+                            android:text="cm"
+                            android:textSize="@dimen/sp_16"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/etHeight"
+                            app:layout_constraintTop_toTopOf="@+id/etHeight"
+                            app:layout_constraintBottom_toBottomOf="@+id/etHeight"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvYourBmi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp_32"
+                            android:layout_marginTop="@dimen/sp_50"
+                            android:text="@string/your_bmi"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/spinnerGender" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvBmi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp_32"
+                            android:layout_marginTop="8dp"
+                            android:text="0.00"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/sp_32"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvYourBmi" />
+
+                        <com.ekn.gruzer.gaugelibrary.HalfGauge
+                            android:id="@+id/halfGauge"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="@dimen/dp_20"
+                            android:layout_marginEnd="@dimen/dp_32"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1"
+                            app:layout_constraintStart_toEndOf="@+id/tvBmi"
+                            app:layout_constraintTop_toBottomOf="@+id/tvWeight" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvBmiStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/campton_book"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/sp_14"
+                            app:layout_constraintEnd_toEndOf="@+id/halfGauge"
+                            app:layout_constraintStart_toStartOf="@+id/halfGauge"
+                            app:layout_constraintTop_toBottomOf="@+id/halfGauge"
+                            tools:text="NORMAL" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvRange"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/sp_50"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/halfGauge"
+                            app:layout_constraintStart_toStartOf="@+id/halfGauge"
+                            app:layout_constraintTop_toBottomOf="@+id/tvBmiStatus"
+                            tools:text="18.5-25" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivCalculateBmi"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_gravity="bottom|center"
+                    android:elevation="2dp"
+                    android:src="@drawable/ic_fab_next" />
+
+            </FrameLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

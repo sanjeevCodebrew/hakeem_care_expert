@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "993159905200",
+    "project_id": "meetmd-19ac6",
+    "storage_bucket": "meetmd-19ac6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:993159905200:android:c92ec4599eea3d4f27a075",
+        "android_client_info": {
+          "package_name": "com.meetmd.pro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "993159905200-ntjnnifd8i7a0ser2mherksgsqig20cg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.meetmd.pro",
+            "certificate_hash": "3fee5aff71776031cbdc81d0b12cca08afa48d8a"
+          }
+        },
+        {
+          "client_id": "993159905200-af1rtdpucd1g2lspn57kvh4qfbgdvf93.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1HmtrSWyGalB9gwzGYXJSDESmfFgj4WE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "993159905200-af1rtdpucd1g2lspn57kvh4qfbgdvf93.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

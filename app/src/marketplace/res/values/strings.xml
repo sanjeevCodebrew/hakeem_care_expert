@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">RoyoMarketplace For Expert</string>
+
+    <!--Facebook keys-->
+    <string name="facebook_app_id" translatable="false">614559175856730</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb614559175856730</string>
+
+    <!--Deep Link-->
+    <string name="deep_link_url" translatable="false">royomarketplace.page.link</string>
+    <string name="deep_link_ios_bundle" translatable="false">com.codebrew.RoyoMarketPlaceExpert</string>
+
+    <!--Google-->
+    <string name="google_places_api_key" translatable="false">AIzaSyDgEpPyXxBmchrRRVna4-Hr8EqTG2Jyf1g</string>
+    <string name="server_client_id" translatable="false">951128649711-9iq2gr5j18i4q10errtsikn1lqji6sg7.apps.googleusercontent.com</string>
+
+    <string name="update_desc">You have new update for %s!</string>
+    <string name="create_a_account">Create a %s\naccount to continue</string>
+
+</resources>

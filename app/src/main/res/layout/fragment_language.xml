@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_back_white"
+            android:elevation="@dimen/dp_4"
+            app:titleTextAppearance="@style/Toolbar.TitleText" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHeader"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:elevation="4dp"
+            android:fontFamily="@font/campton_semibold"
+            android:gravity="center"
+            android:text="@string/language"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:fontFamily="@font/campton_semibold"
+            android:text="@string/please_choose_your_language"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_18"
+            app:layout_constraintBottom_toTopOf="@+id/rbLanguage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <RadioGroup
+            android:id="@+id/rbLanguage"
+            android:layout_width="0dp"
+            android:layout_height="106dp"
+            android:layout_marginStart="46dp"
+            android:layout_marginTop="@dimen/dp_42"
+            android:layout_marginEnd="46dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle">
+
+            <RadioButton
+                android:id="@+id/rbEnglish"
+                android:layout_width="0dp"
+                android:text="@string/english"
+                android:button="@null"
+                android:fontFamily="@font/campton_semibold"
+                android:textSize="@dimen/sp_18"
+                android:textColor="@color/selector_language_text_color"
+                android:gravity="center"
+                android:background="@drawable/selector_language"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:elevation="@dimen/dp_4"
+                android:layout_weight="0.5"
+                android:layout_height="match_parent"/>
+
+            <RadioButton
+                android:id="@+id/rbArabic"
+                android:layout_width="0dp"
+                android:text="@string/spanish"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_marginStart="@dimen/dp_8"
+                android:elevation="@dimen/dp_4"
+                android:background="@drawable/selector_language"
+                android:fontFamily="@font/campton_semibold"
+                android:textSize="@dimen/sp_18"
+                android:textColor="@color/selector_language_text_color"
+                android:layout_weight="0.5"
+                android:layout_height="match_parent"/>
+
+        </RadioGroup>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1032811457113",
+    "project_id": "nurselynx-2fb1c",
+    "storage_bucket": "nurselynx-2fb1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032811457113:android:6101978baed2c4e5f7df48",
+        "android_client_info": {
+          "package_name": "com.nurseLynx.expert"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1032811457113-ledsgoe1si7i3g8tnv8ttfsrnd0pufkb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nurseLynx.expert",
+            "certificate_hash": "3fee5aff71776031cbdc81d0b12cca08afa48d8a"
+          }
+        },
+        {
+          "client_id": "1032811457113-8564gftp1oes9s415mva42ch6di8njkj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYOYmjHI3DXYrWpmfmD4Ekg3YXVcwiZOg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1032811457113-8564gftp1oes9s415mva42ch6di8njkj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
