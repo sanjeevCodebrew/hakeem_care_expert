@@ -112,6 +112,7 @@
                     android:textDirection="locale"
                     android:imeOptions="actionDone"
                     android:inputType="textCapWords"
+                    android:visibility="gone"
                     android:maxLength="100"
                     android:textColor="@color/textColor"
                     android:textSize="@dimen/sp_16" />

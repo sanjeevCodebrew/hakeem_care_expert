@@ -125,9 +125,9 @@ class DialogAddDocumentFragment(private val fragment: DocumentsFragment,
                 binding.ilName.visibility==View.VISIBLE && binding.etName.text.toString().trim().isEmpty() -> {
                     binding.etName.showSnackBar(getString(R.string.enter_name))
                 }
-                binding.ilDesc.visibility==View.VISIBLE && binding.etDesc.text.toString().trim().isEmpty() -> {
+               /* binding.ilDesc.visibility==View.VISIBLE && binding.etDesc.text.toString().trim().isEmpty() -> {
                     binding.etDesc.showSnackBar(getString(R.string.description))
-                }
+                }*/
                 isConnectedToInternet(requireContext(), true) -> {
                     if (fileToUpload != null)
                         uploadFileOnServer()
@@ -206,7 +206,8 @@ class DialogAddDocumentFragment(private val fragment: DocumentsFragment,
                 docPaths.addAll(data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
                     ?: emptyList())
 
-                fileToUpload = compressImage(requireActivity(),File(ContentUriUtils.getFilePath(requireContext(), docPaths[0])))
+                fileToUpload = compressImage(requireActivity(),
+                    ContentUriUtils.getFilePath(requireContext(), docPaths[0])?.let { File(it) })
                 Glide.with(requireContext()).load(R.drawable.ic_pdf).into(binding.ivImage)
 
                 //val fileToUpload = File(ContentUriUtils.getFilePath(this, docPaths[0]))
