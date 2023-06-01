@@ -7,14 +7,14 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:531093008898:android:5e5b138cf2b9c484f3ed1b",
+        "mobilesdk_app_id": "1:531093008898:android:5ed78840343403a1f3ed1b",
         "android_client_info": {
           "package_name": "com.hakeem.expert"
         }
       },
       "oauth_client": [
         {
-          "client_id": "531093008898-srmtqtacr8cdknugl92pq5m2bpvdhseh.apps.googleusercontent.com",
+          "client_id": "531093008898-vejhpodnie7bjranrg6u26lr5j5ukv7g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.hakeem.expert",
