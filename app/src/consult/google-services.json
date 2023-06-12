@@ -1,48 +1,40 @@
 {
   "project_info": {
-    "project_number": "531093008898",
-    "project_id": "mypalpal-3cce1",
-    "storage_bucket": "mypalpal-3cce1.appspot.com"
+    "project_number": "1067275956051",
+    "project_id": "hakeemcare-17f75",
+    "storage_bucket": "hakeemcare-17f75.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:531093008898:android:5ed78840343403a1f3ed1b",
+        "mobilesdk_app_id": "1:1067275956051:android:8fb0d5d87d4afe0aa6fba6",
         "android_client_info": {
           "package_name": "com.hakeem.expert"
         }
       },
       "oauth_client": [
         {
-          "client_id": "531093008898-vejhpodnie7bjranrg6u26lr5j5ukv7g.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.hakeem.expert",
-            "certificate_hash": "3fee5aff71776031cbdc81d0b12cca08afa48d8a"
-          }
-        },
-        {
-          "client_id": "531093008898-23ml5kglin3o8bnm9d01dskbd4ok83va.apps.googleusercontent.com",
+          "client_id": "1067275956051-hov41bfab1ncut2qr246rq5fpsu9rruf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD75NR9EBSC7bGuagC5TjH0MOaSJz5Gy3U"
+          "current_key": "AIzaSyD84l1_EQSRnCJFdvFbsPChZdhVZYxUZ5c"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "531093008898-23ml5kglin3o8bnm9d01dskbd4ok83va.apps.googleusercontent.com",
+              "client_id": "1067275956051-hov41bfab1ncut2qr246rq5fpsu9rruf.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "531093008898-c8ng4drlcdcdjhvge9rd8sq2fvno6h9f.apps.googleusercontent.com",
+              "client_id": "1067275956051-f133g9gjmfm916ft5tuvh0loec0no9f4.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.codebrew.MayPalPalExpert"
+                "bundle_id": "com.codebrew.DrHakeemExpert"
               }
             }
           ]
@@ -51,42 +43,34 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:531093008898:android:2a14b51159cbb8cdf3ed1b",
+        "mobilesdk_app_id": "1:1067275956051:android:cd8c1b364df87411a6fba6",
         "android_client_info": {
           "package_name": "com.hakeemcare"
         }
       },
       "oauth_client": [
         {
-          "client_id": "531093008898-52u2eqtegpgtb638nbgsvmbhguo31ln2.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.hakeemcare",
-            "certificate_hash": "3fee5aff71776031cbdc81d0b12cca08afa48d8a"
-          }
-        },
-        {
-          "client_id": "531093008898-23ml5kglin3o8bnm9d01dskbd4ok83va.apps.googleusercontent.com",
+          "client_id": "1067275956051-hov41bfab1ncut2qr246rq5fpsu9rruf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD75NR9EBSC7bGuagC5TjH0MOaSJz5Gy3U"
+          "current_key": "AIzaSyD84l1_EQSRnCJFdvFbsPChZdhVZYxUZ5c"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "531093008898-23ml5kglin3o8bnm9d01dskbd4ok83va.apps.googleusercontent.com",
+              "client_id": "1067275956051-hov41bfab1ncut2qr246rq5fpsu9rruf.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "531093008898-c8ng4drlcdcdjhvge9rd8sq2fvno6h9f.apps.googleusercontent.com",
+              "client_id": "1067275956051-f133g9gjmfm916ft5tuvh0loec0no9f4.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.codebrew.MayPalPalExpert"
+                "bundle_id": "com.codebrew.DrHakeemExpert"
               }
             }
           ]

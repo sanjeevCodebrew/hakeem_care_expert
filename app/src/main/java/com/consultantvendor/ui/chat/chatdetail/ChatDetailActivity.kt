@@ -1088,3 +1088,7 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
                 PackageManager.PERMISSION_GRANTED)
     }
 }
+
+// test
+//&& ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+//PackageManager.PERMISSION_GRANTED)

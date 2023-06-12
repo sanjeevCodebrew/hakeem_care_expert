@@ -10,7 +10,8 @@
     <string name="deep_link_ios_bundle" translatable="false">com.codebrew.RoyoConsultantVendor</string>
 
     <!--Google-->
-    <string name="google_places_api_key" translatable="false">AIzaSyCZ6vYaavuJ1AqqVZqacmSZWwYp8SrNDnE</string>
+<!--    <string name="google_places_api_key" translatable="false">AIzaSyCZ6vYaavuJ1AqqVZqacmSZWwYp8SrNDnE</string>-->
+    <string name="google_places_api_key" translatable="false">AIzaSyD84l1_EQSRnCJFdvFbsPChZdhVZYxUZ5c</string>
     <string name="server_client_id" translatable="false">952614479078-892v5fage0p4pguerkht8krnpoo55dq3.apps.googleusercontent.com</string>
 
 
