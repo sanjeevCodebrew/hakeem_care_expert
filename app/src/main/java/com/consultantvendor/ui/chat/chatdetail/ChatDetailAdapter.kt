@@ -2,6 +2,7 @@ package com.consultantvendor.ui.chat.chatdetail
 
 
 import android.app.Activity
+import android.graphics.drawable.Drawable
 import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -117,6 +118,11 @@ class ChatDetailAdapter(private var context: ChatDetailActivity,
             }
 
             binding.tvAudioRight.setOnClickListener {
+
+                val img: Drawable =
+                    binding.tvAudioRight.getContext().getResources().getDrawable(R.drawable.ic_pause)
+                binding.tvAudioRight.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null)
+
                 val chat = data[bindingAdapterPosition]
                 when (chat.messageType) {
                     DocType.AUDIO -> {
@@ -158,6 +164,12 @@ class ChatDetailAdapter(private var context: ChatDetailActivity,
                 }
             }
             ivTick.setImageResource(getTickValue(chat.status))
+
+            if (context.isStopRight==true){
+                val img: Drawable =
+                    binding.tvAudioRight.getContext().getResources().getDrawable(R.drawable.ic_play_icon)
+                binding.tvAudioRight.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null)
+            }
         }
     }
 
@@ -186,6 +198,11 @@ class ChatDetailAdapter(private var context: ChatDetailActivity,
             }
 
             binding.tvAudioLeft.setOnClickListener {
+
+                val img: Drawable =
+                    binding.tvAudioLeft.getContext().getResources().getDrawable(R.drawable.ic_pause)
+                binding.tvAudioLeft.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null)
+
                 val chat = data[bindingAdapterPosition]
                 when (chat.messageType) {
                     DocType.AUDIO -> {
@@ -226,6 +243,12 @@ class ChatDetailAdapter(private var context: ChatDetailActivity,
                     tvAudioLeft.visible()
                     tvAudioLeft.text = chat.imageUrl
                 }
+            }
+
+            if (context.isStopLeft==true){
+                val img: Drawable =
+                    binding.tvAudioLeft.getContext().getResources().getDrawable(R.drawable.ic_play_icon)
+                binding.tvAudioLeft.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null)
             }
         }
     }

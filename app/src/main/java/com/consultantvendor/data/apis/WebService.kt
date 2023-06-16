@@ -147,7 +147,7 @@ interface WebService {
     fun updateProfile(@FieldMap hashMap: HashMap<String, Any>): Call<ApiResponse<UserData>>
 
     @FormUrlEncoded
-    @POST(SEND_SMS)
+    @POST("https://hakeemcare.netsolutionindia.com/api/send-sms")
     fun sendSMS(@FieldMap hashMap: HashMap<String, Any>): Call<ApiResponse<UserData>>
 
     @FormUrlEncoded

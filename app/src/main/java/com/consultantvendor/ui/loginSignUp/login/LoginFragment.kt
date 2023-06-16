@@ -95,7 +95,7 @@ class LoginFragment : DaggerFragment() {
                 }
                 isConnectedToInternet(requireContext(), true) -> {
                     val hashMap = HashMap<String, Any>()
-                    hashMap["country_code"] = binding.ccpCountryCode.selectedCountryCodeWithPlus
+                    hashMap["country_code"] = binding.ccpCountryCode.selectedCountryCode
                     hashMap["phone"] = binding.etMobileNumber.text.toString()
                     viewModel.sendSms(hashMap)
                 }

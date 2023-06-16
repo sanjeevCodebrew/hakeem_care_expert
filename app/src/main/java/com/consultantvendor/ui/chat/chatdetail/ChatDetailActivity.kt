@@ -142,6 +142,10 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
 
     private var isLoadingItems = false
 
+
+    var isStopRight = false
+    var isStopLeft = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //LocaleHelper.setLocale(this, getUserLanguage())
@@ -1056,23 +1060,55 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
         /* val fragment = BottomAudioPlayerFragment(link)
          fragment.show(supportFragmentManager, fragment.tag)*/
 
-        val viewMediaIntent = Intent()
-        viewMediaIntent.action = Intent.ACTION_VIEW
-        viewMediaIntent.setDataAndType(Uri.parse(link), "audio/*")
-        viewMediaIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+//        val viewMediaIntent = Intent()
+//        viewMediaIntent.action = Intent.ACTION_VIEW
+//        viewMediaIntent.setDataAndType(Uri.parse(link), "audio/*")
+//        viewMediaIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+//
+//        if (this.packageName.equals(BuildConfig.APPLICATION_ID))
+//            startActivity(viewMediaIntent)
 
-        if (this.packageName.equals(BuildConfig.APPLICATION_ID))
-            startActivity(viewMediaIntent)
+        player = MediaPlayer().apply {
+            try {
+                setDataSource(this@ChatDetailActivity, Uri.parse(link))
+                prepare()
+                start()
+            } catch (e: IOException) {
+                Log.e("MediaPlayer", "prepare() failed")
+            }
+        }
 
-//        player = MediaPlayer().apply {
-//            try {
-//                setDataSource(this@ChatDetailActivity, Uri.parse(link))
-//                prepare()
-//                start()
-//            } catch (e: IOException) {
-//                Log.e("MediaPlayer", "prepare() failed")
-//            }
-//        }
+
+        player!!.setOnCompletionListener(MediaPlayer.OnCompletionListener {
+
+            isStopRight=true
+            adapter.notifyDataSetChanged()
+            Log.e("TAG", "completeAudio: "+player )
+        })
+
+
+
+    }
+
+    fun startPlaying1(link: String) {
+
+        player = MediaPlayer().apply {
+            try {
+                setDataSource(this@ChatDetailActivity, Uri.parse(link))
+                prepare()
+                start()
+            } catch (e: IOException) {
+                Log.e("MediaPlayer", "prepare() failed")
+            }
+        }
+
+
+        player!!.setOnCompletionListener(MediaPlayer.OnCompletionListener {
+
+            isStopLeft=true
+            adapter.notifyDataSetChanged()
+            Log.e("TAG", "completeAudio: "+player )
+        })
     }
 
     private fun stopPlaying() {
@@ -1088,7 +1124,3 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
                 PackageManager.PERMISSION_GRANTED)
     }
 }
-
-// test
-//&& ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-//PackageManager.PERMISSION_GRANTED)
