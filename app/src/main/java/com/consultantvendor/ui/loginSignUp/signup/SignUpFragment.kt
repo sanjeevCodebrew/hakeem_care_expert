@@ -905,3 +905,7 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
         )
     }
 }
+
+//test
+//PermissionUtils.showAppSettingsDialog(
+//requireContext(), R.string.media_permission
