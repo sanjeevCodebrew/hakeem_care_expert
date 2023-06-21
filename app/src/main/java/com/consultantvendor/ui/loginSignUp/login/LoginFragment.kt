@@ -111,7 +111,7 @@ class LoginFragment : DaggerFragment() {
                     progressDialog.setLoading(false)
                     val fragment = VerifyOTPFragment()
                     val bundle = Bundle()
-                    bundle.putString(COUNTRY_CODE, binding.ccpCountryCode.selectedCountryCodeWithPlus)
+                    bundle.putString(COUNTRY_CODE, binding.ccpCountryCode.selectedCountryCode)
                     bundle.putString(PHONE_NUMBER, binding.etMobileNumber.text.toString())
                     if (arguments?.containsKey(UPDATE_NUMBER) == true)
                         bundle.putBoolean(UPDATE_NUMBER, true)

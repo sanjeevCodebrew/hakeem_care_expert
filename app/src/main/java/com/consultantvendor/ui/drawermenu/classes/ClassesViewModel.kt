@@ -20,6 +20,8 @@ class ClassesViewModel @Inject constructor(private val webService: WebService) :
 
     val categories by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
 
+    val clinics by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
+
     val classes by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
 
     val services by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
@@ -121,6 +123,30 @@ class ClassesViewModel @Inject constructor(private val webService: WebService) :
                     }
 
                 })
+    }
+
+    fun clinics(hashMap: HashMap<String, String>) {
+        clinics.value = Resource.loading()
+
+        webService.clinics(hashMap)
+            .enqueue(object : Callback<ApiResponse<CommonDataModel>> {
+
+                override fun onResponse(call: Call<ApiResponse<CommonDataModel>>,
+                                        response: Response<ApiResponse<CommonDataModel>>) {
+                    if (response.isSuccessful) {
+                        clinics.value = Resource.success(response.body()?.data)
+                    } else {
+                        clinics.value = Resource.error(
+                            ApiUtils.getError(response.code(),
+                                response.errorBody()?.string()))
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
+                    clinics.value = Resource.error(ApiUtils.failure(throwable))
+                }
+
+            })
     }
 
     fun services(hashMap: HashMap<String, String>) {

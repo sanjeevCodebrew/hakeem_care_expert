@@ -58,6 +58,7 @@ interface WebService {
         private const val DOCTOR_DETAIL = "/api/doctor-detail"
 
         private const val CATEGORIES = "/api/categories"
+        private const val CLINICS = "/api/clinics"
         private const val GET_SLOTS = "/api/get-slots"
 
         private const val ADD_CLASS = "/api/add-class"
@@ -147,7 +148,7 @@ interface WebService {
     fun updateProfile(@FieldMap hashMap: HashMap<String, Any>): Call<ApiResponse<UserData>>
 
     @FormUrlEncoded
-    @POST("https://hakeemcare.netsolutionindia.com/api/send-sms")
+    @POST(SEND_SMS)
     fun sendSMS(@FieldMap hashMap: HashMap<String, Any>): Call<ApiResponse<UserData>>
 
     @FormUrlEncoded
@@ -364,6 +365,9 @@ interface WebService {
 
     @GET(CATEGORIES)
     fun categories(@QueryMap hashMap: Map<String, String>): Call<ApiResponse<CommonDataModel>>
+
+    @GET(CLINICS)
+    fun clinics(@QueryMap hashMap: Map<String, String>): Call<ApiResponse<CommonDataModel>>
 
     @GET(GET_SLOTS)
     fun getSlots(@QueryMap hashMap: Map<String, String>): Call<ApiResponse<CommonDataModel>>

@@ -43,7 +43,8 @@ object NetworkModule {
     @JvmStatic
     fun retrofit(client: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
-                .baseUrl(Config.baseURL)
+//                .baseUrl(Config.baseURL)
+                 .baseUrl("https://hakeemcare.netsolutionindia.com")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addConverterFactory(ScalarsConverterFactory.create())

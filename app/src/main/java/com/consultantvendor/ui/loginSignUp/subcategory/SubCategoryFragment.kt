@@ -1,6 +1,7 @@
 package com.consultantvendor.ui.loginSignUp.subcategory
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,6 +66,13 @@ class SubCategoryFragment : DaggerFragment() {
             listeners()
             bindObservers()
             hitApi(true)
+
+//            if (categoryData?.name == "Clinics") {
+//               hitApiClinics(true)
+//            }
+//            else {
+//                hitApi(true)
+//            }
         }
         return rootView
     }
@@ -74,6 +82,8 @@ class SubCategoryFragment : DaggerFragment() {
 
         binding.rvListing.layoutManager = LinearLayoutManager(requireContext())
         categoryData = arguments?.getSerializable(CATEGORY_PARENT_ID) as Categories
+
+        Log.e("TAG", "checkCatogary: "+categoryData?.name)
 
         binding.tvTitle.text = getString(R.string.select_sub_category)
     }
@@ -122,8 +132,56 @@ class SubCategoryFragment : DaggerFragment() {
         }
     }
 
+    private fun hitApiClinics(firstHit: Boolean) {
+        if (firstHit) {
+            isFirstPage = true
+            isLastPage = false
+        }
+
+        val hashMap = HashMap<String, String>()
+        if (isConnectedToInternet(requireContext(), true)) {
+            viewModel.clinics(hashMap)
+//            if (!isFirstPage && items.isNotEmpty())
+//               viewModel.clinics(hashMap)
+        }
+    }
+
     private fun bindObservers() {
         viewModel.categories.observe(requireActivity(), Observer {
+            it ?: return@Observer
+            when (it.status) {
+                Status.SUCCESS -> {
+                    binding.clLoader.gone()
+                    isLoadingMoreItems = false
+
+                    val tempList = it.data?.classes_category ?: emptyList()
+                    if (isFirstPage) {
+                        isFirstPage = false
+                        items.clear()
+                    }
+
+                    items.addAll(tempList)
+                    adapter.notifyDataSetChanged()
+
+                    isLastPage = tempList.size < PER_PAGE_LOAD
+                    adapter.setAllItemsLoaded(isLastPage)
+
+                    binding.tvNoData.hideShowView(items.isEmpty())
+                }
+                Status.ERROR -> {
+                    isLoadingMoreItems = false
+                    adapter.setAllItemsLoaded(true)
+                    binding.clLoader.gone()
+
+                    ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
+                }
+                Status.LOADING -> {
+                    binding.clLoader.visible()
+                }
+            }
+        })
+
+        viewModel.clinics.observe(requireActivity(), Observer {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
