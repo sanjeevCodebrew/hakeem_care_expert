@@ -1,6 +1,5 @@
-package com.consultantvendor.ui.loginSignUp.subcategory
+package com.consultantvendor.ui.loginSignUp.clinicCatogaries
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -10,11 +9,12 @@ import com.consultantvendor.data.models.responses.Categories
 import com.consultantvendor.data.network.LoadingStatus.ITEM
 import com.consultantvendor.data.network.LoadingStatus.LOADING
 import com.consultantvendor.databinding.ItemPagingLoaderBinding
+import com.consultantvendor.databinding.RvItemCategoryBinding
 import com.consultantvendor.databinding.RvItemSubcategoryBinding
 import com.consultantvendor.utils.loadImage
 
 
-class SubCategoryAdapter(private val fragment: SubCategoryFragment, private val items: ArrayList<Categories>) :
+class ClinicCategoriesAdapter(private val fragment: ClinicCategoriesFragment, private val items: ArrayList<Categories>) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var allItemsLoaded = true
@@ -28,7 +28,7 @@ class SubCategoryAdapter(private val fragment: SubCategoryFragment, private val 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == ITEM) {
             ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
-                            R.layout.rv_item_subcategory, parent, false))
+                            R.layout.rv_item_category, parent, false))
         } else {
             ViewHolderLoader(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
                             R.layout.item_paging_loader, parent, false))
@@ -39,24 +39,19 @@ class SubCategoryAdapter(private val fragment: SubCategoryFragment, private val 
 
     override fun getItemViewType(position: Int) = if (position >= items.size) LOADING else ITEM
 
-    inner class ViewHolder(val binding: RvItemSubcategoryBinding) :
+    inner class ViewHolder(val binding: RvItemCategoryBinding) :
             RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.clCategory.setOnClickListener {
                 fragment.clickItem(items[bindingAdapterPosition])
             }
-
-
         }
 
         fun bind(item: Categories) = with(binding) {
             tvName.text = item.name
 
-            Log.e("TAG", "clickItem: "+item.name )
-
             loadImage(binding.ivCategory, item.image, R.drawable.ic_img_empty_state)
-
         }
     }
 

@@ -50,6 +50,7 @@ import com.consultantvendor.ui.loginSignUp.SignUpActivity
 import com.consultantvendor.ui.loginSignUp.availability.SetAvailabilityFragment
 import com.consultantvendor.ui.loginSignUp.category.CategoryFragment
 import com.consultantvendor.ui.loginSignUp.changepassword.ChangePasswordFragment
+import com.consultantvendor.ui.loginSignUp.clinicCatogaries.ClinicCategoriesFragment
 import com.consultantvendor.ui.loginSignUp.document.DocumentsFragment
 import com.consultantvendor.ui.loginSignUp.document.add.DialogAddDocumentFragment
 import com.consultantvendor.ui.loginSignUp.forgotpassword.ForgotPasswordFragment
@@ -269,4 +270,7 @@ abstract class BindingsModule {
     abstract fun contactListFragment(): ContactListFragment
     @ContributesAndroidInjector
     abstract fun homeBannerFragment(): HomeBannerFragment
+
+    @ContributesAndroidInjector
+    abstract fun clinicCategoryFragment(): ClinicCategoriesFragment
 }

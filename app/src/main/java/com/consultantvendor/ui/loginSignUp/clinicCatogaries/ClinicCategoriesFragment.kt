@@ -1,10 +1,12 @@
-package com.consultantvendor.ui.loginSignUp.subcategory
+package com.consultantvendor.ui.loginSignUp.clinicCatogaries
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,10 +19,11 @@ import com.consultantvendor.data.network.ApiKeys.PER_PAGE
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.PER_PAGE_LOAD
 import com.consultantvendor.data.network.responseUtil.Status
+import com.consultantvendor.databinding.FragmentCategoriesClinicBinding
 import com.consultantvendor.databinding.FragmentCategoryBinding
+import com.consultantvendor.ui.dashboard.HomeActivity
 import com.consultantvendor.ui.drawermenu.classes.ClassesViewModel
 import com.consultantvendor.ui.loginSignUp.LoginViewModel
-import com.consultantvendor.ui.loginSignUp.clinicCatogaries.ClinicCategoriesFragment
 import com.consultantvendor.ui.loginSignUp.document.DocumentsFragment
 import com.consultantvendor.ui.loginSignUp.prefrence.PrefrenceFragment
 import com.consultantvendor.ui.loginSignUp.service.ServiceFragment
@@ -28,7 +31,7 @@ import com.consultantvendor.utils.*
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class SubCategoryFragment : DaggerFragment() {
+class ClinicCategoriesFragment : DaggerFragment() {
 
     @Inject
     lateinit var prefsManager: PrefsManager
@@ -36,7 +39,7 @@ class SubCategoryFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private lateinit var binding: FragmentCategoryBinding
+    private lateinit var binding: FragmentCategoriesClinicBinding
 
     private var rootView: View? = null
 
@@ -46,7 +49,7 @@ class SubCategoryFragment : DaggerFragment() {
 
     private var items = ArrayList<Categories>()
 
-    private lateinit var adapter: SubCategoryAdapter
+    private lateinit var adapter: ClinicCategoriesAdapter
 
     private var isLastPage = false
 
@@ -59,21 +62,23 @@ class SubCategoryFragment : DaggerFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (rootView == null) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_category, container, false)
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_categories_clinic, container, false)
             rootView = binding.root
 
             initialise()
             setAdapter()
             listeners()
             bindObservers()
-//            hitApi(true)
+            hitApi(true)
 
-            if (categoryData?.name == "Clinics") {
-               hitApiClinics(true)
-            }
-            else {
-                hitApi(true)
-            }
+            Toast.makeText(requireContext(),"ClinicCatogariesScreen is On",Toast.LENGTH_SHORT).show()
+
+//            if (categoryData?.name == "Clinics") {
+//               hitApiClinics(true)
+//            }
+//            else {
+//                hitApi(true)
+//            }
         }
         return rootView
     }
@@ -90,7 +95,7 @@ class SubCategoryFragment : DaggerFragment() {
     }
 
     private fun setAdapter() {
-        adapter = SubCategoryAdapter(this, items)
+        adapter = ClinicCategoriesAdapter(this, items)
         binding.rvListing.adapter = adapter
     }
 
@@ -220,30 +225,33 @@ class SubCategoryFragment : DaggerFragment() {
 
     fun clickItem(item: Categories?) {
 
-        val fragment = when {
-            item?.is_subcategory == true -> {
-                SubCategoryFragment()
-            }
-            item?.is_additionals == true -> {
-                DocumentsFragment()
-            }
-            item?.is_filters == true -> {
-                PrefrenceFragment()
-            }
-            item?.type.equals("clinic") -> {
-                ClinicCategoriesFragment()
-            }
-            else -> {
-                ServiceFragment()
-            }
-        }
+        startActivity(Intent(requireContext(), HomeActivity::class.java))
+        requireActivity().finish()
 
-        val bundle = Bundle()
-        bundle.putSerializable(CATEGORY_PARENT_ID, item)
-        fragment.arguments = bundle
+//        val fragment = when {
+//            item?.is_subcategory == true -> {
+//                ClinicCategoriesFragment()
+//            }
+//            item?.is_additionals == true -> {
+//                DocumentsFragment()
+//            }
+//            item?.is_filters == true -> {
+//                PrefrenceFragment()
+//            }
+//            item?.name == "Clinics" -> {
+//                PrefrenceFragment()
+//            }
+//            else -> {
+//                ServiceFragment()
+//            }
+//        }
 
-        replaceFragment(requireActivity().supportFragmentManager,
-                fragment, R.id.container)
+//        val bundle = Bundle()
+//        bundle.putSerializable(CATEGORY_PARENT_ID, item)
+//        fragment.arguments = bundle
+//
+//        replaceFragment(requireActivity().supportFragmentManager,
+//                fragment, R.id.container)
     }
 
     companion object {
