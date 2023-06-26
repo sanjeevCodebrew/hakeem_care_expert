@@ -83,7 +83,6 @@ class SubCategoryFragment : DaggerFragment() {
         binding.rvListing.layoutManager = LinearLayoutManager(requireContext())
         categoryData = arguments?.getSerializable(CATEGORY_PARENT_ID) as Categories
 
-        Log.e("TAG", "checkCatogary: "+categoryData?.name)
 
         binding.tvTitle.text = getString(R.string.select_sub_category)
     }
