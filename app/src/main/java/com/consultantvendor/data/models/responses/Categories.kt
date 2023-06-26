@@ -6,6 +6,7 @@ class Categories : Serializable {
     var id: String? = null
     var name: String? = null
     var image: String? = null
+    var type: String? = null
     var parent_id: String? = null
     var created_at: String? = null
     var color_code: String? = null
