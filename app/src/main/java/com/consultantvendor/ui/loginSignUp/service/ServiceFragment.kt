@@ -224,11 +224,6 @@ class ServiceFragment : DaggerFragment() {
                 binding.tvNext.showSnackBar(getString(R.string.select_service))
                 return@setOnClickListener
             }
-
-//            if(categoryData?.name == "Clinics"){
-//                startActivity(Intent(requireContext(), HomeActivity::class.java))
-//                requireActivity().finish()
-//            }
         }
     }
 

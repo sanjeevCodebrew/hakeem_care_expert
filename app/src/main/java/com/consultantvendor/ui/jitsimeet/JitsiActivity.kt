@@ -77,7 +77,7 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
         }
         val defaultOptions = JitsiMeetConferenceOptions.Builder()
                 .setServerURL(serverURL)
-//                .setWelcomePageEnabled(false)
+                .setWelcomePageEnabled(false)
                 .setFeatureFlag("invite.enabled", false)
                 .setFeatureFlag("chat.enabled", false)
                 .setFeatureFlag("calendar.enabled", false)

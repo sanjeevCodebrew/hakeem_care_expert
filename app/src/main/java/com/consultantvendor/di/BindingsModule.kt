@@ -76,7 +76,6 @@ abstract class BindingsModule {
     @ContributesAndroidInjector
     abstract fun splashActivity(): SplashActivity
 
-
     @ContributesAndroidInjector
     abstract fun homeActivity(): HomeActivity
 

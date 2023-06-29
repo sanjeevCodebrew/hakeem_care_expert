@@ -8,12 +8,12 @@ apply plugin: 'kotlin-kapt'
 
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.hakeem.expert"
-        minSdkVersion 23
-        targetSdkVersion 31
+        minSdkVersion 21
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0.0"
         multiDexEnabled true
@@ -223,8 +223,7 @@ dependencies {
     implementation 'com.facebook.fresco:fresco:2.4.0'
 
     // Jitsi Meet
-//    implementation('org.jitsi.react:jitsi-meet-sdk:2.9.3') { transitive = true }
-    implementation ('org.jitsi.react:jitsi-meet-sdk:5.1.0') { transitive = true }
+    implementation('org.jitsi.react:jitsi-meet-sdk:2.9.3') { transitive = true }
 
     /*PAGER INDICATOR*/
     implementation 'me.relex:circleindicator:2.1.4'

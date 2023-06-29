@@ -112,7 +112,6 @@ class VerifyOTPFragment : DaggerFragment() {
                                 hashMap[ApiKeys.PROVIDER_TYPE] = ProviderType.phone
                                 hashMap[ApiKeys.PROVIDER_VERIFICATION] = binding.pvOtp.text.toString()
                                 hashMap[ApiKeys.USER_TYPE] = APP_TYPE
-
                                 viewModel.login(hashMap)
                             }
                         }
@@ -160,9 +159,7 @@ class VerifyOTPFragment : DaggerFragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog.setLoading(false)
-
                     requireContext().longToast(getString(R.string.code_sent_to, phoneNumber))
-
                 }
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
@@ -202,7 +199,6 @@ class VerifyOTPFragment : DaggerFragment() {
             }
         })
 
-
         viewModel.login.observe(requireActivity(), Observer {
             it ?: return@Observer
             when (it.status) {
@@ -214,7 +210,9 @@ class VerifyOTPFragment : DaggerFragment() {
                     if (userRepository.isUserLoggedIn()) {
                         startActivity(Intent(requireActivity(), HomeActivity::class.java))
                         requireActivity().finish()
-                    } else {
+                    }
+                    else
+                    {
                         val fragment = SignUpFragment()
                         val bundle = Bundle()
                         bundle.putBoolean(UPDATE_NUMBER, true)
@@ -240,9 +238,7 @@ class VerifyOTPFragment : DaggerFragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog.setLoading(false)
-
                     requireContext().longToast(getString(R.string.code_sent_to, phoneNumber))
-
                 }
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
@@ -266,7 +262,8 @@ class VerifyOTPFragment : DaggerFragment() {
 
                         requireActivity().setResult(Activity.RESULT_OK)
                         requireActivity().finish()
-                    } else if (appFeatures.needInsurance && (appClientDetails.insurance == true ||
+                    }
+                    else if (appFeatures.needInsurance && (appClientDetails.insurance == true ||
                                     appClientDetails.clientFeaturesKeys.isAddress == true)) {
                         val fragment = InsuranceFragment()
                         val bundle = Bundle()
@@ -276,7 +273,8 @@ class VerifyOTPFragment : DaggerFragment() {
 
                         replaceFragment(requireActivity().supportFragmentManager,
                                 fragment, R.id.container)
-                    } else
+                    }
+                    else
                         replaceFragment(requireActivity().supportFragmentManager,
                                 CategoryFragment(), R.id.container)
 

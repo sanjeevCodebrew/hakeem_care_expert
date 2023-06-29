@@ -1,6 +1,5 @@
 package com.consultantvendor.ui.loginSignUp.subcategory
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -46,14 +45,10 @@ class SubCategoryAdapter(private val fragment: SubCategoryFragment, private val 
             binding.clCategory.setOnClickListener {
                 fragment.clickItem(items[bindingAdapterPosition])
             }
-
-
         }
 
         fun bind(item: Categories) = with(binding) {
             tvName.text = item.name
-
-            Log.e("TAG", "clickItem: "+item.name )
 
             loadImage(binding.ivCategory, item.image, R.drawable.ic_img_empty_state)
 

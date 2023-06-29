@@ -122,7 +122,6 @@ class LoginViewModel @Inject constructor(private val webService: WebService) : V
                 })
     }
 
-
     fun register(hashMap: HashMap<String, Any>) {
         register.value = Resource.loading()
 

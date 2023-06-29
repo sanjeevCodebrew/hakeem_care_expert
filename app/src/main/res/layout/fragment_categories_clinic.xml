@@ -2,26 +2,21 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/startGuideLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="@dimen/dp_16" />
-
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/endGuideLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_end="@dimen/dp_16" />
-
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -30,7 +25,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:titleTextAppearance="@style/Toolbar.TitleText"
             app:navigationIcon="@drawable/ic_back_white" />
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
@@ -44,7 +38,6 @@
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/startGuideLine"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvDesc"
             android:layout_width="0dp"
@@ -60,8 +53,6 @@
             app:layout_constraintStart_toStartOf="@id/startGuideLine"
             app:layout_constraintEnd_toEndOf="@id/endGuideLine"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
-
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvListing"
             android:layout_width="0dp"
@@ -78,8 +69,6 @@
             app:layout_constraintTop_toBottomOf="@+id/tvDesc"
             app:spanCount="2"
             tools:listitem="@layout/rv_item_category" />
-
-
         <include
             android:id="@+id/clLoader"
             layout="@layout/item_loader"
@@ -90,8 +79,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvDesc" />
-
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvNoData"
             android:layout_width="0dp"
@@ -106,7 +93,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvDesc" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
