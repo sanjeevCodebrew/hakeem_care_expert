@@ -66,14 +66,14 @@ class SubCategoryFragment : DaggerFragment() {
             setAdapter()
             listeners()
             bindObservers()
-//            hitApi(true)
+            hitApi(true)
 
-            if (categoryData?.name == "Clinics") {
-               hitApiClinics(true)
-            }
-            else {
-                hitApi(true)
-            }
+//            if (categoryData?.name == "Clinics") {
+//               hitApiClinics(true)
+//            }
+//            else {
+//                hitApi(true)
+//            }
         }
         return rootView
     }
@@ -230,9 +230,9 @@ class SubCategoryFragment : DaggerFragment() {
             item?.is_filters == true -> {
                 PrefrenceFragment()
             }
-            item?.type.equals("clinic") -> {
-                ClinicCategoriesFragment()
-            }
+//            item?.type.equals("clinic") -> {
+//                ClinicCategoriesFragment()
+//            }
             else -> {
                 ServiceFragment()
             }

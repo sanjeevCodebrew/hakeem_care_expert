@@ -44,7 +44,8 @@ object NetworkModule {
     fun retrofit(client: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
 //                .baseUrl(Config.baseURL)
-                 .baseUrl("https://hakeemcare.netsolutionindia.com")
+//                 .baseUrl("https://hakeemcare.netsolutionindia.com")
+                .baseUrl("https://hakeemcare.hakeemcare.com")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addConverterFactory(ScalarsConverterFactory.create())
