@@ -76,7 +76,6 @@ class LoginViewModel @Inject constructor(private val webService: WebService) : V
 
     fun profile() {
         profile.value = Resource.loading()
-
         webService.profile()
                 .enqueue(object : Callback<ApiResponse<UserData>> {
 

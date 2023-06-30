@@ -3,6 +3,7 @@ package com.consultantvendor.ui.loginSignUp.verifyotp
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -257,6 +258,7 @@ class VerifyOTPFragment : DaggerFragment() {
                     progressDialog.setLoading(false)
 
                     prefsManager.save(USER_DATA, it.data)
+                    Log.e("TAG", "checkData: "+it.data)
 
                     if (userRepository.isUserLoggedIn()) {
 
@@ -273,6 +275,7 @@ class VerifyOTPFragment : DaggerFragment() {
 
                         replaceFragment(requireActivity().supportFragmentManager,
                                 fragment, R.id.container)
+
                     }
                     else
                         replaceFragment(requireActivity().supportFragmentManager,

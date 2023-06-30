@@ -94,6 +94,7 @@ class SubCategoryFragment : DaggerFragment() {
     }
 
     private fun listeners() {
+
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
@@ -228,9 +229,9 @@ class SubCategoryFragment : DaggerFragment() {
             item?.is_filters == true -> {
                 PrefrenceFragment()
             }
-            item?.type.equals("clinic") -> {
-                ClinicCategoriesFragment()
-            }
+//            item?.type.equals("clinic") -> {
+//                ClinicCategoriesFragment()
+//            }
             else -> {
                 ServiceFragment()
             }
