@@ -54,7 +54,7 @@ class LanguageFragment : DaggerFragment() {
             val lan = userRepository.getUserLanguage()
             if (lan == "en")
                 binding.rbEnglish.isChecked = true
-            else if (lan == "es")
+            else if (lan == "ar")
                 binding.rbArabic.isChecked = true
         } else {
             binding.toolbar.gone()
@@ -76,8 +76,8 @@ class LanguageFragment : DaggerFragment() {
                     prefsManager.save(USER_LANGUAGE, "en")
                     LocaleHelper.setLocale(requireActivity(), "en", prefsManager)
                 } else {
-                    prefsManager.save(USER_LANGUAGE, "es")
-                    LocaleHelper.setLocale(requireActivity(), "es", prefsManager)
+                    prefsManager.save(USER_LANGUAGE, "ar")
+                    LocaleHelper.setLocale(requireActivity(), "ar", prefsManager)
                 }
 
                 /*prefsManager.save(USER_LANGUAGE, "en")

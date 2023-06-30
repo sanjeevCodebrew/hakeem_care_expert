@@ -79,7 +79,7 @@
             <RadioButton
                 android:id="@+id/rbArabic"
                 android:layout_width="0dp"
-                android:text="@string/spanish"
+                android:text="@string/arabic"
                 android:button="@null"
                 android:gravity="center"
                 android:layout_marginStart="@dimen/dp_8"

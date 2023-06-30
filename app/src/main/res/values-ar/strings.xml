@@ -1,0 +1,977 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+<!--Default-->
+
+
+<!--Other App id to open-->
+
+
+<!--Pdf Link-->
+
+
+<string name="allow">السماح</string>
+
+<string name="deny">الرفض</string>
+
+<string name="settings">الإعدادات</string>
+
+<string name="media_permission">تحتاج هذه الميزة إلى إذن لاستخدام الكاميرا ووحدة التخزين الخارجية.</string>
+
+<string name="record_audio_permission">تحتاج هذه الميزة إلى إذن لاستخدام تسجيل الصوت والتخزين الخارجي.</string>
+
+<string name="internet">إنترنت</string>
+
+<string name="check_internet">يرجى التحقق من اتصالك بالإنترنت</string>
+
+<string name="ok">نعم</string>
+
+<string name="alert">تنبيه</string>
+
+<string name="login">تسجيل الدخول</string>
+
+<string name="facebook">فيس بوك</string>
+
+<string name="google">قوقل</string>
+
+<string name="login_using_email">تسجيل الدخول باستخدام البريد الإلكتروني</string>
+
+<string name="signup_using_email">التسجيل باستخدام البريد الإلكتروني</string>
+
+<string name="sign_up">التسجيل</string>
+
+<string name="enter_phone_number">أدخل رقم الهاتف</string>
+
+<string name="we_need_your_phone">نحتاج إلى رقم هاتفك لتحديد هويتك.</string>
+
+<string name="resend_code">إعادة إرسال الرمز</string>
+
+<string name="didn_t_receive_the_code_yet">لم تتلق الرمز بعد؟</string>
+
+<string name="verification">التحقق</string>
+
+<string name="enter_otp">الرجاء إدخال كلمة المرور لمرة واحدة</string>
+
+<string name="location">الموقع</string>
+
+<string name="chat">المحادثه</string>
+
+<string name="patients">المرضى؟</string>
+
+<string name="experience">الخبرة</string>
+
+<string name="reviews">التقيمات</string>
+
+<string name="about">عن</string>
+
+<string name="home">الرئيسية</string>
+
+<string name="history">السجل</string>
+
+<string name="notification">تنبيه</string>
+
+<string name="logout">الخروج</string>
+
+<string name="terms_and_conditions">الشروط والأحكام</string>
+
+<string name="invite_people">دعوة الأصدقاء</string>
+
+<string name="you_are_running_the_latest_version">أنت تقوم بتشغيل أحدث إصدار</string>
+
+<string name="appointments">المواعيد</string>
+
+<string name="name">الاسم</string>
+
+<string name="email">البريد الإلكتروني</string>
+
+<string name="date_of_birth">تاريخ الميلاد</string>
+
+<string name="password">كلمة المرور</string>
+
+<string name="re_enter_password">إعادة ادخال كلمة المرور</string>
+
+<string name="bio">نبذة عنك</string>
+
+<string name="edit">تعديل</string>
+
+<string name="view">عرض</string>
+
+<string name="age">العمر</string>
+
+<string name="phone_number">رقم الهاتف</string>
+
+<string name="dob">تاريخ الميلاد</string>
+
+<string name="we_need_your_email_password">نحتاج إلى بريدك الإلكتروني وكلمة المرور لتحديد هويتك.</string>
+
+<string name="didn_t_have_an_account">ليس لديك حساب؟</string>
+
+<string name="forgot_password">نسيت كلمة المرور</string>
+
+<string name="wallet">المحفظة</string>
+
+<string name="revenue">الربح</string>
+
+<string name="calls">المكالمات</string>
+
+<string name="available_balance">الرصيد المتاح</string>
+
+<string name="pay_out">الدفع</string>
+
+<string name="enter_name">الرجاء ادخال الاسم</string>
+
+<string name="select_dob">الرجاء اختيار تاريخ الميلاد</string>
+
+<string name="enter_email">الرجاء إدخال البريد الإلكتروني</string>
+
+<string name="enter_correct_email">الرجاء إدخال البريد الإلكتروني الصحيح</string>
+
+<string name="enter_password">يجب ألا يقل طول كلمة المرور عن 8 أحرف</string>
+
+<string name="enter_bio">الرجاء إدخال نبذة عنك</string>
+
+<string name="logout_dialog_message">هل أنت متأكد من أنك تريد تسجيل الخروج؟</string>
+
+<string name="yes">نعم</string>
+
+<string name="no">لا</string>
+
+<string name="no_data_found">لم يتم العثور على بيانات</string>
+
+<string name="select_image">اختر صورة</string>
+
+<string name="select_document">اختر مستند</string>
+
+<string name="update">تحديث</string>
+
+<string name="we_need_your_email">نحتاج إلى بريدك الإلكتروني المسجل للوصول إليك</string>
+
+<string name="sent_password">لقد أرسلنا كلمة مرور مؤقتة في بريدك الإلكتروني. يرجى التحقق من بريدك الإلكتروني.</string>
+
+<string name="new_request">طلب جديد</string>
+
+<string name="no_show">لا يوجد شي للعرض</string>
+
+<string name="canceled">تم الإلغاء</string>
+
+<string name="cancel">الغاء</string>
+
+<string name="start_request">بدء الطلب</string>
+
+<string name="check_request">التحقق من الطلب</string>
+
+<string name="start_request_message">هل أنت متأكد أنك تريد متابعة الطلب</string>
+
+<string name="add_money">إضافة المال</string>
+
+<string name="added_to_wallet">تمت الإضافة إلى المحفظة</string>
+
+<string name="failed_transaction">فشل الاجراء</string>
+
+<string name="accept_request">قبول الطلب</string>
+
+<string name="accept_request_message">هل أنت متأكد أنك تريد قبول هذا الطلب</string>
+
+<string name="mark_complete">وضع علامة اكتمال</string>
+
+<string name="mark_complete_message">هل أنت متأكد أنك تريد إكمال هذا الطلب</string>
+
+<string name="accepted">تم القبول</string>
+
+<string name="inprogess">قيد التنفيذ</string>
+
+<string name="starting_call">بدء مكالمة ...</string>
+
+<string name="starting_chat">بدء محادثة</string>
+
+<string name="na">غير متاح</string>
+
+<string name="typing">جاري الكتابة</string>
+
+<string name="today">اليوم</string>
+
+<string name="yesterday">الامس</string>
+
+<string name="active_now">نشط الان</string>
+
+<string name="offline">غير متصل</string>
+
+<string name="enter_message">أدخل رسالة</string>
+
+<string name="type_your_message_here">اكتب رسالتك ...</string>
+
+<string name="photo">صورة</string>
+
+<string name="chat_first_message">مرحبا\nأنا متاح للتحدث ، فلنناقش المشكلة</string>
+
+<string name="end_chat">انتهاء المحادثة</string>
+
+<string name="end_chat_desc">هذا سينهي المحادثة. لن تتمكن بعد الآن من التحدث</string>
+
+<string name="bank_account">هنا هو الحساب البنكي</string>
+
+<string name="bank_info">تفاصيل البنك</string>
+
+<string name="account_number">رقم الحساب</string>
+
+<string name="account_name">اسم صاحب الحساب</string>
+
+<string name="bank_name">اسم البنك</string>
+
+<string name="select_currency">اختر العملة</string>
+
+<string name="add_bank">إضافة البنك</string>
+
+<string name="edit_bank">تعديل البنك</string>
+
+<string name="card_ending_with">٪ s بطاقة تنتهي بـ٪ s</string>
+
+<string name="years">سنين</string>
+
+<string name="total_revenue_made">إجمالي الإيرادات المحققة</string>
+
+<string name="request_completed">اكتمل الطلب</string>
+
+<string name="description">وصف</string>
+
+<!--Classes-->
+
+
+<string name="classes">كلاسات</string>
+
+<string name="broadcasts">المنتجات</string>
+
+<string name="add_new">إضافة جديدة</string>
+
+<string name="add_class">إضافة كلاس</string>
+
+<string name="select_date">حدد تاريخ</string>
+
+<string name="select_future_date">حدد التاريخ المستقبلي</string>
+
+<string name="select_previos_date">حدد التاريخ السابق</string>
+
+<string name="select_time">حدد الوقت</string>
+
+<string name="price_of_class">سعر الكلاس</string>
+
+<string name="class_name">اسم الكلاس</string>
+
+<string name="class_time">وقت الكلاس</string>
+
+<string name="class_price">سعر الكلاس</string>
+
+<string name="start_class">أبدا الدرس</string>
+
+<string name="select_category">اختر الفئة</string>
+
+<string name="category">فئة</string>
+
+<string name="start_class_message">من خلال بدء CLASS ، ستجعل هذا الفصل متاحًا لكل من شغل. تريد أن تبدأ الفصل؟</string>
+
+<string name="user_joined">انضم المستخدم</string>
+
+<string name="complete_class">اكتمال الكلاس</string>
+
+<string name="complete_class_message">هل أنت متأكد أنك تريد إكمال هذا الفصل؟</string>
+
+<string name="s_s_reviews">٪ s ·٪ s تقيمات</string>
+
+<string name="greater_time">يجب أن يكون وقت الانتهاء أكبر من وقت البدء</string>
+
+<string name="manage_availability">إدارة التوفر</string>
+
+<string name="select_a_category">اختر تصنيف</string>
+
+<string name="let_us_know_who_you">دعنا نعرف أي فئة تناسب ملفك الشخصي أكثر من غيرها للمتابعة</string>
+
+<string name="select_sub_category">حدد فئة فرعية</string>
+
+<string name="full_name">Full Name</string>
+
+<string name="since_working">يعمل منذ</string>
+
+<string name="next">التالي</string>
+
+<string name="consultation_fees">رسوم الاستشارة</string>
+
+<string name="for_">لي</string>
+
+<string name="add_availability">اضف الأوقات المتاحة</string>
+
+<string name="service_type">نوع الخدمة</string>
+
+<string name="set_preferences">تعيين التفضيلات</string>
+
+<string name="from">الى</string>
+
+<string name="new_interval">+ شفت جديد</string>
+
+<string name="week_days">أيام الأسبوع</string>
+
+<string name="save">حفظ</string>
+
+<string name="fixed_price">سعر ثابت</string>
+
+<string name="edit_availability">تعديل الأوقات</string>
+
+<string name="select_service">الرجاء تحديد أي خدمة</string>
+
+<string name="enter_title">الرجاء تحديد العنوان</string>
+
+<string name="update_category">تحديث الفئة</string>
+
+<string name="manage_preferences">إدارة التفضيلات</string>
+
+<string name="tomorrow">غدا</string>
+
+<string name="all_weekdays">كل أيام الأسبوع</string>
+
+
+-<array name="country">
+
+    <item>دولة</item>
+
+</array>
+
+<string name="dr">دكتور</string>
+
+<string name="mr">السيد.</string>
+
+<string name="mrs">السّيدة.</string>
+
+<string name="miss">مفقود</string>
+
+<string name="profile">الحساب الشخصي</string>
+
+<string name="transactions">تاريخ المعاملات</string>
+
+<string name="select_working_days">الرجاء تحديد أيام العمل</string>
+
+<string name="already_have_an_account">هل لديك حساب؟</string>
+
+<string name="you_agree_to_our_terms">بالمتابعة ، أنت توافق على</string>
+
+<string name="terms">شروط الخدمة</string>
+
+<string name="terms2">شروط الخدمة</string>
+
+<string name="and">و</string>
+
+<string name="privacy">سياسة الخصوصية</string>
+
+<string name="chat_online_with_top_doctors">الدردشة على الانترنت\nمع أفضل الأطباء</string>
+
+<string name="signup_with_phone_number">قم بالتسجيل باستخدام رقم الهاتف</string>
+
+<string name="let_s_get_started">هيا بنا نبدأ !</string>
+
+<string name="minute">دقيقة</string>
+
+<string name="min">دقيقة</string>
+
+<string name="hr">ساعة</string>
+
+<string name="cancel_appointment">الغاء الموعد</string>
+
+<string name="cancel_appointment_msg">هل تريد الغاء الموعد</string>
+
+<string name="error_in_between_interval">الرجاء عدم إضافة الفاصل الزمني بين الفترات السابقة</string>
+
+<string name="disconnecting">جارٍ قطع الاتصال…</string>
+
+<string name="transaction_success">تمت العملية بنجاح</string>
+
+<string name="transaction_failed">فشل الاجراء</string>
+
+<!--Empty screen-->
+
+
+<string name="profile_unapproved">ملفك الشخصي لم يتم الموافقة عليه بعد!</string>
+
+<string name="profile_unapproved_desc">بمجرد الموافقة على ملفك الشخصي ، ستبدأ في تلقي طلبات من المستخدمين</string>
+
+<string name="no_requests">لا طلبات!</string>
+
+<string name="no_requests_desc">ليس لديك أي طلبات تم إنشاؤها في الوقت الحالي.</string>
+
+<string name="no_chat">لم تبدأ أي محادثة بعد!</string>
+
+<string name="no_chat_desc">بمجرد قبول طلبات الدردشة الخاصة بك وبدء المحادثة ، ستظهر المواضيع هنا.</string>
+
+<string name="no_history">لا يوجد تاريخ للمواعيد!</string>
+
+<string name="no_history_desc">لا توجد مواعيد مجدولة.</string>
+
+<string name="no_transaction">لا يوجد سجل للعمليات</string>
+
+<string name="no_transaction_desc">بمجرد إكمال بعض الطلبات بنجاح ، ستظهر معاملاتك هنا.</string>
+
+<string name="no_classes">لا توجد فصول دراسية تم إنشاؤها بواسطتك حتى الآن!</string>
+
+<string name="no_classes_desc">انقر فوق زر إضافة لإنشاء بعض الفئات التي ستظهر هنا.</string>
+
+<string name="no_notification">لا اشعارات حتى الان</string>
+
+<string name="no_notification_desc">ستظهر هنا جميع الاشعارات المتعلقة بأنشطتك.</string>
+
+<string name="no_question">لم يتم العثور على نصيحة الأطباء</string>
+
+<string name="no_question_desc">سيتم عرض نصيحة الطبيب هنا بمجرد أن يسأل أحدهم.</string>
+
+<string name="no_answer">لا توجد إجابات حتى الآن!</string>
+
+<string name="no_answer_desc">لم ينصح أحد بهذا. كن الأول.</string>
+
+<string name="no_article">لا مقال لا يوجد مقال!</string>
+
+<string name="no_article_desc">ستظهر المادة هنا بمجرد إضافتها</string>
+
+<string name="no_blog">لا توجد مدونات!</string>
+
+<string name="no_blog_desc">ستظهر المدونات هنا بمجرد إضافتها</string>
+
+<string name="no_medical_history">لم يتم العثور على تاريخ طبي!</string>
+
+<string name="no_medical_history_desc">كن أول طبيب يكتب عن هذا المريض.</string>
+
+<string name="no_contact">لم تتم إضافة جهة اتصال!</string>
+
+<string name="no_contact_desc">لم تتم إضافة جهة اتصال. سوف تظهر هنا مرة واحدة الاتصال.</string>
+
+<!--Share text-->
+
+
+<string name="share">مشاركة</string>
+
+<string name="invite_text">مرحبًا ، هذا هو التطبيق لأخذ منصة الاستشارات عبر الإنترنت للأطباء وأخصائيي العلاج الطبيعي والمحاسبين والمحامين والاستشاريين وما إلى ذلك. يجب أن تجربه.</string>
+
+<string name="edit_card">تحرير البطاقة</string>
+
+<string name="delete">حذف</string>
+
+<string name="pay">دفع</string>
+
+<string name="input_amount">كمية المدخلات</string>
+
+<string name="select_card">اختر البطاقة</string>
+
+<string name="add_card">إضافة البطاقة</string>
+
+<string name="enter_amount">أدخل المبلغ</string>
+
+<string name="payment">دفع</string>
+
+<string name="delete_message">هل أنت متأكد أنك تريد حذف هذه البطاقة؟</string>
+
+<!--Insurance Address-->
+
+
+<string name="start_your_journey">ابدأ رحلتك الآن</string>
+
+<string name="address">العنوان</string>
+
+<string name="city">المدينة</string>
+
+<string name="state">ولاية</string>
+
+<string name="zip">Zip Code</string>
+
+<string name="term_one">أوافق على شروط الخدمة وسياسة الخصوصية وسياسة ملفات تعريف الارتباط وجداول الرسوم.</string>
+
+<string name="term_two">أفهم أن مزودي الخدمة وغيرهم من المهنيين الذين أتصل بهم على التطبيق ، وأفهم أن الخدمة هي أداة اتصال فقط.</string>
+
+<string name="term_three">أدرك أن كل مقدم خدمة قد يكون لديه جدول رسوم ومعدلات فوترة خاصة به.</string>
+
+<string name="do_you_have_insurance">هل تقبل التأمين</string>
+
+<string name="if_yes_what_insurance">إذا \"نعم\" ما هو التأمين</string>
+
+<string name="select_insurance">تأمينك مقبول</string>
+
+<string name="check_all_terms">يرجى التحقق من جميع الشروط</string>
+
+<string name="select_country">اختر دولة</string>
+
+<string name="select_state">اختر ولاية</string>
+
+<string name="select_city">اختر المدينة</string>
+
+<string name="submit">يُقدِّم</string>
+
+<string name="add">إضف</string>
+
+<string name="plus_add">+ أضف</string>
+
+<string name="upload_documents">تحميل المستندات</string>
+
+<string name="please_add">اضف من فضلك</string>
+
+<string name="manage_documents">إدارة المستندات</string>
+
+<!--Articles-->
+
+
+<string name="latest_articles">أحدث المقالات</string>
+
+<string name="blogs">المدونات</string>
+
+<string name="articles">مقالات</string>
+
+<string name="s_views">تقييمات</string>
+
+<string name="favourites">المفضلة</string>
+
+<string name="my_articles">مقالاتي</string>
+
+<!--E-Prescription-->
+
+
+<string name="appointment">المواعيد</string>
+
+<string name="add_prescription">+ وصفة طبية</string>
+
+<string name="add_manual_prescription">أضف وصفة طبية يدوية</string>
+
+<string name="record_details">سجل التفاصيل</string>
+
+<string name="record_title">عنوان التسجيل</string>
+
+<string name="add_images">إضافة صورة</string>
+
+<string name="add_digital_prescription">أضف وصفة طبية رقمية</string>
+
+<string name="prescription_notes">ملاحظات الوصفة الطبية</string>
+
+<string name="add_notes">إضافة ملاحظات</string>
+
+<string name="medicine_name">اسم الدواء</string>
+
+<string name="prescriptions">الوصفات الطبية</string>
+
+<string name="dosage_type">مدة</string>
+
+<string name="dosage_timings">توقيت الجرعة</string>
+
+<string name="digital_prescription">الوصفة الرقمية</string>
+
+<string name="manual_prescription">الوصفة اليدوية</string>
+
+<string name="breakfast">إفطار</string>
+
+<string name="dosage">"الجرعة"</string>
+
+<string name="before">قبل</string>
+
+<string name="after">بعد</string>
+
+<string name="with">مع</string>
+
+<string name="reset">إعادة ضبط</string>
+
+<string name="lunch">غداء</string>
+
+<string name="dinner">عشاء</string>
+
+<string name="years_old">سنة</string>
+
+<string name="select_dosage_timings">حدد توقيت الجرعة</string>
+
+<string name="prescription_added">تمت إضافة وصفة طبية</string>
+
+<string name="view_prescription">عرض الوصفة الطبية</string>
+
+<string name="view_all">مشاهدة الكل</string>
+
+<string name="requests">الطلبات</string>
+
+<string name="select">"اختر "</string>
+
+<string name="tablet">لوح</string>
+
+<string name="capsule">كبسولة</string>
+
+<string name="one">واحد</string>
+
+<string name="two">اثنين</string>
+
+<string name="three">ثلاثه</string>
+
+<string name="four">اربعة</string>
+
+<!--Are you doctor-->
+
+
+<string name="are_you_a_doctor_or_patient">هل انت طبيب ام مريض؟</string>
+
+<string name="doctor">طبيب</string>
+
+<string name="patient">مريض</string>
+
+<!--Walk Through-->
+
+
+<string name="walkthrough_1">التحدث مع الطبيب</string>
+
+<string name="walk_through_desc_1">اختر تخصصًا وقم بحل شكوكك من خلال محادثة مباشرة مع الأطباء</string>
+
+<string name="walkthrough_2">مواعيد الفيديو / الصوت</string>
+
+<string name="walk_through_desc_2">احصل على المواعيد في ثوانٍ مع أفضل الأطباء الرائدين من حولك واحصل على الوصفات الطبية</string>
+
+<string name="walkthrough_3">جدولة المواعيد</string>
+
+<string name="walk_through_desc_3">يمكنك أيضًا تحديد مواعيدك مع أفضل الأطباء الرائدين</string>
+
+<string name="walkthrough_4">الطبيب المناسب</string>
+
+<string name="walk_through_desc_4">احجز موعدًا مع الطبيب المناسب واحصل على النصيحة الصحيحة منه</string>
+
+<string name="walkthrough_5">حسابات أخرى</string>
+
+<string name="walk_through_desc_5">يمكنك إضافة حسابات لكبار السن والأطفال ثم ملء التفاصيل التي تحدد علاقتهم معك</string>
+
+<string name="walkthrough_6">الزيارات المنزلية</string>
+
+<string name="walk_through_desc_6">يمكنك الحصول على مواعيدك مباشرة في منزلك بكل سهولة</string>
+
+<string name="get_started">البدء</string>
+
+<string name="skip">تخطى</string>
+
+<!--Location permission-->
+
+
+<string name="skip_for_now">تخطى الان</string>
+
+<string name="use_my_location">استخدم موقعي</string>
+
+<string name="we_will_need_your_location">سنحتاج إلى موقعك لنمنحك تجربة أفضل</string>
+
+<string name="allow_your_location">اسمح لموقعك</string>
+
+<!--Calling-->
+
+
+<string name="decline">رفض</string>
+
+<string name="answer">إجابة</string>
+
+<string name="login_with">تسجيل الدخول مع</string>
+
+<string name="gender">الجنس</string>
+
+<string name="select_gender">اختر الجنس</string>
+
+<string name="sign_up_as">سجل باسم</string>
+
+<string name="choose_language">اختر اللغة</string>
+
+<!--Tracking-->
+
+
+<string name="we_will_need_call">سنحتاج إلى إذن الاتصال الخاص بك لمنحك تجربة أفضل</string>
+
+<string name="reached_destination">وصلت إلى الوجهة</string>
+
+<string name="status">حالة :</string>
+
+<string name="start_service">إبدا الخدمة</string>
+
+<string name="cancel_service">إلغاء الخدمة</string>
+
+<string name="service_status_update">تحديث حالة الخدمة</string>
+
+<string name="current_status">Current Status</string>
+
+<string name="status_update">تحديث الحالة</string>
+
+<string name="arrived">وصل</string>
+
+<string name="started">بدأت</string>
+
+<string name="completed">مكتمل</string>
+
+<string name="change_service_status">تغيير حالة الخدمة</string>
+
+<string name="pending">قيد الانتظار</string>
+
+<string name="update_status">تحديث الحالة</string>
+
+<string name="clear">حذف</string>
+
+<string name="quit">خروج</string>
+
+<string name="quit_message">هل أنت متأكد من أنك تريد الخروج؟ سوف يوقف التتبع الخاص بك</string>
+
+<string name="service_completed">اكتملت الخدمة</string>
+
+<string name="track_status">تتبع الحالة</string>
+
+<string name="canceled_service">الخدمة الملغاة</string>
+
+<string name="details">تفاصيل</string>
+
+<string name="type_here">أكتب هنا…</string>
+
+<string name="show_more">أظهر المزيد</string>
+
+<string name="show_less">اظهر أقل</string>
+
+<string name="free_expert_advice">نصيحة الاطباء المجانية</string>
+
+<!--Language-->
+
+
+<string name="language">اللغة</string>
+
+<string name="please_choose_your_language">الرجاء اختيار اللغة</string>
+
+<string name="english">إنجليزي</string>
+
+<string name="arabic">عربي</string>
+
+<string name="account_setting">إعدادات الحساب</string>
+
+<string name="change_password">تغيير كلمة المرور</string>
+
+<string name="old_password">كلمة المرور القديمة</string>
+
+<string name="new_password">كلمة المرور الجديدة</string>
+
+<string name="confirm_password">تأكيد كلمة المرور الجديدة</string>
+
+<!--Success message-->
+
+
+<string name="success">نجاح!</string>
+
+<string name="password_changed_successfully">تم تغيير كلمة المرور الخاصة بك بنجاح!</string>
+
+<string name="view_map">اظاهر الخريطة</string>
+
+<string name="distance">مسافة</string>
+
+<string name="time">الوقت</string>
+
+<string name="map_not_found">تطبيق خرائط جوجل غير موجود</string>
+
+<string name="all_requests">كل الطلبات</string>
+
+<string name="pdf">بي دي إف</string>
+
+<string name="audio">صوتي</string>
+
+<string name="retry">أعد المحاولة</string>
+
+<!--Health Tools-->
+
+
+<string name="health_tools">أدوات صحية</string>
+
+<string name="health_tool_1">حاسبة مؤشر كتلة الجسم</string>
+
+<string name="health_tool_1_desc">حاسبة مؤشر كتلة الجسم</string>
+
+<string name="health_tool_2">حاسبة كمية المياه</string>
+
+<string name="health_tool_3">حاسبة تناول البروتين</string>
+
+<string name="health_tool_3_desc">حاسبة تناول البروتين</string>
+
+<string name="health_tool_4">حاسبة الحمل</string>
+
+<string name="health_tool_4_desc">حاسبة الحمل</string>
+
+<string name="calculation_method">طريقة حساب</string>
+
+<string name="calculate_my_due_date">احسب تاريخ ولادتي</string>
+
+<string name="last_period">الفترة الاخيرة</string>
+
+<string name="ivf">اطفال انابيب</string>
+
+<string name="conception_date">تاريخ الحمل</string>
+
+<string name="the_first_day_of_your_last_period">اليوم الأول من دورتك الشهرية الأخيرة</string>
+
+<string name="cycle_length">طول دورة</string>
+
+<string name="date_of_conception">تاريخ الحمل</string>
+
+<string name="date_of_transfer">تاريخ التحويل</string>
+
+<string name="ivf_transfer_date">تاريخ نقل التلقيح الاصطناعي</string>
+
+<string name="date_of_ultrasound">تاريخ الموجات فوق الصوتية</string>
+
+<string name="congratulations">تهانينا!</string>
+
+<string name="i_dont_know">لا أعرف</string>
+
+<string name="days">أيام</string>
+
+<string name="day">يوم</string>
+
+<string name="weeks">اسابيع</string>
+
+<string name="week">اسبوع</string>
+
+<string name="pregnancy_timeline">الجدول الزمني للحمل الخاص بك</string>
+
+<string name="_1st_trimester">الفصل الأول</string>
+
+<string name="_2nd_trimester">الفصل الثاني</string>
+
+<string name="_3rd_trimester">الفصل الثالث</string>
+
+<string name="your_baby_will_be_a_s">سيكون طفلك٪ s</string>
+
+<string name="to">ل</string>
+
+<string name="aries">♈ برج الحمل</string>
+
+<string name="cancer_">♋ برج السرطان</string>
+
+<string name="taurus">♉ برج الثور</string>
+
+<string name="leo">♌ برج الاسد</string>
+
+<string name="gemini">♊ برج الجوزاء</string>
+
+<string name="virgo">♍ برج العذراء</string>
+
+<string name="libra">♎ برج الميزان</string>
+
+<string name="capricorn">♑ برج الجدي</string>
+
+<string name="scorpio">♏ برج العقرب</string>
+
+<string name="aquarius">♒ برج الدلو</string>
+
+<string name="sagittarius">♐برج القوس</string>
+
+<string name="pisces">♓ برج الحوت</string>
+
+<string name="drink">اشرب ماء</string>
+
+<string name="select_amount">حدد كمية الماء</string>
+
+<string name="set_you_water_limit">اضبط حد استهلاكك اليومي من المياه</string>
+
+<string name="water_intake_literes">كمية المياه (لتر)</string>
+
+<string name="set_daily_limit">حدد الحد اليومي</string>
+
+<string name="lt">لتر</string>
+
+<string name="ml">ملي</string>
+
+<string name="g">جرام</string>
+
+<string name="kg">كيلو جرام</string>
+
+<string name="water_intake">كمية الماء</string>
+
+<string name="daily_limit">الحد اليومي</string>
+
+<string name="days_completed">الأيام المنتهية</string>
+
+<string name="protein_intake">تناول البروتين</string>
+
+<string name="take_protein">تناول البروتين</string>
+
+<string name="select_amount_protein">اختر كمية البروتين</string>
+
+<string name="set_you_protein_limit">قم بتعيين حد البروتين اليومي</string>
+
+<string name="protein_intake_grams">كمية البروتين (بالجرام)</string>
+
+<!--Bmi-->
+
+
+<string name="weight">الوزن</string>
+
+<string name="height">الطول</string>
+
+<string name="your_bmi">مؤشر كتلة الجسم الخاص بك</string>
+
+<string name="weight_empty_validation">الرجاء إدخال الوزن</string>
+
+<string name="error_empty_weight">الرجاء إدخال الوزن</string>
+
+<string name="height_empty_validation">الرجاء إدخال الطول</string>
+
+<string name="underweight">نقص الوزن</string>
+
+<string name="normal">طبيعي</string>
+
+<string name="overweight">الوزن الزائد</string>
+
+<string name="male">ذكر</string>
+
+<string name="female">انثى</string>
+
+<string name="symptoms">أعراض</string>
+
+<string name="slide_to_cancel">مرر للالغاء</string>
+
+<string name="view_details">عرض التفاصيل</string>
+
+<string name="price">السعر</string>
+
+<string name="prescription_details">تفاصيل الوصفة</string>
+
+<string name="available_for_emergency">هل أنت متاح للاستشارة في حالات الطوارئ؟</string>
+
+<string name="invite_code">رمز الدعوة</string>
+
+<string name="request_for_payment">طلب الدفع</string>
+
+<string name="extra_payment">دفع إضافية</string>
+
+<string name="enter_description">أدخل الوصف</string>
+
+<string name="reason">سبب</string>
+
+<string name="agree_to_terms">الرجاء الموافقة على الشروط</string>
+
+<string name="cal_now">اتصل الان</string>
+
+<string name="care_plan">خطة الرعاية</string>
+
+<string name="mark_done">موافق</string>
+
+<!--Pre assessment-->
+
+
+<string name="pre_assessment_questions">استبيانات ما قبل التقييم</string>
+
+<string name="need_some_help">بحاجة لبعض المساعدة</string>
+
+<string name="need_much_help">بحاجة الى الكثير من المساعدة</string>
+
+<string name="medical_history">تاريخ طبى</string>
+
+<string name="write_patient_medical_condition">اكتب شيئًا عن حالة المريض الطبية</string>
+
+<string name="age_atleast_16">يجب ألا يقل العمر عن 16 عامًا</string>
+
+<string name="contacts">يجب ألا يقل العمر عن 16 عامًا</string>
+
+<string name="select_contacts">حدد جهات الاتصال</string>
+
+<string name="notify">تنبيه</string>
+
+<string name="notifying_to_contacts">سنقوم إشعار جهات الاتصال الخاصة بك أنك بحاجة إلى مساعدة!</string>
+
+<string name="notified">تم التنبيه</string>
+
+<string name="notified_contacts">أبلغنا جهات الاتصال الخاصة بك أنك بحاجة إلى مساعدة.</string>
+
+<string name="practicing_since">يمارس منذ</string>
+
+<string name="spanish">اسباني</string>
+
+</resources>
