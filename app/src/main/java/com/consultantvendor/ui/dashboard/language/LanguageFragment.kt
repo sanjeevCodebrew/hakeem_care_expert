@@ -81,7 +81,7 @@ class LanguageFragment : DaggerFragment() {
                 }
 
                 /*prefsManager.save(USER_LANGUAGE, "en")
-            LocaleHelper.setLocale(requireActivity(), "en", prefsManager)*/
+                LocaleHelper.setLocale(requireActivity(), "en", prefsManager)*/
 
                 /*get updated pages*/
                 if (BuildConfig.FLAVOR == "homeDoctor")
