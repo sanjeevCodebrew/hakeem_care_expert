@@ -35,7 +35,6 @@ class CategoriesAdapter(private val fragment: CategoryFragment, private val item
         }
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == ITEM) {
             when (BuildConfig.FLAVOR) {

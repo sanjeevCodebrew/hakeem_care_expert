@@ -236,7 +236,6 @@ class ServiceFragment : DaggerFragment() {
 
             val hashMap = HashMap<String, String>()
             hashMap["category_id"] = categoryData?.id ?: ""
-
             viewModel.services(hashMap)
         } else
             binding.swipeRefresh.isRefreshing = false

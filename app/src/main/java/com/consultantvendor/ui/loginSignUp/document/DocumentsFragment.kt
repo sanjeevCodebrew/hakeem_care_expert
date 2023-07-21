@@ -128,6 +128,7 @@ class DocumentsFragment : DaggerFragment() {
                     if (arguments?.containsKey(UPDATE_DOCUMENTS) == true)
                         updateDocument.sp_id = userData?.id
 
+
                     updateDocument.fields = ArrayList()
                     updateDocument.fields?.addAll(items)
 
