@@ -66,6 +66,11 @@ class IntervalAdapter(private val fragment: SetAvailabilityFragment, private val
                 tvToV.setText(DateUtils.dateFormatChange(DateFormat.TIME_FORMAT,
                         DateFormat.TIME_FORMAT, item.end_time ?: ""))
 
+            if (item.start_time.isNullOrEmpty() || item.end_time.isNullOrEmpty()) {
+                tvFromV.setText("")
+                tvToV.setText("")
+            }
+
             ivDelete.setOnClickListener {
                 if (items.size > 1) {
                     items.removeAt(absoluteAdapterPosition)

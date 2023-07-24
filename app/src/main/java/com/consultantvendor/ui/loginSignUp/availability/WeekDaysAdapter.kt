@@ -29,6 +29,7 @@ class WeekDaysAdapter(private val fragment: SetAvailabilityFragment, private val
 
         fun bind(weekDays: Boolean) = with(binding) {
 
+
             tvName.text = when (adapterPosition) {
                 0 -> fragment.getString(R.string.sunday_w)
                 1 -> fragment.getString(R.string.monday_w)

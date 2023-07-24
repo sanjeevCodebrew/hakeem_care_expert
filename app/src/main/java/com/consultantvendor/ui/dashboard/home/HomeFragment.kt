@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +19,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.consultantvendor.BuildConfig
 import com.consultantvendor.R
 import com.consultantvendor.appFeatures
-import com.consultantvendor.data.models.responses.Banner
-import com.consultantvendor.data.models.responses.Feed
-import com.consultantvendor.data.models.responses.Request
-import com.consultantvendor.data.models.responses.Service
+import com.consultantvendor.data.models.responses.*
 import com.consultantvendor.data.network.ApiKeys
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.PushType
@@ -129,6 +127,8 @@ class HomeFragment : DaggerFragment() {
             binding.ivDrawer.gone()
             binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
+
+        Log.e("TAG", "authToken "+prefsManager.getObject(USER_DATA, UserData::class.java)?.token)
     }
 
     private fun handleHeader() {
