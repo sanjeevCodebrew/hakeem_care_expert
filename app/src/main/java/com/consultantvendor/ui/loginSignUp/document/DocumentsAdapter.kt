@@ -1,7 +1,10 @@
 package com.consultantvendor.ui.loginSignUp.document
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.consultantvendor.R
@@ -50,11 +53,11 @@ class DocumentsAdapter(private val fragment: DocumentsFragment, private val item
             }
         }
 
+        @SuppressLint("SetTextI18n")
         fun bind(item: AdditionalField) = with(binding) {
             binding.tvAdd.hideShowView(item.documents.size < 2)
 
             tvName.text = item.name
-
             val adapterItem = DocumentsItemAdapter(fragment, adapterPosition, item.documents)
             rvDocuments.adapter = adapterItem
         }

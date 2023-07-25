@@ -187,6 +187,29 @@
 
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPatientAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:layout_marginEnd="@dimen/dp_8"
+                    android:alpha="0.6"
+                    android:drawablePadding="@dimen/dp_8"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/campton_medium"
+                    android:gravity="start|center_vertical"
+                    android:maxLines="2"
+                    android:text="@string/patient_address"
+                    android:textColor="@color/colorBlack"
+                    android:textDirection="locale"
+                    android:textAlignment="viewStart"
+                    android:textSize="@dimen/sp_14"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@id/tvViewMap"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@id/view" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvLocation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -206,7 +229,7 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toStartOf="@id/tvViewMap"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@id/view" />
+                    app:layout_constraintTop_toBottomOf="@id/tvPatientAddress" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvViewMap"

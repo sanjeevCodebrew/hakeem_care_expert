@@ -220,6 +220,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
             ConsultType.HOME_VISIT -> {
                 if (request.extra_detail?.service_address != null) {
                     binding.tvLocation.visible()
+                    binding.tvPatientAddress.visible()
                     binding.tvViewMap.visible()
                     binding.tvLocation.text = request.extra_detail?.service_address
                 }

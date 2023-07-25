@@ -59,17 +59,27 @@ class IntervalAdapter(private val fragment: SetAvailabilityFragment, private val
         }
 
         fun bind(item: Interval) = with(binding) {
-            if (!item.start_time.isNullOrEmpty())
-                tvFromV.setText(DateUtils.dateFormatChange(DateFormat.TIME_FORMAT,
-                        DateFormat.TIME_FORMAT, item.start_time ?: ""))
-            if (!item.end_time.isNullOrEmpty())
-                tvToV.setText(DateUtils.dateFormatChange(DateFormat.TIME_FORMAT,
-                        DateFormat.TIME_FORMAT, item.end_time ?: ""))
-
-            if (item.start_time.isNullOrEmpty() || item.end_time.isNullOrEmpty()) {
+            if (!item.start_time.isNullOrEmpty()) {
+                tvFromV.setText(
+                    DateUtils.dateFormatChange(
+                        DateFormat.TIME_FORMAT,
+                        DateFormat.TIME_FORMAT, item.start_time ?: ""
+                    )
+                )
+            }else{
                 tvFromV.setText("")
+            }
+            if (!item.end_time.isNullOrEmpty()) {
+                tvToV.setText(
+                    DateUtils.dateFormatChange(
+                        DateFormat.TIME_FORMAT,
+                        DateFormat.TIME_FORMAT, item.end_time ?: ""
+                    )
+                )
+            }else{
                 tvToV.setText("")
             }
+
 
             ivDelete.setOnClickListener {
                 if (items.size > 1) {

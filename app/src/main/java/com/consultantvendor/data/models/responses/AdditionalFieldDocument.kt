@@ -7,4 +7,5 @@ class AdditionalFieldDocument : Serializable {
     var title: String? = null
     var description: String? = null
     var file_name: String? = null
+    var status: String? = null
 }

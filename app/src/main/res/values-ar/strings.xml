@@ -65,6 +65,8 @@
 
 <string name="about">عن</string>
 
+    <string name="patient_address">عنوان المريض</string>
+
 <string name="home">الرئيسية</string>
 
 <string name="history">السجل</string>

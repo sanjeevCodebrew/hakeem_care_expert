@@ -1,5 +1,7 @@
 package com.consultantvendor.ui.loginSignUp.document
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -57,8 +59,16 @@ class DocumentsItemAdapter(private val fragment: DocumentsFragment, private val 
             }
         }
 
+        @SuppressLint("SetTextI18n")
         fun bind(item: AdditionalFieldDocument) = with(binding) {
-            tvName.text = item.title
+
+            if (item.status == "declined") {
+                tvName.setTextColor(Color.parseColor("#FF0000"))
+                tvName.text = item.title?.plus("(Rejected)")
+            } else {
+                tvName.text = item.title
+            }
+
             tvDesc.text = item.description
             if(item.file_name?.contains(".pdf") == true) {
                 val glide = Glide.with(ivImage.context)
