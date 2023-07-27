@@ -82,7 +82,6 @@ class AddClassFragment : DaggerFragment(), OnDateSelected, OnTimeSelected {
         }
     }
 
-
     private fun checkValidation() {
         when {
             binding.etTitle.text.toString().trim().isEmpty() -> {

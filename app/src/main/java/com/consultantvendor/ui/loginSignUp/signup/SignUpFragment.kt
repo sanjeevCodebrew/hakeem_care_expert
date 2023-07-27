@@ -160,13 +160,13 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
 
         /*If need country list*/
         if (appFeatures.signUpAddition) {
-            binding.ilCountry.visible()
-            binding.ilGender.visible()
-            binding.ilSignUpAs.visible()
+            binding.ilCountry.gone()
+            binding.ilGender.gone()
+            binding.ilSignUpAs.gone()
             binding.ilLanguages.visible()
             binding.rvLanguages.visible()
-            binding.tvEmergency.visible()
-            binding.rgEmergency.visible()
+            binding.tvEmergency.gone()
+            binding.rgEmergency.gone()
 
             spinnerCountryAdapter = CustomSpinnerAdapter(requireContext(), itemsCountry)
             binding.spnCountry.adapter = spinnerCountryAdapter
@@ -444,15 +444,15 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
             binding.etYears.text.toString().trim().isEmpty() -> {
                 binding.etYears.showSnackBar(getString(R.string.since_working))
             }
-            appFeatures.signUpAddition && binding.etGender.text.toString().trim().isEmpty() -> {
-                binding.etGender.showSnackBar(getString(R.string.select_gender))
-            }
-            appFeatures.signUpAddition && binding.etSignUpAs.text.toString().trim().isEmpty() -> {
-                binding.etSignUpAs.showSnackBar(getString(R.string.sign_up_as))
-            }
-            appFeatures.signUpAddition && binding.etCountry.text.toString().trim().trim().isEmpty() -> {
-                binding.etCountry.showSnackBar(getString(R.string.select_country))
-            }
+//            appFeatures.signUpAddition && binding.etGender.text.toString().trim().isEmpty() -> {
+//                binding.etGender.showSnackBar(getString(R.string.select_gender))
+//            }
+//            appFeatures.signUpAddition && binding.etSignUpAs.text.toString().trim().isEmpty() -> {
+//                binding.etSignUpAs.showSnackBar(getString(R.string.sign_up_as))
+//            }
+//            appFeatures.signUpAddition && binding.etCountry.text.toString().trim().trim().isEmpty() -> {
+//                binding.etCountry.showSnackBar(getString(R.string.select_country))
+//            }
             appFeatures.signUpAddition && binding.etLanguages.text.toString().trim().isEmpty() -> {
                 binding.etLanguages.showSnackBar(getString(R.string.choose_language))
             }

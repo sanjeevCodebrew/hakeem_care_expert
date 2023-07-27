@@ -342,7 +342,7 @@
                     android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/clPhone">
+                    app:layout_constraintTop_toBottomOf="@+id/ilDob">
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/etYears"
@@ -350,7 +350,7 @@
                         android:layout_height="wrap_content"
                         android:focusable="false"
                         android:fontFamily="@font/campton_medium"
-                        android:hint="@string/practicing_since"
+                        android:hint="@string/since_working"
                         android:textDirection="locale"
                         android:imeOptions="actionNext"
                         android:inputType="text"
@@ -360,42 +360,6 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ilLanguage"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_16"
-                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/ilYears">
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/etLanguage"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_16"
-                        android:fontFamily="@font/campton_medium"
-                        android:hint="@string/choose_language"
-                        android:textDirection="locale"
-                        android:imeOptions="actionNext"
-                        android:inputType="textPassword"
-                        android:maxLength="100"
-                        android:textColor="@color/textColor"
-                        android:textSize="@dimen/sp_16" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvLanguage"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/dp_8"
-                    app:layout_constraintTop_toBottomOf="@id/ilLanguage"
-                    app:layout_constraintEnd_toEndOf="@id/ilLanguage"
-                    app:layout_constraintStart_toStartOf="@id/ilLanguage"
-                    tools:listitem="@layout/item_language"
-                    tools:itemCount="4"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-                <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/ilGender"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -403,7 +367,7 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/rvLanguage">
+                    app:layout_constraintTop_toBottomOf="@+id/ilYears">
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/etGender"

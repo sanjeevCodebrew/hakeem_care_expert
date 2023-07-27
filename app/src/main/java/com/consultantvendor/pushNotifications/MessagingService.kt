@@ -215,7 +215,7 @@ class MessagingService : FirebaseMessagingService() {
         homeIntent.action = System.currentTimeMillis().toString()
 
         val pendingIntent =
-                stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_UPDATE_CURRENT)
+                stackBuilder.getPendingIntent(requestID, PendingIntent.FLAG_IMMUTABLE)
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
                 .setContentTitle(title) //Header
