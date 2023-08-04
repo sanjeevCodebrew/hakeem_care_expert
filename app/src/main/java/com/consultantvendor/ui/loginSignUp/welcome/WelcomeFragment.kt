@@ -240,7 +240,6 @@ class WelcomeFragment : DaggerFragment() {
                         startActivity(Intent(requireActivity(), HomeActivity::class.java))
                         requireActivity().finish()
                     } else {
-
                         val fragment = SignUpFragment()
                         val bundle = Bundle()
                         bundle.putBoolean(UPDATE_NUMBER, true)
