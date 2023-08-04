@@ -224,11 +224,12 @@ class MessagingService : FirebaseMessagingService() {
                 .setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent(pendingIntent)
-                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+
+
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            notificationBuilder.setSmallIcon(R.drawable.ic_push)
+            notificationBuilder.setSmallIcon(R.drawable.ic_notification)
             notificationBuilder.color = ContextCompat.getColor(this, R.color.colorAccent)
         } else {
             notificationBuilder.setSmallIcon(R.mipmap.ic_launcher)
