@@ -1,6 +1,7 @@
 package com.consultantvendor.utils
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Color
 import android.text.format.DateUtils
@@ -85,6 +86,35 @@ object DateUtils {
             picker.defaultDate(Date((min + 86400000)))
         }
         picker.display()
+    }
+
+    fun openDatePickerDialog(activity: Activity, listener: OnDateSelected, max: Long?, min: Long?) {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        val dpd = DatePickerDialog(
+            activity, { view, year, monthOfYear, dayOfMonth ->
+                var selectedDate = "$dayOfMonth/${monthOfYear.plus(1)}/$year"
+
+                selectedDate =
+                    dateFormatChange(
+                        DateFormat.DATE_FORMAT_SLASH_YEAR,
+                        DateFormat.MON_DATE_YEAR,
+                        selectedDate
+                    )
+                listener.onDateSelected(selectedDate)
+
+            }, year, month, day
+        )
+
+        if (max != null)
+            dpd.datePicker.maxDate = max
+        if (min != null)
+            dpd.datePicker.minDate = min
+
+        dpd.show()
     }
 
 
@@ -254,6 +284,7 @@ object DateUtils {
                 .displayYears(false)
                 .titleTextSize(16)
                 .minutesStep(30)
+                .mustBeOnFuture()
                 .displayDaysOfMonth(false)
                 .title(context.getString(R.string.select_time))
                 .mainColor(ContextCompat.getColor(context, R.color.colorWhite))
@@ -309,6 +340,7 @@ object DateFormat {
     const val TIME_FORMAT_24 = "HH:mm"
     const val MON_DATE = "MMM dd"
     const val MON_DATE_YEAR = "MMM dd, yyyy"
+    const val DATE_FORMAT_SLASH_YEAR = "dd/MM/yyyy"
     const val UTC_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
     const val UTC_FORMAT_NORMAL = "yyyy-MM-dd HH:mm:ss"
 

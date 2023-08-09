@@ -74,7 +74,8 @@ class AddClassFragment : DaggerFragment(), OnDateSelected, OnTimeSelected {
         }
 
         binding.etDate.setOnClickListener {
-            DateUtils.openDatePicker(requireActivity(), this, null, (System.currentTimeMillis() - 36000))
+//            DateUtils.openDatePicker(requireActivity(), this, null, (System.currentTimeMillis() - 36000))
+            DateUtils.openDatePickerDialog(requireActivity(), this, null, (System.currentTimeMillis() - 36000))
         }
 
         binding.etTime.setOnClickListener {
