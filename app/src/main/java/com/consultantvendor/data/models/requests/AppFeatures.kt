@@ -18,6 +18,6 @@ class AppFeatures {
     var needHealthTools = true
 
     var signUpAddition = true
-    var needInsurance = true
+    var needInsurance = false
     var needInviteCode = false
 }

@@ -82,7 +82,12 @@ class ProfileFragment : DaggerFragment() {
         userData = userRepository.getUser()
 
         binding.tvName.text = getDoctorName(userData)
-        loadImage(binding.ivPic, userData?.profile_image, R.drawable.ic_profile_placeholder)
+
+        if (userData?.profile_image !=null) {
+            loadImage(binding.ivPic, userData?.profile_image, R.drawable.ic_profile_placeholder)
+        } else {
+            loadImage(binding.ivPic, userData?.clinic_logo, R.drawable.ic_profile_placeholder)
+        }
         binding.tvBioV.text = userData?.profile?.bio ?: getString(R.string.na)
         binding.tvEmailV.text = userData?.email ?: getString(R.string.na)
         binding.tvPhoneV.text = "${userData?.country_code ?: ""} ${userData?.phone ?: ""}"

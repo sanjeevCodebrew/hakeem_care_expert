@@ -222,6 +222,7 @@
     <string name="mr">Mr.</string>
     <string name="mrs">Mrs.</string>
     <string name="miss">Miss.</string>
+    <string name="none" translatable="false">None</string>
 
     <array name="dr_title">
         <item>@string/title</item>
@@ -229,6 +230,7 @@
         <item>@string/mr</item>
         <item>@string/mrs</item>
         <item>@string/miss</item>
+        <item>@string/none</item>
     </array>
 
     <string name="profile">Profile</string>
