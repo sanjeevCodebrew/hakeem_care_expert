@@ -166,7 +166,15 @@ class ServiceFragment : DaggerFragment() {
                         return@setOnClickListener
                     }
 
-                    if ((it.main_service_type == ConsultType.CLINIC_VISIT || it.main_service_type == ConsultType.HOME_VISIT) && it.clinic_address == null) {
+                  /*  if ((it.main_service_type == ConsultType.CLINIC_VISIT || it.main_service_type == ConsultType.HOME_VISIT) && it.clinic_address == null) {
+                        binding.tvNext.showSnackBar(getString(R.string.select_clinic_address, it.name))
+                        return@setOnClickListener
+                    } else {
+                        setService.clinic_address = SaveAddress()
+                        setService.clinic_address = it.clinic_address
+                    }*/
+
+                    if ((it.main_service_type == ConsultType.CLINIC_VISIT) && it.clinic_address == null) {
                         binding.tvNext.showSnackBar(getString(R.string.select_clinic_address, it.name))
                         return@setOnClickListener
                     } else {

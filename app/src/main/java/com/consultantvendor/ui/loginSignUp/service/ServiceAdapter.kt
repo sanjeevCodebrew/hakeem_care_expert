@@ -91,9 +91,12 @@ class ServiceAdapter(private val fragment: ServiceFragment, private val items: A
 
                 tvConsultationUnitV.setText("${getCurrencySymbol()} / ${getUnitPrice(item.unit_price, binding.root.context)}")
 
-                ilAddress.hideShowView(item.main_service_type == ConsultType.CLINIC_VISIT || item.main_service_type == ConsultType.HOME_VISIT)
-                ilAddress.hint = context.getString(R.string.clinic_address, item.name)
-                etAddress.setText(item.clinic_address?.locationName ?: "")
+//                ilAddress.hideShowView(item.main_service_type == ConsultType.CLINIC_VISIT || item.main_service_type == ConsultType.HOME_VISIT)
+
+                 ilAddress.hideShowView(item.main_service_type == ConsultType.CLINIC_VISIT)
+                 ilAddress.hint = context.getString(R.string.clinic_address, item.name)
+                 etAddress.setText(item.clinic_address?.locationName ?: "")
+
             } else {
                 groupConsultation.gone()
                 tvAddAvailability.gone()

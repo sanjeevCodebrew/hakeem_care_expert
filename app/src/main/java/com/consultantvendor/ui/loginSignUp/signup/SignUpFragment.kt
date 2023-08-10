@@ -414,7 +414,7 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
 
     private fun checkValidation() {
         when {
-            binding.spnTitle.selectedItemPosition == 0 -> {
+            binding.spnTitle.selectedItemPosition == 0  -> {
                 binding.etTitle.showSnackBar(getString(R.string.enter_title))
             }
             binding.etName.text.toString().trim().isEmpty() -> {
@@ -474,7 +474,13 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
 
     private fun hitApi(image: String?) {
         hashMap = HashMap()
-        hashMap["title"] = binding.etTitle.text.toString().trim()
+
+        if (binding.etTitle.text.toString()=="None"){
+            hashMap["title"] = " "
+        } else{
+            hashMap["title"] = binding.etTitle.text.toString().trim()
+        }
+
         hashMap["name"] = binding.etName.text.toString().trim()
 
         try {

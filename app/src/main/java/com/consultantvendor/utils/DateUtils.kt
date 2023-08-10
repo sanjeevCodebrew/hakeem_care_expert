@@ -283,8 +283,7 @@ object DateUtils {
                 .displayMonth(false)
                 .displayYears(false)
                 .titleTextSize(16)
-                .minutesStep(30)
-                .mustBeOnFuture()
+                .minutesStep(1)
                 .displayDaysOfMonth(false)
                 .title(context.getString(R.string.select_time))
                 .mainColor(ContextCompat.getColor(context, R.color.colorWhite))
@@ -318,6 +317,81 @@ object DateUtils {
 
                     listener.onTimeSelected(Triple(selectedTime, isStart, isError))
                 }
+        picker.display()
+    }
+
+    fun getTime1(context: Context, startTime: String="", endTime: String?=null,
+                isStart: Boolean=true, listener: OnTimeSelected) {
+        var compareDate = true
+        if (endTime == null)
+            compareDate = false
+        else if (isStart && endTime.isEmpty()) {
+            compareDate = false
+        } else if (startTime.isEmpty()) {
+            compareDate = false
+        }
+
+        val sdf = SimpleDateFormat(DateFormat.TIME_FORMAT, Locale.ENGLISH)
+
+        val endTime = if (endTime != null && endTime.isNotEmpty())
+            sdf.parse(endTime)
+        else Date()
+
+        val startTime = if (startTime.isNotEmpty())
+            sdf.parse(startTime)
+        else Date()
+
+        val cal = Calendar.getInstance()
+        var selectedTime = ""
+        var isError = false
+
+        val picker = SingleDateAndTimePickerDialog.Builder(context)
+            .customLocale(Locale.ENGLISH)
+            .bottomSheet()
+            .focusable()
+            .curved()
+            .backgroundColor(Color.BLACK)
+            .displayHours(true)
+            .displayMinutes(true)
+            .displayDays(false)
+            .displayMonth(false)
+            .displayYears(false)
+            .titleTextSize(16)
+            .mustBeOnFuture()
+            .minutesStep(1)
+            .displayDaysOfMonth(false)
+            .title(context.getString(R.string.select_time))
+            .mainColor(ContextCompat.getColor(context, R.color.colorWhite))
+            .titleTextColor(ContextCompat.getColor(context, R.color.colorWhite))
+            .listener {
+                //Toast.makeText(activity, it.toString(), Toast.LENGTH_SHORT).show()
+                cal.set(Calendar.HOUR_OF_DAY, dateFormatFromMillisBackend(DateFormat.HH_24, it.time).toInt())
+                cal.set(Calendar.MINUTE, dateFormatFromMillisBackend(DateFormat.MM, it.time).toInt())
+
+                val newTime = sdf.parse(sdf.format(cal.time))
+                val time = sdf.format(cal.time)
+
+                /* val different = if (isStart) newTime.time - endTime.time
+                 else
+                     newTime.time - startTime.time*/
+
+                if (isStart) {
+                    if (!compareDate || newTime.before(endTime)) {
+                        selectedTime = time
+                    } else {
+                        isError = true
+                    }
+
+                } else {
+                    if (!compareDate || startTime.before(newTime)) {
+                        selectedTime = sdf.format(cal.time)
+                    } else {
+                        isError = true
+                    }
+                }
+
+                listener.onTimeSelected(Triple(selectedTime, isStart, isError))
+            }
         picker.display()
     }
 }

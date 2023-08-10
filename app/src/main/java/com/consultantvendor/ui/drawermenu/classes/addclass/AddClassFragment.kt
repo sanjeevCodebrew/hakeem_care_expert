@@ -79,7 +79,7 @@ class AddClassFragment : DaggerFragment(), OnDateSelected, OnTimeSelected {
         }
 
         binding.etTime.setOnClickListener {
-            DateUtils.getTime(requireContext(), listener = this)
+            DateUtils.getTime1(requireContext(), listener = this)
         }
     }
 
