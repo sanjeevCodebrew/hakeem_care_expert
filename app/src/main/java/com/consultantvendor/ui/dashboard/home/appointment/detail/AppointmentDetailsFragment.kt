@@ -424,8 +424,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                         popup.setOnMenuItemClickListener { item ->
                             when (item.itemId) {
                                 R.id.item_view -> {
-//                                    val link = getString(R.string.pdf_link, BuildConfig.BASE_URL, request.id, BuildConfig.APP_UNIQUE_ID)
-                                    val link = getString(R.string.pdf_link, "https://hakeemcare.hakeemcare.com/", request.id, BuildConfig.APP_UNIQUE_ID)
+                                    val link = getString(R.string.pdf_link, BuildConfig.BASE_URL, request.id, BuildConfig.APP_UNIQUE_ID)
                                     openPdf(requireActivity(), link, true)
                                 }
                                 R.id.item_edit -> {
