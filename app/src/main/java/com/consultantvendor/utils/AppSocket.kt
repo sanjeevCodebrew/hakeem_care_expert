@@ -67,14 +67,13 @@ class AppSocket @Inject internal constructor(private val userRepository: UserRep
                 mSocket?.close()
             }
             if (userRepository.isUserLoggedIn()) {
-//                Timber.e("Socket${appClientDetails.socket_url.toString()}${userRepository.getUser()?.id}".trimIndent())
-                Timber.e("Socket${"https://socket.hakeemcare.com"}${userRepository.getUser()?.id}".trimIndent())
+                Timber.e("Socket${appClientDetails.socket_url.toString()}${userRepository.getUser()?.id}".trimIndent())
+//                Timber.e("Socket${"https://socket.hakeemcare.com"}${userRepository.getUser()?.id}".trimIndent())
                 val options = IO.Options()
                 options.forceNew = false
                 options.reconnection = true
                 options.query = "user_id=" + userRepository.getUser()?.id + "&domain=" + userRepository.getAppSetting().domain
-//                mSocket = IO.socket(appClientDetails.socket_url?:"", options)
-                mSocket = IO.socket("https://socket.hakeemcare.com", options)
+                mSocket = IO.socket(appClientDetails.socket_url?:"", options)
                 connect()
                 mSocket?.on(Socket.EVENT_CONNECT, onConnect)
                 mSocket?.on(Socket.EVENT_DISCONNECT, onDisconnect)
