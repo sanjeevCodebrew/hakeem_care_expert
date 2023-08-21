@@ -147,8 +147,8 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
         progressDialog = ProgressDialog(requireActivity())
         progressDialogImage = ProgressDialogImage(requireActivity())
 
-        binding.tvTerms.movementMethod = LinkMovementMethod.getInstance()
-        binding.tvTerms.setText(setAcceptTerms(requireActivity()), TextView.BufferType.SPANNABLE)
+        binding.tvtermsText.movementMethod = LinkMovementMethod.getInstance()
+        binding.tvtermsText.setText(setAcceptTerms(requireActivity()), TextView.BufferType.SPANNABLE)
 //        if (BuildConfig.FLAVOR=="taradoc")
 //            binding.etYears.setHint(R.string.practicing_since)
 //        else
