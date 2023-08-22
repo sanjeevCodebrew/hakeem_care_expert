@@ -36,9 +36,9 @@ class HealthToolsAdapter(private val fragmentMain: Fragment, private val items: 
             binding.clHealthTools.setOnClickListener {
                 when (adapterPosition) {
                     0 -> openPage(DrawerActivity.BMI_CHECKER)
-//                    1 -> openPage(DrawerActivity.WATER_INTAKE)
-//                    2 -> openPage(DrawerActivity.PROTEIN_INTAKE)
-//                    3 -> openPage(DrawerActivity.PREGNANCY_CALCULATOR)
+                    1 -> openPage(DrawerActivity.WATER_INTAKE)
+                    2 -> openPage(DrawerActivity.PROTEIN_INTAKE)
+                    3 -> openPage(DrawerActivity.PREGNANCY_CALCULATOR)
                 }
             }
         }
