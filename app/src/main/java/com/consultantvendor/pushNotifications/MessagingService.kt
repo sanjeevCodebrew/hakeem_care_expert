@@ -59,7 +59,7 @@ class MessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.e("remoteMessage", remoteMessage.data.toString())
+        Log.e("remoteMessage :", remoteMessage.data.toString())
 
         val notificationData = JSONObject(remoteMessage.data as MutableMap<Any?, Any?>)
 

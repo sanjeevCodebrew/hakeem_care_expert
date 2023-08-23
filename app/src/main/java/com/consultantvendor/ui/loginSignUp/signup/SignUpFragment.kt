@@ -271,12 +271,15 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
             binding.ilConfirmPassword.gone()
             binding.ilInviteCode.gone()
             binding.tvTerms.gone()
+            binding.tvtermsText.gone()
 
             isUpdate = true
         } else if (arguments?.containsKey(UPDATE_NUMBER) == true) {
             binding.ilPassword.gone()
             binding.ilConfirmPassword.gone()
             binding.tvTerms.hideShowView(arguments?.containsKey(EXTRA_SOCIAL) == true)
+            binding.tvtermsText.hideShowView(arguments?.containsKey(EXTRA_SOCIAL) == true)
+
 
             val title = userData?.profile?.title ?: getString(R.string.title)
             val list = resources.getStringArray(R.array.dr_title)

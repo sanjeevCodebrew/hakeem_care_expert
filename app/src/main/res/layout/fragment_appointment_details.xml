@@ -348,6 +348,54 @@
                     app:layout_constraintTop_toTopOf="@+id/tvBookingTime"
                     tools:text="@string/service_type" />
 
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvInsuranceName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:fontFamily="@font/campton_medium"
+                    android:text="@string/insurance_name"
+                    android:textColor="@color/textColor"
+                    android:visibility="gone"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvBookingTimeV" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvInsuranceNameV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/campton_semibold"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintTop_toTopOf="@+id/tvInsuranceName"
+                    tools:text="@string/service_type" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvResidentId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:fontFamily="@font/campton_medium"
+                    android:text="@string/resident_id"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvInsuranceNameV" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvResidentIdV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/campton_semibold"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintTop_toTopOf="@+id/tvResidentId"
+                    tools:text="@string/service_type" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvBookingPrice"
                     android:layout_width="wrap_content"
@@ -358,7 +406,7 @@
                     android:textColor="@color/textColor"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/tvBookingTime" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvResidentIdV" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvBookingPriceV"

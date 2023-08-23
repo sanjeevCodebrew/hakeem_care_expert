@@ -12,6 +12,8 @@ class Request : Serializable {
     var to_user: UserData? = null
     var time: String? = null
     var service_type: String ? = null
+    var insurance_name: String ? = null
+    var insurance_number: String ? = null
     var main_service_type: String? = null
     var status: String? = null
     var price: String? = null

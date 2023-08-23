@@ -194,6 +194,16 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvDistanceV.text = request.extra_detail?.distance ?: ""
         binding.tvLocation.text = request.extra_detail?.service_address
 
+        if (request.insurance_name?.isNotEmpty()!! || request.insurance_number?.isNotEmpty()!!){
+            binding.tvInsuranceName.visible()
+            binding.tvInsuranceNameV.visible()
+            binding.tvResidentId.visible()
+            binding.tvResidentIdV.visible()
+
+            binding.tvInsuranceNameV.text = request.insurance_name
+            binding.tvResidentIdV.text = request.insurance_number
+        }
+
         if (BuildConfig.FLAVOR == "nurseLynx" && !request.booking_end_date.isNullOrEmpty()) {
             val dateBooking = "${DateUtils.dateTimeFormatFromUTC(DateFormat.MON_DATE_YEAR, request.bookingDateUTC)} - " +
                     "${DateUtils.dateTimeFormatFromUTC(DateFormat.MON_DATE_YEAR, request.booking_end_date)}"
