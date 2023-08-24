@@ -144,6 +144,9 @@ class SubCategoryFragment : DaggerFragment() {
             viewModel.clinics(hashMap)
 //            if (!isFirstPage && items.isNotEmpty())
 //               viewModel.clinics(hashMap)
+
+
+
         }
     }
 
