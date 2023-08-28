@@ -199,8 +199,7 @@ class ClassesFragment : DaggerFragment() {
                 Status.SUCCESS -> {
                     progressDialog.setLoading(false)
 
-                    if (it.data?.status =="completed"){
-                        Log.e("TAG", "checkClass: "+it.data?.status )
+                    if (it.data?.status ==ClassType.COMPLETED){
                         longToast(getString(R.string.complete_class))
                     } else {
                         startClassAction(it.data)
