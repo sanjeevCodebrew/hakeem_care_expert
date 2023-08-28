@@ -1,11 +1,14 @@
 package com.consultantvendor.ui.drawermenu.classes
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -196,7 +199,12 @@ class ClassesFragment : DaggerFragment() {
                 Status.SUCCESS -> {
                     progressDialog.setLoading(false)
 
-                    startClassAction(it.data)
+                    if (it.data?.status =="completed"){
+                        Log.e("TAG", "checkClass: "+it.data?.status )
+                        longToast(getString(R.string.complete_class))
+                    } else {
+                        startClassAction(it.data)
+                    }
                     hitApi(true)
                 }
                 Status.ERROR -> {
@@ -272,6 +280,10 @@ class ClassesFragment : DaggerFragment() {
             startActivity(Intent(requireActivity(), JitsiActivity::class.java)
                     .putExtra(EXTRA_CALL_NAME, jitsiClass))
         }
+    }
+
+    fun longToast(text: CharSequence) {
+        Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
     }
 
 }
