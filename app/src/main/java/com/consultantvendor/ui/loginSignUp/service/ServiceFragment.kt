@@ -105,9 +105,9 @@ class ServiceFragment : DaggerFragment() {
                 requireActivity().finish()
         }
 
-        binding.swipeRefresh.setOnRefreshListener {
+        /*binding.swipeRefresh.setOnRefreshListener {
             hitApi(true)
-        }
+        }*/
 
         binding.rvListing.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -245,8 +245,9 @@ class ServiceFragment : DaggerFragment() {
             val hashMap = HashMap<String, String>()
             hashMap["category_id"] = categoryData?.id ?: ""
             viewModel.services(hashMap)
-        } else
-            binding.swipeRefresh.isRefreshing = false
+        }
+//        else
+//            binding.swipeRefresh.isRefreshing = false
     }
 
     private fun bindObservers() {
@@ -255,7 +256,7 @@ class ServiceFragment : DaggerFragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     binding.clLoader.gone()
-                    binding.swipeRefresh.isRefreshing = false
+//                    binding.swipeRefresh.isRefreshing = false
                     isLoadingMoreItems = false
 
                     val tempList = it.data?.services ?: emptyList()
@@ -295,13 +296,14 @@ class ServiceFragment : DaggerFragment() {
                     isLoadingMoreItems = false
                     adapter.setAllItemsLoaded(true)
                     binding.clLoader.gone()
-                    binding.swipeRefresh.isRefreshing = false
+//                    binding.swipeRefresh.isRefreshing = false
 
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
-                    if (!binding.swipeRefresh.isRefreshing)
-                        binding.clLoader.visible()
+//                    if (!binding.swipeRefresh.isRefreshing)
+//                        binding.clLoader.visible()
+                    binding.clLoader.visible()
                 }
             }
         })

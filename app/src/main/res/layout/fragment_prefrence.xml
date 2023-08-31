@@ -32,27 +32,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-<!--        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout-->
-<!--            android:id="@+id/swipeRefresh"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            app:layout_constraintBottom_toTopOf="@+id/tvNext"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/toolbar">-->
-
-<!--            <androidx.recyclerview.widget.RecyclerView-->
-<!--                android:id="@+id/rvListing"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />-->
-<!--        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvListing"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/tvNext"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvListing"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
         <androidx.appcompat.widget.AppCompatTextView

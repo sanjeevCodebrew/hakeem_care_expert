@@ -17,6 +17,7 @@ import com.consultantvendor.data.models.responses.UserData
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.data.repos.UserRepository
+import com.consultantvendor.databinding.FragmentPrefrenceBinding
 import com.consultantvendor.databinding.FragmentServiceBinding
 import com.consultantvendor.ui.loginSignUp.LoginViewModel
 import com.consultantvendor.ui.loginSignUp.document.add.DialogAddDocumentFragment
@@ -39,7 +40,7 @@ class DocumentsFragment : DaggerFragment() {
     @Inject
     lateinit var prefsManager: PrefsManager
 
-    private lateinit var binding: FragmentServiceBinding
+    private lateinit var binding: FragmentPrefrenceBinding
 
     private var rootView: View? = null
 
@@ -62,7 +63,7 @@ class DocumentsFragment : DaggerFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (rootView == null) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_service, container, false)
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_prefrence, container, false)
             rootView = binding.root
 
             initialise()

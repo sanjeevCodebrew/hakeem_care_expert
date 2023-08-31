@@ -1,5 +1,6 @@
 package com.consultantvendor.ui.loginSignUp.insurance
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -38,6 +39,7 @@ class InsuranceAdapter(private val fragment: Fragment, private val items: ArrayL
 
             cbName.text = item.name ?: ""
             cbName.isChecked = item.isSelected
+            Log.e("TAG", "checkIs: "+item.isSelected )
             if (item.isSelected) {
                 clInsurance.setBackgroundResource(R.color.colorPrimary)
             } else {
