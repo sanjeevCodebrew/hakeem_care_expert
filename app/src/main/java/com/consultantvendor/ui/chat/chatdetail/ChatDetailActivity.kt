@@ -17,8 +17,13 @@ import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -49,6 +54,7 @@ import com.consultantvendor.utils.AppSocket.MessageStatus.Companion.NOT_SENT
 import com.consultantvendor.utils.AppSocket.MessageStatus.Companion.SEEN
 import com.consultantvendor.utils.AppSocket.MessageStatus.Companion.SENT
 import com.consultantvendor.utils.PermissionUtils
+import com.consultantvendor.utils.dialogs.FileUriUtils
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import com.consultantvendor.utils.dialogs.ProgressDialogImage
 import com.devlomi.record_view.OnRecordListener
@@ -141,6 +147,8 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
     private var pageBeforeAfter: String? = null
 
     private var isLoadingItems = false
+
+    var fileToUpload1 : File?=null
 
 
     var isStopRight = false
@@ -861,7 +869,7 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
                 }
 
                 AppRequestCode.DOC_PICKER -> {
-                    val docPaths = ArrayList<Uri>()
+               /*     val docPaths = ArrayList<Uri>()
                     docPaths.addAll(data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
                             ?: emptyList())
 
@@ -871,7 +879,7 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
                     docImage.type = DocType.PDF
                     docImage.imageFile = fileToUpload
 
-                    uploadFileOnServer(docImage)
+                    uploadFileOnServer(docImage)*/
 
                 }
             }
@@ -901,7 +909,7 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
 
     @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun getStorage() {
-        askForOption(null, this, binding.btnCamera)
+        askForOption1(null, this, binding.btnCamera)
     }
 
     @OnShowRationale(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -1123,4 +1131,116 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
                 && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                 PackageManager.PERMISSION_GRANTED)
     }
+
+    fun askForOption1(fragment: Fragment?, activity: Activity, view: View) {
+        val context: Context = fragment?.requireContext() ?: activity
+
+        val popup = PopupMenu(context, view)
+        popup.menuInflater.inflate(R.menu.menu_attach, popup.menu)
+
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.item_image-> {
+                    selectImages(fragment, activity)
+                }
+                R.id.item_pdf -> {
+                    selectDocument2()
+                }
+            }
+            true
+        }
+
+        popup.show()
+    }
+
+    private fun selectDocument2() {
+        val mimeType = "application/pdf"
+        /*Single Document Picker*/
+        // Image , Video , PDF , DOC , DOCX
+        pickMedia.launch(
+            arrayOf(mimeType)
+        )
+
+        /* Multiple Document Picker*/
+        pickMultipleDocument.launch(arrayOf(mimeType))
+    }
+
+    val pickMedia = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri != null) {
+            Log.e("PhotoPicker", "Selected URI: $uri")
+
+            val file = FileUriUtils.getRealPath(this, uri)?.let { File(it) }
+            Log.e("file", "" + file?.exists())
+            Log.e("fileLength", "" + file?.length())
+            Log.e("fileName", "" + file?.name)
+            Log.e("filePath", "" + file?.path)
+            Log.e("file.extension", "" + file?.extension)
+
+            if (file != null) {
+
+                if ((file.extension.equals("pdf", true)) ||
+                    (file.extension.equals("doc", true)) ||
+                    (file.extension.equals("docx", true)) ||
+                    (file.extension.equals("mp4", true)) ||
+                    (file.extension.equals("mp3", true)) ||
+                    (file.extension.equals("eac3", true)) ||
+                    (file.extension.equals("wav", true)) ||
+                    (file.extension.equals("mov", true)) ||
+                    (file.extension.equals("avi", true)) ||
+                    (file.extension.equals("mkv", true)) ||
+                    (file.extension.equals("webm", true))
+                ) {
+
+                    /*   img_pick.setImageBitmap(
+                           FileUtil.getThumbnail(
+                               file,
+                               uri,
+                               context = applicationContext
+                           )
+                       )*/
+
+                } else if ((file.extension.equals("jpg", true)) ||
+                    (file.extension.equals("jpeg", true)) ||
+                    (file.extension.equals("png", true))
+                ) {
+
+//                    img_pick.setImageURI(uri)
+
+                }
+            } else {
+//                img_pick.setImageResource(R.drawable.img_not_supported)
+                Toast.makeText(this, "This file format is not supported", Toast.LENGTH_SHORT).show()
+            }
+
+
+        } else {
+            Log.d("PhotoPicker", "No media selected")
+        }
+    }
+
+
+    val pickMultipleDocument =
+        registerForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris ->
+            if (uris.isNotEmpty()){
+
+                for (i in uris.indices){
+                    val file = FileUriUtils.getRealPath(this, uris[i])?.let { File(it) }
+                    Log.e("file", "" + file?.exists())
+                    Log.e("fileLength", "" + file?.length())
+                    Log.e("fileName", "" + file?.name)
+                    Log.e("filePath", "" + file?.path)
+                    Log.e("file.extension", "" + file?.extension)
+
+
+                    fileToUpload1 = file
+                    Log.e("TAG", "checkDoc: "+fileToUpload1?.toURI())
+
+                }
+                val docImage = DocImage()
+                docImage.type = DocType.PDF
+                docImage.imageFile = fileToUpload1
+                uploadFileOnServer(docImage)
+            }
+
+        }
 }

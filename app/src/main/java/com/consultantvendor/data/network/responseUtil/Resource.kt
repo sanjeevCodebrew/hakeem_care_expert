@@ -1,5 +1,7 @@
 package com.consultantvendor.data.network.responseUtil
 
+import com.consultantvendor.data.models.responses.CommonDataModel
+
 
 /**
  * A generic class that holds a value with its loading request_status.

@@ -118,5 +118,4 @@ class FeedViewModel @Inject constructor(private val webService: WebService) : Vi
                 })
     }
 
-
 }

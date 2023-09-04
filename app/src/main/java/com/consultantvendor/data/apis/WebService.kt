@@ -107,6 +107,7 @@ interface WebService {
         private const val ACCEPT_REQUEST_V2 = "/api/v2/accept-request"
         private const val CANCEL_REQUEST_V2 = "/api/v2/cancel-request"
         private const val BANNERS = "/api/banners"
+        private const val LANGUAGE = "/api/change-language"
 
     }
 
@@ -422,5 +423,10 @@ interface WebService {
     @FormUrlEncoded
     @PUT(WORKING_HOURS)
     fun workingHours(@FieldMap hashMap: HashMap<String, String>): Call<ApiResponse<Any>>
+
+
+    @FormUrlEncoded
+    @POST(LANGUAGE)
+    fun postLanguage(@FieldMap hashMap: HashMap<String, String>): Call<ApiResponse<CommonDataModel>>
 
 }

@@ -12,6 +12,7 @@ import com.consultantvendor.ui.dashboard.home.appointment.appointmentStatus.Dire
 import com.consultantvendor.ui.dashboard.home.healthtool.waterintake.WaterIntakeViewModel
 import com.consultantvendor.ui.dashboard.home.prescription.AddPrescriptionViewModel
 import com.consultantvendor.ui.dashboard.home.questions.QuestionViewModel
+import com.consultantvendor.ui.dashboard.language.LanguageViewModel
 import com.consultantvendor.ui.dashboard.revenue.RevenueViewModel
 import com.consultantvendor.ui.dashboard.settings.contactlist.ContactViewModel
 import com.consultantvendor.ui.dashboard.wallet.BankViewModel
@@ -124,5 +125,10 @@ abstract class ViewModelsModule {
     @IntoMap
     @ViewModelKey(ContactViewModel::class)
     abstract fun contactViewModel(viewModel: ContactViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LanguageViewModel::class)
+    abstract fun languageViewModel(viewModel: LanguageViewModel): ViewModel
 
 }
