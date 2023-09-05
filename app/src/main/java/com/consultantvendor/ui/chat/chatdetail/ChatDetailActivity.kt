@@ -8,12 +8,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -59,6 +61,7 @@ import com.consultantvendor.utils.dialogs.ProgressDialog
 import com.consultantvendor.utils.dialogs.ProgressDialogImage
 import com.devlomi.record_view.OnRecordListener
 import com.google.gson.Gson
+import com.yanzhenjie.album.Album
 import dagger.android.support.DaggerAppCompatActivity
 import droidninja.filepicker.FilePickerConst
 import droidninja.filepicker.utils.ContentUriUtils
@@ -72,6 +75,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import permissions.dispatcher.*
 import timber.log.Timber
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.util.*
@@ -868,6 +872,19 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
                     uploadFileOnServer(docImage)
                 }
 
+                AppRequestCode.CAMERA -> {
+                    val bitmap = data?.extras?.get("data") as Bitmap
+                    val tempUri: Uri? = getImageUri1(this@ChatDetailActivity, bitmap)
+                    val fileToUpload = getRealPathFromURI(tempUri)
+                        .let { File(it) }
+
+                    val docImage = DocImage()
+                    docImage.type = DocType.IMAGE
+                    docImage.imageFile = fileToUpload
+
+                    uploadFileOnServer(docImage)
+                }
+
                 AppRequestCode.DOC_PICKER -> {
                /*     val docPaths = ArrayList<Uri>()
                     docPaths.addAll(data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
@@ -884,6 +901,27 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
                 }
             }
         }
+    }
+
+    fun getImageUri1(inContext: Context, inImage: Bitmap): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "IMG_" + Calendar.getInstance().getTime(),null)
+        return Uri.parse(path)
+    }
+
+    fun getRealPathFromURI(uri: Uri?): String {
+        var path = ""
+        if (contentResolver != null) {
+            val cursor = uri?.let { contentResolver!!.query(it, null, null, null, null) }
+            if (cursor != null) {
+                cursor.moveToFirst()
+                val idx: Int = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+                path = cursor.getString(idx)
+                cursor.close()
+            }
+        }
+        return path
     }
 
 
@@ -1140,6 +1178,9 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
 
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
+                R.id.item_image_camera-> {
+                    openCamera(activity,fragment)
+                }
                 R.id.item_image-> {
                     selectImages(fragment, activity)
                 }
@@ -1152,6 +1193,32 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
 
         popup.show()
     }
+
+/*    private fun openAlbum1(activity: Activity, fragment: Fragment?) {
+
+        Album.camera(activity) // Camera function.
+            .image() // Take Picture.
+            .onResult {
+                val path = it
+//                val intent :Intent? = Intent()
+//              intent?.putExtra("path", path.toUri())
+
+
+//                val fileToUpload =
+//                    compressImage(this,
+//                        ContentUriUtils.getFilePath(this, path.toUri())?.let { it1 -> File(it1) })
+                val fileToUpload = path?.let { File(it) }
+
+                val docImage = DocImage()
+                docImage.type = DocType.IMAGE
+                docImage.imageFile = fileToUpload
+                uploadFileOnServer(docImage)
+
+            }
+            .onCancel { }
+            .start()
+
+    }*/
 
     private fun selectDocument2() {
         val mimeType = "application/pdf"

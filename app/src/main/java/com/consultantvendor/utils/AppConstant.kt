@@ -102,6 +102,7 @@ object AvailabilityType {
 }
 
 object AppRequestCode {
+    const val CAMERA: Int = 98
     const val AUTOCOMPLETE_REQUEST_CODE: Int = 99
     const val IMAGE_PICKER: Int = 100
     const val ADD_MONEY: Int = 101

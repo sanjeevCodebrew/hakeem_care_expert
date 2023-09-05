@@ -3,6 +3,8 @@
     <!--Default-->
     <!--Other App id to open-->
     <string name="app_application_id" translatable="false">com.</string>
+    <string name="welcome_message">Welcome to HakeemCare</string>
+
 
     <!--Pdf Link-->
     <string name="apps_flyer_dev_key" translatable="false">TcTo4wEgFahmAN3pFtd7Xe</string>
@@ -87,6 +89,7 @@
     <string name="no_data_found">No data found</string>
     <string name="s_completed">%s  Completed</string>
     <string name="unsuccessful">%s Unsuccessful</string>
+    <string name="camera">Camera</string>
     <string name="select_image">Select image</string>
     <string name="select_document">Select document</string>
     <string name="update">Update</string>

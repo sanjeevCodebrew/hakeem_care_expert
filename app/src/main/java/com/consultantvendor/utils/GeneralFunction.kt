@@ -633,6 +633,11 @@ fun askForOption(fragment: Fragment?, activity: Activity, view: View) {
     popup.show()
 }
 
+fun openCamera(activity: Activity, fragment: Fragment?) {
+    val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+    activity.startActivityForResult(cameraIntent, AppRequestCode.CAMERA)
+}
+
 fun selectImages(fragment: Fragment?, activity: Activity) {
     val filePickerBuilder = FilePickerBuilder.instance
             .setMaxCount(1)

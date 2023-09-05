@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -100,6 +101,7 @@ class InsuranceFragment : DaggerFragment() {
 
 
     private fun initialise() {
+        disableBackPress()
         viewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
         viewModelVersion = ViewModelProvider(this, viewModelFactory)[AppVersionViewModel::class.java]
         progressDialog = ProgressDialog(requireActivity())
@@ -110,6 +112,14 @@ class InsuranceFragment : DaggerFragment() {
             needCountry = true
             binding.ilCountry.visible()
         } else countryId = appClientDetails.country_id ?: ""
+    }
+
+    private fun disableBackPress() {
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                // do nothing for disable back button
+            }
+        })
     }
 
     private fun setAdapters() {
@@ -209,9 +219,9 @@ class InsuranceFragment : DaggerFragment() {
 
 
     private fun listeners() {
-        binding.toolbar.setNavigationOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
-        }
+//        binding.toolbar.setNavigationOnClickListener {
+//            requireActivity().supportFragmentManager.popBackStack()
+//        }
 
         binding.btnSubmit.setOnClickListener {
             binding.btnSubmit.hideKeyboard()

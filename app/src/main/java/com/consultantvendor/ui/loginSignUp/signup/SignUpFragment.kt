@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -643,6 +644,7 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
                     requireActivity().setResult(Activity.RESULT_OK)
 
                     if (appClientDetails.insurance == true || appClientDetails.clientFeaturesKeys.isAddress == true) {
+                        longToast(getString(R.string.welcome_message))
                         val fragment = InsuranceFragment()
                         val bundle = Bundle()
                         if (arguments?.containsKey(UPDATE_PROFILE) == true)
@@ -912,5 +914,8 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
         PermissionUtils.showAppSettingsDialog(
                 requireContext(), R.string.media_permission
         )
+    }
+    fun longToast(text: CharSequence) {
+        Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
     }
 }
