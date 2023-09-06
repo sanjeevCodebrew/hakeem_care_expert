@@ -1016,7 +1016,6 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
     override fun onPause() {
         super.onPause()
         isActive = false
-
         otherUserID = "-1"
     }
 

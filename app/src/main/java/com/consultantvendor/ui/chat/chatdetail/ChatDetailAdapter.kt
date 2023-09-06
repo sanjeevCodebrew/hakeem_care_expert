@@ -206,7 +206,7 @@ class ChatDetailAdapter(private var context: ChatDetailActivity,
                 val chat = data[bindingAdapterPosition]
                 when (chat.messageType) {
                     DocType.AUDIO -> {
-                        context.startPlaying(getImageBaseUrl(ImageFolder.AUDIO, chat.imageUrl))
+                        context.startPlaying1(getImageBaseUrl(ImageFolder.AUDIO, chat.imageUrl))
                     }
                 }
             }

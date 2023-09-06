@@ -616,7 +616,7 @@ fun askForOption(fragment: Fragment?, activity: Activity, view: View) {
     val context: Context = fragment?.requireContext() ?: activity
 
     val popup = PopupMenu(context, view)
-    popup.menuInflater.inflate(R.menu.menu_attach, popup.menu)
+    popup.menuInflater.inflate(R.menu.menu_attach_new, popup.menu)
 
     popup.setOnMenuItemClickListener { item ->
         when (item.itemId) {
