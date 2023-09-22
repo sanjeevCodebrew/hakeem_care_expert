@@ -121,6 +121,7 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         request = intent.getSerializableExtra(EXTRA_REQUEST_ID) as Request
+        binding.toolbar.visible()
     }
 
     private fun setRequestData() {
@@ -304,8 +305,7 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
 
                 } else
                     animateMarker()
-
-                liveLocationUpdate()
+                    liveLocationUpdate()
 
                 val hashMap = HashMap<String, String>()
                 hashMap["origin"] = "${placeLatLng.latitude},${placeLatLng.longitude}"

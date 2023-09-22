@@ -17,50 +17,95 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorWhite"
-                    android:elevation="2dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:title="@string/home"
-                    app:titleTextAppearance="@style/Toolbar.TitleText" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvDate"
+                <TextView
+                    android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
-                    android:layout_height="?android:attr/actionBarSize"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_16"
                     android:layout_marginEnd="@dimen/dp_16"
-                    android:drawableEnd="@drawable/ic_next"
-                    android:drawablePadding="@dimen/dp_4"
-                    android:elevation="@dimen/dp_4"
-                    android:visibility="gone"
                     android:fontFamily="@font/campton_semibold"
-                    android:gravity="center|center_vertical"
-                    android:text="@string/select_date"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/sp_16"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:text="@string/home"
+                    android:textColor="@color/colorHomeTitle"
+                    android:textSize="@dimen/sp_24"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
 
+<!--                <androidx.appcompat.widget.Toolbar-->
+<!--                    android:id="@+id/toolbar"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@color/colorWhite"-->
+<!--                    android:elevation="2dp"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:title="@string/home"-->
+<!--                    app:titleTextAppearance="@style/Toolbar.TitleText" />-->
+
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    android:id="@+id/tvDate"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="?android:attr/actionBarSize"-->
+<!--                    android:layout_marginEnd="@dimen/dp_16"-->
+<!--                    android:drawableEnd="@drawable/ic_next"-->
+<!--                    android:drawablePadding="@dimen/dp_4"-->
+<!--                    android:elevation="@dimen/dp_4"-->
+<!--                    android:visibility="gone"-->
+<!--                    android:fontFamily="@font/campton_semibold"-->
+<!--                    android:gravity="center|center_vertical"-->
+<!--                    android:text="@string/select_date"-->
+<!--                    android:textColor="@color/textColor"-->
+<!--                    android:textSize="@dimen/sp_16"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+
+
+<!--                <androidx.appcompat.widget.AppCompatImageView-->
+<!--                    android:id="@+id/ivDrawer"-->
+<!--                    android:layout_width="@dimen/dp_32"-->
+<!--                    android:layout_height="@dimen/dp_32"-->
+<!--                    android:layout_marginStart="@dimen/dp_16"-->
+<!--                    android:background="?android:attr/selectableItemBackground"-->
+<!--                    android:clickable="true"-->
+<!--                    android:visibility="visible"-->
+<!--                    android:focusable="true"-->
+<!--                    android:padding="@dimen/dp_6"-->
+<!--                    android:src="@drawable/ic_drawer"-->
+<!--                    app:layout_constraintBottom_toBottomOf="@id/toolbar"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toTopOf="@+id/toolbar" />-->
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivDrawer"
-                    android:layout_width="@dimen/dp_32"
-                    android:layout_height="@dimen/dp_32"
-                    android:layout_marginStart="@dimen/dp_16"
+                    android:id="@+id/ivNotification"
+                    android:layout_width="@dimen/dp_28"
+                    android:layout_height="@dimen/dp_28"
+                    android:layout_marginEnd="@dimen/dp_16"
                     android:background="?android:attr/selectableItemBackground"
                     android:clickable="true"
-                    android:visibility="gone"
+                    android:padding="@dimen/dp_1"
                     android:focusable="true"
-                    android:padding="@dimen/dp_6"
-                    android:src="@drawable/ic_drawer"
-                    app:layout_constraintBottom_toBottomOf="@id/toolbar"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/toolbar" />
+                    android:src="@drawable/ic_notification_drawer"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="@id/tvTitle"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                   />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvUnreadCount"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:background="@drawable/drawable_notification_red"
+                    android:elevation="@dimen/dp_4"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:textColor="@android:color/white"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="@+id/ivNotification"
+                    app:layout_constraintTop_toTopOf="@+id/ivNotification"
+                    tools:ignore="SmallSp"
+                    tools:text="99+" />
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/swipeRefresh"

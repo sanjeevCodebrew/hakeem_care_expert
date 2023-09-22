@@ -120,15 +120,18 @@ class HomeFragment : DaggerFragment() {
 
         /*Side Drawer*/
         if (appFeatures.needSideDrawer) {
-            binding.ivDrawer.visible()
+//            binding.ivDrawer.visible()
             binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             handleHeader()
         } else {
-            binding.ivDrawer.gone()
-            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+//            binding.ivDrawer.gone()
+//            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
 
         Log.e("TAG", "authToken "+prefsManager.getObject(USER_DATA, UserData::class.java)?.token)
+
+//        binding.ivNotification.visible()
+//        binding.tvUnreadCount.visible()
     }
 
     private fun handleHeader() {
@@ -231,9 +234,9 @@ class HomeFragment : DaggerFragment() {
     }
 
     private fun listeners() {
-        binding.ivDrawer.setOnClickListener {
-            binding.drawerLayout.openDrawer(GravityCompat.START)
-        }
+//        binding.ivDrawer.setOnClickListener {
+//            binding.drawerLayout.openDrawer(GravityCompat.START)
+//        }
 
         binding.swipeRefresh.setOnRefreshListener {
             hitApi()
