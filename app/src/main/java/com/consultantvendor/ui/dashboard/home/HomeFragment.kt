@@ -371,6 +371,7 @@ class HomeFragment : DaggerFragment() {
                     progressDialog.setLoading(false)
 
                     hitApi()
+                    Log.e("TAG", "checkObservor: "+hitApi() )
                 }
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
