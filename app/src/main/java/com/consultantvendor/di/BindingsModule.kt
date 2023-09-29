@@ -55,6 +55,7 @@ import com.consultantvendor.ui.loginSignUp.document.DocumentsFragment
 import com.consultantvendor.ui.loginSignUp.document.add.DialogAddDocumentFragment
 import com.consultantvendor.ui.loginSignUp.forgotpassword.ForgotPasswordFragment
 import com.consultantvendor.ui.loginSignUp.insurance.InsuranceFragment
+import com.consultantvendor.ui.loginSignUp.login.LoginActivity
 import com.consultantvendor.ui.loginSignUp.login.LoginFragment
 import com.consultantvendor.ui.loginSignUp.loginemail.LoginEmailFragment
 import com.consultantvendor.ui.loginSignUp.prefrence.PrefrenceFragment
@@ -81,6 +82,9 @@ abstract class BindingsModule {
 
     @ContributesAndroidInjector
     abstract fun signUpActivity(): SignUpActivity
+
+    @ContributesAndroidInjector
+    abstract fun loginActivity(): LoginActivity
 
     @ContributesAndroidInjector
     abstract fun welcomeFragment(): WelcomeFragment

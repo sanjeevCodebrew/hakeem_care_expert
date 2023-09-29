@@ -95,4 +95,5 @@ class CommonDataModel {
 
     var contact_added: Boolean? = null
     var notification_count: Int? = null
+    var count : Int = 0
 }

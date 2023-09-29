@@ -16,6 +16,7 @@ class HomeViewModel @Inject constructor(private val webService: WebService) : Vi
 
     val home by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
     val banners by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
+    val notificationCount by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
 
 
     fun banners() {
@@ -64,5 +65,29 @@ class HomeViewModel @Inject constructor(private val webService: WebService) : Vi
                     }
 
                 })
+    }
+
+    fun notificationCount() {
+        notificationCount.value = Resource.loading()
+
+        webService.notificationCount()
+            .enqueue(object : Callback<ApiResponse<CommonDataModel>> {
+
+                override fun onResponse(call: Call<ApiResponse<CommonDataModel>>,
+                                        response: Response<ApiResponse<CommonDataModel>>) {
+                    if (response.isSuccessful) {
+                        notificationCount.value = Resource.success(response.body()?.data)
+                    } else {
+                        notificationCount.value = Resource.error(
+                            ApiUtils.getError(response.code(),
+                                response.errorBody()?.string()))
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
+                    notificationCount.value = Resource.error(ApiUtils.failure(throwable))
+                }
+
+            })
     }
 }

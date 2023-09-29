@@ -31,7 +31,9 @@
     <string name="signup_using_email">Sign Up using Email</string>
     <string name="sign_up">Sign Up</string>
     <string name="enter_phone_number">Enter phone number</string>
+    <string name="enter_moh_number">Enter moh number</string>
     <string name="we_need_your_phone">We need your Phone number to identify you.</string>
+    <string name="we_need_your_map_number">We need your Map number to identify you.</string>
     <string name="code_sent_to">Code sent to %s</string>
     <string name="resend_code">Resend code</string>
     <string name="didn_t_receive_the_code_yet">Didn’t receive the code yet?</string>
@@ -66,6 +68,7 @@
     <string name="view">View</string>
     <string name="age">Age:</string>
     <string name="phone_number">Phone Number</string>
+    <string name="map_number">Map Number</string>
     <string name="dob">DOB</string>
     <string name="we_need_your_email_password">We need your Email &amp; Password to identify you.</string>
     <string name="didn_t_have_an_account">Didn’t have an account?</string>
@@ -290,7 +293,7 @@
 
     <!--Share text-->
     <string name="share">Share</string>
-    <string name="invite_text">Hey, Here is app for taking Online Consultancy Platform for Doctors, Physiotherapists, Accountants, Lawyers, Consultants etc. You should try it.</string>
+    <string name="invite_text">Hey, Here is app for taking Online Consultancy Platform for Doctors. You should try it.</string>
     <string name="edit_card">Edit card</string>
     <string name="delete">Delete</string>
     <string name="pay">Pay</string>

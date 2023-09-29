@@ -976,17 +976,16 @@
 
 <string name="spanish">اسباني</string>
 
-    <string name="alert">يُحذًِر</string>
+<!--    <string name="alert">يُحذًِر</string>-->
 
-    <string name="login">تسجيل الدخول
-</string>
+<!--    <string name="login">تسجيل الدخول</string>-->
 
     <string name="title">عنوان</string>
 
-    <string name="completed">مكتمل</string>
+<!--    <string name="completed">مكتمل</string>-->
 
-    <string name="Unsuccesful">غير ناجح</string>
+<!--    <string name="Unsuccesful">غير ناجح</string>-->
 
-    <string name="no_data_avilable">لا توجد بيانات متاحة</string>
+<!--    <string name="no_data_avilable">لا توجد بيانات متاحة</string>-->
 
 </resources>

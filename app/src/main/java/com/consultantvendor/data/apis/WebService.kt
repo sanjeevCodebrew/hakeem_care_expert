@@ -108,6 +108,8 @@ interface WebService {
         private const val CANCEL_REQUEST_V2 = "/api/v2/cancel-request"
         private const val BANNERS = "/api/banners"
         private const val LANGUAGE = "/api/change-language"
+        private const val DRLOGIN = "/api/doctor-login"
+        private const val NOTIFICATIONCOUNT = "/api/notifications-count"
 
     }
 
@@ -428,5 +430,12 @@ interface WebService {
     @FormUrlEncoded
     @POST(LANGUAGE)
     fun postLanguage(@FieldMap hashMap: HashMap<String, String>): Call<ApiResponse<CommonDataModel>>
+
+    @FormUrlEncoded
+    @POST(DRLOGIN)
+    fun drLogin(@FieldMap hashMap: HashMap<String, Any>): Call<ApiResponse<UserData>>
+
+    @GET(NOTIFICATIONCOUNT)
+    fun notificationCount(): Call<ApiResponse<CommonDataModel>>
 
 }

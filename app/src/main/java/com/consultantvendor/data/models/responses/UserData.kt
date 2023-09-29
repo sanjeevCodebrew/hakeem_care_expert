@@ -48,5 +48,6 @@ class UserData : Serializable {
 
     var medical_history: ArrayList<MedicalHistory>? = null
     var category:String?=null
+    var is_login_access: Int?=null
 
 }

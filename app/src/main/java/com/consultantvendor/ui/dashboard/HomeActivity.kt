@@ -101,6 +101,7 @@ class HomeActivity : DaggerAppCompatActivity() {
         /* Fetch Notification Token */
         userRepository.pushTokenUpdate()
 
+
         if (appFeatures.needLocation) {
             /*Ask for location*/
             geoCoder = Geocoder(this, Locale.getDefault())

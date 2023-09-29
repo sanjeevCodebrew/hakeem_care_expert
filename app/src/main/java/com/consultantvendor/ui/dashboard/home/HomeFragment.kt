@@ -35,6 +35,7 @@ import com.consultantvendor.ui.dashboard.home.items.ArticleAdapter
 import com.consultantvendor.ui.dashboard.home.items.HealthToolsAdapter
 import com.consultantvendor.ui.dashboard.success.NetworkIssueFragment
 import com.consultantvendor.ui.drawermenu.DrawerActivity
+import com.consultantvendor.ui.drawermenu.DrawerActivity.Companion.NOTIFICATION
 import com.consultantvendor.ui.loginSignUp.LoginViewModel
 import com.consultantvendor.ui.loginSignUp.welcome.BannerFragment
 import com.consultantvendor.utils.*
@@ -93,6 +94,8 @@ class HomeFragment : DaggerFragment() {
 
     private var serviceId = ""
 
+    private var notification_count: Int? = 0
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -130,8 +133,6 @@ class HomeFragment : DaggerFragment() {
 
         Log.e("TAG", "authToken "+prefsManager.getObject(USER_DATA, UserData::class.java)?.token)
 
-//        binding.ivNotification.visible()
-//        binding.tvUnreadCount.visible()
     }
 
     private fun handleHeader() {
@@ -265,6 +266,15 @@ class HomeFragment : DaggerFragment() {
         binding.tvPostBlogs.setOnClickListener {
             startActivityForResult(Intent(requireActivity(), DrawerActivity::class.java)
                     .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_BLOG), AppRequestCode.ARTICLE_CHANGES)
+        }
+
+        binding.ivNotification.setOnClickListener {
+            binding.tvUnreadCount.gone()
+            notification_count = 0
+            if (userRepository.isUserLoggedIn()) {
+                startActivity(Intent(requireContext(), DrawerActivity::class.java)
+                    .putExtra(PAGE_TO_OPEN, NOTIFICATION))
+            }
         }
 
     }
@@ -529,6 +539,31 @@ class HomeFragment : DaggerFragment() {
             }
         })
 
+        viewModelHome.notificationCount.observe(requireActivity(), Observer {
+            it ?: return@Observer
+            when (it.status) {
+                Status.SUCCESS -> {
+                    checkNotificationCount(it.data?.count)
+                }
+                Status.ERROR -> {
+                    ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
+                }
+                Status.LOADING -> {
+
+                }
+            }
+        })
+
+    }
+
+    fun checkNotificationCount(count: Int?) {
+        if (userRepository.isUserLoggedIn()) {
+            notification_count = count
+            requireActivity().runOnUiThread {
+                binding.tvUnreadCount.hideShowView(notification_count != null && notification_count ?: 0 > 0)
+                binding.tvUnreadCount.text = getCountFormat(1, notification_count)
+            }
+        }else binding.tvUnreadCount.gone()
     }
 
     fun proceedRequest(request: Request) {
@@ -654,6 +689,7 @@ class HomeFragment : DaggerFragment() {
     override fun onResume() {
         super.onResume()
         registerReceiver()
+        viewModelHome.notificationCount()
     }
 
     override fun onDestroy() {

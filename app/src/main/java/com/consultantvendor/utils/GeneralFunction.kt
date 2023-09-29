@@ -565,7 +565,8 @@ fun shareDeepLink(deepLink: String, activity: Activity, userData: UserData?) {
     val progressDialog = ProgressDialog(activity)
     progressDialog.setLoading(true)
 
-    val longLink = "${Config.baseURL}${deepLink}"
+    val longLink = "${Config.baseURL}${"https://hakeemconsult.page.link/Co5h"}"
+    Log.e("TAG", "deeplincheck: "+longLink )
 
     val shortLinkTask = Firebase.dynamicLinks.shortLinkAsync {
         link = Uri.parse(longLink)
@@ -603,6 +604,119 @@ fun shareDeepLink(deepLink: String, activity: Activity, userData: UserData?) {
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         if (activity.packageName.equals(BuildConfig.APPLICATION_ID))
             activity.startActivity(Intent.createChooser(shareIntent, activity.getString(R.string.share)))
+
+    }.addOnFailureListener {
+        // Error
+        //ivShare.showSnackBar(getString(R.string.error))
+        progressDialog.setLoading(false)
+    }
+}
+
+
+@SuppressLint("StringFormatInvalid")
+fun shareDeepLink1(deepLink: String, activity: Activity, userData: UserData?) {
+    val progressDialog = ProgressDialog(activity)
+    progressDialog.setLoading(true)
+
+
+    var longLink = ""
+    var titleM = ""
+    var descriptionM = ""
+    var imageUrlM = Uri.parse("")
+    when (deepLink) {
+        DeepLink.USER_PROFILE -> {
+            longLink = "${Config.baseURL}${deepLink}?id=${userData?.id}"
+
+            titleM = "${userData?.categoryData?.name} | ${userData?.name}"
+            descriptionM = userData?.profile?.bio ?: ""
+            imageUrlM = if (userData?.profile_image == null)
+                Uri.parse(getImageBaseUrl(ImageFolder.UPLOADS, appClientDetails.applogo ?: ""))
+            else
+                Uri.parse(getImageBaseUrl(ImageFolder.UPLOADS, userData.profile_image ?: ""))
+        }
+        DeepLink.INVITE -> {
+
+//            longLink = "${Config.baseURL}${deepLink}"
+            longLink = "https://hakeemconsult.page.link/Co5h"
+
+            Log.e("TAG", "shareDeepLink: "+longLink )
+
+            titleM = activity.getString(R.string.app_name)
+            descriptionM = activity.getString(R.string.invite_text)
+            imageUrlM =
+                Uri.parse(getImageBaseUrl(ImageFolder.UPLOADS, appClientDetails.applogo ?: ""))
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, activity.getString(R.string.share))
+
+            val completeMsg = if (appFeatures.needInviteCode)
+                "${activity.getString(R.string.app_name)}\n$longLink\n" +
+                        "${activity.getString(R.string.use_code, userData?.reference_code)}"
+            else
+                "${activity.getString(R.string.app_name)}\n$longLink"
+
+            shareIntent.putExtra(Intent.EXTRA_TEXT, completeMsg)
+
+            shareIntent.type = "text/plain"
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+            if (activity.packageName.equals(BuildConfig.APPLICATION_ID))
+                activity.startActivity(
+                    Intent.createChooser(
+                        shareIntent,
+                        activity.getString(R.string.share)
+                    )
+                )
+
+        }
+    }
+
+    val shortLinkTask = Firebase.dynamicLinks.shortLinkAsync {
+        link = Uri.parse(longLink)
+        domainUriPrefix = "https://${activity.getString(R.string.deep_link_url)}"
+        // Open links with this app on Android
+        androidParameters(BuildConfig.APPLICATION_ID) { }
+        // Open links with com.example.ios on iOS
+        iosParameters(activity.getString(R.string.deep_link_ios_bundle)) { }
+
+        socialMetaTagParameters {
+            title = titleM
+            description = descriptionM
+            imageUrl = imageUrlM
+        }
+    }.addOnSuccessListener { result ->
+        progressDialog.setLoading(false)
+
+        // Short link created
+        val shortLink = result.shortLink
+
+        /*Share Intent*/
+        val shareIntent = Intent()
+        shareIntent.action = Intent.ACTION_SEND
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, activity.getString(R.string.share))
+
+        val completeMsg = if (appFeatures.needInviteCode)
+            "${activity.getString(R.string.app_name)}\n$shortLink\n${
+                activity.getString(
+                    R.string.use_code,
+                    userData?.reference_code
+                )
+            }"
+        else
+            "${activity.getString(R.string.app_name)}\n$shortLink"
+
+        shareIntent.putExtra(Intent.EXTRA_TEXT, completeMsg)
+
+        shareIntent.type = "text/plain"
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+        if (activity.packageName.equals(BuildConfig.APPLICATION_ID))
+            activity.startActivity(
+                Intent.createChooser(
+                    shareIntent,
+                    activity.getString(R.string.share)
+                )
+            )
 
     }.addOnFailureListener {
         // Error

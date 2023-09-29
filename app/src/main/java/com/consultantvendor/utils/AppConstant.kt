@@ -9,6 +9,7 @@ const val ANDROID = "ANDROID"
 const val APP_TYPE = "service_provider"
 
 const val USER_DATA = "user data"
+const val IS_USER_LOGIN = "is user login"
 const val APP_DETAILS = "APP_DETAILS"
 const val USER_LANGUAGE = "user language"
 const val POSITION = "POSITION"

@@ -35,6 +35,8 @@ class LoginViewModel @Inject constructor(private val webService: WebService) : V
 
     val sendSMS by lazy { SingleLiveEvent<Resource<UserData>>() }
 
+    val drLogin by lazy { SingleLiveEvent<Resource<UserData>>() }
+
     val updateServices by lazy { SingleLiveEvent<Resource<UserData>>() }
 
     val pagesLink by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
@@ -263,6 +265,31 @@ class LoginViewModel @Inject constructor(private val webService: WebService) : V
                     }
 
                 })
+    }
+
+
+    fun drLogin(hashMap: HashMap<String, Any>) {
+        drLogin.value = Resource.loading()
+
+        webService.drLogin(hashMap)
+            .enqueue(object : Callback<ApiResponse<UserData>> {
+
+                override fun onResponse(call: Call<ApiResponse<UserData>>,
+                                        response: Response<ApiResponse<UserData>>) {
+                    if (response.isSuccessful) {
+                        drLogin.value = Resource.success(response.body()?.data)
+                    } else {
+                        drLogin.value = Resource.error(
+                            ApiUtils.getError(response.code(),
+                                response.errorBody()?.string()))
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse<UserData>>, throwable: Throwable) {
+                    drLogin.value = Resource.error(ApiUtils.failure(throwable))
+                }
+
+            })
     }
 
     fun updateServices(updateServiceModel: UpdateServices) {

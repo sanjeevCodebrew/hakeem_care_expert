@@ -11,10 +11,12 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.consultantvendor.*
+import com.consultantvendor.data.models.responses.UserData
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.data.repos.UserRepository
@@ -23,6 +25,7 @@ import com.consultantvendor.ui.dashboard.HomeActivity
 import com.consultantvendor.ui.dashboard.success.NetworkIssueFragment
 import com.consultantvendor.ui.drawermenu.DrawerActivity
 import com.consultantvendor.ui.loginSignUp.SignUpActivity
+import com.consultantvendor.ui.loginSignUp.login.LoginActivity
 import com.consultantvendor.ui.walkthrough.WalkThroughFragment.Companion.WALK_THROUGH_SCREEN
 import com.consultantvendor.utils.*
 import dagger.android.support.DaggerAppCompatActivity
@@ -210,11 +213,21 @@ class SplashActivity : DaggerAppCompatActivity() {
                         .putExtra(PAGE_TO_OPEN, WALK_THROUGH_SCREEN))
             }
             else -> {
+
                 if (userRepository.isUserLoggedIn()) {
                     startActivity(Intent(this, HomeActivity::class.java))
                 } else {
                     startActivity(Intent(this, SignUpActivity::class.java))
                 }
+
+
+              /*  val isLoginAccess = prefsManager.getObject(USER_DATA, UserData::class.java)?.is_login_access
+                if (userRepository.isUserLoggedIn()) {
+                    startActivity(Intent(this, HomeActivity::class.java))
+                } else {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                }*/
+
                 finish()
             }
         }
