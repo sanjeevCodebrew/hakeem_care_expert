@@ -17,6 +17,7 @@ class HomeViewModel @Inject constructor(private val webService: WebService) : Vi
     val home by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
     val banners by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
     val notificationCount by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
+    val getProfile by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
 
 
     fun banners() {
@@ -86,6 +87,29 @@ class HomeViewModel @Inject constructor(private val webService: WebService) : Vi
 
                 override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
                     notificationCount.value = Resource.error(ApiUtils.failure(throwable))
+                }
+
+            })
+    }
+
+    fun getprofile1() {
+        getProfile.value = Resource.loading()
+        webService.getProfile()
+            .enqueue(object : Callback<ApiResponse<CommonDataModel>> {
+
+                override fun onResponse(call: Call<ApiResponse<CommonDataModel>>,
+                                        response: Response<ApiResponse<CommonDataModel>>) {
+                    if (response.isSuccessful) {
+                        getProfile.value = Resource.success(response.body()?.data)
+                    } else {
+                        getProfile.value = Resource.error(
+                            ApiUtils.getError(response.code(),
+                                response.errorBody()?.string()))
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
+                    getProfile.value = Resource.error(ApiUtils.failure(throwable))
                 }
 
             })

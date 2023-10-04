@@ -5,6 +5,7 @@ import android.os.Looper
 import com.consultantvendor.appClientDetails
 import com.consultantvendor.data.models.responses.chat.ChatMessage
 import com.consultantvendor.data.repos.UserRepository
+import com.consultantvendor.ui.loginSignUp.login.LoginActivity
 import com.google.gson.Gson
 import io.socket.client.Ack
 import io.socket.client.IO

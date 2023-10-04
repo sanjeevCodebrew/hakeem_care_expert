@@ -22,6 +22,7 @@ import com.consultantvendor.ui.loginSignUp.LoginViewModel
 import com.consultantvendor.ui.loginSignUp.category.CategoryFragment
 import com.consultantvendor.ui.loginSignUp.forgotpassword.ForgotPasswordFragment
 import com.consultantvendor.ui.loginSignUp.insurance.InsuranceFragment
+import com.consultantvendor.ui.loginSignUp.login.LoginActivity
 import com.consultantvendor.ui.loginSignUp.login.LoginFragment
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog

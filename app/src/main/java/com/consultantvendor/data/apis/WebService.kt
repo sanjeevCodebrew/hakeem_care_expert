@@ -110,6 +110,7 @@ interface WebService {
         private const val LANGUAGE = "/api/change-language"
         private const val DRLOGIN = "/api/doctor-login"
         private const val NOTIFICATIONCOUNT = "/api/notifications-count"
+        private const val GETPROFILE = "/api/profile"
 
     }
 
@@ -437,5 +438,8 @@ interface WebService {
 
     @GET(NOTIFICATIONCOUNT)
     fun notificationCount(): Call<ApiResponse<CommonDataModel>>
+
+    @GET(GETPROFILE)
+    fun getProfile(): Call<ApiResponse<CommonDataModel>>
 
 }

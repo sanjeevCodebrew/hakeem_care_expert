@@ -23,6 +23,7 @@ import com.consultantvendor.ui.dashboard.HomeActivity
 import com.consultantvendor.ui.loginSignUp.LoginViewModel
 import com.consultantvendor.ui.loginSignUp.category.CategoryFragment
 import com.consultantvendor.ui.loginSignUp.insurance.InsuranceFragment
+import com.consultantvendor.ui.loginSignUp.login.LoginActivity
 import com.consultantvendor.ui.loginSignUp.signup.SignUpFragment
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog

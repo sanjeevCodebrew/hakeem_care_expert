@@ -46,6 +46,7 @@ import com.consultantvendor.appFeatures
 import com.consultantvendor.data.models.responses.UserData
 import com.consultantvendor.data.network.Config
 import com.consultantvendor.ui.loginSignUp.SignUpActivity
+import com.consultantvendor.ui.loginSignUp.login.LoginActivity
 import com.consultantvendor.ui.webview.WebViewActivity
 import com.consultantvendor.utils.DateUtils.dateFormatForBackend
 import com.consultantvendor.utils.dialogs.ProgressDialog
@@ -121,8 +122,10 @@ fun logoutUser(activity: Activity?, prefsManager: PrefsManager) {
     activity.setResult(Activity.RESULT_CANCELED)
     ActivityCompat.finishAffinity(activity)
 
-    activity.startActivity(Intent(activity, SignUpActivity::class.java)
-            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
+//    activity.startActivity(Intent(activity, SignUpActivity::class.java)
+//            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
+    activity.startActivity(Intent(activity, LoginActivity::class.java)
+        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
 
 }
 

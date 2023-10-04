@@ -52,6 +52,7 @@ class LoginViewModel @Inject constructor(private val webService: WebService) : V
     val pendingRequests by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
 
 
+
     fun login(hashMap: HashMap<String, Any>) {
         login.value = Resource.loading()
 
@@ -98,6 +99,7 @@ class LoginViewModel @Inject constructor(private val webService: WebService) : V
 
                 })
     }
+
 
     fun updateNumber(hashMap: HashMap<String, Any>) {
         updateNumber.value = Resource.loading()

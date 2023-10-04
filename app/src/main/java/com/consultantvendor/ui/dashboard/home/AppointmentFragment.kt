@@ -38,6 +38,7 @@ import com.consultantvendor.ui.dashboard.settings.contactlist.ContactViewModel
 import com.consultantvendor.ui.dashboard.success.NetworkIssueFragment
 import com.consultantvendor.ui.drawermenu.DrawerActivity
 import com.consultantvendor.ui.drawermenu.DrawerActivity.Companion.NOTIFICATION
+import com.consultantvendor.ui.loginSignUp.login.LoginActivity
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import dagger.android.support.DaggerFragment

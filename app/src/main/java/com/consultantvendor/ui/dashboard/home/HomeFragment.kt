@@ -1,10 +1,8 @@
 package com.consultantvendor.ui.dashboard.home
 
 import android.app.Activity
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.app.AlertDialog
+import android.content.*
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -37,7 +35,7 @@ import com.consultantvendor.ui.dashboard.success.NetworkIssueFragment
 import com.consultantvendor.ui.drawermenu.DrawerActivity
 import com.consultantvendor.ui.drawermenu.DrawerActivity.Companion.NOTIFICATION
 import com.consultantvendor.ui.loginSignUp.LoginViewModel
-import com.consultantvendor.ui.loginSignUp.welcome.BannerFragment
+import com.consultantvendor.ui.loginSignUp.login.LoginActivity
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import dagger.android.support.DaggerFragment
@@ -132,6 +130,7 @@ class HomeFragment : DaggerFragment() {
         }
 
         Log.e("TAG", "authToken "+prefsManager.getObject(USER_DATA, UserData::class.java)?.token)
+
 
     }
 
@@ -554,6 +553,37 @@ class HomeFragment : DaggerFragment() {
             }
         })
 
+        viewModelHome.getProfile.observe(requireActivity(), Observer {
+            it ?: return@Observer
+            when (it.status) {
+                Status.SUCCESS -> {
+                    prefsManager.save(IS_LOGIN_ACCESS,it.data?.is_login_access)
+                    if (it.data?.is_login_access==0){
+                        openDialogAdminAcess()
+                    }
+                }
+                Status.ERROR -> {
+                    ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
+                }
+                Status.LOADING -> {
+                }
+            }
+        })
+
+    }
+
+    private fun openDialogAdminAcess() {
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(resources.getString(R.string.admin_access))
+        builder.setMessage(resources.getString(R.string.admin_access1))
+//        builder.setPositiveButton("Go to playstore", DialogInterface.OnClickListener { dialog, which ->
+//            dialog.dismiss()
+//        })
+        val dialog: AlertDialog = builder.create()
+        dialog.setCancelable(false)
+        dialog.show()
+
     }
 
     fun checkNotificationCount(count: Int?) {
@@ -584,6 +614,9 @@ class HomeFragment : DaggerFragment() {
             }
         }
     }
+
+
+
 
     private fun showAcceptRequestDialog() {
         AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.accept_request,
@@ -690,6 +723,8 @@ class HomeFragment : DaggerFragment() {
         super.onResume()
         registerReceiver()
         viewModelHome.notificationCount()
+        viewModelHome.getprofile1()
+
     }
 
     override fun onDestroy() {

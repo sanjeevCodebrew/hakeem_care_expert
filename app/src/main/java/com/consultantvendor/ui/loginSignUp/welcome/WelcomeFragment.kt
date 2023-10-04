@@ -1,7 +1,6 @@
 package com.consultantvendor.ui.loginSignUp.welcome
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
@@ -26,6 +25,7 @@ import com.consultantvendor.databinding.FragmentWelcomeBinding
 import com.consultantvendor.ui.adapter.CommonFragmentPagerAdapter
 import com.consultantvendor.ui.dashboard.HomeActivity
 import com.consultantvendor.ui.loginSignUp.LoginViewModel
+import com.consultantvendor.ui.loginSignUp.login.LoginActivity
 import com.consultantvendor.ui.loginSignUp.login.LoginFragment
 import com.consultantvendor.ui.loginSignUp.signup.SignUpFragment
 import com.consultantvendor.utils.*
@@ -39,7 +39,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.snapchat.kit.sdk.SnapKit
 import com.snapchat.kit.sdk.SnapLogin
 import com.snapchat.kit.sdk.core.controller.LoginStateController
 import dagger.android.support.DaggerFragment

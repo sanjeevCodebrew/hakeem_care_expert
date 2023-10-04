@@ -90,6 +90,7 @@ class HomeActivity : DaggerAppCompatActivity() {
         getPendingRequest()
     }
 
+
     private fun initialise() {
         viewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
 
@@ -114,6 +115,7 @@ class HomeActivity : DaggerAppCompatActivity() {
             startActivity(Intent(this, SignUpActivity::class.java)
                     .putExtra(UPDATE_NUMBER, true))
         }
+
     }
 
 

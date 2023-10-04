@@ -16,6 +16,7 @@ import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.FragmentLanguageBinding
 import com.consultantvendor.ui.dashboard.HomeActivity
+import com.consultantvendor.ui.loginSignUp.login.LoginActivity
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import dagger.android.support.DaggerFragment

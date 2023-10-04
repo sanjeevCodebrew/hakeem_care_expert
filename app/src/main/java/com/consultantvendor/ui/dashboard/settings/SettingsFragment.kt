@@ -202,7 +202,7 @@ class SettingsFragment : DaggerFragment() {
                 openScreen(DrawerActivity.NOTIFICATION)
             }
             getString(R.string.invite_people) -> {
-                shareDeepLink(DeepLink.INVITE, requireActivity(), userRepository.getUser())
+                shareDeepLink1(DeepLink.INVITE, requireActivity(), userRepository.getUser())
             }
             getString(R.string.contacts) -> {
                 openScreen(DrawerActivity.CONTACT_LIST)
@@ -257,7 +257,6 @@ class SettingsFragment : DaggerFragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog.setLoading(false)
-
                     logoutUser(requireActivity(), prefsManager)
                 }
                 Status.ERROR -> {

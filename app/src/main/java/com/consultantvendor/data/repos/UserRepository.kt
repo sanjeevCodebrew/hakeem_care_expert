@@ -1,5 +1,6 @@
 package com.consultantvendor.data.repos
 
+import android.app.Activity
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.consultantvendor.ConsultantApplication
@@ -11,6 +12,7 @@ import com.consultantvendor.data.models.responses.UserData
 import com.consultantvendor.data.models.responses.appdetails.AppVersion
 import com.consultantvendor.data.network.responseUtil.ApiResponse
 import com.consultantvendor.data.network.responseUtil.Resource
+import com.consultantvendor.ui.loginSignUp.login.LoginActivity
 import com.consultantvendor.utils.*
 import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
@@ -39,11 +41,11 @@ class UserRepository @Inject constructor(
 
         return if (user?.id.isNullOrEmpty() || user?.name.isNullOrEmpty())
             false
-        else if (user?.categoryData == null)
-            false
-        else if (appSetting.insurance == true && user.insurance_enable == null)
-            false
-        else if (appSetting.clientFeaturesKeys.isAddress == true && user.profile?.address.isNullOrEmpty())
+//        else if (user?.categoryData == null)
+//            false
+//        else if (appSetting.insurance == true && user.insurance_enable == null)
+//            false
+        else if (appSetting.clientFeaturesKeys.isAddress == true && user?.profile?.address.isNullOrEmpty())
             false
         else
             true

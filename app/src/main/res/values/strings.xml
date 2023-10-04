@@ -33,7 +33,7 @@
     <string name="enter_phone_number">Enter phone number</string>
     <string name="enter_moh_number">Enter moh number</string>
     <string name="we_need_your_phone">We need your Phone number to identify you.</string>
-    <string name="we_need_your_map_number">We need your Map number to identify you.</string>
+    <string name="we_need_your_map_number">We need your Moh number to identify you.</string>
     <string name="code_sent_to">Code sent to %s</string>
     <string name="resend_code">Resend code</string>
     <string name="didn_t_receive_the_code_yet">Didn’t receive the code yet?</string>
@@ -68,7 +68,7 @@
     <string name="view">View</string>
     <string name="age">Age:</string>
     <string name="phone_number">Phone Number</string>
-    <string name="map_number">Map Number</string>
+    <string name="map_number">Moh Number</string>
     <string name="dob">DOB</string>
     <string name="we_need_your_email_password">We need your Email &amp; Password to identify you.</string>
     <string name="didn_t_have_an_account">Didn’t have an account?</string>
@@ -324,6 +324,8 @@
     <string name="select_city">Select City</string>
     <string name="submit">Submit</string>
     <string name="add">Add</string>
+    <string name="admin_access">Admin Access Required</string>
+    <string name="admin_access1">Please Wait Admin will approve this login access</string>
     <string name="plus_add">+ Add</string>
     <string name="upload_documents">Upload Documents</string>
     <string name="please_add">Please add</string>

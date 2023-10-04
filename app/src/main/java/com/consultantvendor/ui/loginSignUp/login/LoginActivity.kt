@@ -4,38 +4,23 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.consultantvendor.R
-import com.consultantvendor.appClientDetails
-import com.consultantvendor.data.models.responses.UserData
 import com.consultantvendor.data.network.ApisRespHandler
-import com.consultantvendor.data.network.responseUtil.ApiResponse
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.ActivityLoginBinding
-import com.consultantvendor.databinding.FragmentLoginBinding
 import com.consultantvendor.ui.dashboard.HomeActivity
 import com.consultantvendor.ui.loginSignUp.LoginViewModel
-import com.consultantvendor.ui.loginSignUp.category.CategoryFragment
-import com.consultantvendor.ui.loginSignUp.insurance.InsuranceFragment
 import com.consultantvendor.ui.loginSignUp.loginemail.LoginEmailFragment
-import com.consultantvendor.ui.loginSignUp.verifyotp.VerifyOTPFragment
-import com.consultantvendor.ui.loginSignUp.welcome.WelcomeFragment
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.android.support.DaggerAppCompatActivity
-import dagger.android.support.DaggerFragment
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 class LoginActivity : DaggerAppCompatActivity() {
@@ -50,7 +35,8 @@ class LoginActivity : DaggerAppCompatActivity() {
 
     private lateinit var progressDialog: ProgressDialog
 
-    private var userRepository: UserRepository?=null
+    @Inject
+    lateinit var userRepository: UserRepository
 
     private var fcmId  = ""
 
@@ -99,13 +85,15 @@ class LoginActivity : DaggerAppCompatActivity() {
             replaceFragment(supportFragmentManager, LoginEmailFragment(), R.id.container)
         }
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+        // get firebasetoken
+
+   /*     FirebaseMessaging.getInstance().token.addOnCompleteListener {
             if (it.isComplete) {
                 Log.d("FCMToken", it.result)
                 fcmId = it.result
             }
         }
-
+*/
         binding.ivNext.setOnClickListener {
             when {
                 binding.etMobileNumber.text.toString().isEmpty() || binding.etMobileNumber.text.toString().length < 6 -> {
@@ -117,7 +105,7 @@ class LoginActivity : DaggerAppCompatActivity() {
                 isConnectedToInternet(this, true) -> {
                     val hashMap = HashMap<String, Any>()
                     hashMap["moh_number"] = binding.etMobileNumber.text.toString()
-                    hashMap["fcm_id"] = fcmId
+//                    hashMap["fcm_id"] = fcmId
                     viewModel.drLogin(hashMap)
                 }
             }
@@ -132,9 +120,10 @@ class LoginActivity : DaggerAppCompatActivity() {
               Status.SUCCESS -> {
                   progressDialog.setLoading(false)
                   prefsManager.save(USER_DATA, it.data)
-                  prefsManager.save(IS_USER_LOGIN,it.data?.is_login_access)
-                  startActivity(Intent(this, HomeActivity::class.java))
-
+                  if (userRepository.isUserLoggedIn()) {
+                      startActivity(Intent(this, HomeActivity::class.java))
+                      finish()
+                  }
               }
               Status.ERROR -> {
                   progressDialog.setLoading(false)
