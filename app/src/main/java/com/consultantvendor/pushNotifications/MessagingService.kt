@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -101,6 +100,16 @@ class MessagingService : FirebaseMessagingService() {
                 vendor_category_name = notificationData.optString("vendor_category_name")
         )
 
+        if (pushData.pushType=="REQUEST_LOGIN_ACCEPTED") {
+            val i = Intent(this, HomeActivity::class.java)
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(i)
+        } else if (pushData.pushType=="CANCELED_LOGIN_REQUEST"){
+            prefsManager.remove(USER_DATA)
+            val i = Intent(this, LoginActivity::class.java)
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(i)
+        }
 
         val requestID = Calendar.getInstance().timeInMillis.toInt()
 
@@ -111,18 +120,6 @@ class MessagingService : FirebaseMessagingService() {
         val homeIntent = Intent(this, HomeActivity::class.java)
         //stackBuilder.addNextIntent(homeIntent)
 
-/*        if (pushData.pushType=="REQUEST_LOGIN_ACCEPTED") {
-            Log.e("TAG", "checkMine: "+pushData.pushType )
-
-//              homeIntent.putExtra(EXTRA_TAB, "0")
-//              val broadcastIntent = Intent()
-//              broadcastIntent.action = pushData.pushType
-//              broadcastIntent.putExtra(EXTRA_REQUEST_ID, pushData.request_id)
-//
-//              LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
-            val homeIntent = Intent(this, HomeActivity::class.java)
-            LocalBroadcastManager.getInstance(this).sendBroadcast(homeIntent)
-        }*/
 
 
         Log.e("Notification", "Parent added")
@@ -215,7 +212,7 @@ class MessagingService : FirebaseMessagingService() {
                 startService(callIntent)
                 return
             }
-            PushType.REQUEST_LOGIN_ACCEPTED -> {
+      /*      PushType.REQUEST_LOGIN_ACCEPTED -> {
                 homeIntent.putExtra(EXTRA_TAB, "0")
 
                 val broadcastIntent = Intent()
@@ -224,18 +221,16 @@ class MessagingService : FirebaseMessagingService() {
 
                 LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
 
-            }
+            }*/
 
-            PushType.CANCELED_LOGIN_REQUEST -> {
+      /*      PushType.CANCELED_LOGIN_REQUEST -> {
                 prefsManager.remove(USER_DATA)
                 intent = Intent(this, LoginActivity::class.java)
-//                    .putExtra(PAGE_TO_OPEN, DrawerActivity.QUESTION_DETAILS)
-//                    .putExtra(EXTRA_REQUEST_ID, pushData.request_id)
-
                 val broadcastIntent = Intent()
                 broadcastIntent.action = pushData.pushType
                 LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
             }
+            */
             PushType.CALL_CANCELED -> {
                 handleCanceledCallInvite(pushData)
                 return

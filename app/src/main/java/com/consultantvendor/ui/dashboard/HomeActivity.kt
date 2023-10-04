@@ -115,7 +115,6 @@ class HomeActivity : DaggerAppCompatActivity() {
             startActivity(Intent(this, SignUpActivity::class.java)
                     .putExtra(UPDATE_NUMBER, true))
         }
-
     }
 
 

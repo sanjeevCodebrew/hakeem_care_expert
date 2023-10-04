@@ -721,10 +721,9 @@ class HomeFragment : DaggerFragment() {
 
     override fun onResume() {
         super.onResume()
-        registerReceiver()
         viewModelHome.notificationCount()
         viewModelHome.getprofile1()
-
+        registerReceiver()
     }
 
     override fun onDestroy() {
