@@ -8,6 +8,7 @@ data class Page(
 
         var slug: String? = null,
         var title: String? = null,
+        var translated_title: String? = null,
         var app_type: String? = null,
 
         var desc: String? = null,

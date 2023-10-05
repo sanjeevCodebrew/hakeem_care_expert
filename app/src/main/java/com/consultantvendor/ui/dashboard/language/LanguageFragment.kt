@@ -51,7 +51,7 @@ class LanguageFragment : DaggerFragment() {
 
             initialise()
             listeners()
-//            bindeObserver()
+            bindeObserver()
         }
         return rootView
     }
@@ -103,18 +103,18 @@ class LanguageFragment : DaggerFragment() {
                 /*get updated pages*/
                 if (BuildConfig.FLAVOR == "consult")
                     userRepository.getPages()
-                if (userRepository.isUserLoggedIn()) {
-                    requireActivity().setResult(Activity.RESULT_CANCELED)
-                    ActivityCompat.finishAffinity(requireActivity())
 
-                    startActivity(Intent(activity, HomeActivity::class.java)
-                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
+                if (userRepository.isUserLoggedIn()) {
+//                    requireActivity().setResult(Activity.RESULT_CANCELED)
+//                    ActivityCompat.finishAffinity(requireActivity())
+//
+//                    startActivity(Intent(activity, HomeActivity::class.java)
+//                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
+                    val hashMap = HashMap<String, String>()
+                    hashMap["language"] = language
+                    viewModelLanguage.postLanguage(hashMap)
                 } else
                     requireActivity().finish()
-
-//                val hashMap = HashMap<String, String>()
-//                hashMap["language"] = language
-//                viewModelLanguage.postLanguage(hashMap)
             }
         }
     }
@@ -126,14 +126,11 @@ class LanguageFragment : DaggerFragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     progressDialog?.setLoading(false)
-                    if (userRepository.isUserLoggedIn()) {
-                        requireActivity().setResult(Activity.RESULT_CANCELED)
-                        ActivityCompat.finishAffinity(requireActivity())
-                        startActivity(
-                            Intent(activity, HomeActivity::class.java)
-                                .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
-                    } else
-                        requireActivity().finish()
+                    requireActivity().setResult(Activity.RESULT_CANCELED)
+                    ActivityCompat.finishAffinity(requireActivity())
+
+                    startActivity(Intent(activity, HomeActivity::class.java)
+                        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
                 }
                 Status.ERROR -> {
                     progressDialog?.setLoading(false)
