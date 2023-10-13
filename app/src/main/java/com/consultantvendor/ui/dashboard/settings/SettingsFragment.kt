@@ -213,7 +213,7 @@ class SettingsFragment : DaggerFragment() {
             else -> {
                 openPageLink(
                     requireContext(),
-                    items[pos].translated_title,
+                    items[pos].title,
                     items[pos].slug,
                     items[pos].app_type
                 )

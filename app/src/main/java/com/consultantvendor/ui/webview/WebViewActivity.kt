@@ -105,7 +105,7 @@ class WebViewActivity : DaggerAppCompatActivity() {
         }
 
 
-        binding.webView.settings.setAppCacheEnabled(true)
+//        binding.webView.settings.setAppCacheEnabled(true)
         binding.webView.settings.javaScriptEnabled = true
         binding.webView.settings.domStorageEnabled = true
         binding.webView.settings.loadWithOverviewMode = true

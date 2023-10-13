@@ -252,13 +252,15 @@ class HomeActivity : DaggerAppCompatActivity() {
                 val addresses = geoCoder.getFromLocation(lat, lng, 1
                 ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
-                if (addresses.isNotEmpty()) {
-                    locationName = when {
-                        addresses[0].getAddressLine(1) != null -> addresses[0].getAddressLine(
+                if (addresses != null) {
+                    if (addresses.isNotEmpty()) {
+                        locationName = when {
+                            addresses[0].getAddressLine(1) != null -> addresses[0].getAddressLine(
                                 1)
-                        addresses[0].featureName == null -> addresses[0].adminArea
-                        else -> String.format("%s, %s", addresses[0].featureName,
+                            addresses[0].featureName == null -> addresses[0].adminArea
+                            else -> String.format("%s, %s", addresses[0].featureName,
                                 addresses[0].locality)
+                        }
                     }
                 }
                 // binding.itemMain.tvLocation.text = name

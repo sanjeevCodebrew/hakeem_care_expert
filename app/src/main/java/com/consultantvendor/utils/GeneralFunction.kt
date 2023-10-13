@@ -548,7 +548,7 @@ fun getCity(place: Place,context: Context): String {
 
         val geocoder = Geocoder(context, Locale.getDefault())
         var addresses: List<Address> = ArrayList()
-        addresses = geocoder.getFromLocation(place.latLng!!.latitude, place.latLng!!.longitude, 1)
+        addresses = geocoder.getFromLocation(place.latLng!!.latitude, place.latLng!!.longitude, 1) as List<Address>
         finalAddress = addresses[0].locality
 
     }catch (e: Exception){

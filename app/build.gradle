@@ -8,12 +8,12 @@ apply plugin: 'kotlin-kapt'
 
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.hakeem.expert"
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0.0"
         multiDexEnabled true
@@ -41,8 +41,8 @@ android {
         consult {
             dimension "app"
             applicationId "com.hakeem.expert"
-            versionCode 7
-            versionName "1.0.5"
+            versionCode 8
+            versionName "1.0.6"
             buildConfigField 'String', 'APP_UNIQUE_ID', "\"3b7474e39d4a249a9ecc8aa24b7e8acd42\""
             buildConfigField 'String', 'BASE_URL', "\"https://hakeemcare.hakeemcare.com/\""
         }

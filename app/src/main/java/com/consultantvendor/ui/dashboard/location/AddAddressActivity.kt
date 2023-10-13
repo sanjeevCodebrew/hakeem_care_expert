@@ -286,8 +286,8 @@ class AddAddressActivity : DaggerAppCompatActivity(), GoogleMap.OnCameraChangeLi
     private fun getAddress(): String {
         var locationName = ""
         val addresses: List<Address> = geoCoder.getFromLocation(saveAddress.lat ?: 0.0,
-                saveAddress.long
-                        ?: 0.0, 1) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            saveAddress.long
+                ?: 0.0, 1) as List<Address> // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
         if (addresses.isNotEmpty()) {
             locationName = when {
