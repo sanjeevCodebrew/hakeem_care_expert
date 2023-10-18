@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.webkit.*
@@ -101,6 +102,25 @@ class WebViewActivity : DaggerAppCompatActivity() {
                     finish()
 //                    keepCheckingRequestStatus()
                 }
+            }
+
+            @Deprecated("Deprecated in Java")
+            override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+
+                if (url?.startsWith("whatsapp://") == true) {
+                    view!!.context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                }
+                else if (url?.contains("mailto:") == true) {
+                    view!!.context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                }
+                else {
+//                    url?.let { view?.loadUrl(it) }
+                    if (url != null) {
+                        view?.loadUrl(url)
+                    }
+                }
+
+                return super.shouldOverrideUrlLoading(view, url)
             }
         }
 
