@@ -96,7 +96,7 @@
             android:layout_marginTop="@dimen/dp_48"
             android:digits="0123456789"
             android:fontFamily="@font/campton_book"
-            android:hint="@string/map_number"
+            android:hint="@string/moh_number"
             android:imeOptions="actionDone"
             android:inputType="number"
             android:maxLength="15"
@@ -167,7 +167,6 @@
             android:textSize="@dimen/sp_14"
             app:layout_constraintTop_toBottomOf="@+id/tvTerms"
             app:layout_constraintStart_toEndOf="@+id/tvLoginTitle" />
-
 
 
         <androidx.appcompat.widget.AppCompatImageView

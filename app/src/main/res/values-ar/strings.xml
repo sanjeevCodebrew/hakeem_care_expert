@@ -45,6 +45,10 @@
 
 <string name="we_need_your_phone">نحتاج إلى رقم هاتفك لتحديد هويتك.</string>
 
+    <string name="we_need_your_map_number">للتحقق، ادخل رقم الترخيص الطبي الخاص بك</string>
+    <string name="moh_number">رقم الترخيص الطبي
+</string>
+
 <string name="resend_code">إعادة إرسال الرمز</string>
 
 <string name="didn_t_receive_the_code_yet">لم تتلق الرمز بعد؟</string>
@@ -512,8 +516,11 @@
 
 <string name="manage_documents">إدارة المستندات</string>
 
-<!--Articles-->
+    <string name="admin_access">مطلوب وصول المسؤول</string>
 
+    <string name="admin_access1">من فضلك انتظر سيوافق المشرف على وصول تسجيل الدخول هذا</string>
+
+<!--Articles-->
 
 <string name="latest_articles">أحدث المقالات</string>
 
