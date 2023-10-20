@@ -997,5 +997,7 @@
 
     <string name="camera">آلة تصوير</string>
 
+    <string name="file_format_not_supported">تنسيق الملف هذا غير مدعوم</string>
+
 
 </resources>

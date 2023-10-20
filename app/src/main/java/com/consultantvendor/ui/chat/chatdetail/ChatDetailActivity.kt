@@ -936,7 +936,6 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
         return path
     }
 
-
     private fun uploadFileOnServer(docImage: DocImage?) {
         val hashMap = HashMap<String, RequestBody>()
         hashMap["type"] = getRequestBody(docImage?.type)
@@ -978,6 +977,8 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
     fun showDeniedForStorage() {
         PermissionUtils.showAppSettingsDialog(
                 this, R.string.media_permission
+
+
         )
     }
 
@@ -1287,7 +1288,7 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
                 }
             } else {
 //                img_pick.setImageResource(R.drawable.img_not_supported)
-                Toast.makeText(this, "This file format is not supported", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.file_format_not_supported), Toast.LENGTH_SHORT).show()
             }
 
 
