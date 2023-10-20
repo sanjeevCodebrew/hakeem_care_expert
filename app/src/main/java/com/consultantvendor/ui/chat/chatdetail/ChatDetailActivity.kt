@@ -152,7 +152,10 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
 
     private var isLoadingItems = false
 
+    private var lan  = ""
+
     var fileToUpload1 : File?=null
+
 
 
     var isStopRight = false
@@ -194,6 +197,7 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
         userID = userRepository.getUser()?.id ?: ""
         userName = intent.getStringExtra(USER_NAME) ?: ""
         binding.tvUserName.text = userName
+        lan = userRepository.getUserLanguage()
 
     }
 
@@ -505,12 +509,12 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
         binding.recordView.setLessThanSecondAllowed(false)
 
 
-        /*    if (lan=="ar") {
-                Log.e("TAG", "chkLan: "+lan)
-                binding.recordView.layoutDirection = View.LAYOUT_DIRECTION_LTR
-                binding.recordButton.layoutDirection = View.LAYOUT_DIRECTION_LTR
-                binding.rlChatInput.layoutDirection = View.LAYOUT_DIRECTION_LTR
-            }*/
+//            if (lan=="ar") {
+//                Log.e("TAG", "chkLan: "+lan)
+//                binding.recordView.layoutDirection = View.LAYOUT_DIRECTION_LTR
+//                binding.recordButton.layoutDirection = View.LAYOUT_DIRECTION_LTR
+//                binding.rlChatInput.layoutDirection = View.LAYOUT_DIRECTION_LTR
+//            }
 
         binding.recordButton.setOnLongClickListener {
             if (checkIfPermission()) {

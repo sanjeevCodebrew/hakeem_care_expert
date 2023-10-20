@@ -166,7 +166,7 @@
     <string name="category">Category</string>
     <string name="start_class_message">By starting CLASS you ll make this class available for all who occupied. Want to start class?</string>
     <string name="user_joined">User Joined</string>
-    <string name="complete_class">Complete Class</string>
+    <string name="complete_class">Class Completed</string>
     <string name="complete_class_message">Are you sure want to complete this class?</string>
 
     <string name="s_s_reviews">%s · %s Reviews</string>

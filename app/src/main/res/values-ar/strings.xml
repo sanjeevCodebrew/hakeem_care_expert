@@ -278,7 +278,7 @@
 
 <string name="user_joined">انضم المستخدم</string>
 
-<string name="complete_class">اكتمال الكلاس</string>
+<string name="complete_class">اكتمل الفصل</string>
 
 <string name="complete_class_message">هل أنت متأكد أنك تريد إكمال هذا الفصل؟</string>
 
@@ -983,16 +983,19 @@
 
 <string name="spanish">اسباني</string>
 
-<!--    <string name="alert">يُحذًِر</string>-->
-
-<!--    <string name="login">تسجيل الدخول</string>-->
-
     <string name="title">عنوان</string>
 
-<!--    <string name="completed">مكتمل</string>-->
+    <string name="s_completed">%s  مكتمل</string>
 
-<!--    <string name="Unsuccesful">غير ناجح</string>-->
+    <string name="unsuccessful">%s غير ناجح</string>
 
-<!--    <string name="no_data_avilable">لا توجد بيانات متاحة</string>-->
+    <string name="your_due_date_is_s">موعد استحقاقك هو %s</string>
+
+    <string name="your_are_s_s_pregnant">أنت حامل لمدة %s أسبوعًا و%s يومًا</string>
+
+    <string name="post">بريد</string>
+
+    <string name="camera">آلة تصوير</string>
+
 
 </resources>
