@@ -509,12 +509,12 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
         binding.recordView.setLessThanSecondAllowed(false)
 
 
-//            if (lan=="ar") {
-//                Log.e("TAG", "chkLan: "+lan)
-//                binding.recordView.layoutDirection = View.LAYOUT_DIRECTION_LTR
-//                binding.recordButton.layoutDirection = View.LAYOUT_DIRECTION_LTR
-//                binding.rlChatInput.layoutDirection = View.LAYOUT_DIRECTION_LTR
-//            }
+            if (lan=="ar") {
+                Log.e("TAG", "chkLan: "+lan)
+                binding.recordView.layoutDirection = View.LAYOUT_DIRECTION_LTR
+                binding.recordButton.layoutDirection = View.LAYOUT_DIRECTION_LTR
+                binding.rlChatInput.layoutDirection = View.LAYOUT_DIRECTION_LTR
+            }
 
         binding.recordButton.setOnLongClickListener {
             if (checkIfPermission()) {
