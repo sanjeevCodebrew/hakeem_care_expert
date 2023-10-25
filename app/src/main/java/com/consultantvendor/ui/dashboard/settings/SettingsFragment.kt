@@ -124,7 +124,15 @@ class SettingsFragment : DaggerFragment() {
         items.add(Page(title = getString(R.string.invite_people), icon = R.drawable.ic_invite))
 
         if (BuildConfig.FLAVOR != "taradoc") {
-            appClientDetails.pages?.forEach {
+            val pages = appClientDetails.pages
+            items.add(
+                Page(
+                    title = pages?.get(0)?.title,
+                    slug = pages?.get(0)?.slug,
+                    app_type = pages?.get(0)?.app_type,
+                    icon = pages?.get(0)?.icon
+                ))
+     /*       appClientDetails.pages?.forEach {
                 items.add(
                     Page(
                         title = it.title,
@@ -133,7 +141,7 @@ class SettingsFragment : DaggerFragment() {
                         icon = R.drawable.ic_info
                     )
                 )
-            }
+            }*/
         }
 
         items.add(Page(title = getString(R.string.logout), icon = R.drawable.ic_logout))

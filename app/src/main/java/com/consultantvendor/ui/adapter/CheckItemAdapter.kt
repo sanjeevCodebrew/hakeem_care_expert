@@ -32,8 +32,20 @@ class CheckItemAdapter(private val fragment: Fragment, private val isMultiSelect
             RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Filter) = with(binding) {
-
-            tvName.text = item.option_name ?: item.name
+            /*tvName.text = item.option_name ?: item.name*/
+            val userRepo = when (fragment) {
+                is PregnancyCalculatorFragment -> fragment.userRepository
+                else -> null
+            }
+            if (userRepo?.getUserLanguage() == "ar") {
+                if (item.option_name.equals("Ultrasound")) {
+                    tvName.text = "الموجات فوق الصوتية"
+                } else {
+                    tvName.text = item.option_name ?: item.name
+                }
+            } else {
+                tvName.text = item.option_name ?: item.name
+            }
 
             if (item.isSelected) {
                 tvName.setBackgroundResource(R.drawable.drawable_theme_60)
