@@ -18,6 +18,7 @@ class HomeViewModel @Inject constructor(private val webService: WebService) : Vi
     val banners by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
     val notificationCount by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
     val getProfile by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
+    val postLanguage by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
 
 
     fun banners() {
@@ -110,6 +111,30 @@ class HomeViewModel @Inject constructor(private val webService: WebService) : Vi
 
                 override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
                     getProfile.value = Resource.error(ApiUtils.failure(throwable))
+                }
+
+            })
+    }
+
+    fun postLanguage1(hashMap: HashMap<String, String>) {
+        postLanguage.value = Resource.loading()
+
+        webService.postLanguage(hashMap)
+            .enqueue(object : Callback<ApiResponse<CommonDataModel>> {
+
+                override fun onResponse(call: Call<ApiResponse<CommonDataModel>>,
+                                        response: Response<ApiResponse<CommonDataModel>>) {
+                    if (response.isSuccessful) {
+                        postLanguage.value = Resource.success(response.body()?.data)
+                    } else {
+                        postLanguage.value = Resource.error(
+                            ApiUtils.getError(response.code(),
+                                response.errorBody()?.string()))
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
+                    postLanguage.value = Resource.error(ApiUtils.failure(throwable))
                 }
 
             })

@@ -130,6 +130,10 @@ class HomeFragment : DaggerFragment() {
         }
 
         Log.e("TAG", "authToken "+prefsManager.getObject(USER_DATA, UserData::class.java)?.token)
+        val hashMap = HashMap<String, String>()
+        val language = prefsManager.getString(USER_LANGUAGE,"")
+        hashMap["language"] = language
+        viewModelHome.postLanguage1(hashMap)
 
 
     }
@@ -566,6 +570,21 @@ class HomeFragment : DaggerFragment() {
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
+                }
+            }
+        })
+
+        viewModelHome.postLanguage.observe(requireActivity(), Observer {
+            it ?: return@Observer
+            when (it.status) {
+                Status.SUCCESS -> {
+                    userRepository.getPages()
+                }
+                Status.ERROR -> {
+
+                }
+                Status.LOADING -> {
+
                 }
             }
         })

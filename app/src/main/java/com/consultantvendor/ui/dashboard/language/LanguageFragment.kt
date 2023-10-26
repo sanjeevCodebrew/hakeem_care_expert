@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.consultantvendor.BuildConfig
 import com.consultantvendor.R
+import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.FragmentLanguageBinding
@@ -101,15 +102,10 @@ class LanguageFragment : DaggerFragment() {
                 LocaleHelper.setLocale(requireActivity(), "en", prefsManager)*/
 
                 /*get updated pages*/
-                if (BuildConfig.FLAVOR == "consult")
-                    userRepository.getPages()
+//                if (BuildConfig.FLAVOR == "consult")
+//                    userRepository.getPages()
 
                 if (userRepository.isUserLoggedIn()) {
-//                    requireActivity().setResult(Activity.RESULT_CANCELED)
-//                    ActivityCompat.finishAffinity(requireActivity())
-//
-//                    startActivity(Intent(activity, HomeActivity::class.java)
-//                            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
                     val hashMap = HashMap<String, String>()
                     hashMap["language"] = language
                     viewModelLanguage.postLanguage(hashMap)
@@ -120,23 +116,26 @@ class LanguageFragment : DaggerFragment() {
     }
 
     private fun bindeObserver() {
-
         viewModelLanguage.postLanguage.observe(requireActivity(), Observer {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    progressDialog?.setLoading(false)
+//                  progressDialog?.setLoading(false)
+                    binding.clLoader.gone()
                     requireActivity().setResult(Activity.RESULT_CANCELED)
                     ActivityCompat.finishAffinity(requireActivity())
-
+                    userRepository.getPages()
                     startActivity(Intent(activity, HomeActivity::class.java)
                         .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
                 }
                 Status.ERROR -> {
-                    progressDialog?.setLoading(false)
+//                    progressDialog?.setLoading(false)
+                    binding.clLoader.gone()
+                    ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
-                    progressDialog?.setLoading(true)
+//                    progressDialog?.setLoading(true)
+                    binding.clLoader.visible()
                 }
             }
         })

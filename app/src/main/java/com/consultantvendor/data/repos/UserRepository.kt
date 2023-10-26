@@ -126,11 +126,14 @@ class UserRepository @Inject constructor(
     }
 
     fun getPages() {
-        webService.getPages()
+        if (isUserLoggedIn()) {
+            webService.getPages()
                 .enqueue(object : Callback<ApiResponse<CommonDataModel>> {
 
-                    override fun onResponse(call: Call<ApiResponse<CommonDataModel>>,
-                                            response: Response<ApiResponse<CommonDataModel>>) {
+                    override fun onResponse(
+                        call: Call<ApiResponse<CommonDataModel>>,
+                        response: Response<ApiResponse<CommonDataModel>>
+                    ) {
                         if (response.isSuccessful) {
                             val commonData = Resource.success(response.body()?.data)
 
@@ -146,12 +149,15 @@ class UserRepository @Inject constructor(
                         }
                     }
 
-                    override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
+                    override fun onFailure(
+                        call: Call<ApiResponse<CommonDataModel>>,
+                        throwable: Throwable
+                    ) {
                         Log.e("getPages", "faliue 500")
                     }
                 })
 
-
+        }
     }
 
 }
