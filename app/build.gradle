@@ -34,6 +34,12 @@ android {
             keyPassword "codebrew"
             storePassword "codebrew"
         }
+
+//        hakeemExpert creds
+     /*   storeFile file("hakeemcareExpert.jks")
+        keyAlias "hakeemcareExpert"
+        keyPassword "hakeemcareExpert"
+        storePassword "hakeemcareExpert"*/
     }
 
     flavorDimensions "app"
@@ -41,8 +47,8 @@ android {
         consult {
             dimension "app"
             applicationId "com.hakeem.expert"
-            versionCode 10
-            versionName "1.0.8"
+            versionCode 11
+            versionName "1.0.9"
             buildConfigField 'String', 'APP_UNIQUE_ID', "\"3b7474e39d4a249a9ecc8aa24b7e8acd42\""
             buildConfigField 'String', 'BASE_URL', "\"https://hakeemcare.hakeemcare.com/\""
         }
