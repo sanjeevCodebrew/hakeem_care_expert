@@ -51,6 +51,11 @@ class SplashActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash)
 
+        val video = Uri.parse("android.resource://" + packageName + "/" + R.raw.splash_video)
+        binding.videoview.setVideoURI(video)
+        binding.videoview.start()
+
+
         initialise()
         listeners()
         bindObservers()

@@ -337,34 +337,34 @@ class HomeFragment : DaggerFragment() {
                     progressDialog.setLoading(false)
 
                     if (appFeatures.needArticles) {
-                        binding.tvArticles.visible()
-                        binding.tvMoreArticles.visible()
-                        binding.tvPostArticles.visible()
-                        itemsArticle.clear()
-                        itemsArticle.addAll(it.data?.top_articles ?: emptyList())
-                        adapterArticle.notifyDataSetChanged()
+//                        binding.tvArticles.visible()
+//                        binding.tvMoreArticles.visible()
+//                        binding.tvPostArticles.visible()
+//                        itemsArticle.clear()
+//                        itemsArticle.addAll(it.data?.top_articles ?: emptyList())
+//                        adapterArticle.notifyDataSetChanged()
+//
+//                        binding.tvMoreArticles.hideShowView(itemsArticle.size >= 4)
 
-                        binding.tvMoreArticles.hideShowView(itemsArticle.size >= 4)
-
-                        binding.clNoArticle.tvNoData.text = getString(R.string.no_article)
-                        binding.clNoArticle.tvNoDataDesc.text = getString(R.string.no_article_desc)
-                        binding.clNoArticle.hideShowView(itemsArticle.isEmpty())
+//                        binding.clNoArticle.tvNoData.text = getString(R.string.no_article)
+//                        binding.clNoArticle.tvNoDataDesc.text = getString(R.string.no_article_desc)
+//                        binding.clNoArticle.hideShowView(itemsArticle.isEmpty())
                     }
 
                     if (appFeatures.needBlogs) {
-                        binding.tvBlogs.visible()
-                        binding.tvMoreBlogs.visible()
-                        binding.tvPostBlogs.visible()
+//                        binding.tvBlogs.visible()
+//                        binding.tvMoreBlogs.visible()
+//                        binding.tvPostBlogs.visible()
 
-                        itemsBlogs.clear()
-                        itemsBlogs.addAll(it.data?.top_blogs ?: emptyList())
-                        adapterBlogs.notifyDataSetChanged()
+//                        itemsBlogs.clear()
+//                        itemsBlogs.addAll(it.data?.top_blogs ?: emptyList())
+//                        adapterBlogs.notifyDataSetChanged()
+//
+//                        binding.tvMoreBlogs.hideShowView(itemsBlogs.size >= 4)
 
-                        binding.tvMoreBlogs.hideShowView(itemsBlogs.size >= 4)
-
-                        binding.clNoBlog.tvNoData.text = getString(R.string.no_blog)
-                        binding.clNoBlog.tvNoDataDesc.text = getString(R.string.no_blog_desc)
-                        binding.clNoBlog.hideShowView(itemsBlogs.isEmpty())
+//                        binding.clNoBlog.tvNoData.text = getString(R.string.no_blog)
+//                        binding.clNoBlog.tvNoDataDesc.text = getString(R.string.no_blog_desc)
+//                        binding.clNoBlog.hideShowView(itemsBlogs.isEmpty())
                     }
 
                 }

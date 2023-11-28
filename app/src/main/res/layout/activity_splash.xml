@@ -9,15 +9,20 @@
         android:layout_height="match_parent"
         tools:context=".ui.SplashActivity">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <VideoView
+            android:id="@+id/videoview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_splash_hakeem" />
+            android:layout_height="match_parent"/>
+
+<!--        <androidx.appcompat.widget.AppCompatImageView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:scaleType="centerCrop"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:srcCompat="@drawable/ic_splash_hakeem" />-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clUserType"
