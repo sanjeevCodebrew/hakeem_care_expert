@@ -302,7 +302,7 @@ class SetAvailabilityFragment : DaggerFragment(), OnTimeSelected {
         if (!time.third) {
             var addInterval = true
 
-            val sdf = SimpleDateFormat(DateFormat.TIME_FORMAT, Locale.ENGLISH)
+            val sdf = SimpleDateFormat(DateFormat.TIME_FORMAT_24, Locale.ENGLISH)
 
             val intervalTime = sdf.parse(time.first)
 

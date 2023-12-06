@@ -257,7 +257,7 @@ object DateUtils {
             compareDate = false
         }
 
-        val sdf = SimpleDateFormat(DateFormat.TIME_FORMAT, Locale.ENGLISH)
+        val sdf = SimpleDateFormat(DateFormat.TIME_FORMAT_24, Locale.ENGLISH)
 
         val endTime = if (endTime != null && endTime.isNotEmpty())
             sdf.parse(endTime)

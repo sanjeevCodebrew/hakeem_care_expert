@@ -192,10 +192,10 @@ class ServiceFragment : DaggerFragment() {
 
                     it.setAvailability?.slots?.forEach {
                         val interval = Interval()
-                        interval.start_time = DateUtils.dateFormatForBackend(DateFormat.TIME_FORMAT,
-                                DateFormat.TIME_FORMAT_24, it.start_time ?: "")
-                        interval.end_time = DateUtils.dateFormatForBackend(DateFormat.TIME_FORMAT,
-                                DateFormat.TIME_FORMAT_24, it.end_time ?: "")
+                        interval.start_time = DateUtils.dateFormatForBackend(DateFormat.TIME_FORMAT_24,
+                                DateFormat.TIME_FORMAT, it.start_time ?: "")
+                        interval.end_time = DateUtils.dateFormatForBackend(DateFormat.TIME_FORMAT_24,
+                                DateFormat.TIME_FORMAT, it.end_time ?: "")
                         setAvailability.slots?.add(interval)
                     }
 
