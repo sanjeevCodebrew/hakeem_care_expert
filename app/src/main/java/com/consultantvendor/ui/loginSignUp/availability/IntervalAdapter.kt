@@ -62,20 +62,23 @@ class IntervalAdapter(private val fragment: SetAvailabilityFragment, private val
             if (!item.start_time.isNullOrEmpty()) {
                 tvFromV.setText(
                     DateUtils.dateFormatChange(
-                        DateFormat.TIME_FORMAT,
+                        DateFormat.TIME_FORMAT_24,
                         DateFormat.TIME_FORMAT, item.start_time ?: ""
                     )
                 )
+
+
             }else{
                 tvFromV.setText("")
             }
             if (!item.end_time.isNullOrEmpty()) {
                 tvToV.setText(
                     DateUtils.dateFormatChange(
-                        DateFormat.TIME_FORMAT,
+                        DateFormat.TIME_FORMAT_24,
                         DateFormat.TIME_FORMAT, item.end_time ?: ""
                     )
                 )
+
             }else{
                 tvToV.setText("")
             }

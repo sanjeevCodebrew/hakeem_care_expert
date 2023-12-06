@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Hakeemcare Doctor</string>
+    <string name="app_name">HakeemCareDr</string>
 
     <!--Facebook keys-->
     <string name="facebook_app_id" translatable="false">614826522700049</string>
