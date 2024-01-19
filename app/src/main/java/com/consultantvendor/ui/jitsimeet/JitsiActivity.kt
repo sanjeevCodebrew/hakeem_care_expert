@@ -71,6 +71,7 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
         // Initialize default options for Jitsi Meet conferences.
         val serverURL: URL = try {
             URL(appClientDetails.jitsi_meet_url)
+
         } catch (e: MalformedURLException) {
             e.printStackTrace()
             throw RuntimeException("Invalid server URL!")
