@@ -38,6 +38,8 @@ import com.consultantvendor.ui.loginSignUp.LoginViewModel
 import com.consultantvendor.ui.loginSignUp.SignUpActivity
 import com.consultantvendor.utils.*
 import com.google.android.gms.location.*
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.item_no_data.view.*
 import java.util.*
@@ -75,6 +77,8 @@ class HomeActivity : DaggerAppCompatActivity() {
     private var isPendingApiProgressing = false
 
     private var timerPendingApi = Timer()
+
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -115,6 +119,15 @@ class HomeActivity : DaggerAppCompatActivity() {
             startActivity(Intent(this, SignUpActivity::class.java)
                     .putExtra(UPDATE_NUMBER, true))
         }
+
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+            val params = Bundle()
+            params.putString("dev_name", "Zorawar")
+            params.putString("dev_description", "Quality Tester")
+            param(FirebaseAnalytics.Param.CONTENT_TYPE, "dev_test")
+            Log.e("TAG", "chkLogFirebaseAnalytics :"+params )
+        }
+
     }
 
 
