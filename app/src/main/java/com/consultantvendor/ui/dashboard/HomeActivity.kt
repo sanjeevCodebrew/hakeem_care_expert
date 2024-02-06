@@ -97,6 +97,7 @@ class HomeActivity : DaggerAppCompatActivity() {
 
     private fun initialise() {
         viewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         LocaleHelper.setLocale(this, userRepository.getUserLanguage(), prefsManager)
         appSocket.init()
