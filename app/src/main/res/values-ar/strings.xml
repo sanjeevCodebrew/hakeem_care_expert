@@ -209,7 +209,8 @@
 
 <string name="photo">صورة</string>
 
-<string name="chat_first_message">مرحبا\nأنا متاح للتحدث ، فلنناقش المشكلة</string>
+<string name="chat_first_message">أهلاً بك
+انا متاح حالياً ماهو سؤالك الطبي؟</string>
 
 <string name="end_chat">انتهاء المحادثة</string>
 
