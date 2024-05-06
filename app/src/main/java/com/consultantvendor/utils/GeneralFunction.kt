@@ -336,7 +336,12 @@ fun getDoctorName(userData: UserData?): String {
 fun getCurrency(amount: String?): String {
     val format = NumberFormat.getCurrencyInstance(Locale.ENGLISH)
     format.maximumFractionDigits = 2
-    format.currency = Currency.getInstance(appClientDetails.currency)
+    try {
+        format.currency = Currency.getInstance(appClientDetails.currency)
+    }
+    catch (_:Exception){
+
+    }
 
     return if (amount.isNullOrEmpty())
         format.format(0).replace("0.00", " NA")
