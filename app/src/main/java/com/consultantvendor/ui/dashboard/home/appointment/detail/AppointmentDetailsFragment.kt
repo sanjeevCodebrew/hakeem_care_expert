@@ -28,6 +28,7 @@ import com.consultantvendor.data.models.responses.Extra_payment
 import com.consultantvendor.data.models.responses.Filter
 import com.consultantvendor.data.models.responses.Page
 import com.consultantvendor.data.models.responses.Request
+import com.consultantvendor.data.models.responses.chat.ChatList
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.PushType
 import com.consultantvendor.data.network.responseUtil.Status
@@ -76,9 +77,18 @@ class AppointmentDetailsFragment : DaggerFragment() {
     private var alertDialog: AlertDialog? = null
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         if (rootView == null) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_appointment_details, container, false)
+            binding = DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_appointment_details,
+                container,
+                false
+            )
             rootView = binding.root
 
             initialise()
@@ -140,12 +150,23 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvMarkComplete.setOnClickListener {
             showMarkCompleteDialog()
         }
+        binding.tvChat.setOnClickListener {
+            registerActivityResult.launch(
+                Intent(context, ChatDetailActivity::class.java)
+                    .putExtra(USER_ID, request.from_user?.id)
+                    .putExtra(USER_NAME, request.from_user?.name)
+                    .putExtra(EXTRA_REQUEST_ID, request.id)
+                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            )
+        }
 
         binding.tvViewMap.setOnClickListener {
             val address = request.extra_detail
-            mapIntent(requireActivity(), address?.service_address ?: "",
-                    address?.lat?.toDouble() ?: 0.0,
-                    address?.long?.toDouble() ?: 0.0)
+            mapIntent(
+                requireActivity(), address?.service_address ?: "",
+                address?.lat?.toDouble() ?: 0.0,
+                address?.long?.toDouble() ?: 0.0
+            )
         }
 
         binding.tvAskPayment.setOnClickListener {
@@ -182,10 +203,14 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvCall.hideShowView(BuildConfig.FLAVOR == "nurseLynx")
 
         binding.tvName.text = request.from_user?.name
-        loadImage(binding.ivPic, request.from_user?.profile_image,
-                R.drawable.ic_profile_placeholder)
-        binding.tvAge.text = "${getString(R.string.age)} ${getAge(request.from_user?.profile?.dob)} ${getString(R.string.years)}"
-        binding.tvCountry.text = "${getString(R.string.country)}: ${request.from_user?.profile?.country}"
+        loadImage(
+            binding.ivPic, request.from_user?.profile_image,
+            R.drawable.ic_profile_placeholder
+        )
+        binding.tvAge.text =
+            "${getString(R.string.age)} ${getAge(request.from_user?.profile?.dob)} ${getString(R.string.years)}"
+        binding.tvCountry.text =
+            "${getString(R.string.country)}: ${request.from_user?.profile?.country}"
         binding.tvAge.hideShowView(!request.from_user?.profile?.dob.isNullOrEmpty())
         binding.tvCountry.hideShowView(!request.from_user?.profile?.country.isNullOrEmpty())
 
@@ -194,7 +219,12 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvDistanceV.text = request.extra_detail?.distance ?: ""
         binding.tvLocation.text = request.extra_detail?.service_address
 
-        if (request.insurance_name?.isNotEmpty()!! || request.insurance_number?.isNotEmpty()!!){
+        if (request.service_type == "Chat")
+            binding.tvChat.visible()
+        else
+            binding.tvChat.gone()
+
+        if (request.insurance_name?.isNotEmpty()!! || request.insurance_number?.isNotEmpty()!!) {
             binding.tvInsuranceName.visible()
             binding.tvInsuranceNameV.visible()
             binding.tvResidentId.visible()
@@ -205,21 +235,48 @@ class AppointmentDetailsFragment : DaggerFragment() {
         }
 
         if (BuildConfig.FLAVOR == "nurseLynx" && !request.booking_end_date.isNullOrEmpty()) {
-            val dateBooking = "${DateUtils.dateTimeFormatFromUTC(DateFormat.MON_DATE_YEAR, request.bookingDateUTC)} - " +
-                    "${DateUtils.dateTimeFormatFromUTC(DateFormat.MON_DATE_YEAR, request.booking_end_date)}"
+            val dateBooking = "${
+                DateUtils.dateTimeFormatFromUTC(
+                    DateFormat.MON_DATE_YEAR,
+                    request.bookingDateUTC
+                )
+            } - " +
+                    "${
+                        DateUtils.dateTimeFormatFromUTC(
+                            DateFormat.MON_DATE_YEAR,
+                            request.booking_end_date
+                        )
+                    }"
             binding.tvBookingDateV.text = dateBooking
 
-            val timeBooking = "${DateUtils.dateTimeFormatFromUTC(DateFormat.TIME_FORMAT, request.bookingDateUTC)} - " +
-                    "${DateUtils.dateTimeFormatFromUTC(DateFormat.TIME_FORMAT, request.booking_end_date)}"
+            val timeBooking = "${
+                DateUtils.dateTimeFormatFromUTC(
+                    DateFormat.TIME_FORMAT,
+                    request.bookingDateUTC
+                )
+            } - " +
+                    "${
+                        DateUtils.dateTimeFormatFromUTC(
+                            DateFormat.TIME_FORMAT,
+                            request.booking_end_date
+                        )
+                    }"
             binding.tvBookingTimeV.text = timeBooking
         } else {
-            binding.tvBookingDateV.text = DateUtils.dateTimeFormatFromUTC(DateFormat.MON_DATE_YEAR, request.bookingDateUTC)
-            binding.tvBookingTimeV.text = DateUtils.dateTimeFormatFromUTC(DateFormat.TIME_FORMAT, request.bookingDateUTC)
+            binding.tvBookingDateV.text =
+                DateUtils.dateTimeFormatFromUTC(DateFormat.MON_DATE_YEAR, request.bookingDateUTC)
+            binding.tvBookingTimeV.text =
+                DateUtils.dateTimeFormatFromUTC(DateFormat.TIME_FORMAT, request.bookingDateUTC)
         }
 
         binding.tvBookingPriceV.text = getCurrency(request.price)
 
-        binding.tvStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+        binding.tvStatus.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.colorPrimary
+            )
+        )
 
         if (request.is_prescription == true)
             binding.tvAddPrescription.text = getString(R.string.prescriptions)
@@ -239,8 +296,10 @@ class AppointmentDetailsFragment : DaggerFragment() {
 
         /*Cancel reason*/
         binding.tvCancelReason.hideShowView(!request.cancel_reason.isNullOrEmpty())
-        binding.tvCancelReason.text = getString(R.string.reason_of_cancel, request.cancel_reason
-                ?: "")
+        binding.tvCancelReason.text = getString(
+            R.string.reason_of_cancel, request.cancel_reason
+                ?: ""
+        )
 
         when (request.status) {
             CallAction.PENDING -> {
@@ -290,7 +349,12 @@ class AppointmentDetailsFragment : DaggerFragment() {
             }
             CallAction.COMPLETED -> {
                 binding.tvStatus.text = getString(R.string.completed)
-                binding.tvStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.textColorGreen))
+                binding.tvStatus.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.textColorGreen
+                    )
+                )
                 binding.tvAccept.gone()
                 binding.tvCancel.gone()
                 binding.tvCall.gone()
@@ -301,20 +365,35 @@ class AppointmentDetailsFragment : DaggerFragment() {
             CallAction.FAILED -> {
                 binding.tvAccept.gone()
                 binding.tvStatus.text = getString(R.string.no_show)
-                binding.tvStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorCancel))
+                binding.tvStatus.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorCancel
+                    )
+                )
                 binding.tvCancel.gone()
                 binding.tvCall.gone()
             }
             CallAction.CANCELED -> {
                 binding.tvStatus.text = getString(R.string.canceled)
-                binding.tvStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorCancel))
+                binding.tvStatus.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorCancel
+                    )
+                )
                 binding.tvAccept.gone()
                 binding.tvCancel.gone()
                 binding.tvCall.gone()
             }
             CallAction.CANCEL_SERVICE -> {
                 binding.tvStatus.text = getString(R.string.canceled_service)
-                binding.tvStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorCancel))
+                binding.tvStatus.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorCancel
+                    )
+                )
                 binding.tvCancel.gone()
                 binding.tvAccept.gone()
                 binding.tvCall.gone()
@@ -373,21 +452,21 @@ class AppointmentDetailsFragment : DaggerFragment() {
 
     fun updateCarePlan(item: Filter) {
         AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.mark_complete,
-                R.string.mark_complete_message, R.string.mark_complete, R.string.cancel, false,
-                object : AlertDialogUtil.OnOkCancelDialogListener {
-                    override fun onOkButtonClicked() {
-                        if (isConnectedToInternet(requireContext(), true)) {
-                            val hashMap = HashMap<String, Any>()
-                            hashMap["id"] = item.id ?: 0
-                            hashMap["request_id"] = request.id ?: ""
-                            hashMap["status"] = CallAction.COMPLETED
-                            viewModel.updateCarePlan(hashMap)
-                        }
+            R.string.mark_complete_message, R.string.mark_complete, R.string.cancel, false,
+            object : AlertDialogUtil.OnOkCancelDialogListener {
+                override fun onOkButtonClicked() {
+                    if (isConnectedToInternet(requireContext(), true)) {
+                        val hashMap = HashMap<String, Any>()
+                        hashMap["id"] = item.id ?: 0
+                        hashMap["request_id"] = request.id ?: ""
+                        hashMap["status"] = CallAction.COMPLETED
+                        viewModel.updateCarePlan(hashMap)
                     }
+                }
 
-                    override fun onCancelButtonClicked() {
-                    }
-                }).show()
+                override fun onCancelButtonClicked() {
+                }
+            }).show()
     }
 
     private fun extraPayment() {
@@ -404,15 +483,26 @@ class AppointmentDetailsFragment : DaggerFragment() {
             binding.tvExtraPaymentAmount.visible()
             binding.tvExtraPaymentDesc.visible()
             binding.tvExtraStatus.visible()
-            binding.tvExtraPaymentAmount.text = getString(R.string.amount_s, getCurrency(request.extra_payment?.balance))
+            binding.tvExtraPaymentAmount.text =
+                getString(R.string.amount_s, getCurrency(request.extra_payment?.balance))
             binding.tvExtraPaymentDesc.text = request.extra_payment?.description
             binding.tvExtraStatus.text = "(${request.extra_payment?.status})"
 
             when (request.extra_payment?.status) {
                 CallAction.PENDING ->
-                    binding.tvExtraStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorPending))
+                    binding.tvExtraStatus.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.colorPending
+                        )
+                    )
                 CallAction.PAID ->
-                    binding.tvExtraStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.textColorGreen))
+                    binding.tvExtraStatus.setTextColor(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            R.color.textColorGreen
+                        )
+                    )
             }
         }
     }
@@ -434,13 +524,20 @@ class AppointmentDetailsFragment : DaggerFragment() {
                         popup.setOnMenuItemClickListener { item ->
                             when (item.itemId) {
                                 R.id.item_view -> {
-                                    val link = getString(R.string.pdf_link, BuildConfig.BASE_URL, request.id, BuildConfig.APP_UNIQUE_ID)
+                                    val link = getString(
+                                        R.string.pdf_link,
+                                        BuildConfig.BASE_URL,
+                                        request.id,
+                                        BuildConfig.APP_UNIQUE_ID
+                                    )
                                     openPdf(requireActivity(), link, true)
                                 }
                                 R.id.item_edit -> {
-                                    registerActivityResult.launch(Intent(requireActivity(), DrawerActivity::class.java)
+                                    registerActivityResult.launch(
+                                        Intent(requireActivity(), DrawerActivity::class.java)
                                             .putExtra(PAGE_TO_OPEN, request.pre_scription?.type)
-                                            .putExtra(EXTRA_REQUEST_ID, request))
+                                            .putExtra(EXTRA_REQUEST_ID, request)
+                                    )
                                 }
                             }
                             true
@@ -454,8 +551,10 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 }
             }
             CallAction.START, CallAction.REACHED -> {
-                registerActivityResult.launch(Intent(requireActivity(), AppointmentStatusActivity::class.java)
-                        .putExtra(EXTRA_REQUEST_ID, request))
+                registerActivityResult.launch(
+                    Intent(requireActivity(), AppointmentStatusActivity::class.java)
+                        .putExtra(EXTRA_REQUEST_ID, request)
+                )
             }
             CallAction.START_SERVICE -> {
                 showMarkCompleteDialog()
@@ -465,41 +564,41 @@ class AppointmentDetailsFragment : DaggerFragment() {
 
     private fun showAcceptRequestDialog() {
         AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.accept_request,
-                R.string.accept_request_message, R.string.accept_request, R.string.cancel, false,
-                object : AlertDialogUtil.OnOkCancelDialogListener {
-                    override fun onOkButtonClicked() {
-                        hitApiAcceptRequest()
-                    }
+            R.string.accept_request_message, R.string.accept_request, R.string.cancel, false,
+            object : AlertDialogUtil.OnOkCancelDialogListener {
+                override fun onOkButtonClicked() {
+                    hitApiAcceptRequest()
+                }
 
-                    override fun onCancelButtonClicked() {
-                    }
-                }).show()
+                override fun onCancelButtonClicked() {
+                }
+            }).show()
     }
 
     private fun showMarkCompleteDialog() {
         AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.mark_complete,
-                R.string.mark_complete_message, R.string.mark_complete, R.string.cancel, false,
-                object : AlertDialogUtil.OnOkCancelDialogListener {
-                    override fun onOkButtonClicked() {
-                        hitApiCompleteRequest()
-                    }
+            R.string.mark_complete_message, R.string.mark_complete, R.string.cancel, false,
+            object : AlertDialogUtil.OnOkCancelDialogListener {
+                override fun onOkButtonClicked() {
+                    hitApiCompleteRequest()
+                }
 
-                    override fun onCancelButtonClicked() {
-                    }
-                }).show()
+                override fun onCancelButtonClicked() {
+                }
+            }).show()
     }
 
     private fun showInitiateRequestDialog() {
         AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.start_request,
-                R.string.start_request_message, R.string.start_request, R.string.cancel, false,
-                object : AlertDialogUtil.OnOkCancelDialogListener {
-                    override fun onOkButtonClicked() {
-                        hitApiStartRequest()
-                    }
+            R.string.start_request_message, R.string.start_request, R.string.cancel, false,
+            object : AlertDialogUtil.OnOkCancelDialogListener {
+                override fun onOkButtonClicked() {
+                    hitApiStartRequest()
+                }
 
-                    override fun onCancelButtonClicked() {
-                    }
-                }).show()
+                override fun onCancelButtonClicked() {
+                }
+            }).show()
     }
 
     private fun hitApiAcceptRequest() {
@@ -645,21 +744,25 @@ class AppointmentDetailsFragment : DaggerFragment() {
                             if (!appSocket.isConnected)
                                 appSocket.init()
 
-                            startActivity(Intent(requireActivity(), ChatDetailActivity::class.java)
+                            startActivity(
+                                Intent(requireActivity(), ChatDetailActivity::class.java)
                                     .putExtra(USER_ID, request.from_user?.id)
                                     .putExtra(USER_NAME, request.from_user?.name)
                                     .putExtra(EXTRA_REQUEST_ID, request.id)
                                     .putExtra(EXTRA_IS_FIRST, true)
-                                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
+                                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                            )
                         }
                         ConsultType.AUDIO_CALL, ConsultType.VIDEO_CALL -> {
                             requireActivity().longToast(getString(R.string.starting_call))
 
                             request.call_id = it.data?.call_id
-                            startActivity(Intent(requireContext(), CallingActivity::class.java)
+                            startActivity(
+                                Intent(requireContext(), CallingActivity::class.java)
                                     .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    .putExtra(EXTRA_REQUEST_ID, request))
+                                    .putExtra(EXTRA_REQUEST_ID, request)
+                            )
                         }
                     }
                 }
@@ -682,10 +785,12 @@ class AppointmentDetailsFragment : DaggerFragment() {
                     requireActivity().longToast(getString(R.string.starting_call))
 
                     request.call_id = it.data?.call_id
-                    startActivity(Intent(requireContext(), CallingActivity::class.java)
+                    startActivity(
+                        Intent(requireContext(), CallingActivity::class.java)
                             .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            .putExtra(EXTRA_REQUEST_ID, request))
+                            .putExtra(EXTRA_REQUEST_ID, request)
+                    )
                 }
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
@@ -708,12 +813,15 @@ class AppointmentDetailsFragment : DaggerFragment() {
 
                     if (request.main_service_type == ConsultType.HOME_VISIT && request.status != CallAction.START_SERVICE) {
                         request.status = CallAction.START
-                        registerActivityResult.launch(Intent(requireActivity(), AppointmentStatusActivity::class.java)
-                                .putExtra(EXTRA_REQUEST_ID, request))
+                        registerActivityResult.launch(
+                            Intent(requireActivity(), AppointmentStatusActivity::class.java)
+                                .putExtra(EXTRA_REQUEST_ID, request)
+                        )
                     } else if (it.data?.status == CallAction.COMPLETED) {
                         val broadcastIntent = Intent()
                         broadcastIntent.action = PushType.COMPLETED
-                        LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(broadcastIntent)
+                        LocalBroadcastManager.getInstance(requireContext())
+                            .sendBroadcast(broadcastIntent)
                     }
                 }
                 Status.ERROR -> {
@@ -765,13 +873,14 @@ class AppointmentDetailsFragment : DaggerFragment() {
         })
     }
 
-    val registerActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            //val intent = result.data
-            requireActivity().setResult(Activity.RESULT_OK)
-            hitApi()
+    val registerActivityResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                //val intent = result.data
+                requireActivity().setResult(Activity.RESULT_OK)
+                hitApi()
+            }
         }
-    }
 
     override fun onResume() {
         super.onResume()
@@ -795,7 +904,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
             intentFilter.addAction(PushType.PAID_EXTRA_PAYMENT)
             intentFilter.addAction(MEDICAL_HISTORY)
             LocalBroadcastManager.getInstance(requireContext())
-                    .registerReceiver(refreshData, intentFilter)
+                .registerReceiver(refreshData, intentFilter)
             isReceiverRegistered = true
         }
     }
