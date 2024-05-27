@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.consultantvendor.R
@@ -45,12 +46,17 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
         super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_jitsi)
 
+        checkPermission()
+
+    }
+
+    private fun intialise() {
+
         LocaleHelper.setLocale(this, userRepository.getUserLanguage(), prefsManager)
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
 
-        checkPermission()
         jitsiMeetView = JitsiMeetView(this)
 
         jitsiClass = intent.getSerializableExtra(EXTRA_CALL_NAME) as JitsiClass
@@ -77,19 +83,19 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
             throw RuntimeException("Invalid server URL!")
         }
         val defaultOptions = JitsiMeetConferenceOptions.Builder()
-                .setServerURL(serverURL)
+            .setServerURL(serverURL)
 //                .setWelcomePageEnabled(false)
-                .setFeatureFlag("invite.enabled", false)
-                .setFeatureFlag("chat.enabled", false)
-                .setFeatureFlag("calendar.enabled", false)
-                .setFeatureFlag("call-integration.enabled", false)
-                .setFeatureFlag("live-streaming.enabled", false)
-                .setFeatureFlag("recording.enabled", false)
-                .setFeatureFlag("tile-view.enabled", false)
-                .setFeatureFlag("meeting-password.enabled", false)
-                .setFeatureFlag("pip.enabled", true)
-                .setFeatureFlag("close-captions.enabled", false)
-                .build()
+            .setFeatureFlag("invite.enabled", false)
+            .setFeatureFlag("chat.enabled", false)
+            .setFeatureFlag("calendar.enabled", false)
+            .setFeatureFlag("call-integration.enabled", false)
+            .setFeatureFlag("live-streaming.enabled", false)
+            .setFeatureFlag("recording.enabled", false)
+            .setFeatureFlag("tile-view.enabled", false)
+            .setFeatureFlag("meeting-password.enabled", false)
+            .setFeatureFlag("pip.enabled", true)
+            .setFeatureFlag("close-captions.enabled", false)
+            .build()
         JitsiMeet.setDefaultConferenceOptions(defaultOptions)
 
         if (roomName.isNotEmpty()) {
@@ -103,11 +109,11 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
             val setAudioOnly = jitsiClass?.callType?.toLowerCase() == ConsultType.AUDIO_CALL
 
             val options = JitsiMeetConferenceOptions.Builder()
-                    .setUserInfo(userInfo)
-                    .setRoom(roomName)
-                    .setSubject(subjectName)
-                    .setAudioOnly(setAudioOnly)
-                    .build()
+                .setUserInfo(userInfo)
+                .setRoom(roomName)
+                .setSubject(subjectName)
+                .setAudioOnly(setAudioOnly)
+                .build()
             // Launch the new activity with the given options. The launch() method takes care
             // of creating the required Intent and passing the options.
             /* JitsiMeetActivity.launch(this, options)
@@ -160,12 +166,23 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
         JitsiMeetLogger.i("Conference will join: $data")
     }
 
+    val audioPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+
+        if (result.all {
+                it.value
+            }){
+            intialise()
+        }
+
+    }
+
 
     private fun checkPermission() {
         val PERMISSIONS = arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)
-        if (!hasPermissions(*PERMISSIONS)) {
-            ActivityCompat.requestPermissions(this, PERMISSIONS, 100)
-        }
+//        if (!hasPermissions(*PERMISSIONS)) {
+//            ActivityCompat.requestPermissions(this, PERMISSIONS, 100)
+//        }
+        audioPermissions.launch(PERMISSIONS)
     }
 
     fun hasPermissions(vararg permissions: String?): Boolean {
