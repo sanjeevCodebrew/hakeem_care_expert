@@ -8,12 +8,12 @@ apply plugin: 'kotlin-kapt'
 
 
 android {
-    compileSdkVersion 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.hakeem.expert"
-        minSdkVersion 23
-        targetSdkVersion 33
+        minSdk 23
+        targetSdk 34
         versionCode 1
         versionName "1.0.0"
         multiDexEnabled true
