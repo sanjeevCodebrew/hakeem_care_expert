@@ -47,7 +47,7 @@ android {
         consult {
             dimension "app"
             applicationId "com.hakeem.expert"
-            versionCode 21
+            versionCode 22
             versionName "2.0.8"
             buildConfigField 'String', 'APP_UNIQUE_ID', "\"3b7474e39d4a249a9ecc8aa24b7e8acd42\""
             buildConfigField 'String', 'BASE_URL', "\"https://hakeemcare.hakeemcare.com/\""
@@ -123,6 +123,13 @@ allprojects {
         google()
         jcenter()
     }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'com.google.android.gms:play-services-safetynet:17.0.0'
+    }
+    exclude group: 'com.google.android.gms', module: 'play-services-safetynet'
 }
 
 dependencies {
