@@ -91,30 +91,30 @@ class SettingsFragment : DaggerFragment() {
         else if (BuildConfig.FLAVOR == "nurseLynx")
             items.add(Page(title = getString(R.string.contacts), icon = R.drawable.ic_contacts))
 
-        if (userRepository.getUser()?.provider_type == ProviderType.email)
-            items.add(
-                Page(
-                    title = getString(R.string.change_password),
-                    icon = R.drawable.ic_password
-                )
-            )
+//        if (userRepository.getUser()?.provider_type == ProviderType.email)
+//            items.add(
+//                Page(
+//                    title = getString(R.string.change_password),
+//                    icon = R.drawable.ic_password
+//                )
+//            )
         //if (appFeatures.needLanguageScreen)
             items.add(Page(title = getString(R.string.language), icon = R.drawable.ic_language))
 
         items.add(Page(title = getString(R.string.chat), icon = R.drawable.ic_chat_profile))
         items.add(Page(title = getString(R.string.history), icon = R.drawable.ic_history))
-        if (appFeatures.freeExpertAdvise)
-            items.add(
-                Page(
-                    title = getString(R.string.free_expert_advice),
-                    icon = R.drawable.ic_class_profile
-                )
-            )
+//        if (appFeatures.freeExpertAdvise)
+//            items.add(
+//                Page(
+//                    title = getString(R.string.free_expert_advice),
+//                    icon = R.drawable.ic_class_profile
+//                )
+//            )
         //if (appFeatures.needClasses)
-        if (BuildConfig.FLAVOR == "taradoc")
-            items.add(Page(title = getString(R.string.broadcasts), icon = R.drawable.ic_class_profile))
-        else
-            items.add(Page(title = getString(R.string.classes), icon = R.drawable.ic_class_profile))
+//        if (BuildConfig.FLAVOR == "taradoc")
+//            items.add(Page(title = getString(R.string.broadcasts), icon = R.drawable.ic_class_profile))
+//        else
+//            items.add(Page(title = getString(R.string.classes), icon = R.drawable.ic_class_profile))
         items.add(
             Page(
                 title = getString(R.string.notification),

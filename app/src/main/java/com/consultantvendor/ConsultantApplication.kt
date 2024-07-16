@@ -65,7 +65,7 @@ class ConsultantApplication : DaggerApplication(), LifecycleObserver {
                 appFeatures.needClasses = true
                 appFeatures.needBlogs = true
                 appFeatures.needArticles = true
-                appFeatures.needHealthTools = true
+                appFeatures.needHealthTools = false
                 appFeatures.freeExpertAdvise = true
             }
             "heal" -> {

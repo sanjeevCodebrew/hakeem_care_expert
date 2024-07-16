@@ -15,7 +15,7 @@ class AppFeatures {
     var needBlogs = false
     var needArticles = false
 
-    var needHealthTools = true
+    var needHealthTools = false
 
     var signUpAddition = true
     var needInsurance = true
