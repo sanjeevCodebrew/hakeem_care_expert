@@ -7,6 +7,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <com.google.android.exoplayer2.ui.PlayerView
+            android:id="@+id/player_view"
+            android:visibility="gone"
+            android:layout_width="@dimen/album_dp_100"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvDateLeft"
             android:layout_width="match_parent"
@@ -27,6 +34,7 @@
             android:elevation="4dp"
             android:fontFamily="@font/campton_medium"
             android:minWidth="48dp"
+            android:visibility="gone"
             android:padding="8dp"
             android:textColor="@color/colorBlack"
             android:textColorLink="@color/colorLink"
@@ -42,6 +50,7 @@
             android:layout_marginEnd="114dp"
             android:background="@drawable/drawable_white_8"
             android:clickable="true"
+            android:visibility="gone"
             android:drawableStart="@drawable/ic_pdf"
             android:drawablePadding="@dimen/dp_4"
             android:elevation="4dp"
@@ -54,38 +63,62 @@
             android:textColor="@color/colorBlack"
             android:textSize="12sp" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvAudioLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:id="@+id/test"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
             android:layout_below="@+id/tvPdfLeft"
+            android:background="@drawable/drawable_white_8"
+            android:elevation="@dimen/dp_4"
             android:layout_marginStart="16dp"
+            android:gravity="center"
+            android:visibility="gone"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="114dp"
-            android:background="@drawable/drawable_white_8"
-            android:clickable="true"
-            android:drawableStart="@drawable/ic_play_icon"
-            android:drawablePadding="@dimen/dp_4"
-            android:elevation="4dp"
-            android:focusable="true"
-            android:fontFamily="@font/campton_medium"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:minWidth="48dp"
-            android:padding="8dp"
-            android:textColor="@color/colorBlack"
-            android:textSize="12sp" />
+            android:orientation="horizontal">
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAudioLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:clickable="true"
+                android:drawableStart="@drawable/ic_play"
+                android:drawablePadding="@dimen/dp_4"
+                android:elevation="4dp"
+                android:focusable="true"
+                android:fontFamily="@font/campton_medium"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:minWidth="48dp"
+                android:padding="8dp"
+                android:textColor="@color/colorBlack"
+                android:textSize="12sp" />
+
+            <SeekBar
+                android:id="@+id/seekBar"
+
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+
+                />
+
+        </LinearLayout>
 
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cvImageLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvAudioLeft"
+            android:layout_below="@+id/test"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
+            android:visibility="gone"
             android:focusable="true"
             android:padding="2dp"
             app:cardCornerRadius="16dp"
