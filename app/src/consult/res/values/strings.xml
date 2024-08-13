@@ -6,7 +6,9 @@
     <string name="fb_login_protocol_scheme" translatable="false">fb614826522700049</string>
 
     <!--Deep Link-->
-    <string name="deep_link_url" translatable="false">royoconsult.page.link</string>
+    <string name="deep_link_url" translatable="false">hakeemcare.page.link</string>
+    <string name="host_url" translatable="false">hakeemcare.hakeemcare.com</string>
+    <string name="deep_link_user_profile" translatable="false">hakeemcare.page.link</string>
     <string name="deep_link_ios_bundle" translatable="false">com.codebrew.RoyoConsultantVendor</string>
 
     <!--Google-->

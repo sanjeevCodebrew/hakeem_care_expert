@@ -573,7 +573,7 @@ fun shareDeepLink(deepLink: String, activity: Activity, userData: UserData?) {
     val progressDialog = ProgressDialog(activity)
     progressDialog.setLoading(true)
 
-    val longLink = "${Config.baseURL}${"https://hakeemconsult.page.link/Co5h"}"
+    val longLink = "${Config.baseURL}${"https://hakeemcare.page.link/FgzB"}"
     Log.e("TAG", "deeplincheck: "+longLink )
 
     val shortLinkTask = Firebase.dynamicLinks.shortLinkAsync {
@@ -645,7 +645,7 @@ fun shareDeepLink1(deepLink: String, activity: Activity, userData: UserData?) {
         DeepLink.INVITE -> {
 
 //            longLink = "${Config.baseURL}${deepLink}"
-            longLink = "https://hakeemconsult.page.link/Co5h"
+            longLink = "https://hakeemcare.page.link/FgzB"
 
             Log.e("TAG", "shareDeepLink: "+longLink )
 

@@ -39,8 +39,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.snapchat.kit.sdk.SnapLogin
-import com.snapchat.kit.sdk.core.controller.LoginStateController
+//import com.snapchat.kit.sdk.SnapLogin
+//import com.snapchat.kit.sdk.core.controller.LoginStateController
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -207,23 +207,23 @@ class WelcomeFragment : DaggerFragment() {
 
 
     private fun snapKitLogin(){
-        SnapLogin.getAuthTokenManager(requireContext()).startTokenGrant();
-
-        SnapLogin.getLoginStateController(getContext()).addOnLoginStateChangedListener(object : LoginStateController.OnLoginStateChangedListener{
-            override fun onLoginSucceeded() {
-                Log.d("SnapKit Login", "Successful")
-            }
-
-            override fun onLoginFailed() {
-                Log.e("SnapKit Login", "Failed")
-//                TODO("Not yet implemented")
-            }
-
-            override fun onLogout() {
-                Log.d("SnapKit Login", "Logout")
-//                TODO("Not yet implemented")
-            }
-        });
+//        SnapLogin.getAuthTokenManager(requireContext()).startTokenGrant();
+//
+//        SnapLogin.getLoginStateController(getContext()).addOnLoginStateChangedListener(object : LoginStateController.OnLoginStateChangedListener{
+//            override fun onLoginSucceeded() {
+//                Log.d("SnapKit Login", "Successful")
+//            }
+//
+//            override fun onLoginFailed() {
+//                Log.e("SnapKit Login", "Failed")
+////                TODO("Not yet implemented")
+//            }
+//
+//            override fun onLogout() {
+//                Log.d("SnapKit Login", "Logout")
+////                TODO("Not yet implemented")
+//            }
+//        });
     }
 
     private fun bindObservers() {

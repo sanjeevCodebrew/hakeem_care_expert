@@ -47,7 +47,7 @@ android {
         consult {
             dimension "app"
             applicationId "com.hakeem.expert"
-            versionCode 22
+            versionCode 24
             versionName "2.0.8"
             buildConfigField 'String', 'APP_UNIQUE_ID', "\"3b7474e39d4a249a9ecc8aa24b7e8acd42\""
             buildConfigField 'String', 'BASE_URL', "\"https://hakeemcare.hakeemcare.com/\""
@@ -244,7 +244,7 @@ dependencies {
 
     /*Razor Pay*/
     /*Crash in latest version*/
-    implementation 'com.razorpay:checkout:1.6.7'
+//    implementation 'com.razorpay:checkout:1.6.7'
 
     /*Card Form*/
     implementation 'com.braintreepayments:card-form:5.0.0'
@@ -274,10 +274,10 @@ dependencies {
     }
 
     //snap kit
-    implementation([
-            'com.snapchat.kit.sdk:login:1.12.0',
-            'com.snapchat.kit.sdk:core:1.12.0'
-    ])
+//    implementation([
+//            'com.snapchat.kit.sdk:login:1.12.0',
+//            'com.snapchat.kit.sdk:core:1.12.0'
+//    ])
 
     //AppsFlyer
     implementation 'com.appsflyer:af-android-sdk:6.3.2'

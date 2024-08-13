@@ -23,13 +23,13 @@ import com.consultantvendor.ui.drawermenu.DrawerActivity
 import com.consultantvendor.ui.webview.WebViewActivity
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog
-import com.razorpay.Checkout
-import com.razorpay.PaymentResultListener
+//import com.razorpay.Checkout
+//import com.razorpay.PaymentResultListener
 import dagger.android.support.DaggerAppCompatActivity
 import org.json.JSONObject
 import javax.inject.Inject
 
-class AddMoneyActivity : DaggerAppCompatActivity(), PaymentResultListener {
+class AddMoneyActivity : DaggerAppCompatActivity(){
 
     @Inject
     lateinit var prefsManager: PrefsManager
@@ -252,9 +252,9 @@ class AddMoneyActivity : DaggerAppCompatActivity(), PaymentResultListener {
 
                     order_id = it.data?.order_id
 
-                    if (order_id?.isNotEmpty() == true)
-                        startRazorPayPayment(binding.etAmount.text.toString(), order_id
-                                ?: "")
+//                    if (order_id?.isNotEmpty() == true)
+//                       startRazorPayPayment(binding.etAmount.text.toString(), order_id
+//                                ?: "")
                 }
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
@@ -350,13 +350,13 @@ class AddMoneyActivity : DaggerAppCompatActivity(), PaymentResultListener {
         * To ensure faster loading of the Checkout form,
         * call this method as early as possible in your checkout flow
         * */
-        Checkout.preload(this)
+//        Checkout.preload(this)
     }
 
-    private fun startRazorPayPayment(amount: String, orderId: String) {
-        /*
+   /* private fun startRazorPayPayment(amount: String, orderId: String) {
+        *//*
         *  You need to pass current activity in order to let Razorpay create CheckoutActivity
-        * */
+        * *//*
 
         val activity: Activity = this
         val co = Checkout()
@@ -410,10 +410,10 @@ class AddMoneyActivity : DaggerAppCompatActivity(), PaymentResultListener {
             hashMap["order_id"] = order_id ?: ""
             viewModel.razorPayWebhook(hashMap)
 
-            /*setResult(Activity.RESULT_OK)
-            finish()*/
+            *//*setResult(Activity.RESULT_OK)
+            finish()*//*
         } catch (e: Exception) {
             Log.e(TAG, "Exception in onPaymentSuccess", e)
         }
-    }
+    }*/
 }
