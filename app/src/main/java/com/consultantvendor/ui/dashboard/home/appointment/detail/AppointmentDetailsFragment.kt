@@ -241,12 +241,10 @@ class AppointmentDetailsFragment : DaggerFragment() {
                     request.bookingDateUTC
                 )
             } - " +
-                    "${
-                        DateUtils.dateTimeFormatFromUTC(
-                            DateFormat.MON_DATE_YEAR,
-                            request.booking_end_date
-                        )
-                    }"
+                    DateUtils.dateTimeFormatFromUTC(
+                        DateFormat.MON_DATE_YEAR,
+                        request.booking_end_date
+                    )
             binding.tvBookingDateV.text = dateBooking
 
             val timeBooking = "${
@@ -255,12 +253,10 @@ class AppointmentDetailsFragment : DaggerFragment() {
                     request.bookingDateUTC
                 )
             } - " +
-                    "${
-                        DateUtils.dateTimeFormatFromUTC(
-                            DateFormat.TIME_FORMAT,
-                            request.booking_end_date
-                        )
-                    }"
+                    DateUtils.dateTimeFormatFromUTC(
+                        DateFormat.TIME_FORMAT,
+                        request.booking_end_date
+                    )
             binding.tvBookingTimeV.text = timeBooking
         } else {
             binding.tvBookingDateV.text =
