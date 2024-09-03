@@ -529,7 +529,6 @@
                     app:barrierDirection="bottom"
                     app:constraint_referenced_ids="tvAddPrescription,tvMarkComplete" />
 
-
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvCall"
                     android:layout_width="0dp"

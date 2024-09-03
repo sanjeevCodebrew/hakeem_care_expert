@@ -10,7 +10,6 @@ import android.content.pm.ActivityInfo
 import android.content.pm.PackageInfo
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Typeface
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
@@ -21,7 +20,6 @@ import android.text.Spanned
 import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -45,7 +43,6 @@ import com.consultantvendor.appClientDetails
 import com.consultantvendor.appFeatures
 import com.consultantvendor.data.models.responses.UserData
 import com.consultantvendor.data.network.Config
-import com.consultantvendor.ui.loginSignUp.SignUpActivity
 import com.consultantvendor.ui.loginSignUp.login.LoginActivity
 import com.consultantvendor.ui.webview.WebViewActivity
 import com.consultantvendor.utils.DateUtils.dateFormatForBackend
@@ -97,7 +94,7 @@ fun View.showSnackBar(msg: String) {
         val snackBar = Snackbar.make(this, msg, Snackbar.LENGTH_LONG)
         val snackBarView = snackBar.view
         val textView =
-                snackBarView.findViewById<View>(R.id.snackbar_text) as TextView
+            snackBarView.findViewById<View>(R.id.snackbar_text) as TextView
         textView.maxLines = 3
         snackBar.setAction(R.string.ok) { snackBar.dismiss() }
         snackBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
@@ -113,7 +110,7 @@ fun logoutUser(activity: Activity?, prefsManager: PrefsManager) {
     Log.d("logoutCalled", "clearData")
 
     val notificationManager =
-            activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     notificationManager.cancelAll()
 
 
@@ -124,8 +121,10 @@ fun logoutUser(activity: Activity?, prefsManager: PrefsManager) {
 
 //    activity.startActivity(Intent(activity, SignUpActivity::class.java)
 //            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
-    activity.startActivity(Intent(activity, LoginActivity::class.java)
-        .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
+    activity.startActivity(
+        Intent(activity, LoginActivity::class.java)
+            .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+    )
 
 }
 
@@ -137,14 +136,17 @@ fun getCountFormat(digits: Int, count: Int?): String {
             count.toString()
         else
             String.format(Locale.ENGLISH, "%d+", 9)
+
         2 -> return if (count ?: 0 <= 99)
             count.toString()
         else
             String.format(Locale.ENGLISH, "%d+", 99)
+
         3 -> return if (count ?: 0 <= 999)
             count.toString()
         else
             String.format(Locale.ENGLISH, "%d+", 999)
+
         else -> return if (count ?: 0 <= 9999)
             count.toString()
         else
@@ -159,19 +161,19 @@ fun Context.longToast(text: CharSequence) {
 
 fun addFragment(fragmentManager: FragmentManager?, fragment: Fragment, id: Int) {
     fragmentManager?.beginTransaction()
-            ?.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
-            ?.add(id, fragment)?.commit()
+        ?.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+        ?.add(id, fragment)?.commit()
 }
 
 fun addFragmentAnim(fragmentManager: FragmentManager?, fragment: Fragment, id: Int) {
     fragmentManager?.beginTransaction()
-            ?.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-            ?.add(id, fragment)?.commit()
+        ?.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+        ?.add(id, fragment)?.commit()
 }
 
 fun addFragmentToBackStack(fragmentManager: FragmentManager?, fragment: Fragment, id: Int) {
     fragmentManager?.beginTransaction()?.setCustomAnimations(0, 0, 0, 0)
-            ?.add(id, fragment)?.addToBackStack("")?.commit()
+        ?.add(id, fragment)?.addToBackStack("")?.commit()
 }
 
 fun replaceFragmentNoBackStack(fragmentManager: FragmentManager?, fragment: Fragment, id: Int) {
@@ -180,16 +182,16 @@ fun replaceFragmentNoBackStack(fragmentManager: FragmentManager?, fragment: Frag
 
 fun replaceFragment(fragmentManager: FragmentManager?, fragment: Fragment, id: Int) {
     fragmentManager?.beginTransaction()?.replace(id, fragment, fragment::class.simpleName)
-            ?.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
-            ?.addToBackStack(null)?.commit()
+        ?.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+        ?.addToBackStack(null)?.commit()
 }
 
 
 fun replaceResultFragment(
-        fragment: Fragment,
-        targetFragment: Fragment,
-        container: Int,
-        requestCode: Int
+    fragment: Fragment,
+    targetFragment: Fragment,
+    container: Int,
+    requestCode: Int
 ) {
     val ft = fragment.requireActivity().supportFragmentManager.beginTransaction()
     targetFragment.setTargetFragment(fragment, requestCode)
@@ -200,10 +202,10 @@ fun replaceResultFragment(
 }
 
 fun resultFragmentIntent(
-        fragment: Fragment,
-        fragmentTarget: Fragment,
-        requestCode: Int,
-        intent: Intent?
+    fragment: Fragment,
+    fragmentTarget: Fragment,
+    requestCode: Int,
+    intent: Intent?
 ) {
     val intentMain = intent ?: Intent(fragment.requireContext(), fragmentTarget::class.java)
     fragmentTarget.onActivityResult(requestCode, RESULT_OK, intentMain)
@@ -212,10 +214,10 @@ fun resultFragmentIntent(
 
 
 fun resultFragmentIntentNoPop(
-        fragment: Fragment,
-        fragmentTarget: Fragment,
-        requestCode: Int,
-        intent: Intent?
+    fragment: Fragment,
+    fragmentTarget: Fragment,
+    requestCode: Int,
+    intent: Intent?
 ) {
     val intentMain = intent ?: Intent(fragment.requireContext(), fragmentTarget::class.java)
     fragmentTarget.onActivityResult(requestCode, RESULT_OK, intentMain)
@@ -230,8 +232,8 @@ fun View.hideKeyboard() {
 fun View.showKeyboard() {
     val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.toggleSoftInputFromWindow(
-            applicationWindowToken,
-            InputMethodManager.SHOW_FORCED, 0
+        applicationWindowToken,
+        InputMethodManager.SHOW_FORCED, 0
     )
 }
 
@@ -290,8 +292,8 @@ fun getAgeSelected(date: String?): Int {
 
 
 val requestOptions = RequestOptions()
-        .dontAnimate()
-        .dontTransform()
+    .dontAnimate()
+    .dontTransform()
 
 fun loadImage(ivImage: ImageView, image: String?, placeholder: Int) {
     val imageLink = getImageBaseUrl(ImageFolder.UPLOADS, image)
@@ -300,10 +302,10 @@ fun loadImage(ivImage: ImageView, image: String?, placeholder: Int) {
     val glide = Glide.with(ivImage.context)
 
     glide.load(imageLink)
-            .apply(requestOptions)
-            .placeholder(placeholder)
-            .thumbnail(glide.load(imageThumbnail))
-            .into(ivImage)
+        .apply(requestOptions)
+        .placeholder(placeholder)
+        .thumbnail(glide.load(imageThumbnail))
+        .into(ivImage)
 }
 
 fun getImageBaseUrl(folderType: String, image: String?): String {
@@ -338,8 +340,7 @@ fun getCurrency(amount: String?): String {
     format.maximumFractionDigits = 2
     try {
         format.currency = Currency.getInstance(appClientDetails.currency)
-    }
-    catch (_:Exception){
+    } catch (_: Exception) {
 
     }
 
@@ -390,15 +391,16 @@ fun compressImage(activity: Activity?, actualImageFile: File?): File {
         actualImageFile?.length() ?: 0 < (1 * 1024 * 1024) -> actualImageFile
         actualImageFile?.length() ?: 0 < (3 * 1024 * 1024) -> {
             Compressor(activity)
-                    .setQuality(70)
-                    .setCompressFormat(Bitmap.CompressFormat.JPEG)
-                    .compressToFile(actualImageFile)
+                .setQuality(70)
+                .setCompressFormat(Bitmap.CompressFormat.JPEG)
+                .compressToFile(actualImageFile)
         }
+
         else -> {
             Compressor(activity)
-                    .setQuality(50)
-                    .setCompressFormat(Bitmap.CompressFormat.JPEG)
-                    .compressToFile(actualImageFile)
+                .setQuality(50)
+                .setCompressFormat(Bitmap.CompressFormat.JPEG)
+                .compressToFile(actualImageFile)
         }
     }
 
@@ -410,16 +412,16 @@ fun compressImage(activity: Activity?, actualImageFile: File?): File {
 fun viewImageFull(activity: Activity, itemsImage: ArrayList<String>, pos: Int) {
 
     val hierarchyBuilder = GenericDraweeHierarchyBuilder
-            .newInstance(activity.resources)
-            .setFailureImage(R.drawable.image_placeholder)
-            .setProgressBarImage(R.drawable.image_placeholder)
-            .setPlaceholderImage(R.drawable.image_placeholder)
+        .newInstance(activity.resources)
+        .setFailureImage(R.drawable.image_placeholder)
+        .setProgressBarImage(R.drawable.image_placeholder)
+        .setPlaceholderImage(R.drawable.image_placeholder)
 
     ImageViewer.Builder(activity, itemsImage)
-            .setStartPosition(pos)
-            .hideStatusBar(false)
-            .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
-            .show()
+        .setStartPosition(pos)
+        .hideStatusBar(false)
+        .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
+        .show()
 }
 
 fun placePicker(fragment: Fragment?, activityMain: Activity) {
@@ -429,9 +431,9 @@ fun placePicker(fragment: Fragment?, activityMain: Activity) {
         activityMain
 
     val fields =
-            listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
+        listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
     val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
-            .build(activity)
+        .build(activity)
 
     if (activityMain.packageName.equals(BuildConfig.APPLICATION_ID)) {
         if (fragment == null)
@@ -443,9 +445,9 @@ fun placePicker(fragment: Fragment?, activityMain: Activity) {
 
 fun getPathUri(context: Context, uri: Uri): String? {
     val projection =
-            arrayOf(MediaStore.Images.Media.DATA)
+        arrayOf(MediaStore.Images.Media.DATA)
     val cursor = context.contentResolver.query(uri, projection, null, null, null)
-            ?: return ""
+        ?: return ""
     val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
     cursor.moveToFirst()
     val result = cursor.getString(column_index)
@@ -454,37 +456,47 @@ fun getPathUri(context: Context, uri: Uri): String? {
 }
 
 fun setAcceptTerms(activity: Activity): SpannableString {
-    val termText=  if (BuildConfig.FLAVOR=="taradoc"){
+    val termText = if (BuildConfig.FLAVOR == "taradoc") {
         activity.getString(R.string.terms2)
-    }else
+    } else
         activity.getString(R.string.terms)
 
-    val term = String.format("%s%s %s %s", activity.getString(R.string.you_agree_to_our_terms),
-            termText, activity.getString(R.string.and), activity.getString(R.string.privacy))
+    val term = String.format(
+        "%s%s %s %s", activity.getString(R.string.you_agree_to_our_terms),
+        termText, activity.getString(R.string.and), activity.getString(R.string.privacy)
+    )
 
     val string = SpannableString.valueOf(term)
     /*Color*/
-    string.setSpan(ForegroundColorSpan(ContextCompat.getColor(activity, R.color.colorPrimary)),
-            term.indexOf(termText), term.indexOf(" " + activity.getString(R.string.and) + " "), 0)
-    string.setSpan(ForegroundColorSpan(ContextCompat.getColor(activity, R.color.colorPrimary)),
-            term.indexOf(activity.getString(R.string.privacy)), term.length, 0)
+    string.setSpan(
+        ForegroundColorSpan(ContextCompat.getColor(activity, R.color.colorPrimary)),
+        term.indexOf(termText), term.indexOf(" " + activity.getString(R.string.and) + " "), 0
+    )
+    string.setSpan(
+        ForegroundColorSpan(ContextCompat.getColor(activity, R.color.colorPrimary)),
+        term.indexOf(activity.getString(R.string.privacy)), term.length, 0
+    )
     /*Bold*/
 //    string.setSpan(StyleSpan(Typeface.BOLD), term.indexOf(termText),
 //            term.indexOf(" " + activity.getString(R.string.and) + " "), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 //    string.setSpan(StyleSpan(Typeface.BOLD), term.indexOf(activity.getString(R.string.privacy)),
 //            term.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
     /*Click*/
-    string.setSpan(Terms(), term.indexOf(termText),
-            term.indexOf(" " + activity.getString(R.string.and) + " "), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-    string.setSpan(Privacy(), term.indexOf(activity.getString(R.string.privacy)),
-            term.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    string.setSpan(
+        Terms(), term.indexOf(termText),
+        term.indexOf(" " + activity.getString(R.string.and) + " "), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+    string.setSpan(
+        Privacy(), term.indexOf(activity.getString(R.string.privacy)),
+        term.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
 
     return string
 }
 
 fun openPageLink(context: Context, name: String?, link: String?, app_type: String?) {
     val intentLink = Intent(context, WebViewActivity::class.java)
-            .putExtra(WebViewActivity.LINK_TITLE, name)
+        .putExtra(WebViewActivity.LINK_TITLE, name)
 
     if (app_type != null)
         intentLink.putExtra(WebViewActivity.LINK_URL, "$link?app_type=$app_type")
@@ -500,8 +512,10 @@ class Privacy : ClickableSpan() {
         //tv.context.longToast("Clicked")
         appClientDetails.pages?.forEach {
             if (it.slug == PageLink.PRIVACY_POLICY) {
-                openPageLink(tv.context, tv.context.getString(R.string.privacy),
-                        it.slug, it.app_type)
+                openPageLink(
+                    tv.context, tv.context.getString(R.string.privacy),
+                    it.slug, it.app_type
+                )
             }
         }
     }
@@ -517,12 +531,16 @@ class Terms : ClickableSpan() {
         //viewPage(PageLink.TERMS)
         appClientDetails.pages?.forEach {
             if (it.slug == PageLink.TERMS_CONDITIONS) {
-                if(BuildConfig.FLAVOR=="taradoc")
-                    openPageLink(tv.context, tv.context.getString(R.string.terms2),
-                        it.slug, it.app_type)
+                if (BuildConfig.FLAVOR == "taradoc")
+                    openPageLink(
+                        tv.context, tv.context.getString(R.string.terms2),
+                        it.slug, it.app_type
+                    )
                 else
-                    openPageLink(tv.context, tv.context.getString(R.string.terms_and_conditions),
-                        it.slug, it.app_type)
+                    openPageLink(
+                        tv.context, tv.context.getString(R.string.terms_and_conditions),
+                        it.slug, it.app_type
+                    )
             }
         }
     }
@@ -546,7 +564,7 @@ fun getAddress(place: Place): String {
     return finalAddress
 }
 
-fun getCity(place: Place,context: Context): String {
+fun getCity(place: Place, context: Context): String {
     var finalAddress: String = ""
 
     try {
@@ -556,7 +574,7 @@ fun getCity(place: Place,context: Context): String {
         addresses = geocoder.getFromLocation(place.latLng!!.latitude, place.latLng!!.longitude, 1) as List<Address>
         finalAddress = addresses[0].locality
 
-    }catch (e: Exception){
+    } catch (e: Exception) {
 
     }
     return finalAddress
@@ -574,7 +592,7 @@ fun shareDeepLink(deepLink: String, activity: Activity, userData: UserData?) {
     progressDialog.setLoading(true)
 
     val longLink = "${Config.baseURL}${"https://hakeemcare.page.link/FgzB"}"
-    Log.e("TAG", "deeplincheck: "+longLink )
+    Log.e("TAG", "deeplincheck: " + longLink)
 
     val shortLinkTask = Firebase.dynamicLinks.shortLinkAsync {
         link = Uri.parse(longLink)
@@ -642,12 +660,13 @@ fun shareDeepLink1(deepLink: String, activity: Activity, userData: UserData?) {
             else
                 Uri.parse(getImageBaseUrl(ImageFolder.UPLOADS, userData.profile_image ?: ""))
         }
+
         DeepLink.INVITE -> {
 
 //            longLink = "${Config.baseURL}${deepLink}"
             longLink = "https://hakeemcare.page.link/FgzB"
 
-            Log.e("TAG", "shareDeepLink: "+longLink )
+            Log.e("TAG", "shareDeepLink: " + longLink)
 
             titleM = activity.getString(R.string.app_name)
             descriptionM = activity.getString(R.string.invite_text)
@@ -745,6 +764,7 @@ fun askForOption(fragment: Fragment?, activity: Activity, view: View) {
             R.id.item_image -> {
                 selectImages(fragment, activity)
             }
+
             R.id.item_pdf -> {
                 selectDocument(fragment, activity)
             }
@@ -762,17 +782,17 @@ fun openCamera(activity: Activity, fragment: Fragment?) {
 
 fun selectImages(fragment: Fragment?, activity: Activity) {
     val filePickerBuilder = FilePickerBuilder.instance
-            .setMaxCount(1)
-            .setActivityTheme(R.style.LibAppTheme)
-            .setActivityTitle(activity.getString(R.string.select_image))
-            .enableVideoPicker(false)
-            .enableCameraSupport(false)
-            .showGifs(false)
-            .showFolderView(true)
-            .enableSelectAll(false)
-            .enableImagePicker(true)
-            .setCameraPlaceholder(R.drawable.ic_camera)
-            .withOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+        .setMaxCount(1)
+        .setActivityTheme(R.style.LibAppTheme)
+        .setActivityTitle(activity.getString(R.string.select_image))
+        .enableVideoPicker(false)
+        .enableCameraSupport(false)
+        .showGifs(false)
+        .showFolderView(true)
+        .enableSelectAll(false)
+        .enableImagePicker(true)
+        .setCameraPlaceholder(R.drawable.ic_camera)
+        .withOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
 
     if (fragment != null)
         filePickerBuilder.pickPhoto(fragment, AppRequestCode.IMAGE_PICKER)
@@ -784,14 +804,14 @@ fun selectDocument(fragment: Fragment?, activity: Activity) {
     val pdfs = arrayOf("pdf")
 
     val filePickerBuilder = FilePickerBuilder.Companion.instance
-            .setMaxCount(1)
-            .setActivityTheme(R.style.LibAppTheme)
-            .sortDocumentsBy(SortingTypes.NAME)
-            .setActivityTitle(activity.getString(R.string.select_document))
-            .addFileSupport(activity.getString(R.string.pdf), pdfs, R.drawable.ic_pdf)
-            .showFolderView(true)
-            .enableDocSupport(false)
-            .withOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+        .setMaxCount(1)
+        .setActivityTheme(R.style.LibAppTheme)
+        .sortDocumentsBy(SortingTypes.NAME)
+        .setActivityTitle(activity.getString(R.string.select_document))
+        .addFileSupport(activity.getString(R.string.pdf), pdfs, R.drawable.ic_pdf)
+        .showFolderView(true)
+        .enableDocSupport(false)
+        .withOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
 
     if (fragment != null)
         filePickerBuilder.pickFile(fragment, AppRequestCode.DOC_PICKER)
@@ -852,9 +872,11 @@ fun openPdf(activity: Activity, link: String, prescription: Boolean = false) {
     Log.e("PDG======", link)
 
     if (prescription)
-        activity.startActivity(Intent(activity, WebViewActivity::class.java)
+        activity.startActivity(
+            Intent(activity, WebViewActivity::class.java)
                 .putExtra(WebViewActivity.LINK_TITLE, activity.getString(R.string.prescription_details))
-                .putExtra(WebViewActivity.PDF_LINK, link))
+                .putExtra(WebViewActivity.PDF_LINK, link)
+        )
     else {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
         if (activity.packageName.equals(BuildConfig.APPLICATION_ID))
@@ -868,5 +890,23 @@ fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescri
         val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
         draw(Canvas(bitmap))
         BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+}
+
+fun unicodeStringConvertion(unicodeString: String?): String? {
+//    val unicodeString = "\\u0645\\u062d\\u0627\\u062f\\u062b\\u0629"
+    val originalString = unicodeString
+        ?.replace("\\u", "")
+        ?.chunked(4)
+        ?.map { it.toInt(16).toChar() }
+        ?.joinToString("")
+
+    val regex = originalString?.toRegex()
+
+    return unicodeString?.let {
+        regex?.replace(it) { matchResult ->
+            val hexCode = matchResult.groupValues[1]
+            String(Character.toChars(hexCode.toInt(16)))
+        }
     }
 }

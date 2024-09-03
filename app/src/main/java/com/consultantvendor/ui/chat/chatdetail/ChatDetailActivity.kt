@@ -154,9 +154,7 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
 
     private var lan  = ""
 
-    var fileToUpload1 : File?=null
-
-
+    private var fileToUpload1 : File?=null
 
     var isStopRight = false
     var isStopLeft = false
@@ -410,9 +408,9 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
         if (show) {
             binding.tvCompleteChat.visible()
             binding.rlChatInput.visible()
-
-            binding.tvTimer.visible()
-            startTimer(((data?.currentTimer ?: 0) * 1000))
+//
+//            binding.tvTimer.visible()
+//            startTimer(((data?.currentTimer ?: 0) * 1000))
         } else {
             binding.tvCompleteChat.gone()
             binding.rlChatInput.gone()

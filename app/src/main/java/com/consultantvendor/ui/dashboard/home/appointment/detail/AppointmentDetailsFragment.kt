@@ -28,10 +28,10 @@ import com.consultantvendor.data.models.responses.Extra_payment
 import com.consultantvendor.data.models.responses.Filter
 import com.consultantvendor.data.models.responses.Page
 import com.consultantvendor.data.models.responses.Request
-import com.consultantvendor.data.models.responses.chat.ChatList
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.PushType
 import com.consultantvendor.data.network.responseUtil.Status
+import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.FragmentAppointmentDetailsBinding
 import com.consultantvendor.ui.adapter.CheckItemAdapter
 import com.consultantvendor.ui.adapter.ImagesDocumentAdapter
@@ -61,6 +61,10 @@ class AppointmentDetailsFragment : DaggerFragment() {
 
     @Inject
     lateinit var appSocket: AppSocket
+
+
+    @Inject
+    lateinit var userRepository: UserRepository
 
     private lateinit var binding: FragmentAppointmentDetailsBinding
 
@@ -219,10 +223,18 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvDistanceV.text = request.extra_detail?.distance ?: ""
         binding.tvLocation.text = request.extra_detail?.service_address
 
-        if (request.service_type == "Chat")
+        if (request.service_type == getString(R.string.chat)) {
             binding.tvChat.visible()
+        }
+        else if (userRepository.getUserLanguage()=="ar") {
+
+            if (request.main_service_type=="chat")
+                binding.tvChat.visible()
+        }
         else
+        {
             binding.tvChat.gone()
+        }
 
         if (request.insurance_name?.isNotEmpty()!! || request.insurance_number?.isNotEmpty()!!) {
             binding.tvInsuranceName.visible()
