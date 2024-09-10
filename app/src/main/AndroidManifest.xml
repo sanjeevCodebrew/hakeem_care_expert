@@ -65,7 +65,8 @@
 
                 <data
                     android:host="@string/deep_link_url"
-                    android:scheme="https" />
+                    android:scheme="https"
+                    android:pathPrefix="/offerPackage"/>
             </intent-filter>
 
         </activity>
