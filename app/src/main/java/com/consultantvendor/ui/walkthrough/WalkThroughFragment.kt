@@ -47,7 +47,8 @@ class WalkThroughFragment : DaggerFragment() {
 
             initialise()
             listeners()
-            setBanners()
+//            setBanners()
+            doneWalkThrough()
         }
         return rootView
     }
