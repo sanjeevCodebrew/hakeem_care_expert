@@ -678,4 +678,6 @@
     <string name="spanish">español</string>
     <string name="file_format_not_supported">This file format is not supported</string>
     <string name="conversation">Conversation</string>
+    <string name="gallary">Gallary</string>
+    <string name="upload_document">Upload Document</string>
 </resources>

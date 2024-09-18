@@ -13,6 +13,7 @@ import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.ConnectivityManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.MediaStore
@@ -56,6 +57,7 @@ import com.consultantvendor.utils.AppSocket.MessageStatus.Companion.NOT_SENT
 import com.consultantvendor.utils.AppSocket.MessageStatus.Companion.SEEN
 import com.consultantvendor.utils.AppSocket.MessageStatus.Companion.SENT
 import com.consultantvendor.utils.PermissionUtils
+import com.consultantvendor.utils.dialogs.BasePhotoUploadActivity
 import com.consultantvendor.utils.dialogs.FileUriUtils
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import com.consultantvendor.utils.dialogs.ProgressDialogImage
@@ -86,7 +88,7 @@ import kotlin.concurrent.schedule
 
 
 @RuntimePermissions
-class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceiver {
+class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiver {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -159,6 +161,36 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
     var isStopRight = false
     var isStopLeft = false
 
+    private lateinit var permissionUtil: PermissionUtil
+
+    override fun getVideo(uri: String?, i: Int) {
+
+    }
+    override fun getPdf(uri: String?) {
+        val fileToUpload = File(uri)
+
+        val docImage = DocImage()
+        docImage.type = DocType.PDF
+        docImage.imageFile = fileToUpload
+        uploadFileOnServer(docImage)
+
+    }
+
+    override fun getImage(uri: String?, data: Uri) {
+
+        val fileToUpload = File(uri)
+
+        val docImage = DocImage()
+        docImage.type = DocType.IMAGE
+        docImage.imageFile = fileToUpload
+
+        uploadFileOnServer(docImage)
+    }
+
+    override fun getMultipleImage(uri: ArrayList<String>) {
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //LocaleHelper.setLocale(this, getUserLanguage())
@@ -173,6 +205,7 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
         checkNotSentMessage()
     }
 
+
     /*override fun attachBaseContext(base: Context?) {
         val locale = Locale(getUserLanguage())
         val contxt = ContextWrapper.wrap(base,locale)
@@ -180,6 +213,10 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
     }*/
 
     private fun initialise() {
+
+        permissionUtil = PermissionUtil(this)
+        permissionUtil.registerLauncher(this)
+
         audioFileName = "${externalCacheDir?.absolutePath}/${System.currentTimeMillis()}_audio.wav"
         LocaleHelper.setLocale(this, userRepository.getUserLanguage(), prefsManager)
 
@@ -514,7 +551,7 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
                 binding.rlChatInput.layoutDirection = View.LAYOUT_DIRECTION_LTR
             }
 
-        binding.recordButton.setOnLongClickListener {
+      /*  binding.recordButton.setOnLongClickListener {
             if (checkIfPermission()) {
                 binding.recordButton.isListenForRecord = true
                 binding.llChat.invisible()
@@ -523,6 +560,40 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
             } else {
                 binding.recordButton.isListenForRecord = false
                 getAudioWithPermissionCheck()
+                false
+            }
+        }*/
+
+        binding.recordButton.setOnLongClickListener {
+            if (checkIfPermission()) {
+                binding.recordButton.isListenForRecord = true
+                binding.llChat.invisible()
+                binding.recordButton.setImageDrawable(getDrawable(R.drawable.ic_mic))
+                true
+            }
+            else
+            {
+                binding.recordButton.isListenForRecord = false
+                val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    arrayOf(Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.RECORD_AUDIO)
+                } else {
+                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
+                }
+
+                permissionUtil.checkPermissions(
+                    permissions = permissions,
+                    onGranted = {
+                        binding.recordButton.isListenForRecord = true
+                    },
+                    onDenied = {
+                        // Handle the case where permissions are denied but not permanently
+                    },
+                    onPermanentlyDenied = {
+                        // Optionally handle additional logic here after showing the settings dialog
+
+                    }
+                )
+
                 false
             }
         }
@@ -582,7 +653,9 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
 
         binding.btnCamera.setOnClickListener {
             binding.btnCamera.hideKeyboard()
-            getStorageWithPermissionCheck()
+//            getStorageWithPermissionCheck()
+
+            showImageDialog(false)
 
         }
 
@@ -864,7 +937,7 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+  /*  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
@@ -896,7 +969,7 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
                 }
 
                 AppRequestCode.DOC_PICKER -> {
-               /*     val docPaths = ArrayList<Uri>()
+               *//*     val docPaths = ArrayList<Uri>()
                     docPaths.addAll(data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
                             ?: emptyList())
 
@@ -906,12 +979,14 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
                     docImage.type = DocType.PDF
                     docImage.imageFile = fileToUpload
 
-                    uploadFileOnServer(docImage)*/
+                    uploadFileOnServer(docImage)*//*
 
                 }
             }
         }
-    }
+    }*/
+
+
 
     fun getImageUri1(inContext: Context, inImage: Bitmap): Uri? {
         val bytes = ByteArrayOutputStream()
@@ -1173,11 +1248,38 @@ class ChatDetailActivity : DaggerAppCompatActivity(), AppSocket.OnMessageReceive
 
     }
 
-    private fun checkIfPermission(): Boolean {
+/*    private fun checkIfPermission(): Boolean {
         return (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) ==
                 PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
                 PackageManager.PERMISSION_GRANTED)
+    }*/
+
+    private fun checkIfPermission(): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        {
+            // For Android 13 (API level 33) and above
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            ) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.READ_MEDIA_AUDIO
+                    ) == PackageManager.PERMISSION_GRANTED
+        }
+        else
+        {
+            // For Android 12 (API level 32) and below
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            ) == PackageManager.PERMISSION_GRANTED &&
+                    ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    ) == PackageManager.PERMISSION_GRANTED
+        }
     }
 
     fun askForOption1(fragment: Fragment?, activity: Activity, view: View) {
