@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -101,6 +102,20 @@ class HomeActivity : DaggerAppCompatActivity() {
 
         LocaleHelper.setLocale(this, userRepository.getUserLanguage(), prefsManager)
         appSocket.init()
+
+        // Android 13 post notification permission
+
+        val permissionState =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+        // If the permission is not granted, request it.
+        // If the permission is not granted, request it.
+        if (permissionState == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                1
+            )
+        }
 
         Log.d("AccessToken", userRepository.getUser()?.token ?: "")
 
