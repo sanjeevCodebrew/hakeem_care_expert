@@ -12,6 +12,7 @@ import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
@@ -80,6 +81,8 @@ class CallingActivity : DaggerAppCompatActivity() {
         if (intent?.action == Constants.ACTION_ACCEPT) {
 
             callInvite = intent.getSerializableExtra(Constants.INCOMING_CALL_INVITE) as PushData
+
+            Log.e("TAG", "onNewIntentEx: "+callInvite )
 
             callId = callInvite.call_id
 

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -106,7 +107,9 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
             userInfo.displayName = userData?.name
             userInfo.avatar = URL(getImageBaseUrl(ImageFolder.UPLOADS, userData?.profile_image))
 
-            val setAudioOnly = jitsiClass?.callType?.toLowerCase() == ConsultType.AUDIO_CALL
+            val setAudioOnly = jitsiClass?.callType?.toLowerCase() == ConsultType.AUDIO_CALL || jitsiClass?.callType?.toLowerCase() == ConsultType.CALL
+
+            Log.e("TAG", "intialiseJitsi: "+jitsiClass?.callType?.toLowerCase() )
 
             val options = JitsiMeetConferenceOptions.Builder()
                 .setUserInfo(userInfo)

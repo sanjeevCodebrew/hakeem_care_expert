@@ -58,6 +58,7 @@ object ConsultType {
     const val CLINIC_VISIT = "clinic_visit"
     const val OTHER = "other"
     const val EMERGENCY_CONSULTATION = "Emergency"
+    const val CALL = "Call"
 }
 
 object RequestStatus {
