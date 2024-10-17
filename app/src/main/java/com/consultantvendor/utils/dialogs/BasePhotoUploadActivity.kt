@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.ContentUris
+import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.database.Cursor
@@ -24,8 +25,11 @@ import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.provider.Settings
 import android.util.Log
+import android.view.View
 import android.view.Window
 import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
@@ -33,6 +37,7 @@ import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
+import com.consultantvendor.BuildConfig
 import com.consultantvendor.databinding.DialogProfileBinding
 import com.consultantvendor.utils.PermissionUtil
 import dagger.android.support.DaggerAppCompatActivity
@@ -41,7 +46,10 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 abstract class BasePhotoUploadActivity : DaggerAppCompatActivity() {
 
@@ -61,7 +69,6 @@ abstract class BasePhotoUploadActivity : DaggerAppCompatActivity() {
         permissionUtil = PermissionUtil(this)
         permissionUtil.registerLauncher(this)
     }
-
 
 
     fun showImageDialog(b: Boolean) {
@@ -138,7 +145,8 @@ abstract class BasePhotoUploadActivity : DaggerAppCompatActivity() {
                 ),
                 onGranted = {
                     if (!is_video) {
-                        startCameraIntent(this)
+                        /*     startCameraIntent(this)*/
+                        openCameraChat()
                     } else {
                         startCameraIntentVideo(this)
                     }
@@ -186,6 +194,32 @@ abstract class BasePhotoUploadActivity : DaggerAppCompatActivity() {
             dialog.dismiss()
         }
         dialog.show()
+    }
+
+    var imageUri : Uri?= null
+
+    private var cameraActivityResultLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult(), ActivityResultCallback {
+                if (it.resultCode === RESULT_OK) {
+
+
+                    val realPath  = getRealPath(imageUri?:Uri.EMPTY,this)
+                    getImage(realPath, Uri.EMPTY)
+                }
+
+
+            }
+        )
+
+    private fun openCameraChat() {
+        val values = ContentValues()
+        values.put(MediaStore.Images.Media.TITLE, "New Picture")
+        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera")
+        imageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+        cameraActivityResultLauncher.launch(cameraIntent)
     }
 
 
@@ -349,7 +383,6 @@ abstract class BasePhotoUploadActivity : DaggerAppCompatActivity() {
     abstract fun getVideo(uri: String?, i: Int)
 
 
-
     open fun openPdf() {
         var chooseFileIntent = Intent(Intent.ACTION_GET_CONTENT)
         chooseFileIntent.type = "application/pdf"
@@ -358,10 +391,6 @@ abstract class BasePhotoUploadActivity : DaggerAppCompatActivity() {
         chooseFileIntent = Intent.createChooser(chooseFileIntent, "Choose a file")
         startActivityForResult(chooseFileIntent, 3)
     }
-
-
-
-
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -406,7 +435,7 @@ abstract class BasePhotoUploadActivity : DaggerAppCompatActivity() {
                 ), this
             )!!
             getImage(
-                file, Uri.fromFile(
+                mPicturePath, Uri.fromFile(
                     saveImageToExternalStorage(
                         getFile(mPicturePath, this)!!
                     )
@@ -439,7 +468,7 @@ abstract class BasePhotoUploadActivity : DaggerAppCompatActivity() {
 
 // Process each URI and maintain both lists
             uris.forEach { uri ->
-                val realPath = getRealPath(uri,this)
+                val realPath = getRealPath(uri, this)
                 if (realPath != null) {
                     val file = File(realPath)
                     if (file.exists()) {
@@ -553,15 +582,15 @@ abstract class BasePhotoUploadActivity : DaggerAppCompatActivity() {
                     ""
             val LOCAL_STORAGE_BASE_PATH_FOR_POSTED_IMAGES: String =
                 LOCAL_STORAGE_BASE_PATH_FOR_MEDIA + "/User/Images/"
-            f = setUpImageFile(LOCAL_STORAGE_BASE_PATH_FOR_POSTED_IMAGES)
-            mPicturePath = f!!.absolutePath
+            f = createImageFile()
+            mPicturePath = f.absolutePath
             /* add provider in xml and
              * manifest then add following code for Nougat devices
              * to overcome file uri exposed app crash
              */if (isNougatDevice()) {
                 takePictureIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
                 val contentUri: Uri = FileProvider.getUriForFile(
-                    this, "com.hakeemuser", f
+                    this, "${packageName}.provider", f
                 )
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, contentUri)
             } else {
@@ -573,6 +602,41 @@ abstract class BasePhotoUploadActivity : DaggerAppCompatActivity() {
             mPicturePath = null
         }
         startActivityForResult(takePictureIntent, 2)
+    }
+
+    private fun createImageFile(): File {
+// Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        // Get the directory based on the Android version
+        val storageDir: File? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // For Android 10 and above (Scoped Storage)
+            getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        } else {
+            // For Android 9 and below (Legacy Storage)
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        }
+
+        // For Android 9 and below, we need to manually delete files and ensure directory exists
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            storageDir?.let {
+                if (it.exists() && it.isDirectory) {
+                    it.listFiles()?.forEach { file ->
+                        file.delete()
+                    }
+                }
+
+                // Ensure the directory exists
+                if (!it.exists()) {
+                    it.mkdirs()
+                }
+            }
+        }
+
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        )
     }
 
     private fun showAlert() {
@@ -872,9 +936,6 @@ abstract class BasePhotoUploadActivity : DaggerAppCompatActivity() {
                 }
             }
         }
-
-
-
 
 
 }
