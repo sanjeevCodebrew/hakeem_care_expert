@@ -42,6 +42,7 @@
     <string name="enter_otp">Please enter otp</string>
     <string name="location">Location</string>
     <string name="chat">Chat</string>
+    <string name="continue_chat">Continue Chat</string>
 
     <string name="patients">Patients</string>
     <string name="experience">Experience</string>

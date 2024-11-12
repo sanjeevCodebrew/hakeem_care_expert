@@ -151,6 +151,7 @@ fun getCountFormat(digits: Int, count: Int?): String {
             count.toString()
         else
             String.format(Locale.ENGLISH, "%d+", 9999)
+
     }
 }
 

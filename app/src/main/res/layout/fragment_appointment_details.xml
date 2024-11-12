@@ -513,7 +513,7 @@
                     android:fontFamily="@font/campton_semibold"
                     android:gravity="center"
                     android:paddingHorizontal="@dimen/dp_20"
-                    android:text="@string/chat"
+                    android:text="@string/continue_chat"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/sp_16"
                     android:visibility="gone"

@@ -110,6 +110,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
 
         binding.tvMedicalHistory.hideShowView(BuildConfig.FLAVOR == "homeDoctor")
 
+
     }
 
 
@@ -223,11 +224,10 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvDistanceV.text = request.extra_detail?.distance ?: ""
         binding.tvLocation.text = request.extra_detail?.service_address
 
-        if (request.service_type == getString(R.string.chat)) {
+        if (request.main_service_type=="chat") {
             binding.tvChat.visible()
         }
         else if (userRepository.getUserLanguage()=="ar") {
-
             if (request.main_service_type=="chat")
                 binding.tvChat.visible()
         }
@@ -396,17 +396,13 @@ class AppointmentDetailsFragment : DaggerFragment() {
             }
             CallAction.CANCEL_SERVICE -> {
                 binding.tvStatus.text = getString(R.string.canceled_service)
-                binding.tvStatus.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.colorCancel
-                    )
-                )
+                binding.tvStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorCancel))
                 binding.tvCancel.gone()
                 binding.tvAccept.gone()
                 binding.tvCall.gone()
             }
-            else -> {
+            else ->
+                {
                 binding.tvStatus.text = getString(R.string.new_request)
             }
         }
@@ -428,6 +424,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.rvSymptomListing.adapter = adapterSymptom
 
         binding.tvSymptom.hideShowView(binding.tvSymptomDec.text.isNotEmpty() || items.isNotEmpty())
+
 
         /*CarePlan*/
         val itemsCarePlan = ArrayList<Filter>()
@@ -475,7 +472,10 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 override fun onCancelButtonClicked() {
                 }
             }).show()
+
+
     }
+
 
     private fun extraPayment() {
         if (request.extra_payment == null) {
@@ -940,3 +940,5 @@ class AppointmentDetailsFragment : DaggerFragment() {
         const val MEDICAL_HISTORY = "MEDICAL_HISTORY"
     }
 }
+
+
