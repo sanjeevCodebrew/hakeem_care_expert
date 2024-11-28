@@ -71,6 +71,7 @@
     <string name="phone_number">Phone Number</string>
     <string name="moh_number">Moh Number</string>
     <string name="dob">DOB</string>
+    <string name="dob_1">DOB: </string>
     <string name="we_need_your_email_password">We need your Email &amp; Password to identify you.</string>
     <string name="didn_t_have_an_account">Didn’t have an account?</string>
     <string name="forgot_password">Forgot Password</string>
@@ -348,6 +349,8 @@
 
     <!--E-Prescription-->
     <string name="appointment">Appointment</string>
+    <string name="doctor_name">Doctor Name :</string>
+    <string name="diagnosis">Diagnosis:</string>
     <string name="add_prescription">+ Prescription</string>
     <string name="add_manual_prescription">Add Manual Prescription</string>
     <string name="record_details">Record Details</string>
@@ -356,6 +359,7 @@
     <string name="add_digital_prescription">Add Digital Prescription</string>
     <string name="prescription_notes">Prescription Notes</string>
     <string name="add_notes">Add notes</string>
+    <string name="add_diagnosis">Add Diagnosis</string>
     <string name="medicine_name">Medicine Name</string>
     <string name="prescriptions">Prescriptions</string>
     <string name="duration">Duration</string>
@@ -415,24 +419,85 @@
     </array>
 
     <string name="select">Select</string>
+    <string name="routes">routes</string>
     <string name="tablet">Tablet</string>
     <string name="capsule">Capsule</string>
+    <string name="syrups">Syrups</string>
+    <string name="thin_films">Thin films</string>
+    <string name="powders">Powders</string>
+    <string name="nebulizer">Nebulizer</string>
+    <string name="injection">Injection</string>
+    <string name="creams">Ointments</string>
+    <string name="gels">Gels</string>
+    <string name="emultions">Emultions</string>
+    <string name="lotin">Lotin</string>
+    <string name="inhaler">Inhaler</string>
+    <string name="nasal_spray">Nasal spray</string>
+    <string name="eye_drops">Eye drops</string>
+    <string name="ear_drops">Ear drops</string>
+    <string name="supposetorie">Suppositories</string>
+    <string name="infusion">Infusion</string>
+    <string name="chewable">Chewable</string>
+    <string name="suspension">suspension</string>
     <array name="dose_type">
         <item>@string/select</item>
         <item>@string/tablet</item>
         <item>@string/capsule</item>
+        <item>@string/syrups</item>
+        <item>@string/thin_films</item>
+        <item>@string/powders</item>
+        <item>@string/nebulizer</item>
+        <item>@string/injection</item>
+        <item>@string/creams</item>
+        <item>@string/gels</item>
+        <item>@string/emultions</item>
+        <item>@string/lotin</item>
+        <item>@string/inhaler</item>
+        <item>@string/nasal_spray</item>
+        <item>@string/eye_drops</item>
+        <item>@string/ear_drops</item>
+        <item>@string/supposetorie</item>
+        <item>@string/infusion</item>
+        <item>@string/chewable</item>
+        <item>@string/suspension</item>
     </array>
 
-    <string name="one">One</string>
-    <string name="two">Two</string>
-    <string name="three">Three</string>
-    <string name="four">Four</string>
+    <string name="mg">Mg</string>
+    <string name="g_1">G</string>
+    <string name="mi">MI</string>
+    <string name="iu">IU</string>
     <array name="doases">
         <item>@string/select</item>
-        <item>@string/one</item>
-        <item>@string/two</item>
-        <item>@string/three</item>
-        <item>@string/four</item>
+        <item>@string/mg</item>
+        <item>@string/g_1</item>
+        <item>@string/mi</item>
+        <item>@string/iu</item>
+    </array>
+
+    <string name="oral">Oral</string>
+    <string name="sublingual">sublingual or buccal</string>
+    <string name="rectal_route">rectal route</string>
+    <string name="intravenous_injection">intravenous injection</string>
+    <string name="intramusculae">intramuscular</string>
+    <string name="subcutaneous">subcutaneous</string>
+    <string name="intrarlerial">Intrarlerial</string>
+    <string name="transnasal">Transnasal</string>
+    <string name="inhaled">Inhaled</string>
+    <string name="veginal_route_transdermal">veginal route transdermal</string>
+    <string name="intraosseous">Intraosseous</string>
+    <array name="routes">
+        <item>@string/routes</item>
+        <item>@string/oral</item>
+        <item>@string/sublingual</item>
+        <item>@string/rectal_route</item>
+        <item>@string/intravenous_injection</item>
+        <item>@string/intramusculae</item>
+        <item>@string/subcutaneous</item>
+        <item>@string/intrarlerial</item>
+        <item>@string/transnasal</item>
+        <item>@string/inhaled</item>
+        <item>@string/veginal_route_transdermal</item>
+        <item>@string/intraosseous</item>
     </array>
 
 
@@ -476,6 +541,9 @@
     <string name="login_with">Login with</string>
 
     <string name="gender">Gender</string>
+    <string name="gender_1">Gender :</string>
+    <string name="id">ID:</string>
+    <string name="weight_1">Weight:</string>
     <string name="select_gender">Select Gender</string>
     <string name="sign_up_as">Sign Up As</string>
     <string name="choose_language">Choose Language</string>

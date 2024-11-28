@@ -8,6 +8,8 @@ class Profile :Serializable{
     var avatar: Any? = null
     var title:String?=null
     var dob: String? = null
+    var gender: String? = null
+    var weight: String? = null
     var working_since: String? = null
     var qualification: Any? = null
     var rating: Any? = null

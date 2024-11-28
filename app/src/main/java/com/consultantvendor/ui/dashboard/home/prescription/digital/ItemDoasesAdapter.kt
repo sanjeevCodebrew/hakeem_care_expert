@@ -55,6 +55,20 @@ class ItemDoasesAdapter(private val fragment: DigitalPrescriptionFragment, priva
                 }
             }
 
+
+            binding.spnroute.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+                    if (position == 0)
+                        items[adapterPosition].routes = ""
+                    else
+                        items[adapterPosition].routes = binding.spnroute.selectedItem.toString()
+                }
+
+                override fun onNothingSelected(parentView: AdapterView<*>?) {
+                    // your code here
+                }
+            }
+
             binding.tvBreakfastSave.setOnClickListener {
                 binding.group.hideShowView(false)
             }

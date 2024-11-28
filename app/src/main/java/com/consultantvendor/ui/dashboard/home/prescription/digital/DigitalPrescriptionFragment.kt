@@ -74,21 +74,31 @@ class DigitalPrescriptionFragment : DaggerFragment() {
         progressDialog = ProgressDialog(requireActivity())
 
         editTextScroll(binding.etPrescriptionNotes)
+        editTextScroll(binding.etNotes)
         request = requireActivity().intent.getSerializableExtra(EXTRA_REQUEST_ID) as Request
 
         binding.tvName.text = request?.from_user?.name
+        binding.tvMobileNumber.text = request?.from_user?.phone
+        binding.tvDob.append(request?.from_user?.profile?.dob)
         binding.tvAge.text = "${getAge(request?.from_user?.profile?.dob)} ${getString(R.string.years_old)}"
+        binding.tvGender.append(request?.from_user?.profile?.gender)
+        binding.tvId.append(request?.id)
+     /*   binding.tvWeight.append(request?.from_user?.profile?.weight)*/
+
         loadImage(binding.ivPic, request?.from_user?.profile_image,
                 R.drawable.ic_profile_placeholder)
 
         binding.tvAppointmentV.text = "${DateUtils.dateTimeFormatFromUTC(DateFormat.MON_DATE_YEAR, request?.bookingDateUTC)} · " +
                 "${DateUtils.dateTimeFormatFromUTC(DateFormat.TIME_FORMAT, request?.bookingDateUTC)}"
+
+        binding.tvDoctorName.append(request?.to_user?.name)
     }
 
     private fun setEditPrescriptionData() {
         if (request?.pre_scription != null) {
             val prescription = request?.pre_scription
             binding.etPrescriptionNotes.setText(prescription?.pre_scription_notes)
+            binding.etNotes.setText(prescription?.pre_scription_notes)
 
             itemPrescription.clear()
             itemPrescription.addAll(prescription?.medicines ?: emptyList())
@@ -178,6 +188,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                                 digitalDose.time = it.time
                                 digitalDose.with = it.with
                                 digitalDose.dose_value = it.dose_value
+                                digitalDose.routes = it.routes
                                 digitalDose.checked = null
 
                                 prescription.dosage_timing?.add(digitalDose)
@@ -232,15 +243,18 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                 itemPrescription.isEmpty() -> {
                     binding.etMedicineName.showSnackBar(getString(R.string.add_digital_prescription))
                 }
-                binding.etPrescriptionNotes.text.toString().trim().isEmpty() -> {
+               /* binding.etPrescriptionNotes.text.toString().trim().isEmpty() -> {
                     binding.tvDosagesType.showSnackBar(getString(R.string.add_notes))
+                }*/
+                binding.etNotes.text.toString().trim().isEmpty() -> {
+                    binding.tvDosagesType.showSnackBar(getString(R.string.add_diagnosis))
                 }
                 isConnectedToInternet(requireContext(), true) -> {
                     addPrescription = AddPrescription()
                     addPrescription?.request_id = request?.id
                     addPrescription?.type = PrescriptionType.DIGITAL
 
-                    addPrescription?.pre_scription_notes = binding.etPrescriptionNotes.text.toString().trim()
+                    addPrescription?.pre_scription_notes = binding.etNotes.text.toString().trim()
                     addPrescription?.pre_scriptions = ArrayList()
                     addPrescription?.pre_scriptions?.addAll(itemPrescription)
 

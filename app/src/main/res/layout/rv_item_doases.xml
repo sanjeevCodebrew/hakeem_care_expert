@@ -25,12 +25,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_16"
+            android:buttonTint="@color/colorPrimary"
             android:drawablePadding="@dimen/dp_16"
-            android:textDirection="locale"
             android:fontFamily="@font/campton_book"
             android:text="@string/breakfast"
             android:textColor="@color/textColor"
-            android:buttonTint="@color/colorPrimary"
+            android:textDirection="locale"
             android:textSize="@dimen/sp_14"
             app:layout_constraintEnd_toEndOf="@id/endGuideLine"
             app:layout_constraintStart_toStartOf="@id/startGuideLine"
@@ -40,15 +40,15 @@
             android:id="@+id/tvBreakfastSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/campton_book"
-            android:padding="@dimen/dp_4"
-            android:text="@string/save"
-            android:visibility="gone"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
+            android:fontFamily="@font/campton_book"
+            android:padding="@dimen/dp_4"
+            android:text="@string/save"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/sp_14"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/endGuideLine"
             app:layout_constraintTop_toTopOf="@+id/cbBreakfast" />
 
@@ -113,24 +113,43 @@
 
         <Spinner
             android:id="@+id/spnDosage"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+
             android:layout_marginTop="@dimen/dp_12"
             android:entries="@array/doases"
             android:fontFamily="@font/campton_medium"
             android:textColor="@color/textColor"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
             android:textSize="@dimen/sp_14"
-            app:layout_constraintEnd_toEndOf="@id/tvWith"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/spnroute"
             app:layout_constraintStart_toStartOf="@id/tvDosage"
             app:layout_constraintTop_toBottomOf="@+id/tvDosage" />
+
+        <Spinner
+            android:id="@+id/spnroute"
+            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+
+            android:entries="@array/routes"
+            android:fontFamily="@font/campton_medium"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_14"
+
+            app:layout_constraintBottom_toBottomOf="@+id/spnDosage"
+            app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+            app:layout_constraintStart_toEndOf="@id/spnDosage"
+            app:layout_constraintTop_toTopOf="@id/spnDosage" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="tvBefore,tvBefore,tvAfter,tvWith,tvDosage,spnDosage" />
+            app:constraint_referenced_ids="tvBefore,tvBefore,tvAfter,tvWith,tvDosage,spnDosage,spnroute" />
 
         <View
             android:layout_width="0dp"

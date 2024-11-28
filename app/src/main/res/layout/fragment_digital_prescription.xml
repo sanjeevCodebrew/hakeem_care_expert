@@ -101,6 +101,37 @@
                     app:layout_constraintTop_toTopOf="@+id/ivPic" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMobileNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_12"
+                    android:layout_marginTop="@dimen/dp_4"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/campton_semibold"
+                    android:maxLines="1"
+                    android:text="@string/moh_number"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintStart_toEndOf="@id/ivPic"
+                    app:layout_constraintTop_toBottomOf="@+id/tvName" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDob"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_12"
+                    android:layout_marginTop="@dimen/dp_4"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/campton_semibold"
+                    android:maxLines="1"
+                    android:text="@string/dob_1"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintStart_toEndOf="@id/ivPic"
+                    app:layout_constraintTop_toBottomOf="@+id/tvMobileNumber" />
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvAge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -112,7 +143,53 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/sp_16"
                     app:layout_constraintStart_toEndOf="@id/ivPic"
-                    app:layout_constraintTop_toBottomOf="@+id/tvName" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvDob" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvGender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:layout_marginEnd="50dp"
+                    android:fontFamily="@font/campton_semibold"
+                    android:maxLines="1"
+                    android:text="@string/gender_1"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintTop_toTopOf="@+id/tvName"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvName"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/campton_semibold"
+                    android:maxLines="1"
+                    android:text="@string/id"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintStart_toStartOf="@id/tvGender"
+                    app:layout_constraintTop_toBottomOf="@+id/tvGender"/>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/campton_semibold"
+                    android:maxLines="1"
+                    android:text="@string/weight_1"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintStart_toStartOf="@id/tvId"
+                    app:layout_constraintTop_toBottomOf="@+id/tvId"/>
+
 
                 <View
                     android:id="@+id/view"
@@ -122,7 +199,7 @@
                     android:background="@color/lineColor"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivPic" />
+                    app:layout_constraintTop_toBottomOf="@id/tvAge" />
 
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -151,6 +228,52 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvAppointment" />
 
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDoctorName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:fontFamily="@font/campton_semibold"
+                    android:text="@string/doctor_name"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAppointmentV" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDiagnosis"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:fontFamily="@font/campton_semibold"
+                    android:text="@string/diagnosis"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDoctorName" />
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etNotes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:background="@drawable/drawable_grey_stroke"
+                    android:fontFamily="@font/campton_book"
+                    android:gravity="start"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:lines="8"
+                    android:maxLength="1000"
+                    android:textDirection="locale"
+                    android:maxLines="8"
+                    android:padding="@dimen/dp_16"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDiagnosis" />
+
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/ilMedicineName"
                     android:layout_width="0dp"
@@ -158,7 +281,7 @@
                     android:layout_marginTop="@dimen/dp_32"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/tvAppointmentV">
+                    app:layout_constraintTop_toBottomOf="@+id/etNotes">
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/etMedicineName"
@@ -330,6 +453,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_32"
                     android:alpha="0.8"
+                    android:visibility="gone"
                     android:fontFamily="@font/campton_medium"
                     android:text="@string/prescription_notes"
                     android:textColor="@color/colorBlack"
@@ -349,6 +473,7 @@
                     android:inputType="textCapSentences|textMultiLine"
                     android:lines="8"
                     android:maxLength="1000"
+                    android:visibility="gone"
                     android:textDirection="locale"
                     android:maxLines="8"
                     android:padding="@dimen/dp_16"

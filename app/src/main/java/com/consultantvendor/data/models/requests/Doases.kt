@@ -7,4 +7,5 @@ class Doases : Serializable {
     var checked: Boolean? = null
     var with: String? = null
     var dose_value: String? = null
+    var routes: String? = null
 }
