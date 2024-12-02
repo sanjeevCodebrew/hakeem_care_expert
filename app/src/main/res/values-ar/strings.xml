@@ -1009,5 +1009,119 @@
 
     <string name="continue_chat">متابعة الدردشة</string>
 
+    <string name="routes">الطرق</string>
+    <string name="syrups">شراب</string>
+    <string name="thin_films">أفلام رقيقة</string>
+    <string name="powders">مساحيق</string>
+    <string name="nebulizer">البخاخات</string>
+    <string name="injection">حقن</string>
+    <string name="oinments">المراهم</string>
+    <string name="creams">الكريمات</string>
+    <string name="gels">المواد الهلامية</string>
+    <string name="emultions">المستحلبات</string>
+    <string name="lotin">اللاتينية</string>
+    <string name="inhaler">جهاز الاستنشاق</string>
+    <string name="nasal_spray">رذاذ الأنف</string>
+    <string name="eye_drops">قطرات العين</string>
+    <string name="ear_drops">قطرات الأذن</string>
+    <string name="supposetorie">التحاميل</string>
+    <string name="infusion">التسريب</string>
+    <string name="chewable">قابل للمضغ</string>
+    <string name="suspension">تعليق</string>
+    <array name="dose_type">
+        <item>@string/select</item>
+        <item>@string/tablet</item>
+        <item>@string/capsule</item>
+        <item>@string/syrups</item>
+        <item>@string/thin_films</item>
+        <item>@string/powders</item>
+        <item>@string/nebulizer</item>
+        <item>@string/injection</item>
+        <item>@string/creams</item>
+        <item>@string/gels</item>
+        <item>@string/emultions</item>
+        <item>@string/lotin</item>
+        <item>@string/inhaler</item>
+        <item>@string/nasal_spray</item>
+        <item>@string/eye_drops</item>
+        <item>@string/ear_drops</item>
+        <item>@string/supposetorie</item>
+        <item>@string/infusion</item>
+        <item>@string/chewable</item>
+        <item>@string/suspension</item>>
+    </array>
+
+    <string name="mg">ملغ</string>
+    <string name="g_1">ز</string>
+    <string name="mi">مي</string>
+    <string name="iu">وحدة دولية</string>
+    <array name="doases">
+        <item>@string/select</item>
+        <item>@string/mg</item>
+        <item>@string/g_1</item>
+        <item>@string/mi</item>
+        <item>@string/iu</item>
+    </array>
+
+    <string name="oral">شفوي</string>
+    <string name="sublingual">تحت اللسان أو عن طريق الفم</string>
+    <string name="rectal_route">الطريق المستقيم</string>
+    <string name="intravenous_injection">حقنة وريدية</string>
+    <string name="intramusculae">العضلي</string>
+    <string name="subcutaneous">تحت الجلد</string>
+    <string name="intrarlerial">داخليا</string>
+    <string name="transnasal">عبر الأنف</string>
+    <string name="inhaled">استنشاقه</string>
+    <string name="veginal_route_transdermal">طريق نباتي عبر الجلد</string>
+    <string name="intraosseous">داخل العظم</string>
+    <array name="routes">
+        <item>@string/routes</item>
+        <item>@string/oral</item>
+        <item>@string/sublingual</item>
+        <item>@string/rectal_route</item>
+        <item>@string/intravenous_injection</item>
+        <item>@string/intramusculae</item>
+        <item>@string/subcutaneous</item>
+        <item>@string/intrarlerial</item>
+        <item>@string/transnasal</item>
+        <item>@string/inhaled</item>
+        <item>@string/veginal_route_transdermal</item>
+        <item>@string/intraosseous</item>
+    </array>
+
+    <array name="duration">
+        <item>@string/select</item>
+        <item>يوم واحد</item>
+        <item>يومان</item>
+        <item>3 أيام</item>
+        <item>4 أيام</item>
+        <item>5 أيام</item>
+        <item>6 أيام</item>
+        <item>7 أيام</item>
+        <item>8 أيام</item>
+        <item>9 أيام</item>
+        <item>10 أيام</item>
+        <item>11 يومًا</item>
+        <item>12 يومًا</item>
+        <item>13 يومًا</item>
+        <item>14 يومًا</item>
+        <item>15 يومًا</item>
+        <item>16 يومًا</item>
+        <item>17 يومًا</item>
+        <item>18 يومًا</item>
+        <item>19 يومًا</item>
+        <item>20 يومًا</item>
+        <item>21 يومًا</item>
+        <item>22 يومًا</item>
+        <item>23 يومًا</item>
+        <item>24 يومًا</item>
+        <item>25 يومًا</item>
+        <item>26 يومًا</item>
+        <item>27 يومًا</item>
+        <item>28 يومًا</item>
+        <item>29 يومًا</item>
+        <item>30 يومًا</item>
+    </array>
+
 
 </resources>

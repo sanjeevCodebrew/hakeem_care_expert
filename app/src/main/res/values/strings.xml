@@ -427,7 +427,8 @@
     <string name="powders">Powders</string>
     <string name="nebulizer">Nebulizer</string>
     <string name="injection">Injection</string>
-    <string name="creams">Ointments</string>
+    <string name="creams">Creams</string>
+    <string name="oinments">Ointments</string>
     <string name="gels">Gels</string>
     <string name="emultions">Emultions</string>
     <string name="lotin">Lotin</string>

@@ -83,7 +83,8 @@ class DigitalPrescriptionFragment : DaggerFragment() {
         binding.tvAge.text = "${getAge(request?.from_user?.profile?.dob)} ${getString(R.string.years_old)}"
         binding.tvGender.append(request?.from_user?.profile?.gender)
         binding.tvId.append(request?.id)
-     /*   binding.tvWeight.append(request?.from_user?.profile?.weight)*/
+        if (!request?.from_user?.profile?.weight.isNullOrEmpty())
+        binding.tvWeight.append(request?.from_user?.profile?.weight)
 
         loadImage(binding.ivPic, request?.from_user?.profile_image,
                 R.drawable.ic_profile_placeholder)
@@ -298,7 +299,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                     itemDoases[indexInternal].checked = true
                     itemDoases[indexInternal].with = doases.with
                     itemDoases[indexInternal].dose_value = doases.dose_value
-
+                    itemDoases[indexInternal].routes = doases.routes
                     return@forEachIndexed
                 }
             }
