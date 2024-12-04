@@ -84,7 +84,9 @@ class DigitalPrescriptionFragment : DaggerFragment() {
         binding.tvGender.append(request?.from_user?.profile?.gender)
         binding.tvId.append(request?.id)
         if (!request?.from_user?.profile?.weight.isNullOrEmpty())
-        binding.tvWeight.append(request?.from_user?.profile?.weight)
+        {
+            binding.tvWeight.append(request?.from_user?.profile?.weight)
+        }
 
         loadImage(binding.ivPic, request?.from_user?.profile_image,
                 R.drawable.ic_profile_placeholder)
