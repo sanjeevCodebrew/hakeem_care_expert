@@ -119,7 +119,6 @@ class WebViewActivity : DaggerAppCompatActivity() {
                         view?.loadUrl(url)
                     }
                 }
-
                 return super.shouldOverrideUrlLoading(view, url)
             }
         }
