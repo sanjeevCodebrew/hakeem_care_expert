@@ -153,7 +153,8 @@ class HomeFragment : DaggerFragment() {
 //            binding.ivDrawer.visible()
             binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             handleHeader()
-        } else {
+        }
+        else {
 //            binding.ivDrawer.gone()
 //            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
