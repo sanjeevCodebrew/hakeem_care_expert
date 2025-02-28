@@ -79,7 +79,7 @@ class ProteinIntakeFragment : DaggerFragment() {
     private fun initialise() {
         viewModel = ViewModelProvider(this, viewModelFactory)[WaterIntakeViewModel::class.java]
         progressDialog = ProgressDialog(requireActivity())
-        binding.clLoader.setBackgroundResource(R.color.colorWhite)
+        binding.clLoader.root.setBackgroundResource(R.color.colorWhite)
     }
 
     private fun listeners() {
@@ -159,19 +159,19 @@ class ProteinIntakeFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.gone()
-                    binding.clLoader.setBackgroundResource(0)
+                    binding.clLoader.root.gone()
+                    binding.clLoader.root.setBackgroundResource(0)
 
                     waterIntake = it.data
                     setData()
 
                 }
                 Status.ERROR -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
-                    binding.clLoader.visible()
+                    binding.clLoader.root.visible()
                 }
             }
         })

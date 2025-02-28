@@ -67,7 +67,7 @@ class RevenueFragment : DaggerFragment() {
     private fun initialise() {
         binding.lineChart.isDoubleTapToZoomEnabled = false
         binding.lineChart.setPinchZoom(false)
-        binding.clLoader.setBackgroundResource(R.color.colorWhite)
+        binding.clLoader.root.setBackgroundResource(R.color.colorWhite)
 
         viewModel = ViewModelProvider(this, viewModelFactory)[RevenueViewModel::class.java]
     }
@@ -81,7 +81,7 @@ class RevenueFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
 
                     val revenueData = it.data
 
@@ -114,11 +114,11 @@ class RevenueFragment : DaggerFragment() {
 
                 }
                 Status.ERROR -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
-                    binding.clLoader.visible()
+                    binding.clLoader.root.visible()
                 }
             }
         })

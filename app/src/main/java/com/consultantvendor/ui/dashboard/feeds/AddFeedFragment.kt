@@ -1,6 +1,5 @@
 package com.consultantvendor.ui.dashboard.feeds
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -8,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,21 +19,33 @@ import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.FragmentAddFeedBinding
 import com.consultantvendor.ui.chat.UploadFileViewModel
 import com.consultantvendor.ui.drawermenu.DrawerActivity
-import com.consultantvendor.utils.*
+import com.consultantvendor.utils.AppRequestCode
+import com.consultantvendor.utils.BlogType
+import com.consultantvendor.utils.DocType
+import com.consultantvendor.utils.PAGE_TO_OPEN
 import com.consultantvendor.utils.PermissionUtils
+import com.consultantvendor.utils.PermissionUtils.cameraAndStorageAccess
+import com.consultantvendor.utils.PermissionUtils.hasPermissions
+import com.consultantvendor.utils.PrefsManager
+import com.consultantvendor.utils.compressImage
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import com.consultantvendor.utils.dialogs.ProgressDialogImage
+import com.consultantvendor.utils.editTextScroll
+import com.consultantvendor.utils.getRequestBody
+import com.consultantvendor.utils.gone
+import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.resultFragmentIntent
+import com.consultantvendor.utils.selectImages
+import com.consultantvendor.utils.showSnackBar
 import dagger.android.support.DaggerFragment
 import droidninja.filepicker.FilePickerConst
 import droidninja.filepicker.utils.ContentUriUtils
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import permissions.dispatcher.*
 import java.io.File
 import javax.inject.Inject
 
-@RuntimePermissions
 class AddFeedFragment : DaggerFragment() {
 
     @Inject
@@ -61,13 +73,25 @@ class AddFeedFragment : DaggerFragment() {
 
     private var typeOfBlog = BlogType.BLOG
 
+    private val storagePermissionLauncherLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            if (permissions.values.any { !it }) {
+                PermissionUtils.showAppSettingsDialog(
+                    requireContext(), R.string.media_permission
+                )
+                return@registerForActivityResult
+            }
+            getStorage()
+        }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         if (rootView == null) {
             binding =
-                    DataBindingUtil.inflate(inflater, R.layout.fragment_add_feed, container, false)
+                DataBindingUtil.inflate(inflater, R.layout.fragment_add_feed, container, false)
             rootView = binding.root
 
             initialise()
@@ -87,11 +111,13 @@ class AddFeedFragment : DaggerFragment() {
                 typeOfBlog = BlogType.BLOG
                 binding.tvHeader.text = getString(R.string.post_blog)
             }
+
             BlogType.ARTICLE, DrawerActivity.ADD_ARTICLE -> {
                 typeOfBlog = BlogType.ARTICLE
 
                 binding.tvHeader.text = getString(R.string.post_article)
             }
+
             else -> {
                 typeOfBlog = BlogType.ARTICLE
                 binding.tvHeader.text = getString(R.string.latest_articles)
@@ -121,7 +147,11 @@ class AddFeedFragment : DaggerFragment() {
         }
 
         binding.ivPic.setOnClickListener {
-            getStorageWithPermissionCheck()
+            if (hasPermissions(cameraAndStorageAccess)) {
+                getStorage()
+            } else {
+                storagePermissionLauncherLauncher.launch(cameraAndStorageAccess)
+            }
         }
     }
 
@@ -131,12 +161,15 @@ class AddFeedFragment : DaggerFragment() {
             fileToUpload == null -> {
                 binding.etTitle.showSnackBar(getString(R.string.select_image))
             }
+
             binding.etTitle.text.toString().isEmpty() -> {
                 binding.etTitle.showSnackBar(getString(R.string.title))
             }
+
             binding.etDesc.text.toString().isEmpty() -> {
                 binding.etDesc.showSnackBar(getString(R.string.description))
             }
+
             isConnectedToInternet(requireContext(), true) -> {
                 uploadFileOnServer()
             }
@@ -146,11 +179,11 @@ class AddFeedFragment : DaggerFragment() {
 
     private fun uploadFileOnServer() {
 
-        val hashMap =HashMap<String, RequestBody>()
+        val hashMap = HashMap<String, RequestBody>()
 
         hashMap["type"] = getRequestBody(DocType.IMAGE)
 
-        val body: RequestBody =fileToUpload?.asRequestBody("image/*".toMediaType())!!
+        val body: RequestBody = fileToUpload?.asRequestBody("image/*".toMediaType())!!
         hashMap["image\"; fileName=\"" + fileToUpload?.name] = body
 
         viewModelUpload.uploadFile(hashMap)
@@ -173,10 +206,12 @@ class AddFeedFragment : DaggerFragment() {
                     viewModel.feeds(hashMap)
 
                 }
+
                 Status.ERROR -> {
                     progressDialogImage.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialogImage.setLoading(true)
 
@@ -191,17 +226,21 @@ class AddFeedFragment : DaggerFragment() {
                     progressDialog.setLoading(false)
 
                     if (requireActivity().supportFragmentManager.backStackEntryCount > 0)
-                        resultFragmentIntent(this, targetFragment ?: this,
-                                AppRequestCode.ARTICLE_CHANGES, Intent())
+                        resultFragmentIntent(
+                            this, targetFragment ?: this,
+                            AppRequestCode.ARTICLE_CHANGES, Intent()
+                        )
                     else {
                         requireActivity().setResult(Activity.RESULT_OK)
                         requireActivity().finish()
                     }
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -215,8 +254,10 @@ class AddFeedFragment : DaggerFragment() {
 
             if (requestCode == AppRequestCode.IMAGE_PICKER) {
                 val docPaths = ArrayList<Uri>()
-                docPaths.addAll(data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)
-                        ?: emptyList())
+                docPaths.addAll(
+                    data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)
+                        ?: emptyList()
+                )
 
                 fileToUpload = compressImage(requireActivity(), File(ContentUriUtils.getFilePath(requireContext(), docPaths[0])))
                 Glide.with(requireContext()).load(fileToUpload).centerCrop().into(binding.ivPic)
@@ -226,17 +267,21 @@ class AddFeedFragment : DaggerFragment() {
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
+//        onRequestPermissionsResult(requestCode, grantResults)
     }
 
-    @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private fun getStorage() {
+        selectImages(this, requireActivity())
+    }
+
+    /*@NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun getStorage() {
-        selectImages(this,requireActivity())
+        selectImages(this, requireActivity())
     }
 
     @OnShowRationale(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -247,15 +292,15 @@ class AddFeedFragment : DaggerFragment() {
     @OnNeverAskAgain(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun onNeverAskAgainRationale() {
         PermissionUtils.showAppSettingsDialog(
-                requireContext(), R.string.media_permission
+            requireContext(), R.string.media_permission
         )
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun showDeniedForStorage() {
         PermissionUtils.showAppSettingsDialog(
-                requireContext(), R.string.media_permission
+            requireContext(), R.string.media_permission
         )
-    }
+    }*/
 
 }

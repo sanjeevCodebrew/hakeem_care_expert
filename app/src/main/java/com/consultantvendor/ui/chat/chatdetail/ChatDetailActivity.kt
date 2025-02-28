@@ -32,12 +32,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.consultantvendor.BuildConfig
 import com.consultantvendor.R
 import com.consultantvendor.data.models.requests.DocImage
 import com.consultantvendor.data.models.responses.CommonDataModel
 import com.consultantvendor.data.models.responses.chat.ChatMessage
-import com.consultantvendor.data.network.*
+import com.consultantvendor.data.network.ApiKeys
+import com.consultantvendor.data.network.ApisRespHandler
+import com.consultantvendor.data.network.PER_PAGE_LOAD_CHAT
+import com.consultantvendor.data.network.PushType
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.ActivityChatDetailBinding
@@ -45,8 +47,8 @@ import com.consultantvendor.ui.chat.ChatViewModel
 import com.consultantvendor.ui.chat.UploadFileViewModel
 import com.consultantvendor.ui.dashboard.home.AppointmentViewModel
 import com.consultantvendor.ui.dashboard.success.NetworkIssueFragment
-import com.consultantvendor.utils.*
-import com.consultantvendor.utils.AppSocket.Events.*
+import com.consultantvendor.utils.AlertDialogUtil
+import com.consultantvendor.utils.AppSocket
 import com.consultantvendor.utils.AppSocket.Events.Companion.BROADCAST
 import com.consultantvendor.utils.AppSocket.Events.Companion.DELIVERED_MESSAGE
 import com.consultantvendor.utils.AppSocket.Events.Companion.READ_MESSAGE
@@ -56,17 +58,33 @@ import com.consultantvendor.utils.AppSocket.MessageStatus.Companion.DELIVERED
 import com.consultantvendor.utils.AppSocket.MessageStatus.Companion.NOT_SENT
 import com.consultantvendor.utils.AppSocket.MessageStatus.Companion.SEEN
 import com.consultantvendor.utils.AppSocket.MessageStatus.Companion.SENT
-import com.consultantvendor.utils.PermissionUtils
+import com.consultantvendor.utils.CallAction
+import com.consultantvendor.utils.DocType
+import com.consultantvendor.utils.EXTRA_IS_FIRST
+import com.consultantvendor.utils.EXTRA_REQUEST_ID
+import com.consultantvendor.utils.LAST_MESSAGE
+import com.consultantvendor.utils.LocaleHelper
+import com.consultantvendor.utils.OTHER_USER_ID
+import com.consultantvendor.utils.PermissionUtil
+import com.consultantvendor.utils.PrefsManager
+import com.consultantvendor.utils.USER_ID
+import com.consultantvendor.utils.USER_NAME
 import com.consultantvendor.utils.dialogs.BasePhotoUploadActivity
 import com.consultantvendor.utils.dialogs.FileUriUtils
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import com.consultantvendor.utils.dialogs.ProgressDialogImage
+import com.consultantvendor.utils.getRequestBody
+import com.consultantvendor.utils.gone
+import com.consultantvendor.utils.hideKeyboard
+import com.consultantvendor.utils.invisible
+import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.longToast
+import com.consultantvendor.utils.openCamera
+import com.consultantvendor.utils.selectImages
+import com.consultantvendor.utils.showSnackBar
+import com.consultantvendor.utils.visible
 import com.devlomi.record_view.OnRecordListener
 import com.google.gson.Gson
-import com.yanzhenjie.album.Album
-import dagger.android.support.DaggerAppCompatActivity
-import droidninja.filepicker.FilePickerConst
-import droidninja.filepicker.utils.ContentUriUtils
 import io.socket.client.Ack
 import io.socket.emitter.Emitter
 import okhttp3.MediaType.Companion.toMediaType
@@ -75,20 +93,18 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.internal.filterList
 import org.json.JSONException
 import org.json.JSONObject
-import permissions.dispatcher.*
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
-import java.util.*
+import java.util.Calendar
+import java.util.Timer
+import java.util.TimerTask
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 import kotlin.concurrent.fixedRateTimer
 import kotlin.concurrent.schedule
 
-
-@RuntimePermissions
-class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiver {
+class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceiver {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -154,9 +170,9 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
 
     private var isLoadingItems = false
 
-    private var lan  = ""
+    private var lan = ""
 
-    private var fileToUpload1 : File?=null
+    private var fileToUpload1: File? = null
 
     var isStopRight = false
     var isStopLeft = false
@@ -166,6 +182,7 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
     override fun getVideo(uri: String?, i: Int) {
 
     }
+
     override fun getPdf(uri: String?) {
         val fileToUpload = File(uri)
 
@@ -292,10 +309,12 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
                     hashMap[ApiKeys.AFTER] = items[items.size - 1].messageId.toString()
                     hashMap[ApiKeys.PER_PAGE] = PER_PAGE_LOAD_CHAT.toString()
                 }
+
                 items.isNotEmpty() && pageBeforeAfter == ApiKeys.BEFORE -> {
                     hashMap[ApiKeys.BEFORE] = items[0].messageId.toString()
                     hashMap[ApiKeys.PER_PAGE] = "1000"
                 }
+
                 else -> hashMap[ApiKeys.PER_PAGE] = PER_PAGE_LOAD_CHAT.toString()
             }
 
@@ -322,10 +341,12 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
                     sendMessageRead(items[0].messageId)
 
             }
+
             pageBeforeAfter == ApiKeys.AFTER -> {
                 tempList.addAll(items)
                 tempList.addAll(messagesNew ?: emptyList())
             }
+
             pageBeforeAfter == ApiKeys.BEFORE -> {
                 tempList.addAll(messagesNew ?: emptyList())
                 tempList.addAll(items)
@@ -336,17 +357,17 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
         items.addAll(tempList.distinctBy { it.messageId })
         adapter.notifyDataSetChanged()
 
-    /*val tempList = ArrayList<ChatMessage>()
-        tempList.addAll(items.distinctBy { it.messageId })
-        items.clear()
-        items.addAll(tempList)
-
-        if (size == 0) {
-            adapter.notifyDataSetChanged()
-        } else {
-            adapter.notifyItemRangeInserted(size, items.size)
-            adapter.notifyItemRangeChanged(size - 1, items.size)
-        }*/
+        /*val tempList = ArrayList<ChatMessage>()
+            tempList.addAll(items.distinctBy { it.messageId })
+            items.clear()
+            items.addAll(tempList)
+    
+            if (size == 0) {
+                adapter.notifyDataSetChanged()
+            } else {
+                adapter.notifyItemRangeInserted(size, items.size)
+                adapter.notifyItemRangeChanged(size - 1, items.size)
+            }*/
     }
 
     private fun liveData() {
@@ -373,21 +394,22 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
                     /*Show Timer if needed*/
                     showTimer(data?.request_status == CallAction.INPROGRESS, data)
                     /*Hide Loader*/
-                    binding.clLoader.gone()
-                    binding.clLoader.setBackgroundResource(0)
+                    binding.clLoader.root.gone()
+                    binding.clLoader.root.setBackgroundResource(0)
                     binding.pbLoaderBottom.gone()
                 }
 
                 Status.ERROR -> {
                     isLoadingItems = false
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, this, prefsManager)
                 }
+
                 Status.LOADING -> {
                     if (pageBeforeAfter.isNullOrEmpty() || pageBeforeAfter == ApiKeys.BEFORE) {
                         if (items.isEmpty())
-                            binding.clLoader.setBackgroundResource(R.color.colorWhite)
-                        binding.clLoader.visible()
+                            binding.clLoader.root.setBackgroundResource(R.color.colorWhite)
+                        binding.clLoader.root.visible()
                     } else
                         binding.pbLoaderBottom.visible()
                 }
@@ -410,10 +432,12 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
                         binding.etMessage.showSnackBar(getString(R.string.check_internet))
                     }
                 }
+
                 Status.ERROR -> {
                     progressDialogImage.setLoading(false)
                     ApisRespHandler.handleError(it.error, this, prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialogImage.setLoading(true)
                 }
@@ -429,10 +453,12 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
                     showTimer(false, null)
 
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, this, prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -494,15 +520,16 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
     private fun sendImage(docImage: DocImage) {
 
         val msg = ChatMessage(
-                imageUrl = docImage.image,
-                message = "",
-                senderId = userID,
-                senderName = userRepository.getUser()?.name,
-                receiverId = otherUserID,
-                messageType = docImage.type,
-                request_id = requestId,
-                sentAt = System.currentTimeMillis(),
-                status = NOT_SENT)
+            imageUrl = docImage.image,
+            message = "",
+            senderId = userID,
+            senderName = userRepository.getUser()?.name,
+            receiverId = otherUserID,
+            messageType = docImage.type,
+            request_id = requestId,
+            sentAt = System.currentTimeMillis(),
+            status = NOT_SENT
+        )
         sendMessage(msg)
     }
 
@@ -513,8 +540,10 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
                 Log.e("TextChanged", "afterTextChanged")
             }
 
-            override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int,
+                count: Int, after: Int
+            ) {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -544,25 +573,25 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
         binding.recordView.setLessThanSecondAllowed(false)
 
 
-            if (lan=="ar") {
-                Log.e("TAG", "chkLan: "+lan)
-                binding.recordView.layoutDirection = View.LAYOUT_DIRECTION_LTR
-                binding.recordButton.layoutDirection = View.LAYOUT_DIRECTION_LTR
-                binding.rlChatInput.layoutDirection = View.LAYOUT_DIRECTION_LTR
-            }
+        if (lan == "ar") {
+            Log.e("TAG", "chkLan: " + lan)
+            binding.recordView.layoutDirection = View.LAYOUT_DIRECTION_LTR
+            binding.recordButton.layoutDirection = View.LAYOUT_DIRECTION_LTR
+            binding.rlChatInput.layoutDirection = View.LAYOUT_DIRECTION_LTR
+        }
 
-      /*  binding.recordButton.setOnLongClickListener {
-            if (checkIfPermission()) {
-                binding.recordButton.isListenForRecord = true
-                binding.llChat.invisible()
-                binding.recordButton.setImageDrawable(getDrawable(R.drawable.ic_mic))
-                true
-            } else {
-                binding.recordButton.isListenForRecord = false
-                getAudioWithPermissionCheck()
-                false
-            }
-        }*/
+        /*  binding.recordButton.setOnLongClickListener {
+              if (checkIfPermission()) {
+                  binding.recordButton.isListenForRecord = true
+                  binding.llChat.invisible()
+                  binding.recordButton.setImageDrawable(getDrawable(R.drawable.ic_mic))
+                  true
+              } else {
+                  binding.recordButton.isListenForRecord = false
+                  getAudioWithPermissionCheck()
+                  false
+              }
+          }*/
 
         binding.recordButton.setOnLongClickListener {
             if (checkIfPermission()) {
@@ -570,9 +599,7 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
                 binding.llChat.invisible()
                 binding.recordButton.setImageDrawable(getDrawable(R.drawable.ic_mic))
                 true
-            }
-            else
-            {
+            } else {
                 binding.recordButton.isListenForRecord = false
                 val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     arrayOf(Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.RECORD_AUDIO)
@@ -600,7 +627,7 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
 
         binding.recordView.setOnRecordListener(object : OnRecordListener {
             @SuppressLint("LogNotTimber")
-            override fun onFinish(recordTime: Long) {
+            override fun onFinish(recordTime: Long, isVisible: Boolean) {
                 binding.llChat.visible()
 
                 setButtonMicSend()
@@ -620,6 +647,10 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
                 stopRecording()
                 setButtonMicSend()
                 Log.e("RECORDER", "Less than one second")
+
+            }
+
+            override fun onLock() {
 
             }
 
@@ -691,15 +722,16 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
         if (isConnectedToInternet(this, false)) {
 
             val msg = ChatMessage(
-                    imageUrl = String(),
-                    message = message,
-                    senderId = userID,
-                    senderName = userRepository.getUser()?.name,
-                    receiverId = otherUserID,
-                    messageType = DocType.TEXT,
-                    request_id = requestId,
-                    sentAt = System.currentTimeMillis(),
-                    status = NOT_SENT)
+                imageUrl = String(),
+                message = message,
+                senderId = userID,
+                senderName = userRepository.getUser()?.name,
+                receiverId = otherUserID,
+                messageType = DocType.TEXT,
+                request_id = requestId,
+                sentAt = System.currentTimeMillis(),
+                status = NOT_SENT
+            )
 
             sendMessage(msg)
         } else {
@@ -897,7 +929,7 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
                 e.printStackTrace()
             }
         } else {
-            if (!notSentMessage && !isConnectedToInternet(this,false))
+            if (!notSentMessage && !isConnectedToInternet(this, false))
                 longToast(getString(R.string.check_internet))
             socketEvents(makeOn = true)
         }
@@ -937,39 +969,39 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
         }
     }
 
-  /*  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                AppRequestCode.IMAGE_PICKER -> {
-                    val docPaths = ArrayList<Uri>()
-                    docPaths.addAll(data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)
-                            ?: emptyList())
-
-                    val fileToUpload = compressImage(this, File(ContentUriUtils.getFilePath(this, docPaths[0])))
-
-                    val docImage = DocImage()
-                    docImage.type = DocType.IMAGE
-                    docImage.imageFile = fileToUpload
-
-                    uploadFileOnServer(docImage)
-                }
-
-                AppRequestCode.CAMERA -> {
-                    val bitmap = data?.extras?.get("data") as Bitmap
-                    val tempUri: Uri? = getImageUri1(this@ChatDetailActivity, bitmap)
-                    val fileToUpload = getRealPathFromURI(tempUri)
-                        .let { File(it) }
-
-                    val docImage = DocImage()
-                    docImage.type = DocType.IMAGE
-                    docImage.imageFile = fileToUpload
-
-                    uploadFileOnServer(docImage)
-                }
-
-                AppRequestCode.DOC_PICKER -> {
-               *//*     val docPaths = ArrayList<Uri>()
+    /*  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+          super.onActivityResult(requestCode, resultCode, data)
+          if (resultCode == Activity.RESULT_OK) {
+              when (requestCode) {
+                  AppRequestCode.IMAGE_PICKER -> {
+                      val docPaths = ArrayList<Uri>()
+                      docPaths.addAll(data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)
+                              ?: emptyList())
+  
+                      val fileToUpload = compressImage(this, File(ContentUriUtils.getFilePath(this, docPaths[0])))
+  
+                      val docImage = DocImage()
+                      docImage.type = DocType.IMAGE
+                      docImage.imageFile = fileToUpload
+  
+                      uploadFileOnServer(docImage)
+                  }
+  
+                  AppRequestCode.CAMERA -> {
+                      val bitmap = data?.extras?.get("data") as Bitmap
+                      val tempUri: Uri? = getImageUri1(this@ChatDetailActivity, bitmap)
+                      val fileToUpload = getRealPathFromURI(tempUri)
+                          .let { File(it) }
+  
+                      val docImage = DocImage()
+                      docImage.type = DocType.IMAGE
+                      docImage.imageFile = fileToUpload
+  
+                      uploadFileOnServer(docImage)
+                  }
+  
+                  AppRequestCode.DOC_PICKER -> {
+                 *//*     val docPaths = ArrayList<Uri>()
                     docPaths.addAll(data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
                             ?: emptyList())
 
@@ -987,11 +1019,10 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
     }*/
 
 
-
     fun getImageUri1(inContext: Context, inImage: Bitmap): Uri? {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "IMG_" + Calendar.getInstance().getTime(),null)
+        val path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "IMG_" + Calendar.getInstance().getTime(), null)
         return Uri.parse(path)
     }
 
@@ -1021,15 +1052,15 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
 
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
+//        onRequestPermissionsResult(requestCode, grantResults)
     }
 
-    @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    /*@NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun getStorage() {
         askForOption1(null, this, binding.btnCamera)
     }
@@ -1042,14 +1073,14 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
     @OnNeverAskAgain(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun onNeverAskAgainRationale() {
         PermissionUtils.showAppSettingsDialog(
-                this, R.string.media_permission
+            this, R.string.media_permission
         )
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun showDeniedForStorage() {
         PermissionUtils.showAppSettingsDialog(
-                this, R.string.media_permission
+            this, R.string.media_permission
 
 
         )
@@ -1074,19 +1105,19 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
     fun showAudioDeniedForStorage() {
         PermissionUtils.showAppSettingsDialog(this, R.string.record_audio_permission)
     }
-
+*/
 
     private fun showCompleteRequestDialog() {
         AlertDialogUtil.instance.createOkCancelDialog(this, R.string.end_chat,
-                R.string.end_chat_desc, R.string.end_chat, R.string.cancel, false,
-                object : AlertDialogUtil.OnOkCancelDialogListener {
-                    override fun onOkButtonClicked() {
-                        hitApiAcceptRequest()
-                    }
+            R.string.end_chat_desc, R.string.end_chat, R.string.cancel, false,
+            object : AlertDialogUtil.OnOkCancelDialogListener {
+                override fun onOkButtonClicked() {
+                    hitApiAcceptRequest()
+                }
 
-                    override fun onCancelButtonClicked() {
-                    }
-                }).show()
+                override fun onCancelButtonClicked() {
+                }
+            }).show()
     }
 
     private fun hitApiAcceptRequest() {
@@ -1143,6 +1174,7 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
                         longToast(getString(R.string.request_completed))
                     }
                 }
+
                 NetworkIssueFragment.NETWORK_ISSUE -> {
                     pageBeforeAfter = if (pageBeforeAfter == null) "" else ApiKeys.BEFORE
                     getChatData()
@@ -1212,11 +1244,10 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
 
         player!!.setOnCompletionListener(MediaPlayer.OnCompletionListener {
 
-            isStopRight=true
+            isStopRight = true
             adapter.notifyDataSetChanged()
-            Log.e("TAG", "completeAudio: "+player )
+            Log.e("TAG", "completeAudio: " + player)
         })
-
 
 
     }
@@ -1236,9 +1267,9 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
 
         player!!.setOnCompletionListener(MediaPlayer.OnCompletionListener {
 
-            isStopLeft=true
+            isStopLeft = true
             adapter.notifyDataSetChanged()
-            Log.e("TAG", "completeAudio: "+player )
+            Log.e("TAG", "completeAudio: " + player)
         })
     }
 
@@ -1248,16 +1279,15 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
 
     }
 
-/*    private fun checkIfPermission(): Boolean {
-        return (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) ==
-                PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-                PackageManager.PERMISSION_GRANTED)
-    }*/
+    /*    private fun checkIfPermission(): Boolean {
+            return (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) ==
+                    PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_GRANTED)
+        }*/
 
     private fun checkIfPermission(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-        {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // For Android 13 (API level 33) and above
             ContextCompat.checkSelfPermission(
                 this,
@@ -1267,9 +1297,7 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
                         this,
                         Manifest.permission.READ_MEDIA_AUDIO
                     ) == PackageManager.PERMISSION_GRANTED
-        }
-        else
-        {
+        } else {
             // For Android 12 (API level 32) and below
             ContextCompat.checkSelfPermission(
                 this,
@@ -1290,12 +1318,14 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
 
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.item_image_camera-> {
-                    openCamera(activity,fragment)
+                R.id.item_image_camera -> {
+                    openCamera(activity, fragment)
                 }
-                R.id.item_image-> {
+
+                R.id.item_image -> {
                     selectImages(fragment, activity)
                 }
+
                 R.id.item_pdf -> {
                     selectDocument2()
                 }
@@ -1306,31 +1336,31 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
         popup.show()
     }
 
-/*    private fun openAlbum1(activity: Activity, fragment: Fragment?) {
-
-        Album.camera(activity) // Camera function.
-            .image() // Take Picture.
-            .onResult {
-                val path = it
-//                val intent :Intent? = Intent()
-//              intent?.putExtra("path", path.toUri())
-
-
-//                val fileToUpload =
-//                    compressImage(this,
-//                        ContentUriUtils.getFilePath(this, path.toUri())?.let { it1 -> File(it1) })
-                val fileToUpload = path?.let { File(it) }
-
-                val docImage = DocImage()
-                docImage.type = DocType.IMAGE
-                docImage.imageFile = fileToUpload
-                uploadFileOnServer(docImage)
-
-            }
-            .onCancel { }
-            .start()
-
-    }*/
+    /*    private fun openAlbum1(activity: Activity, fragment: Fragment?) {
+    
+            Album.camera(activity) // Camera function.
+                .image() // Take Picture.
+                .onResult {
+                    val path = it
+    //                val intent :Intent? = Intent()
+    //              intent?.putExtra("path", path.toUri())
+    
+    
+    //                val fileToUpload =
+    //                    compressImage(this,
+    //                        ContentUriUtils.getFilePath(this, path.toUri())?.let { it1 -> File(it1) })
+                    val fileToUpload = path?.let { File(it) }
+    
+                    val docImage = DocImage()
+                    docImage.type = DocType.IMAGE
+                    docImage.imageFile = fileToUpload
+                    uploadFileOnServer(docImage)
+    
+                }
+                .onCancel { }
+                .start()
+    
+        }*/
 
     private fun selectDocument2() {
         val mimeType = "application/pdf"
@@ -1400,9 +1430,9 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
 
     val pickMultipleDocument =
         registerForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris ->
-            if (uris.isNotEmpty()){
+            if (uris.isNotEmpty()) {
 
-                for (i in uris.indices){
+                for (i in uris.indices) {
                     val file = FileUriUtils.getRealPath(this, uris[i])?.let { File(it) }
                     Log.e("file", "" + file?.exists())
                     Log.e("fileLength", "" + file?.length())
@@ -1412,7 +1442,7 @@ class ChatDetailActivity :  BasePhotoUploadActivity(), AppSocket.OnMessageReceiv
 
 
                     fileToUpload1 = file
-                    Log.e("TAG", "checkDoc: "+fileToUpload1?.toURI())
+                    Log.e("TAG", "checkDoc: " + fileToUpload1?.toURI())
 
                 }
                 val docImage = DocImage()

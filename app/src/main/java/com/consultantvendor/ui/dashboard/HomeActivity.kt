@@ -26,8 +26,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.NavController
-import com.consultantvendor.*
+import com.consultantvendor.BuildConfig
 import com.consultantvendor.R
+import com.consultantvendor.appFeatures
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.PushType
 import com.consultantvendor.data.network.responseUtil.Status
@@ -37,13 +38,24 @@ import com.consultantvendor.ui.dashboard.home.appointment.requests.BottomService
 import com.consultantvendor.ui.drawermenu.DrawerActivity
 import com.consultantvendor.ui.loginSignUp.LoginViewModel
 import com.consultantvendor.ui.loginSignUp.SignUpActivity
-import com.consultantvendor.utils.*
-import com.google.android.gms.location.*
+import com.consultantvendor.utils.AppSocket
+import com.consultantvendor.utils.EXTRA_TAB
+import com.consultantvendor.utils.LocaleHelper
+import com.consultantvendor.utils.PAGE_TO_OPEN
+import com.consultantvendor.utils.PrefsManager
+import com.consultantvendor.utils.UPDATE_NUMBER
+import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.setupWithNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.item_no_data.view.*
-import java.util.*
+import java.util.Locale
+import java.util.Timer
 import javax.inject.Inject
 import kotlin.concurrent.fixedRateTimer
 
@@ -132,8 +144,10 @@ class HomeActivity : DaggerAppCompatActivity() {
 
         /*Ask for phone number if not added*/
         if (BuildConfig.FLAVOR == "homeDoctor" && userRepository.getUser()?.phone.isNullOrEmpty()) {
-            startActivity(Intent(this, SignUpActivity::class.java)
-                    .putExtra(UPDATE_NUMBER, true))
+            startActivity(
+                Intent(this, SignUpActivity::class.java)
+                    .putExtra(UPDATE_NUMBER, true)
+            )
         }
 
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
@@ -141,7 +155,7 @@ class HomeActivity : DaggerAppCompatActivity() {
             params.putString("dev_name", "Zorawar")
             params.putString("dev_description", "Quality Tester")
             param(FirebaseAnalytics.Param.CONTENT_TYPE, "dev_test")
-            Log.e("TAG", "chkLogFirebaseAnalytics :"+params )
+            Log.e("TAG", "chkLogFirebaseAnalytics :" + params)
         }
 
     }
@@ -161,24 +175,29 @@ class HomeActivity : DaggerAppCompatActivity() {
 
     private fun setNavigation() {
         val navGraphIds = when (BuildConfig.FLAVOR) {
-            "homeDoctor", "airdoc", "nurseLynx","meetMd" ->
-                listOf(R.navigation.navigation_appointment,
-                        R.navigation.navigation_wallet,
-                        R.navigation.navigation_revenue,
-                        R.navigation.navigation_profile)
+            "homeDoctor", "airdoc", "nurseLynx", "meetMd" ->
+                listOf(
+                    R.navigation.navigation_appointment,
+                    R.navigation.navigation_wallet,
+                    R.navigation.navigation_revenue,
+                    R.navigation.navigation_profile
+                )
+
             else ->
-                listOf(R.navigation.navigation_home,
-                        R.navigation.navigation_wallet,
-                        R.navigation.navigation_revenue,
-                        R.navigation.navigation_profile)
+                listOf(
+                    R.navigation.navigation_home,
+                    R.navigation.navigation_wallet,
+                    R.navigation.navigation_revenue,
+                    R.navigation.navigation_profile
+                )
         }
 
         // Setup the bottom navigation view with a list of navigation graphs
         val controller = binding.bottomNav.setupWithNavController(
-                navGraphIds = navGraphIds,
-                fragmentManager = supportFragmentManager,
-                containerId = R.id.nav_host_fragment,
-                intent = intent
+            navGraphIds = navGraphIds,
+            fragmentManager = supportFragmentManager,
+            containerId = R.id.nav_host_fragment,
+            intent = intent
         )
 
         currentNavController = controller
@@ -229,40 +248,48 @@ class HomeActivity : DaggerAppCompatActivity() {
             }
 
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback,
-                    Looper.myLooper())
+            mFusedLocationClient.requestLocationUpdates(
+                mLocationRequest, mLocationCallback,
+                Looper.myLooper()
+            )
         }
     }
 
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            val mLastLocation: Location = locationResult.lastLocation
-            getLocationName(mLastLocation.latitude, mLastLocation.longitude)
+            val mLastLocation = locationResult.lastLocation
+            getLocationName(mLastLocation?.latitude ?: 0.0, mLastLocation?.longitude ?: 0.0)
         }
     }
 
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
-                getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-                LocationManager.NETWORK_PROVIDER
+            LocationManager.NETWORK_PROVIDER
         )
     }
 
     private fun checkPermissions(): Boolean {
-        if (ActivityCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(
-                        this,
-                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             return true
         }
         return false
     }
 
     private fun requestPermissions() {
-        registerActivityResult.launch(Intent(this, DrawerActivity::class.java)
-                .putExtra(PAGE_TO_OPEN, DrawerActivity.LOCATION))
+        registerActivityResult.launch(
+            Intent(this, DrawerActivity::class.java)
+                .putExtra(PAGE_TO_OPEN, DrawerActivity.LOCATION)
+        )
     }
 
 
@@ -278,17 +305,22 @@ class HomeActivity : DaggerAppCompatActivity() {
             try {
                 var locationName = ""
 
-                val addresses = geoCoder.getFromLocation(lat, lng, 1
+                val addresses = geoCoder.getFromLocation(
+                    lat, lng, 1
                 ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
                 if (addresses != null) {
                     if (addresses.isNotEmpty()) {
                         locationName = when {
                             addresses[0].getAddressLine(1) != null -> addresses[0].getAddressLine(
-                                1)
+                                1
+                            )
+
                             addresses[0].featureName == null -> addresses[0].adminArea
-                            else -> String.format("%s, %s", addresses[0].featureName,
-                                addresses[0].locality)
+                            else -> String.format(
+                                "%s, %s", addresses[0].featureName,
+                                addresses[0].locality
+                            )
                         }
                     }
                 }
@@ -319,10 +351,12 @@ class HomeActivity : DaggerAppCompatActivity() {
                         }
                     }
                 }
+
                 Status.ERROR -> {
                     isPendingApiProgressing = false
                     ApisRespHandler.handleError(it.error, this, prefsManager)
                 }
+
                 Status.LOADING -> {
                 }
             }

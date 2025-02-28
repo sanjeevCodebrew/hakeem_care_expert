@@ -126,7 +126,7 @@ class MessagingService : FirebaseMessagingService() {
         /*Final activity to open*/
         var intent: Intent? = null
 
-        val titleString = pushData.pushType.replace("_", " ").toLowerCase()
+        val titleString = pushData.pushType.replace("_", " ").lowercase()
         var title = ""
 
         val lineScan = Scanner(titleString)

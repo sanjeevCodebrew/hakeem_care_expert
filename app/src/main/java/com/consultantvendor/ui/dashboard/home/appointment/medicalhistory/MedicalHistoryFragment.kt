@@ -22,10 +22,17 @@ import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.databinding.FragmentMedicalHistoryBinding
 import com.consultantvendor.ui.dashboard.home.appointment.detail.AppointmentDetailsFragment.Companion.MEDICAL_HISTORY
 import com.consultantvendor.ui.dashboard.home.questions.QuestionViewModel
-import com.consultantvendor.utils.*
+import com.consultantvendor.utils.CallAction
+import com.consultantvendor.utils.EXTRA_REQUEST_ID
+import com.consultantvendor.utils.PrefsManager
 import com.consultantvendor.utils.dialogs.ProgressDialog
+import com.consultantvendor.utils.editTextScroll
+import com.consultantvendor.utils.gone
+import com.consultantvendor.utils.hideShowView
+import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.showSnackBar
+import com.consultantvendor.utils.visible
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.item_no_data.view.*
 import javax.inject.Inject
 
 class MedicalHistoryFragment : DaggerFragment() {
@@ -59,8 +66,10 @@ class MedicalHistoryFragment : DaggerFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (rootView == null) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_medical_history,
-                    container, false)
+            binding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_medical_history,
+                container, false
+            )
             rootView = binding.root
 
             initialise()
@@ -178,7 +187,7 @@ class MedicalHistoryFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     binding.swipeRefresh.isRefreshing = false
 
                     isLoadingMoreItems = false
@@ -199,19 +208,21 @@ class MedicalHistoryFragment : DaggerFragment() {
                     isLastPage = tempList.size < PER_PAGE_LOAD
                     adapter.setAllItemsLoaded(isLastPage)
 
-                    binding.clNoData.hideShowView(items.isEmpty())
+                    binding.clNoData.root.hideShowView(items.isEmpty())
                 }
+
                 Status.ERROR -> {
                     isLoadingMoreItems = false
                     adapter.setAllItemsLoaded(true)
 
                     binding.swipeRefresh.isRefreshing = false
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     if (!isLoadingMoreItems && !binding.swipeRefresh.isRefreshing)
-                        binding.clLoader.visible()
+                        binding.clLoader.root.visible()
                 }
             }
         })
@@ -230,10 +241,12 @@ class MedicalHistoryFragment : DaggerFragment() {
 
                     LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(broadcastIntent)
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }

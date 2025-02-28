@@ -107,9 +107,9 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
             userInfo.displayName = userData?.name
             userInfo.avatar = URL(getImageBaseUrl(ImageFolder.UPLOADS, userData?.profile_image))
 
-            val setAudioOnly = jitsiClass?.callType?.toLowerCase() == ConsultType.AUDIO_CALL || jitsiClass?.callType?.toLowerCase() == ConsultType.CALL
+            val setAudioOnly = jitsiClass?.callType?.lowercase() == ConsultType.AUDIO_CALL || jitsiClass?.callType?.lowercase() == ConsultType.CALL
 
-            Log.e("TAG", "intialiseJitsi: "+jitsiClass?.callType?.toLowerCase() )
+            Log.e("TAG", "intialiseJitsi: "+jitsiClass?.callType?.lowercase() )
 
             val options = JitsiMeetConferenceOptions.Builder()
                 .setUserInfo(userInfo)

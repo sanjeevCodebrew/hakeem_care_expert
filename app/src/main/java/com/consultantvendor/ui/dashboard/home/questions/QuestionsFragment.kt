@@ -23,10 +23,14 @@ import com.consultantvendor.data.network.PER_PAGE_LOAD
 import com.consultantvendor.data.network.PushType
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.databinding.ActivityListingToolbarBinding
-import com.consultantvendor.utils.*
+import com.consultantvendor.utils.CallType
+import com.consultantvendor.utils.PrefsManager
 import com.consultantvendor.utils.dialogs.ProgressDialog
+import com.consultantvendor.utils.gone
+import com.consultantvendor.utils.hideShowView
+import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.visible
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.item_no_data.view.*
 import javax.inject.Inject
 
 class QuestionsFragment : DaggerFragment() {
@@ -149,7 +153,7 @@ class QuestionsFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     binding.swipeRefresh.isRefreshing = false
 
                     isLoadingMoreItems = false
@@ -170,19 +174,21 @@ class QuestionsFragment : DaggerFragment() {
                     isLastPage = tempList.size < PER_PAGE_LOAD
                     adapter.setAllItemsLoaded(isLastPage)
 
-                    binding.clNoData.hideShowView(items.isEmpty())
+                    binding.clNoData.root.hideShowView(items.isEmpty())
                 }
+
                 Status.ERROR -> {
                     isLoadingMoreItems = false
                     adapter.setAllItemsLoaded(true)
 
                     binding.swipeRefresh.isRefreshing = false
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     if (!isLoadingMoreItems && !binding.swipeRefresh.isRefreshing)
-                        binding.clLoader.visible()
+                        binding.clLoader.root.visible()
                 }
             }
         })
@@ -205,7 +211,7 @@ class QuestionsFragment : DaggerFragment() {
             val intentFilter = IntentFilter()
             intentFilter.addAction(PushType.FREE_EXPERT_ADVISE)
             LocalBroadcastManager.getInstance(requireContext())
-                    .registerReceiver(refreshRequests, intentFilter)
+                .registerReceiver(refreshRequests, intentFilter)
             isReceiverRegistered = true
         }
     }

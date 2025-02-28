@@ -1,6 +1,5 @@
 package com.consultantvendor.ui.loginSignUp.document.add
 
-import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
@@ -11,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -24,24 +24,35 @@ import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.databinding.ItemAddDocumentBinding
 import com.consultantvendor.ui.chat.UploadFileViewModel
 import com.consultantvendor.ui.loginSignUp.document.DocumentsFragment
-import com.consultantvendor.utils.*
+import com.consultantvendor.utils.AppRequestCode
+import com.consultantvendor.utils.DocType
 import com.consultantvendor.utils.PermissionUtils
+import com.consultantvendor.utils.PermissionUtils.cameraAndStorageAccess
+import com.consultantvendor.utils.PermissionUtils.hasPermissions
+import com.consultantvendor.utils.PrefsManager
+import com.consultantvendor.utils.askForOption
+import com.consultantvendor.utils.compressImage
 import com.consultantvendor.utils.dialogs.ProgressDialogImage
+import com.consultantvendor.utils.getRequestBody
+import com.consultantvendor.utils.gone
+import com.consultantvendor.utils.hideKeyboard
+import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.loadImage
+import com.consultantvendor.utils.requestOptions
+import com.consultantvendor.utils.showSnackBar
 import dagger.android.support.DaggerDialogFragment
 import droidninja.filepicker.FilePickerConst
 import droidninja.filepicker.utils.ContentUriUtils
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import permissions.dispatcher.*
 import java.io.File
-import java.util.HashMap
 import javax.inject.Inject
 
-
-@RuntimePermissions
-class DialogAddDocumentFragment(private val fragment: DocumentsFragment,
-                                private var documentMain: AdditionalFieldDocument?) : DaggerDialogFragment() {
+class DialogAddDocumentFragment(
+    private val fragment: DocumentsFragment,
+    private var documentMain: AdditionalFieldDocument?
+) : DaggerDialogFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -56,7 +67,19 @@ class DialogAddDocumentFragment(private val fragment: DocumentsFragment,
     private lateinit var viewModelUpload: UploadFileViewModel
 
     private lateinit var progressDialogImage: ProgressDialogImage
-    var docImage = DocImage()
+
+    private var docImage = DocImage()
+
+    private val storagePermissionLauncherLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            if (permissions.values.any { !it }) {
+                PermissionUtils.showAppSettingsDialog(
+                    requireContext(), R.string.media_permission
+                )
+                return@registerForActivityResult
+            }
+            getStorage()
+        }
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -90,18 +113,18 @@ class DialogAddDocumentFragment(private val fragment: DocumentsFragment,
         if (documentMain != null) {
             binding.etName.setText(documentMain?.title)
             binding.etDesc.setText(documentMain?.description)
-            if(documentMain?.file_name?.contains(".pdf") == true) {
+            if (documentMain?.file_name?.contains(".pdf") == true) {
                 val glide = Glide.with(binding.ivImage.context)
                 glide.load(R.drawable.ic_pdf)
                     .apply(requestOptions)
                     .placeholder(R.drawable.image_placeholder)
                     .into(binding.ivImage)
-            }else {
+            } else {
                 loadImage(binding.ivImage, documentMain?.file_name, R.drawable.image_placeholder)
             }
         }
 
-        if(BuildConfig.FLAVOR=="nurseLynx"){
+        if (BuildConfig.FLAVOR == "nurseLynx") {
             binding.ilName.gone()
             binding.ilDesc.gone()
         }
@@ -113,7 +136,11 @@ class DialogAddDocumentFragment(private val fragment: DocumentsFragment,
         }
 
         binding.ivImage.setOnClickListener {
-            getStorageWithPermissionCheck()
+            if (hasPermissions(cameraAndStorageAccess)) {
+                getStorage()
+            } else {
+                storagePermissionLauncherLauncher.launch(cameraAndStorageAccess)
+            }
         }
 
         binding.tvAdd.setOnClickListener {
@@ -122,12 +149,13 @@ class DialogAddDocumentFragment(private val fragment: DocumentsFragment,
                 fileToUpload == null && documentMain == null -> {
                     binding.etName.showSnackBar(getString(R.string.select_image))
                 }
-                binding.ilName.visibility==View.VISIBLE && binding.etName.text.toString().trim().isEmpty() -> {
+
+                binding.ilName.visibility == View.VISIBLE && binding.etName.text.toString().trim().isEmpty() -> {
                     binding.etName.showSnackBar(getString(R.string.enter_name))
                 }
-               /* binding.ilDesc.visibility==View.VISIBLE && binding.etDesc.text.toString().trim().isEmpty() -> {
-                    binding.etDesc.showSnackBar(getString(R.string.description))
-                }*/
+                /* binding.ilDesc.visibility==View.VISIBLE && binding.etDesc.text.toString().trim().isEmpty() -> {
+                     binding.etDesc.showSnackBar(getString(R.string.description))
+                 }*/
                 isConnectedToInternet(requireContext(), true) -> {
                     if (fileToUpload != null)
                         uploadFileOnServer()
@@ -172,10 +200,12 @@ class DialogAddDocumentFragment(private val fragment: DocumentsFragment,
                     dialog?.dismiss()
 
                 }
+
                 Status.ERROR -> {
                     progressDialogImage.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialogImage.setLoading(true)
 
@@ -191,20 +221,24 @@ class DialogAddDocumentFragment(private val fragment: DocumentsFragment,
 
             if (requestCode == AppRequestCode.IMAGE_PICKER) {
                 val docPaths = ArrayList<Uri>()
-                docPaths.addAll(data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)
-                        ?: emptyList())
+                docPaths.addAll(
+                    data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)
+                        ?: emptyList()
+                )
 
-                fileToUpload = compressImage(requireActivity(),File(ContentUriUtils.getFilePath(requireContext(), docPaths[0])))
+                fileToUpload = compressImage(requireActivity(), File(ContentUriUtils.getFilePath(requireContext(), docPaths[0])))
                 Glide.with(requireContext()).load(fileToUpload).into(binding.ivImage)
 
                 docImage = DocImage()
                 docImage.type = DocType.IMAGE
                 docImage.imageFile = fileToUpload
 
-            }else if (requestCode == AppRequestCode.DOC_PICKER) {
+            } else if (requestCode == AppRequestCode.DOC_PICKER) {
                 val docPaths = ArrayList<Uri>()
-                docPaths.addAll(data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
-                    ?: emptyList())
+                docPaths.addAll(
+                    data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
+                        ?: emptyList()
+                )
 
                 fileToUpload = compressImage(requireActivity(),
                     ContentUriUtils.getFilePath(requireContext(), docPaths[0])?.let { File(it) })
@@ -223,16 +257,16 @@ class DialogAddDocumentFragment(private val fragment: DocumentsFragment,
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
+//        onRequestPermissionsResult(requestCode, grantResults)
     }
 
-    @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    fun getStorage() {
+    //    @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private fun getStorage() {
         //selectImages(this,requireActivity())
         askForOption(this, requireActivity(), binding.ivImage)
     }
 
-    @OnShowRationale(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    /*@OnShowRationale(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun showLocationRationale(request: PermissionRequest) {
         PermissionUtils.showRationalDialog(requireContext(), R.string.media_permission, request)
     }
@@ -240,14 +274,14 @@ class DialogAddDocumentFragment(private val fragment: DocumentsFragment,
     @OnNeverAskAgain(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun onNeverAskAgainRationale() {
         PermissionUtils.showAppSettingsDialog(
-                requireContext(), R.string.media_permission
+            requireContext(), R.string.media_permission
         )
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun showDeniedForStorage() {
         PermissionUtils.showAppSettingsDialog(
-                requireContext(), R.string.media_permission
+            requireContext(), R.string.media_permission
         )
-    }
+    }*/
 }

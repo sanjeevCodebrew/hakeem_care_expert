@@ -22,10 +22,26 @@ import com.consultantvendor.ui.loginSignUp.LoginViewModel
 import com.consultantvendor.ui.loginSignUp.SignUpActivity
 import com.consultantvendor.ui.loginSignUp.document.DocumentsFragment
 import com.consultantvendor.ui.loginSignUp.subcategory.SubCategoryFragment.Companion.CATEGORY_PARENT_ID
-import com.consultantvendor.utils.*
+import com.consultantvendor.utils.DateFormat
+import com.consultantvendor.utils.DateUtils
+import com.consultantvendor.utils.ImageFolder
+import com.consultantvendor.utils.PrefsManager
+import com.consultantvendor.utils.UPDATE_AVAILABILITY
+import com.consultantvendor.utils.UPDATE_CATEGORY
+import com.consultantvendor.utils.UPDATE_NUMBER
+import com.consultantvendor.utils.UPDATE_PREFRENCES
+import com.consultantvendor.utils.UPDATE_PROFILE
+import com.consultantvendor.utils.USER_DATA
 import com.consultantvendor.utils.dialogs.ProgressDialog
+import com.consultantvendor.utils.getAge
+import com.consultantvendor.utils.getDoctorName
+import com.consultantvendor.utils.getImageBaseUrl
+import com.consultantvendor.utils.getUserRating
+import com.consultantvendor.utils.hideShowView
+import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.loadImage
+import com.consultantvendor.utils.viewImageFull
 import dagger.android.support.DaggerFragment
-import permissions.dispatcher.*
 import javax.inject.Inject
 
 class ProfileFragment : DaggerFragment() {
@@ -83,7 +99,7 @@ class ProfileFragment : DaggerFragment() {
 
         binding.tvName.text = getDoctorName(userData)
 
-        if (userData?.profile_image !=null) {
+        if (userData?.profile_image != null) {
             loadImage(binding.ivPic, userData?.profile_image, R.drawable.ic_profile_placeholder)
         } else {
             loadImage(binding.ivPic, userData?.clinic_logo, R.drawable.ic_profile_placeholder)
@@ -94,17 +110,21 @@ class ProfileFragment : DaggerFragment() {
         binding.tvDOBV.text = userData?.profile?.dob ?: getString(R.string.na)
         binding.tvDesc.text = userData?.categoryData?.name ?: getString(R.string.na)
 
-        binding.tvRating.text = getString(R.string.s_s_reviews,
-                getUserRating(userData?.totalRating), userData?.reviewCount)
+        binding.tvRating.text = getString(
+            R.string.s_s_reviews,
+            getUserRating(userData?.totalRating), userData?.reviewCount
+        )
 
         binding.tvPatientV.text = userData?.patientCount ?: getString(R.string.na)
         binding.tvExperienceV.text =
-                "${getAge(userData?.profile?.working_since)} ${getString(R.string.years)}"
+            "${getAge(userData?.profile?.working_since)} ${getString(R.string.years)}"
         binding.tvReviewsV.text = userData?.reviewCount ?: getString(R.string.na)
 
         if (!userData?.profile?.dob.isNullOrEmpty())
-            binding.tvDOBV.text = DateUtils.dateFormatChange(DateFormat.DATE_FORMAT,
-                    DateFormat.MON_DATE_YEAR, userData?.profile?.dob ?: "")
+            binding.tvDOBV.text = DateUtils.dateFormatChange(
+                DateFormat.DATE_FORMAT,
+                DateFormat.MON_DATE_YEAR, userData?.profile?.dob ?: ""
+            )
 
         binding.tvSetPrefrences.hideShowView(userData?.filters?.isNotEmpty() == true)
         binding.tvDocuments.hideShowView(userData?.categoryData?.is_additionals == true)
@@ -117,45 +137,57 @@ class ProfileFragment : DaggerFragment() {
         }
 
         binding.tvEdit.setOnClickListener {
-            registerActivityResult.launch(Intent(requireActivity(), SignUpActivity::class.java)
-                    .putExtra(UPDATE_PROFILE, true))
+            registerActivityResult.launch(
+                Intent(requireActivity(), SignUpActivity::class.java)
+                    .putExtra(UPDATE_PROFILE, true)
+            )
         }
 
         binding.tvPhoneUpdate.setOnClickListener {
-            registerActivityResult.launch(Intent(requireActivity(), SignUpActivity::class.java)
-                    .putExtra(UPDATE_NUMBER, true))
+            registerActivityResult.launch(
+                Intent(requireActivity(), SignUpActivity::class.java)
+                    .putExtra(UPDATE_NUMBER, true)
+            )
         }
 
         binding.tvSetAvailability.setOnClickListener {
-            registerActivityResult.launch(Intent(requireActivity(), SignUpActivity::class.java)
+            registerActivityResult.launch(
+                Intent(requireActivity(), SignUpActivity::class.java)
                     .putExtra(CATEGORY_PARENT_ID, userData?.categoryData)
-                    .putExtra(UPDATE_AVAILABILITY, true))
+                    .putExtra(UPDATE_AVAILABILITY, true)
+            )
         }
 
         binding.tvSetPrefrences.setOnClickListener {
-            registerActivityResult.launch(Intent(requireActivity(), SignUpActivity::class.java)
+            registerActivityResult.launch(
+                Intent(requireActivity(), SignUpActivity::class.java)
                     .putExtra(CATEGORY_PARENT_ID, userData?.categoryData)
-                    .putExtra(UPDATE_PREFRENCES, true))
+                    .putExtra(UPDATE_PREFRENCES, true)
+            )
 
         }
 
         binding.tvDocuments.setOnClickListener {
-            registerActivityResult.launch(Intent(requireActivity(), SignUpActivity::class.java)
+            registerActivityResult.launch(
+                Intent(requireActivity(), SignUpActivity::class.java)
                     .putExtra(CATEGORY_PARENT_ID, userData?.categoryData)
-                    .putExtra(DocumentsFragment.UPDATE_DOCUMENTS, true))
+                    .putExtra(DocumentsFragment.UPDATE_DOCUMENTS, true)
+            )
 
         }
 
         binding.tvUpdateCategory.setOnClickListener {
-            registerActivityResult.launch(Intent(requireActivity(), SignUpActivity::class.java)
-                    .putExtra(UPDATE_CATEGORY, true))
+            registerActivityResult.launch(
+                Intent(requireActivity(), SignUpActivity::class.java)
+                    .putExtra(UPDATE_CATEGORY, true)
+            )
 
         }
 
 
         binding.ivPic.setOnClickListener {
             val itemImages = java.util.ArrayList<String>()
-            itemImages.add(getImageBaseUrl(ImageFolder.UPLOADS,userRepository.getUser()?.profile_image))
+            itemImages.add(getImageBaseUrl(ImageFolder.UPLOADS, userRepository.getUser()?.profile_image))
             viewImageFull(requireActivity(), itemImages, 0)
         }
     }
@@ -167,7 +199,6 @@ class ProfileFragment : DaggerFragment() {
             requireActivity().setResult(Activity.RESULT_OK)
         }
     }
-
 
 
     private fun bindObservers() {
@@ -182,10 +213,12 @@ class ProfileFragment : DaggerFragment() {
 
                     setUserProfile()
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(false)
                 }

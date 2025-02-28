@@ -17,6 +17,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.WindowManager
 import android.view.animation.LinearInterpolator
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -33,26 +34,44 @@ import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.ActivityAppointmentStatusBinding
 import com.consultantvendor.ui.dashboard.home.AppointmentViewModel
-import com.consultantvendor.utils.*
+import com.consultantvendor.utils.AlertDialogUtil
+import com.consultantvendor.utils.AppSocket
+import com.consultantvendor.utils.CallAction
+import com.consultantvendor.utils.EXTRA_REQUEST_ID
 import com.consultantvendor.utils.PermissionUtils
+import com.consultantvendor.utils.PermissionUtils.hasPermission
+import com.consultantvendor.utils.PrefsManager
+import com.consultantvendor.utils.bitmapDescriptorFromVector
 import com.consultantvendor.utils.dialogs.ProgressDialog
-import com.google.android.gms.location.*
+import com.consultantvendor.utils.gone
+import com.consultantvendor.utils.hideShowView
+import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.loadImage
+import com.consultantvendor.utils.longToast
+import com.consultantvendor.utils.visible
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.Polyline
+import com.google.android.gms.maps.model.PolylineOptions
 import dagger.android.support.DaggerAppCompatActivity
 import io.socket.client.Ack
 import org.json.JSONObject
-import permissions.dispatcher.*
-import java.util.*
+import java.util.Locale
+import java.util.Timer
 import javax.inject.Inject
 import kotlin.concurrent.schedule
 import kotlin.math.sign
 
-
-@RuntimePermissions
 class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback {
 
     @Inject
@@ -97,6 +116,14 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
 
     private var timer: Timer? = null
 
+    private val callLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isAllowed ->
+            if (!isAllowed) {
+                PermissionUtils.showAppSettingsDialog(this, R.string.we_will_need_call)
+                return@registerForActivityResult
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_appointment_status)
@@ -125,15 +152,19 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
     }
 
     private fun setRequestData() {
-        finalLatLng = LatLng(request?.extra_detail?.lat?.toDouble()
-                ?: 0.0, request?.extra_detail?.long?.toDouble() ?: 0.0)
+        finalLatLng = LatLng(
+            request?.extra_detail?.lat?.toDouble()
+                ?: 0.0, request?.extra_detail?.long?.toDouble() ?: 0.0
+        )
 
         if (markerToReach == null) {
-            markerToReach = mMap?.addMarker(MarkerOptions()
+            markerToReach = mMap?.addMarker(
+                MarkerOptions()
                     .position(finalLatLng)
                     .icon(bitmapDescriptorFromVector(this, R.drawable.ic_drop_location_mrkr))
                     .anchor(0.5f, 0.5f)
-                    .flat(true))
+                    .flat(true)
+            )
         }
 
         if (::placeLatLng.isInitialized) {
@@ -143,8 +174,10 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
 
 
         binding.tvName.text = request?.from_user?.name
-        loadImage(binding.ivPic, request?.from_user?.profile_image,
-                R.drawable.ic_profile_placeholder)
+        loadImage(
+            binding.ivPic, request?.from_user?.profile_image,
+            R.drawable.ic_profile_placeholder
+        )
 
         binding.ivCall.hideShowView(!request?.from_user?.phone.isNullOrEmpty())
         when (request?.status) {
@@ -153,13 +186,16 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
                 binding.groupOne.gone()
 
                 if (markerToMove == null && ::placeLatLng.isInitialized) {
-                    markerToMove = mMap?.addMarker(MarkerOptions()
+                    markerToMove = mMap?.addMarker(
+                        MarkerOptions()
                             .position(placeLatLng)
                             .icon(bitmapDescriptorFromVector(this, R.drawable.ic_location_arrow))
                             .anchor(0.5f, 0.5f)
-                            .flat(true))
+                            .flat(true)
+                    )
                 }
             }
+
             CallAction.REACHED -> {
                 binding.tvReached.gone()
                 binding.groupOne.visible()
@@ -190,7 +226,11 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
         }
 
         binding.ivCall.setOnClickListener {
-            getCallWithPermissionCheck()
+            if (hasPermission(Manifest.permission.CALL_PHONE)) {
+                getCall()
+            } else {
+                callLauncher.launch(Manifest.permission.CALL_PHONE)
+            }
         }
     }
 
@@ -231,7 +271,7 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
                         startActivity(intent)
                 }
             } else {
-                getLocationWithPermissionCheck()
+                getLocation()
             }
         } else if (request?.status == CallAction.REACHED) {
             runOnUiThread {
@@ -245,10 +285,15 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
     }
 
     private fun checkPermissions(): Boolean {
-        if (ActivityCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             return true
         }
         return false
@@ -266,16 +311,18 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
             }
 
             //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback,
-                    Looper.myLooper())
+            mFusedLocationClient.requestLocationUpdates(
+                mLocationRequest, mLocationCallback,
+                Looper.myLooper()
+            )
 
         }
     }
 
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            val mLastLocation: Location = locationResult.lastLocation
-            placeLatLng = LatLng(mLastLocation.latitude, mLastLocation.longitude)
+            val mLastLocation = locationResult.lastLocation
+            placeLatLng = LatLng(mLastLocation?.latitude ?: 0.0, mLastLocation?.longitude ?: 0.0)
 
             //placeLatLng = LatLng(30.7457, 76.7332)
             drawPolyLineApi()
@@ -287,25 +334,28 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
 
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
-                getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
                 locationManager.isProviderEnabled(
-                        LocationManager.NETWORK_PROVIDER)
+                    LocationManager.NETWORK_PROVIDER
+                )
     }
 
     private fun drawPolyLineApi() {
         runOnUiThread {
             if (isConnectedToInternet(this, true)) {
                 if (request?.status == CallAction.START && markerToMove == null) {
-                    markerToMove = mMap?.addMarker(MarkerOptions()
+                    markerToMove = mMap?.addMarker(
+                        MarkerOptions()
                             .position(placeLatLng)
                             .icon(bitmapDescriptorFromVector(this, R.drawable.ic_location_arrow))
                             .anchor(0.5f, 0.5f)
-                            .flat(true))
+                            .flat(true)
+                    )
 
                 } else
                     animateMarker()
-                    liveLocationUpdate()
+                liveLocationUpdate()
 
                 val hashMap = HashMap<String, String>()
                 hashMap["origin"] = "${placeLatLng.latitude},${placeLatLng.longitude}"
@@ -385,7 +435,7 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
                 try {
                     val v = animation.animatedFraction
                     val newPosition = latLngInterpolator.interpolate(v, startPosition, endPosition)
-                            ?: LatLng(0.0, 0.0)
+                        ?: LatLng(0.0, 0.0)
                     markerToMove?.position = newPosition
                     markerToMove?.rotation = computeRotation(v, startRotation, locationStart.bearing)
                 } catch (ex: Exception) {
@@ -436,21 +486,27 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
                         try {
                             if (!it.data?.routes?.get(0)?.legs?.get(0)?.duration?.text.isNullOrEmpty()) {
                                 binding.tvTime.visible()
-                                binding.tvTime.text = getString(R.string.estimate_time_of_arrival_s,
-                                        it.data?.routes?.get(0)?.legs?.get(0)?.duration?.text)
+                                binding.tvTime.text = getString(
+                                    R.string.estimate_time_of_arrival_s,
+                                    it.data?.routes?.get(0)?.legs?.get(0)?.duration?.text
+                                )
                             }
                             drawDirectionToStop(it.data?.routes?.get(0)?.overview_polyline)
                         } catch (e: Exception) {
                             binding.tvTime.visible()
-                            binding.tvTime.text = getString(R.string.estimate_time_of_arrival_s,
-                                    getString(R.string.na))
+                            binding.tvTime.text = getString(
+                                R.string.estimate_time_of_arrival_s,
+                                getString(R.string.na)
+                            )
                         }
                     }
 
                 }
+
                 Status.ERROR -> {
                     ApisRespHandler.handleError(it.error, this, prefsManager)
                 }
+
                 Status.LOADING -> {
 
                 }
@@ -484,22 +540,26 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
                             binding.tvTime.gone()
                             binding.groupOne.visible()
                         }
+
                         CallAction.START_SERVICE -> {
                             /* startActivity(Intent(this, DrawerActivity::class.java)
                                     .putExtra(PAGE_TO_OPEN, DrawerActivity.UPDATE_SERVICE)
                                     .putExtra(EXTRA_REQUEST_ID, request?.id))*/
                             finish()
                         }
+
                         CallAction.CANCEL_SERVICE -> {
                             finish()
                         }
                     }
 
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, this, prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -510,15 +570,15 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
     override fun onBackPressed() {
         if (request?.status == CallAction.START) {
             AlertDialogUtil.instance.createOkCancelDialog(this, R.string.quit,
-                    R.string.quit_message, R.string.yes, R.string.no, false,
-                    object : AlertDialogUtil.OnOkCancelDialogListener {
-                        override fun onOkButtonClicked() {
-                            finish()
-                        }
+                R.string.quit_message, R.string.yes, R.string.no, false,
+                object : AlertDialogUtil.OnOkCancelDialogListener {
+                    override fun onOkButtonClicked() {
+                        finish()
+                    }
 
-                        override fun onCancelButtonClicked() {
-                        }
-                    }).show()
+                    override fun onCancelButtonClicked() {
+                    }
+                }).show()
         } else
             super.onBackPressed()
     }
@@ -572,8 +632,10 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
                 } while (b >= 0x20)
                 val dlng = if (result and 1 != 0) (result shr 1).inv() else result shr 1
                 lng += dlng
-                val p = LatLng(lat.toDouble() / 1E5,
-                        lng.toDouble() / 1E5)
+                val p = LatLng(
+                    lat.toDouble() / 1E5,
+                    lng.toDouble() / 1E5
+                )
                 poly.add(p)
             }
         }
@@ -582,15 +644,23 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
+//        onRequestPermissionsResult(requestCode, grantResults)
     }
 
-    @NeedsPermission(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
-    fun getLocation() {
+    //    @NeedsPermission(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+    private fun getLocation() {
         getLastLocation()
     }
 
-    @OnShowRationale(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+    private fun getCall() {
+        val user = request?.from_user
+        val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "${user?.country_code}${user?.phone}"))
+
+        if (this.packageName.equals(BuildConfig.APPLICATION_ID))
+            startActivity(intent)
+    }
+
+    /*@OnShowRationale(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
     fun showLocationRationale(request: PermissionRequest) {
         PermissionUtils.showRationalDialog(this, R.string.we_will_need_your_location, request)
     }
@@ -598,14 +668,16 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
     @OnNeverAskAgain(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
     fun onNeverAskAgainRationale() {
         PermissionUtils.showAppSettingsDialog(
-                this,
-                R.string.we_will_need_your_location)
+            this,
+            R.string.we_will_need_your_location
+        )
     }
 
     @OnPermissionDenied(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
     fun showDeniedForStorage() {
         PermissionUtils.showAppSettingsDialog(
-                this, R.string.we_will_need_your_location)
+            this, R.string.we_will_need_your_location
+        )
     }
 
     @NeedsPermission(Manifest.permission.CALL_PHONE)
@@ -625,20 +697,22 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
     @OnNeverAskAgain(Manifest.permission.CALL_PHONE)
     fun onNeverAskAgainCallRationale() {
         PermissionUtils.showAppSettingsDialog(
-                this,
-                R.string.we_will_need_call)
+            this,
+            R.string.we_will_need_call
+        )
     }
 
     @OnPermissionDenied(Manifest.permission.CALL_PHONE)
     fun showDeniedForCall() {
         PermissionUtils.showAppSettingsDialog(
-                this, R.string.we_will_need_call)
-    }
+            this, R.string.we_will_need_call
+        )
+    }*/
 
     @SuppressLint("NoDelegateOnResumeDetector")
     override fun onResume() {
         super.onResume()
-        getLocationWithPermissionCheck()
+        getLocation()
     }
 
 }

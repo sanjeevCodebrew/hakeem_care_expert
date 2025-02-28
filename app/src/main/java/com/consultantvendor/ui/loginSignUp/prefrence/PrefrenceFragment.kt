@@ -202,7 +202,7 @@ class PrefrenceFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     binding.swipeRefresh.isRefreshing = false
 
                     isLoadingMoreItems = false
@@ -228,13 +228,13 @@ class PrefrenceFragment : DaggerFragment() {
                     binding.swipeRefresh.isRefreshing = false
                     isLoadingMoreItems = false
                     adapter.setAllItemsLoaded(true)
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
 
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
                     if (!binding.swipeRefresh.isRefreshing)
-                        binding.clLoader.visible()
+                        binding.clLoader.root.visible()
                     binding.tvNext.gone()
                 }
             }

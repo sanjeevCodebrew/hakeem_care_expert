@@ -1,6 +1,5 @@
 package com.consultantvendor.ui.loginSignUp.signup
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -14,6 +13,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -43,11 +43,39 @@ import com.consultantvendor.ui.loginSignUp.insurance.InsuranceAdapter
 import com.consultantvendor.ui.loginSignUp.insurance.InsuranceFragment
 import com.consultantvendor.ui.loginSignUp.verifyotp.VerifyOTPFragment
 import com.consultantvendor.ui.loginSignUp.welcome.WelcomeFragment.Companion.EXTRA_SOCIAL
-import com.consultantvendor.utils.*
+import com.consultantvendor.utils.APP_TYPE
+import com.consultantvendor.utils.AppRequestCode
+import com.consultantvendor.utils.ConsultType
+import com.consultantvendor.utils.CountryListType
+import com.consultantvendor.utils.DateFormat
+import com.consultantvendor.utils.DateUtils
+import com.consultantvendor.utils.DocType
+import com.consultantvendor.utils.OnDateSelected
 import com.consultantvendor.utils.PermissionUtils
+import com.consultantvendor.utils.PermissionUtils.cameraAndStorageAccess
+import com.consultantvendor.utils.PermissionUtils.hasPermissions
+import com.consultantvendor.utils.PreferencesType
+import com.consultantvendor.utils.PrefsManager
+import com.consultantvendor.utils.UPDATE_NUMBER
+import com.consultantvendor.utils.UPDATE_PROFILE
+import com.consultantvendor.utils.USER_DATA
+import com.consultantvendor.utils.compressImage
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import com.consultantvendor.utils.dialogs.ProgressDialogImage
-import com.facebook.internal.Utility.arrayList
+import com.consultantvendor.utils.editTextScroll
+import com.consultantvendor.utils.getCity
+import com.consultantvendor.utils.getRequestBody
+import com.consultantvendor.utils.gone
+import com.consultantvendor.utils.hideKeyboard
+import com.consultantvendor.utils.hideShowView
+import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.loadImage
+import com.consultantvendor.utils.placePicker
+import com.consultantvendor.utils.replaceFragment
+import com.consultantvendor.utils.selectImages
+import com.consultantvendor.utils.setAcceptTerms
+import com.consultantvendor.utils.showSnackBar
+import com.consultantvendor.utils.visible
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.gson.Gson
 import dagger.android.support.DaggerFragment
@@ -56,12 +84,9 @@ import droidninja.filepicker.utils.ContentUriUtils
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import permissions.dispatcher.*
 import java.io.File
 import javax.inject.Inject
 
-
-@RuntimePermissions
 class SignUpFragment : DaggerFragment(), OnDateSelected {
 
     @Inject
@@ -125,6 +150,17 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
 
     private var saveAddress = SaveAddress()
 
+    private val storagePermissionLauncherLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            if (permissions.values.any { !it }) {
+                PermissionUtils.showAppSettingsDialog(
+                    requireContext(), R.string.media_permission
+                )
+                return@registerForActivityResult
+            }
+            selectImages(this, requireActivity())
+        }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (rootView == null) {
@@ -155,8 +191,8 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
 //        else
 //            binding.etYears.setHint(R.string.since_working)
 
-        binding.ilLocation.hideShowView(BuildConfig.FLAVOR =="taradoc")
-        binding.clPhone.hideShowView(BuildConfig.FLAVOR =="taradoc")
+        binding.ilLocation.hideShowView(BuildConfig.FLAVOR == "taradoc")
+        binding.clPhone.hideShowView(BuildConfig.FLAVOR == "taradoc")
         binding.ccpCountryCode.setCountryForNameCode(appClientDetails.country_name_code ?: "IN")
 
         /*If need country list*/
@@ -184,16 +220,16 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
             viewModelVersion.preferences(hashMap)
         }
 
-       if (BuildConfig.FLAVOR=="taradoc") {
-           val list = resources.getStringArray(R.array.dr_title)
-           val arrayAdapter: ArrayAdapter<String> =
-               ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, list)
-           arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-           binding.spnTitle.setAdapter(arrayAdapter)
+        if (BuildConfig.FLAVOR == "taradoc") {
+            val list = resources.getStringArray(R.array.dr_title)
+            val arrayAdapter: ArrayAdapter<String> =
+                ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, list)
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spnTitle.setAdapter(arrayAdapter)
 
-           binding.tvHeader.text= getString(R.string.join_community)
+            binding.tvHeader.text = getString(R.string.join_community)
 
-       }
+        }
 //       else
 //            resources.getStringArray(R.array.dr_title)
 
@@ -203,7 +239,7 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
     private fun setEditInformation() {
         editTextScroll(binding.etBio)
         userData = userRepository.getUser()
-        val list = if (BuildConfig.FLAVOR=="taradoc")
+        val list = if (BuildConfig.FLAVOR == "taradoc")
             resources.getStringArray(R.array.dr_title)
         else
             resources.getStringArray(R.array.dr_title)
@@ -224,12 +260,20 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
             binding.etEmail.setText(userData?.email ?: "")
 
             if (!userData?.profile?.dob.isNullOrEmpty())
-                binding.etDob.setText(DateUtils.dateFormatChange(DateFormat.DATE_FORMAT,
-                        DateFormat.MON_DATE_YEAR, userData?.profile?.dob ?: ""))
+                binding.etDob.setText(
+                    DateUtils.dateFormatChange(
+                        DateFormat.DATE_FORMAT,
+                        DateFormat.MON_DATE_YEAR, userData?.profile?.dob ?: ""
+                    )
+                )
 
             if (!userData?.profile?.working_since.isNullOrEmpty())
-                binding.etYears.setText(DateUtils.dateFormatChange(DateFormat.DATE_FORMAT,
-                        DateFormat.MON_DATE_YEAR, userData?.profile?.working_since ?: ""))
+                binding.etYears.setText(
+                    DateUtils.dateFormatChange(
+                        DateFormat.DATE_FORMAT,
+                        DateFormat.MON_DATE_YEAR, userData?.profile?.working_since ?: ""
+                    )
+                )
 
             loadImage(binding.ivPic, userData?.profile_image, R.drawable.ic_profile_placeholder)
 
@@ -245,6 +289,7 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
                                     binding.etGender.setText(filterOption.option_name)
                             }
                         }
+
                         PreferencesType.SIGNUP_AS -> {
                             it.options?.forEachIndexed { index, filterOption ->
                                 if (filterOption.isSelected)
@@ -264,7 +309,8 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
 
             /*If Social login email not editable*/
             if (binding.etEmail.text.toString().isNotEmpty() && (userData?.provider_type == ProviderType.facebook ||
-                            userData?.provider_type == ProviderType.google)) {
+                        userData?.provider_type == ProviderType.google)
+            ) {
                 binding.ilEmail.isEnabled = false
             }
 
@@ -291,18 +337,27 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
             binding.etBio.setText(userData?.profile?.bio ?: "")
 
             if (!userData?.profile?.dob.isNullOrEmpty())
-                binding.etDob.setText(DateUtils.dateFormatChange(DateFormat.DATE_FORMAT,
-                        DateFormat.MON_DATE_YEAR, userData?.profile?.dob ?: ""))
+                binding.etDob.setText(
+                    DateUtils.dateFormatChange(
+                        DateFormat.DATE_FORMAT,
+                        DateFormat.MON_DATE_YEAR, userData?.profile?.dob ?: ""
+                    )
+                )
 
             if (!userData?.profile?.working_since.isNullOrEmpty())
-                binding.etYears.setText(DateUtils.dateFormatChange(DateFormat.DATE_FORMAT,
-                        DateFormat.MON_DATE_YEAR, userData?.profile?.working_since ?: ""))
+                binding.etYears.setText(
+                    DateUtils.dateFormatChange(
+                        DateFormat.DATE_FORMAT,
+                        DateFormat.MON_DATE_YEAR, userData?.profile?.working_since ?: ""
+                    )
+                )
 
             loadImage(binding.ivPic, userData?.profile_image, R.drawable.ic_profile_placeholder)
 
             /*If Social login email not editable*/
             if (binding.etEmail.text.toString().isNotEmpty() && (userData?.provider_type == ProviderType.facebook ||
-                            userData?.provider_type == ProviderType.google)) {
+                        userData?.provider_type == ProviderType.google)
+            ) {
                 binding.ilEmail.isEnabled = false
             }
 
@@ -342,12 +397,18 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
         }
 
         binding.ivPic.setOnClickListener {
-            getStorageWithPermissionCheck()
+            if (hasPermissions(cameraAndStorageAccess)) {
+                selectImages(this, requireActivity())
+            } else {
+                storagePermissionLauncherLauncher.launch(cameraAndStorageAccess)
+            }
         }
 
         binding.spnTitle.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parentView: AdapterView<*>,
-                                        selectedItemView: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View?, position: Int, id: Long
+            ) {
                 binding.etTitle.setText(binding.spnTitle.selectedItem.toString())
             }
 
@@ -418,30 +479,36 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
 
     private fun checkValidation() {
         when {
-            binding.spnTitle.selectedItemPosition == 0  -> {
+            binding.spnTitle.selectedItemPosition == 0 -> {
                 binding.etTitle.showSnackBar(getString(R.string.enter_title))
             }
+
             binding.etName.text.toString().trim().isEmpty() -> {
                 binding.etName.showSnackBar(getString(R.string.enter_name))
             }
+
             (!isUpdate && binding.etEmail.text.toString().trim().isEmpty()) -> {
                 binding.etEmail.showSnackBar(getString(R.string.enter_email))
             }
+
             (binding.etEmail.text.toString().trim().isNotEmpty() &&
                     !Patterns.EMAIL_ADDRESS.matcher(binding.etEmail.text.toString().trim()).matches()) -> {
                 binding.etEmail.showSnackBar(getString(R.string.enter_correct_email))
             }
+
             (!isUpdate && binding.etPassword.text.toString().trim().length < 8) -> {
                 binding.etPassword.showSnackBar(getString(R.string.enter_password))
             }
-            binding.tvLocation.text.toString().trim().isEmpty()  && BuildConfig.FLAVOR== "taradoc"-> {
+
+            binding.tvLocation.text.toString().trim().isEmpty() && BuildConfig.FLAVOR == "taradoc" -> {
                 binding.tvLocation.showSnackBar(getString(R.string.select_city))
             }
+
             binding.etDob.text.toString().trim().isEmpty() -> {
                 binding.etDob.showSnackBar(getString(R.string.select_dob))
             }
 
-            binding.clPhone.visibility==View.VISIBLE &&( binding.etMobileNumber.text.toString().isEmpty() || binding.etMobileNumber.text.toString().length < 6 )-> {
+            binding.clPhone.visibility == View.VISIBLE && (binding.etMobileNumber.text.toString().isEmpty() || binding.etMobileNumber.text.toString().length < 6) -> {
                 binding.etMobileNumber.showSnackBar(getString(R.string.enter_phone_number))
             }
 
@@ -460,12 +527,15 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
             appFeatures.signUpAddition && binding.etLanguages.text.toString().trim().isEmpty() -> {
                 binding.etLanguages.showSnackBar(getString(R.string.choose_language))
             }
+
             binding.etBio.text.toString().trim().isEmpty() -> {
                 binding.etBio.showSnackBar(getString(R.string.enter_bio))
             }
+
             binding.tvTerms.visibility == View.VISIBLE && !binding.tvTerms.isChecked -> {
                 binding.tvTerms.showSnackBar(getString(R.string.agree_to_terms))
             }
+
             isConnectedToInternet(requireContext(), true) -> {
                 if (fileToUpload != null && fileToUpload?.exists() == true) {
                     uploadFileOnServer(fileToUpload)
@@ -479,19 +549,23 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
     private fun hitApi(image: String?) {
         hashMap = HashMap()
 
-        if (binding.etTitle.text.toString()=="None"){
+        if (binding.etTitle.text.toString() == "None") {
             hashMap["title"] = " "
-        } else{
+        } else {
             hashMap["title"] = binding.etTitle.text.toString().trim()
         }
 
         hashMap["name"] = binding.etName.text.toString().trim()
 
         try {
-            hashMap["dob"] = DateUtils.dateFormatForBackend(DateFormat.MON_DATE_YEAR,
-                    DateFormat.DATE_FORMAT, binding.etDob.text.toString().trim())
-            hashMap["working_since"] = DateUtils.dateFormatForBackend(DateFormat.MON_DATE_YEAR,
-                    DateFormat.DATE_FORMAT, binding.etYears.text.toString().trim())
+            hashMap["dob"] = DateUtils.dateFormatForBackend(
+                DateFormat.MON_DATE_YEAR,
+                DateFormat.DATE_FORMAT, binding.etDob.text.toString().trim()
+            )
+            hashMap["working_since"] = DateUtils.dateFormatForBackend(
+                DateFormat.MON_DATE_YEAR,
+                DateFormat.DATE_FORMAT, binding.etYears.text.toString().trim()
+            )
         } catch (e: Exception) {
         }
         hashMap["bio"] = binding.etBio.text.toString().trim()
@@ -499,10 +573,10 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
         if (binding.etInviteCode.text.toString().trim().isNotEmpty())
             hashMap["referral_code"] = binding.etInviteCode.text.toString().trim()
 
-        if (binding.ilLocation.visibility==View.VISIBLE && binding.tvLocation.text.toString().trim().isNotEmpty())
+        if (binding.ilLocation.visibility == View.VISIBLE && binding.tvLocation.text.toString().trim().isNotEmpty())
             hashMap["city"] = binding.tvLocation.text.toString().trim()
 
-        if(binding.clPhone.visibility==View.VISIBLE){
+        if (binding.clPhone.visibility == View.VISIBLE) {
             hashMap["country_code"] = binding.ccpCountryCode.selectedCountryCodeWithPlus
             hashMap["phone"] = binding.etMobileNumber.text.toString()
         }
@@ -534,19 +608,25 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
                     PreferencesType.GENDER -> {
                         if (binding.spnGender.selectedItemPosition != 0) {
                             setFilter.option_ids = ArrayList()
-                            setFilter.option_ids?.add(itemsGender[binding.spnGender.selectedItemPosition].id
-                                    ?: "")
+                            setFilter.option_ids?.add(
+                                itemsGender[binding.spnGender.selectedItemPosition].id
+                                    ?: ""
+                            )
                             filterArray.add(setFilter)
                         }
                     }
+
                     PreferencesType.SIGNUP_AS -> {
                         if (binding.spnSignUpAs.selectedItemPosition != 0) {
                             setFilter.option_ids = ArrayList()
-                            setFilter.option_ids?.add(itemsSignUpAs[binding.spnSignUpAs.selectedItemPosition].id
-                                    ?: "")
+                            setFilter.option_ids?.add(
+                                itemsSignUpAs[binding.spnSignUpAs.selectedItemPosition].id
+                                    ?: ""
+                            )
                             filterArray.add(setFilter)
                         }
                     }
+
                     PreferencesType.LANGUAGES -> {
                         setFilter.option_ids = ArrayList()
                         itemsLanguage.forEach {
@@ -573,14 +653,17 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
             arguments?.containsKey(UPDATE_NUMBER) == true -> {
                 viewModel.updateProfile(hashMap)
             }
+
             arguments?.containsKey(UPDATE_PROFILE) == true -> {
                 viewModel.updateProfile(hashMap)
             }
+
             BuildConfig.FLAVOR == "nurseLynx" || BuildConfig.FLAVOR == "homeDoctor" -> {
                 val hashMapOtp = HashMap<String, Any>()
                 hashMapOtp["email"] = binding.etEmail.text.toString().trim()
                 viewModel.sendEmailOtp(hashMapOtp)
             }
+
             else -> {
                 hashMap["password"] = binding.etPassword.text.toString().trim()
                 hashMap["user_type"] = APP_TYPE
@@ -618,14 +701,18 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
                     bundle.putSerializable(VerifyOTPFragment.EXTRA_EMAIL_DATA, hashMap)
                     fragment.arguments = bundle
 
-                    replaceFragment(requireActivity().supportFragmentManager,
-                            fragment, R.id.container)
+                    replaceFragment(
+                        requireActivity().supportFragmentManager,
+                        fragment, R.id.container
+                    )
 
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -651,19 +738,25 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
                             bundle.putBoolean(UPDATE_PROFILE, true)
                         fragment.arguments = bundle
 
-                        replaceFragment(requireActivity().supportFragmentManager,
-                                fragment, R.id.container)
+                        replaceFragment(
+                            requireActivity().supportFragmentManager,
+                            fragment, R.id.container
+                        )
                     } else if (arguments?.containsKey(UPDATE_PROFILE) == true) {
                         requireActivity().finish()
                     } else
-                        replaceFragment(requireActivity().supportFragmentManager,
-                                CategoryFragment(), R.id.container)
+                        replaceFragment(
+                            requireActivity().supportFragmentManager,
+                            CategoryFragment(), R.id.container
+                        )
 
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -678,10 +771,12 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
 
                     hitApi(it.data?.image_name ?: "")
                 }
+
                 Status.ERROR -> {
                     progressDialogImage.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialogImage.setLoading(true)
 
@@ -700,26 +795,33 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
                     requireActivity().setResult(Activity.RESULT_OK)
 
                     if (appFeatures.needInsurance && (appClientDetails.insurance == true
-                                    || appClientDetails.clientFeaturesKeys.isAddress == true)) {
+                                || appClientDetails.clientFeaturesKeys.isAddress == true)
+                    ) {
                         val fragment = InsuranceFragment()
                         val bundle = Bundle()
                         if (arguments?.containsKey(UPDATE_PROFILE) == true)
                             bundle.putBoolean(UPDATE_PROFILE, true)
                         fragment.arguments = bundle
 
-                        replaceFragment(requireActivity().supportFragmentManager,
-                                fragment, R.id.container)
+                        replaceFragment(
+                            requireActivity().supportFragmentManager,
+                            fragment, R.id.container
+                        )
                     } else if (arguments?.containsKey(UPDATE_PROFILE) == true) {
                         requireActivity().finish()
                     } else
-                        replaceFragment(requireActivity().supportFragmentManager,
-                                CategoryFragment(), R.id.container)
+                        replaceFragment(
+                            requireActivity().supportFragmentManager,
+                            CategoryFragment(), R.id.container
+                        )
 
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -744,9 +846,11 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
                         }
                     }
                 }
+
                 Status.ERROR -> {
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                 }
             }
@@ -779,6 +883,7 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
                                 spinnerGenderAdapter?.notifyDataSetChanged()
 
                             }
+
                             PreferencesType.SIGNUP_AS -> {
                                 itemsSignUpAs.clear()
 
@@ -797,6 +902,7 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
                                 spinnerSignUpAsAdapter?.notifyDataSetChanged()
 
                             }
+
                             PreferencesType.LANGUAGES -> {
                                 itemsLanguage.clear()
 
@@ -827,9 +933,11 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
                         }
                     }
                 }
+
                 Status.ERROR -> {
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                 }
             }
@@ -865,15 +973,17 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
 
             if (requestCode == AppRequestCode.IMAGE_PICKER) {
                 val docPaths = ArrayList<Uri>()
-                docPaths.addAll(data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)
-                        ?: emptyList())
+                docPaths.addAll(
+                    data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)
+                        ?: emptyList()
+                )
 
                 fileToUpload = compressImage(requireActivity(), File(ContentUriUtils.getFilePath(requireContext(), docPaths[0])))
                 Glide.with(requireContext()).load(fileToUpload).into(binding.ivPic)
 
-            }else if (requestCode == AppRequestCode.AUTOCOMPLETE_REQUEST_CODE) {
+            } else if (requestCode == AppRequestCode.AUTOCOMPLETE_REQUEST_CODE) {
                 val place = Autocomplete.getPlaceFromIntent(data!!)
-                binding.tvLocation.setText(getCity(place,requireContext()))
+                binding.tvLocation.setText(getCity(place, requireContext()))
 
                 saveAddress.locationName = binding.tvLocation.text.toString()
                 saveAddress.long = place.latLng?.longitude
@@ -884,15 +994,15 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
+//        onRequestPermissionsResult(requestCode, grantResults)
     }
 
-    @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    /*@NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun getStorage() {
         selectImages(this, requireActivity())
     }
@@ -905,16 +1015,17 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
     @OnNeverAskAgain(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun onNeverAskAgainRationale() {
         PermissionUtils.showAppSettingsDialog(
-                requireContext(), R.string.media_permission
+            requireContext(), R.string.media_permission
         )
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun showDeniedForStorage() {
         PermissionUtils.showAppSettingsDialog(
-                requireContext(), R.string.media_permission
+            requireContext(), R.string.media_permission
         )
-    }
+    }*/
+
     fun longToast(text: CharSequence) {
         Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
     }

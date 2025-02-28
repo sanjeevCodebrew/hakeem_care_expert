@@ -174,8 +174,7 @@
             app:layout_constraintTop_toBottomOf="@id/tvIntakeV"
             app:lottie_autoPlay="true"
             app:lottie_fileName="protein.json"
-            app:lottie_loop="true"
-            app:lottie_scale="1" />
+            app:lottie_loop="true" />
 
         <ProgressBar
             android:id="@+id/progress"

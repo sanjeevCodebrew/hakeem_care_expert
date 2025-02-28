@@ -17,7 +17,7 @@ import com.consultantvendor.utils.PrefsManager
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import com.consultantvendor.utils.hideKeyboard
 import com.consultantvendor.utils.showSnackBar
-import com.ekn.gruzer.gaugelibrary.Range
+import com.ekndev.gaugelibrary.Range
 import dagger.android.support.DaggerFragment
 import java.text.DecimalFormat
 import javax.inject.Inject
@@ -45,9 +45,10 @@ class BmiCheckerFragment : DaggerFragment() {
 
     private lateinit var viewModel: LoginViewModel
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         if (rootView == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bmi_checker, container, false)
             rootView = binding.root
@@ -159,10 +160,10 @@ class BmiCheckerFragment : DaggerFragment() {
 
         binding.spinnerGender.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
-                    position: Int,
-                    id: Long
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
             ) {
                 selectedGender = genders[position]
             }

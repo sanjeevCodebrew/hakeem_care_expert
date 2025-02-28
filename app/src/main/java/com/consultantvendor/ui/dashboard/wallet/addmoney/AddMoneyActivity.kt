@@ -218,7 +218,7 @@ class AddMoneyActivity : DaggerAppCompatActivity(){
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
 
                     items.clear()
                     items.addAll(it.data?.cards ?: emptyList())
@@ -235,11 +235,11 @@ class AddMoneyActivity : DaggerAppCompatActivity(){
                 Status.ERROR -> {
                     adapter.setAllItemsLoaded(true)
 
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, this, prefsManager)
                 }
                 Status.LOADING -> {
-                    binding.clLoader.visible()
+                    binding.clLoader.root.visible()
                 }
             }
         })

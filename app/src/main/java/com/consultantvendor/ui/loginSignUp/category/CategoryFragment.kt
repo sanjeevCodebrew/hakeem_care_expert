@@ -147,7 +147,7 @@ class CategoryFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     isLoadingMoreItems = false
 
                     val tempList = it.data?.classes_category ?: emptyList()
@@ -167,12 +167,12 @@ class CategoryFragment : DaggerFragment() {
                 Status.ERROR -> {
                     isLoadingMoreItems = false
                     adapter.setAllItemsLoaded(true)
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
 
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
-                    binding.clLoader.visible()
+                    binding.clLoader.root.visible()
                 }
             }
         })

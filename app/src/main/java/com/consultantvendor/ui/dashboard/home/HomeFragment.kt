@@ -2,12 +2,16 @@ package com.consultantvendor.ui.dashboard.home
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -17,7 +21,11 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.consultantvendor.BuildConfig
 import com.consultantvendor.R
 import com.consultantvendor.appFeatures
-import com.consultantvendor.data.models.responses.*
+import com.consultantvendor.data.models.responses.Banner
+import com.consultantvendor.data.models.responses.Feed
+import com.consultantvendor.data.models.responses.Request
+import com.consultantvendor.data.models.responses.Service
+import com.consultantvendor.data.models.responses.UserData
 import com.consultantvendor.data.network.ApiKeys
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.PushType
@@ -35,13 +43,32 @@ import com.consultantvendor.ui.dashboard.success.NetworkIssueFragment
 import com.consultantvendor.ui.drawermenu.DrawerActivity
 import com.consultantvendor.ui.drawermenu.DrawerActivity.Companion.NOTIFICATION
 import com.consultantvendor.ui.loginSignUp.LoginViewModel
-import com.consultantvendor.ui.loginSignUp.login.LoginActivity
-import com.consultantvendor.utils.*
+import com.consultantvendor.utils.AlertDialogUtil
+import com.consultantvendor.utils.AppRequestCode
+import com.consultantvendor.utils.BlogType
+import com.consultantvendor.utils.CallAction
+import com.consultantvendor.utils.CallType
+import com.consultantvendor.utils.ConsultType
+import com.consultantvendor.utils.EXTRA_IS_FIRST
+import com.consultantvendor.utils.EXTRA_REQUEST_ID
+import com.consultantvendor.utils.IS_LOGIN_ACCESS
+import com.consultantvendor.utils.PAGE_TO_OPEN
+import com.consultantvendor.utils.PrefsManager
+import com.consultantvendor.utils.USER_DATA
+import com.consultantvendor.utils.USER_ID
+import com.consultantvendor.utils.USER_LANGUAGE
+import com.consultantvendor.utils.USER_NAME
 import com.consultantvendor.utils.dialogs.ProgressDialog
+import com.consultantvendor.utils.getCountFormat
+import com.consultantvendor.utils.gone
+import com.consultantvendor.utils.hideShowView
+import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.loadImage
+import com.consultantvendor.utils.logoutUser
+import com.consultantvendor.utils.longToast
+import com.consultantvendor.utils.visible
+import com.makeramen.roundedimageview.RoundedImageView
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.item_no_data.view.*
-import kotlinx.android.synthetic.main.nav_header_home.view.*
-import java.util.*
 import javax.inject.Inject
 
 
@@ -95,8 +122,10 @@ class HomeFragment : DaggerFragment() {
     private var notification_count: Int? = 0
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         if (rootView == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
             rootView = binding.root
@@ -129,9 +158,9 @@ class HomeFragment : DaggerFragment() {
 //            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
 
-        Log.e("TAG", "authToken "+prefsManager.getObject(USER_DATA, UserData::class.java)?.token)
+        Log.e("TAG", "authToken " + prefsManager.getObject(USER_DATA, UserData::class.java)?.token)
         val hashMap = HashMap<String, String>()
-        val language = prefsManager.getString(USER_LANGUAGE,"")
+        val language = prefsManager.getString(USER_LANGUAGE, "")
         hashMap["language"] = language
         viewModelHome.postLanguage1(hashMap)
 
@@ -141,14 +170,21 @@ class HomeFragment : DaggerFragment() {
     private fun handleHeader() {
         val userData = userRepository.getUser()
         val headerView = binding.navView.getHeaderView(0)
-// set User Name
-        headerView.tvName.text = userData?.name
-        loadImage(headerView.ivPic, userData?.profile_image, R.drawable.ic_profile_placeholder)
 
-        headerView.ivPic.setOnClickListener {
+        // Access views inside header
+        val tvName = headerView.findViewById<AppCompatTextView>(R.id.tvName)
+        val ivPic = headerView.findViewById<RoundedImageView>(R.id.ivPic)
+
+// set User Name
+        tvName.text = userData?.name
+        loadImage(ivPic, userData?.profile_image, R.drawable.ic_profile_placeholder)
+
+        ivPic.setOnClickListener {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
-            startActivity(Intent(requireActivity(), DrawerActivity::class.java)
-                    .putExtra(PAGE_TO_OPEN, DrawerActivity.PROFILE))
+            startActivity(
+                Intent(requireActivity(), DrawerActivity::class.java)
+                    .putExtra(PAGE_TO_OPEN, DrawerActivity.PROFILE)
+            )
         }
     }
 
@@ -156,7 +192,7 @@ class HomeFragment : DaggerFragment() {
         adapter = AppointmentAdapter(this, items)
         binding.rvListing.adapter = adapter
 
-        binding.clLoader.setBackgroundResource(R.color.colorWhite)
+        binding.clLoader.root.setBackgroundResource(R.color.colorWhite)
         hitApi()
 
         adapterArticle = ArticleAdapter(this, itemsArticle)
@@ -188,8 +224,10 @@ class HomeFragment : DaggerFragment() {
             binding.tvHealthTools.visible()
             binding.rvHealthTools.visible()
 
-            val itemsHealth = arrayListOf(getString(R.string.health_tool_1), getString(R.string.health_tool_2),
-                    getString(R.string.health_tool_3), getString(R.string.health_tool_4))
+            val itemsHealth = arrayListOf(
+                getString(R.string.health_tool_1), getString(R.string.health_tool_2),
+                getString(R.string.health_tool_3), getString(R.string.health_tool_4)
+            )
             val adapterHealth = HealthToolsAdapter(this, itemsHealth)
             binding.rvHealthTools.adapter = adapterHealth
         }
@@ -197,7 +235,7 @@ class HomeFragment : DaggerFragment() {
 
     fun onServiceSelected(item: Service) {
         serviceId = item.service_id ?: ""
-        binding.clLoader.visible()
+        binding.clLoader.root.visible()
 
         hitRequestApi()
     }
@@ -215,9 +253,9 @@ class HomeFragment : DaggerFragment() {
             /*Home*/
             viewModelHome.home()
 
-            if (BuildConfig.FLAVOR=="taradoc"){
+            if (BuildConfig.FLAVOR == "taradoc") {
                 viewModelHome.banners()
-            }else if (BuildConfig.FLAVOR=="nurseLynx"){
+            } else if (BuildConfig.FLAVOR == "nurseLynx") {
                 viewModelHome.banners()
             }
             hitRequestApi()
@@ -247,36 +285,48 @@ class HomeFragment : DaggerFragment() {
         }
 
         binding.tvMoreAppointment.setOnClickListener {
-            startActivityForResult(Intent(requireActivity(), DrawerActivity::class.java)
-                    .putExtra(PAGE_TO_OPEN, DrawerActivity.APPOINTMENT), AppRequestCode.APPOINTMENT_UPDATE)
+            startActivityForResult(
+                Intent(requireActivity(), DrawerActivity::class.java)
+                    .putExtra(PAGE_TO_OPEN, DrawerActivity.APPOINTMENT), AppRequestCode.APPOINTMENT_UPDATE
+            )
         }
 
         binding.tvMoreArticles.setOnClickListener {
-            startActivityForResult(Intent(requireActivity(), DrawerActivity::class.java)
-                    .putExtra(PAGE_TO_OPEN, BlogType.ARTICLE), AppRequestCode.ARTICLE_CHANGES)
+            startActivityForResult(
+                Intent(requireActivity(), DrawerActivity::class.java)
+                    .putExtra(PAGE_TO_OPEN, BlogType.ARTICLE), AppRequestCode.ARTICLE_CHANGES
+            )
         }
 
         binding.tvMoreBlogs.setOnClickListener {
-            startActivityForResult(Intent(requireActivity(), DrawerActivity::class.java)
-                    .putExtra(PAGE_TO_OPEN, BlogType.BLOG), AppRequestCode.ARTICLE_CHANGES)
+            startActivityForResult(
+                Intent(requireActivity(), DrawerActivity::class.java)
+                    .putExtra(PAGE_TO_OPEN, BlogType.BLOG), AppRequestCode.ARTICLE_CHANGES
+            )
         }
 
         binding.tvPostArticles.setOnClickListener {
-            startActivityForResult(Intent(requireActivity(), DrawerActivity::class.java)
-                    .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_ARTICLE), AppRequestCode.ARTICLE_CHANGES)
+            startActivityForResult(
+                Intent(requireActivity(), DrawerActivity::class.java)
+                    .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_ARTICLE), AppRequestCode.ARTICLE_CHANGES
+            )
         }
 
         binding.tvPostBlogs.setOnClickListener {
-            startActivityForResult(Intent(requireActivity(), DrawerActivity::class.java)
-                    .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_BLOG), AppRequestCode.ARTICLE_CHANGES)
+            startActivityForResult(
+                Intent(requireActivity(), DrawerActivity::class.java)
+                    .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_BLOG), AppRequestCode.ARTICLE_CHANGES
+            )
         }
 
         binding.ivNotification.setOnClickListener {
             binding.tvUnreadCount.gone()
             notification_count = 0
             if (userRepository.isUserLoggedIn()) {
-                startActivity(Intent(requireContext(), DrawerActivity::class.java)
-                    .putExtra(PAGE_TO_OPEN, NOTIFICATION))
+                startActivity(
+                    Intent(requireContext(), DrawerActivity::class.java)
+                        .putExtra(PAGE_TO_OPEN, NOTIFICATION)
+                )
             }
         }
 
@@ -288,7 +338,7 @@ class HomeFragment : DaggerFragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     binding.swipeRefresh.isRefreshing = false
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
 
                     items.clear()
                     items.addAll(it.data?.requests ?: emptyList())
@@ -296,36 +346,38 @@ class HomeFragment : DaggerFragment() {
                     adapter.notifyDataSetChanged()
                     adapter.setAllItemsLoaded(true)
 
-                    binding.clNoData.hideShowView(items.isEmpty())
-                    binding.clLoader.setBackgroundResource(0)
+                    binding.clNoData.root.hideShowView(items.isEmpty())
+                    binding.clLoader.root.setBackgroundResource(0)
 
                     if (it.data?.isAprroved == false) {
-                        binding.clNoData.visible()
-                        binding.clNoData.setBackgroundResource(R.color.colorWhite)
-                        binding.clNoData.hideShowView(true)
+                        binding.clNoData.root.visible()
+                        binding.clNoData.root.setBackgroundResource(R.color.colorWhite)
+                        binding.clNoData.root.hideShowView(true)
                         binding.clNoData.ivNoData.setImageResource(R.drawable.ic_profile_empty_state)
                         binding.clNoData.tvNoData.text = getString(R.string.profile_unapproved)
                         binding.clNoData.tvNoDataDesc.text = getString(R.string.profile_unapproved_desc)
                     } else {
-                        binding.clNoData.gone()
+                        binding.clNoData.root.gone()
 
-                        binding.clNoDataAppointment.hideShowView(items.isEmpty())
+                        binding.clNoDataAppointment.root.hideShowView(items.isEmpty())
                         binding.clNoDataAppointment.tvNoData.text = getString(R.string.no_requests)
                         binding.clNoDataAppointment.tvNoDataDesc.text = getString(R.string.no_requests_desc)
 
                         binding.tvMoreAppointment.hideShowView(items.size >= 5)
                     }
                 }
+
                 Status.ERROR -> {
                     adapter.setAllItemsLoaded(true)
 
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     binding.swipeRefresh.isRefreshing = false
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     if (!binding.swipeRefresh.isRefreshing)
-                        binding.clLoader.visible()
+                        binding.clLoader.root.visible()
                 }
             }
         })
@@ -368,10 +420,12 @@ class HomeFragment : DaggerFragment() {
                     }
 
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                 }
             }
@@ -384,12 +438,14 @@ class HomeFragment : DaggerFragment() {
                     progressDialog.setLoading(false)
 
                     hitApi()
-                    Log.e("TAG", "checkObservor: "+hitApi() )
+                    Log.e("TAG", "checkObservor: " + hitApi())
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -407,27 +463,34 @@ class HomeFragment : DaggerFragment() {
                         ConsultType.CHAT -> {
                             requireActivity().longToast(getString(R.string.starting_chat))
 
-                            startActivity(Intent(requireActivity(), ChatDetailActivity::class.java)
+                            startActivity(
+                                Intent(requireActivity(), ChatDetailActivity::class.java)
                                     .putExtra(USER_ID, requestItem?.from_user?.id)
                                     .putExtra(USER_NAME, requestItem?.from_user?.name)
                                     .putExtra(EXTRA_REQUEST_ID, requestItem?.id)
                                     .putExtra(EXTRA_IS_FIRST, true)
-                                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
+                                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                            )
                         }
+
                         ConsultType.AUDIO_CALL, ConsultType.VIDEO_CALL -> {
                             requireActivity().longToast(getString(R.string.starting_call))
 
-                            startActivity(Intent(requireContext(), CallingActivity::class.java)
+                            startActivity(
+                                Intent(requireContext(), CallingActivity::class.java)
                                     .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    .putExtra(EXTRA_REQUEST_ID, requestItem))
+                                    .putExtra(EXTRA_REQUEST_ID, requestItem)
+                            )
                         }
                     }
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -442,10 +505,12 @@ class HomeFragment : DaggerFragment() {
 
                     hitApi()
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -461,14 +526,18 @@ class HomeFragment : DaggerFragment() {
 
                     if (requestItem?.status != CallAction.START_SERVICE) {
                         requestItem?.status = CallAction.START
-                        startActivityForResult(Intent(requireActivity(), AppointmentStatusActivity::class.java)
-                                .putExtra(EXTRA_REQUEST_ID, requestItem), AppRequestCode.APPOINTMENT_DETAILS)
+                        startActivityForResult(
+                            Intent(requireActivity(), AppointmentStatusActivity::class.java)
+                                .putExtra(EXTRA_REQUEST_ID, requestItem), AppRequestCode.APPOINTMENT_DETAILS
+                        )
                     }
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -483,10 +552,12 @@ class HomeFragment : DaggerFragment() {
 
                     logoutUser(requireActivity(), prefsManager)
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -504,10 +575,12 @@ class HomeFragment : DaggerFragment() {
                         viewModelHome.home()
                     }
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -534,9 +607,11 @@ class HomeFragment : DaggerFragment() {
                     binding.pageIndicatorView.hideShowView(itemsBanner.size > 1)
 
                 }
+
                 Status.ERROR -> {
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                 }
             }
@@ -548,9 +623,11 @@ class HomeFragment : DaggerFragment() {
                 Status.SUCCESS -> {
                     checkNotificationCount(it.data?.count)
                 }
+
                 Status.ERROR -> {
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
 
                 }
@@ -561,14 +638,16 @@ class HomeFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    prefsManager.save(IS_LOGIN_ACCESS,it.data?.is_login_access)
-                    if (it.data?.is_login_access==0){
+                    prefsManager.save(IS_LOGIN_ACCESS, it.data?.is_login_access)
+                    if (it.data?.is_login_access == 0) {
                         openDialogAdminAcess()
                     }
                 }
+
                 Status.ERROR -> {
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                 }
             }
@@ -580,9 +659,11 @@ class HomeFragment : DaggerFragment() {
                 Status.SUCCESS -> {
                     userRepository.getPages()
                 }
+
                 Status.ERROR -> {
 
                 }
+
                 Status.LOADING -> {
 
                 }
@@ -612,7 +693,7 @@ class HomeFragment : DaggerFragment() {
                 binding.tvUnreadCount.hideShowView(notification_count != null && notification_count ?: 0 > 0)
                 binding.tvUnreadCount.text = getCountFormat(1, notification_count)
             }
-        }else binding.tvUnreadCount.gone()
+        } else binding.tvUnreadCount.gone()
     }
 
     fun proceedRequest(request: Request) {
@@ -621,13 +702,18 @@ class HomeFragment : DaggerFragment() {
             CallAction.PENDING -> {
                 showAcceptRequestDialog()
             }
+
             CallAction.ACCEPT -> {
                 showInitiateRequestDialog()
             }
+
             CallAction.START, CallAction.REACHED -> {
-                startActivityForResult(Intent(requireActivity(), AppointmentStatusActivity::class.java)
-                        .putExtra(EXTRA_REQUEST_ID, request), AppRequestCode.APPOINTMENT_DETAILS)
+                startActivityForResult(
+                    Intent(requireActivity(), AppointmentStatusActivity::class.java)
+                        .putExtra(EXTRA_REQUEST_ID, request), AppRequestCode.APPOINTMENT_DETAILS
+                )
             }
+
             CallAction.START_SERVICE -> {
                 showMarkCompleteDialog()
             }
@@ -635,47 +721,45 @@ class HomeFragment : DaggerFragment() {
     }
 
 
-
-
     private fun showAcceptRequestDialog() {
         AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.accept_request,
-                R.string.accept_request_message, R.string.accept_request, R.string.cancel, false,
-                object : AlertDialogUtil.OnOkCancelDialogListener {
-                    override fun onOkButtonClicked() {
-                        hitApiAcceptRequest()
-                    }
+            R.string.accept_request_message, R.string.accept_request, R.string.cancel, false,
+            object : AlertDialogUtil.OnOkCancelDialogListener {
+                override fun onOkButtonClicked() {
+                    hitApiAcceptRequest()
+                }
 
-                    override fun onCancelButtonClicked() {
-                    }
-                }).show()
+                override fun onCancelButtonClicked() {
+                }
+            }).show()
     }
 
 
     private fun showMarkCompleteDialog() {
         AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.mark_complete,
-                R.string.mark_complete_message, R.string.mark_complete, R.string.cancel, false,
-                object : AlertDialogUtil.OnOkCancelDialogListener {
-                    override fun onOkButtonClicked() {
-                        hitApiCompleteRequest()
-                    }
+            R.string.mark_complete_message, R.string.mark_complete, R.string.cancel, false,
+            object : AlertDialogUtil.OnOkCancelDialogListener {
+                override fun onOkButtonClicked() {
+                    hitApiCompleteRequest()
+                }
 
-                    override fun onCancelButtonClicked() {
-                    }
-                }).show()
+                override fun onCancelButtonClicked() {
+                }
+            }).show()
     }
 
 
     private fun showInitiateRequestDialog() {
         AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.start_request,
-                R.string.start_request_message, R.string.start_request, R.string.cancel, false,
-                object : AlertDialogUtil.OnOkCancelDialogListener {
-                    override fun onOkButtonClicked() {
-                        hitApiStartRequest()
-                    }
+            R.string.start_request_message, R.string.start_request, R.string.cancel, false,
+            object : AlertDialogUtil.OnOkCancelDialogListener {
+                override fun onOkButtonClicked() {
+                    hitApiStartRequest()
+                }
 
-                    override fun onCancelButtonClicked() {
-                    }
-                }).show()
+                override fun onCancelButtonClicked() {
+                }
+            }).show()
     }
 
     private fun hitApiAcceptRequest() {
@@ -706,6 +790,7 @@ class HomeFragment : DaggerFragment() {
 
                     viewModel.callStatus(hashMap)
                 }
+
                 else -> {
                     val hashMap = HashMap<String, Any>()
                     hashMap["request_id"] = requestItem?.id ?: ""
@@ -719,23 +804,23 @@ class HomeFragment : DaggerFragment() {
 
     fun cancelAppointment(item: Request) {
         AlertDialogUtil.instance.createOkCancelDialog(requireActivity(),
-                R.string.cancel_appointment,
-                R.string.cancel_appointment_msg,
-                R.string.cancel_appointment,
-                R.string.cancel,
-                false,
-                object : AlertDialogUtil.OnOkCancelDialogListener {
-                    override fun onOkButtonClicked() {
-                        if (isConnectedToInternet(requireContext(), true)) {
-                            val hashMap = HashMap<String, String>()
-                            hashMap["request_id"] = item.id ?: ""
-                            viewModel.cancelRequest(hashMap)
-                        }
+            R.string.cancel_appointment,
+            R.string.cancel_appointment_msg,
+            R.string.cancel_appointment,
+            R.string.cancel,
+            false,
+            object : AlertDialogUtil.OnOkCancelDialogListener {
+                override fun onOkButtonClicked() {
+                    if (isConnectedToInternet(requireContext(), true)) {
+                        val hashMap = HashMap<String, String>()
+                        hashMap["request_id"] = item.id ?: ""
+                        viewModel.cancelRequest(hashMap)
                     }
+                }
 
-                    override fun onCancelButtonClicked() {
-                    }
-                }).show()
+                override fun onCancelButtonClicked() {
+                }
+            }).show()
     }
 
     override fun onResume() {
@@ -793,13 +878,16 @@ class HomeFragment : DaggerFragment() {
                 AppRequestCode.APPOINTMENT_UPDATE -> {
                     hitApi()
                 }
+
                 AppRequestCode.ARTICLE_CHANGES -> {
                     progressDialog.setLoading(true)
                     viewModelHome.home()
                 }
+
                 AppRequestCode.ADD_PRESCRIPTION -> {
                     hitApi()
                 }
+
                 AppRequestCode.APPOINTMENT_DETAILS -> {
                     hitRequestApi()
                 }

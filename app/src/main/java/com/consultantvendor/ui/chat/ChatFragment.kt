@@ -34,7 +34,6 @@ import com.consultantvendor.utils.AppSocket.Events.Companion.DELIVERED_MESSAGE
 import com.google.gson.Gson
 import dagger.android.support.DaggerFragment
 import io.socket.client.Ack
-import kotlinx.android.synthetic.main.item_no_data.view.*
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -212,7 +211,7 @@ class ChatFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     binding.swipeRefresh.isRefreshing = false
 
                     isLoadingMoreItems = false
@@ -243,7 +242,7 @@ class ChatFragment : DaggerFragment() {
                     isLastPage = tempList.size < PER_PAGE_LOAD
                     adapter.setAllItemsLoaded(isLastPage)
 
-                    binding.clNoData.hideShowView(items.isEmpty())
+                    binding.clNoData.root.hideShowView(items.isEmpty())
                 }
 
                 Status.ERROR -> {
@@ -251,13 +250,13 @@ class ChatFragment : DaggerFragment() {
                     adapter.setAllItemsLoaded(true)
 
                     binding.swipeRefresh.isRefreshing = false
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
 
                 Status.LOADING -> {
                     if (!binding.swipeRefresh.isRefreshing && !isLoadingMoreItems)
-                        binding.clLoader.visible()
+                        binding.clLoader.root.visible()
                 }
             }
         })

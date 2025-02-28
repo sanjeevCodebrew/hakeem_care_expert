@@ -25,14 +25,18 @@ import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.PER_PAGE_LOAD
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.databinding.ActivityListingToolbarBinding
-import com.consultantvendor.utils.*
+import com.consultantvendor.utils.AppRequestCode
+import com.consultantvendor.utils.PrefsManager
 import com.consultantvendor.utils.dialogs.ProgressDialog
+import com.consultantvendor.utils.gone
+import com.consultantvendor.utils.hideShowView
+import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.visible
 import com.google.gson.Gson
 import com.wafflecopter.multicontactpicker.ContactResult
 import com.wafflecopter.multicontactpicker.LimitColumn
 import com.wafflecopter.multicontactpicker.MultiContactPicker
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.item_no_data.view.*
 import javax.inject.Inject
 
 class ContactListFragment : DaggerFragment() {
@@ -149,7 +153,7 @@ class ContactListFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     binding.swipeRefresh.isRefreshing = false
 
                     isLoadingMoreItems = false
@@ -166,19 +170,21 @@ class ContactListFragment : DaggerFragment() {
                     isLastPage = tempList.size < PER_PAGE_LOAD
                     adapter.setAllItemsLoaded(isLastPage)
 
-                    binding.clNoData.hideShowView(items.isEmpty())
+                    binding.clNoData.root.hideShowView(items.isEmpty())
                 }
+
                 Status.ERROR -> {
                     isLoadingMoreItems = false
                     adapter.setAllItemsLoaded(true)
 
                     binding.swipeRefresh.isRefreshing = false
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     if (!isLoadingMoreItems && !binding.swipeRefresh.isRefreshing)
-                        binding.clLoader.visible()
+                        binding.clLoader.root.visible()
                 }
             }
         })
@@ -191,10 +197,12 @@ class ContactListFragment : DaggerFragment() {
 
                     hitApi(true)
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -209,10 +217,12 @@ class ContactListFragment : DaggerFragment() {
 
                     hitApi(true)
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -256,22 +266,24 @@ class ContactListFragment : DaggerFragment() {
     fun deleteContact(contact: ContactEmergency) {
         if (isConnectedToInternet(requireContext(), true)) {
             AlertDialog.Builder(requireContext())
-                    .setCancelable(false)
-                    .setTitle(getString(R.string.delete))
-                    .setMessage(getString(R.string.delete_contact, contact.name))
-                    .setPositiveButton(getString(R.string.delete)) { dialog, which ->
-                        val hashMap = HashMap<String, Any>()
-                        hashMap["id"] = contact.id ?: ""
-                        viewModel.deletContact(hashMap)
-                    }.setNegativeButton(getString(R.string.no)) { dialog, which ->
-                    }.show()
+                .setCancelable(false)
+                .setTitle(getString(R.string.delete))
+                .setMessage(getString(R.string.delete_contact, contact.name))
+                .setPositiveButton(getString(R.string.delete)) { dialog, which ->
+                    val hashMap = HashMap<String, Any>()
+                    hashMap["id"] = contact.id ?: ""
+                    viewModel.deletContact(hashMap)
+                }.setNegativeButton(getString(R.string.no)) { dialog, which ->
+                }.show()
         }
     }
 
     private fun checkContactPermission(): Boolean {
         //check if permission was granted/allowed or not, returns true if granted/allowed, false if not
-        return ContextCompat.checkSelfPermission(requireContext(),
-                android.Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            android.Manifest.permission.READ_CONTACTS
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestContactPermission() {
@@ -283,21 +295,23 @@ class ContactListFragment : DaggerFragment() {
     private fun pickContact() {
         //intent ti pick contact
         MultiContactPicker.Builder(this) //Activity/fragment context
-                .theme(R.style.AppTheme) //Optional - default: MultiContactPicker.Azure
-                .hideScrollbar(false) //Optional - default: false
-                .showTrack(true) //Optional - default: true
-                .searchIconColor(Color.WHITE) //Option - default: White
-                .setChoiceMode(MultiContactPicker.CHOICE_MODE_MULTIPLE) //Optional - default: CHOICE_MODE_MULTIPLE
-                .handleColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary)) //Optional - default: Azure Blue
-                .bubbleColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary)) //Optional - default: Azure Blue
-                .bubbleTextColor(Color.WHITE) //Optional - default: White
-                .setTitleText(getString(R.string.select_contacts)) //Optional - default: Select Contacts
-                .setSelectedContacts("10", "5") //Optional - will pre-select contacts of your choice. String... or List<ContactResult>
-                .setLoadingType(MultiContactPicker.LOAD_ASYNC) //Optional - default LOAD_ASYNC (wait till all loaded vs stream results)
-                .limitToColumn(LimitColumn.NONE) //Optional - default NONE (Include phone + email, limiting to one can improve loading time)
-                .setActivityAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-                        android.R.anim.fade_in,
-                        android.R.anim.fade_out) //Optional - default: No animation overrides
-                .showPickerForResult(AppRequestCode.SELECT_CONTACT)
+            .theme(R.style.AppTheme) //Optional - default: MultiContactPicker.Azure
+            .hideScrollbar(false) //Optional - default: false
+            .showTrack(true) //Optional - default: true
+            .searchIconColor(Color.WHITE) //Option - default: White
+            .setChoiceMode(MultiContactPicker.CHOICE_MODE_MULTIPLE) //Optional - default: CHOICE_MODE_MULTIPLE
+            .handleColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary)) //Optional - default: Azure Blue
+            .bubbleColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary)) //Optional - default: Azure Blue
+            .bubbleTextColor(Color.WHITE) //Optional - default: White
+            .setTitleText(getString(R.string.select_contacts)) //Optional - default: Select Contacts
+            .setSelectedContacts("10", "5") //Optional - will pre-select contacts of your choice. String... or List<ContactResult>
+            .setLoadingType(MultiContactPicker.LOAD_ASYNC) //Optional - default LOAD_ASYNC (wait till all loaded vs stream results)
+            .limitToColumn(LimitColumn.NONE) //Optional - default NONE (Include phone + email, limiting to one can improve loading time)
+            .setActivityAnimations(
+                android.R.anim.fade_in, android.R.anim.fade_out,
+                android.R.anim.fade_in,
+                android.R.anim.fade_out
+            ) //Optional - default: No animation overrides
+            .showPickerForResult(AppRequestCode.SELECT_CONTACT)
     }
 }

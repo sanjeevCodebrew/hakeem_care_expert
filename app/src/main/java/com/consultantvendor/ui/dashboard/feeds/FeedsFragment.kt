@@ -183,7 +183,7 @@ class FeedsFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     binding.swipeRefresh.isRefreshing = false
 
                     isLoadingMoreItems = false
@@ -200,19 +200,19 @@ class FeedsFragment : DaggerFragment() {
                     isLastPage = tempList.size < PER_PAGE_LOAD
                     adapter.setAllItemsLoaded(isLastPage)
 
-                    binding.clNoData.hideShowView(items.isEmpty())
+                    binding.clNoData.root.hideShowView(items.isEmpty())
                 }
                 Status.ERROR -> {
                     isLoadingMoreItems = false
                     adapter.setAllItemsLoaded(true)
 
                     binding.swipeRefresh.isRefreshing = false
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
                     if (!isLoadingMoreItems && !binding.swipeRefresh.isRefreshing)
-                        binding.clLoader.visible()
+                        binding.clLoader.root.visible()
                 }
             }
         })

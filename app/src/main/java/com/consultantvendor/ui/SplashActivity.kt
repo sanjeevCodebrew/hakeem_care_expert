@@ -115,8 +115,8 @@ class SplashActivity : DaggerAppCompatActivity() {
                     val appDetails = it.data
                     /*Handle feature keys*/
                     appDetails?.client_features?.forEach {
-                        when (it.name?.toLowerCase(Locale.getDefault())) {
-                            ClientFeatures.ADDRESS.toLowerCase(Locale.getDefault()) ->
+                        when (it.name?.lowercase(Locale.getDefault())) {
+                            ClientFeatures.ADDRESS.lowercase(Locale.getDefault()) ->
                                 appDetails.clientFeaturesKeys.isAddress = true
                         }
                     }

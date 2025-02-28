@@ -1,6 +1,5 @@
 package com.consultantvendor.ui.dashboard.home.prescription.manual
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -8,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,21 +20,34 @@ import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.databinding.FragmentManualPrescriptionBinding
 import com.consultantvendor.ui.chat.UploadFileViewModel
 import com.consultantvendor.ui.dashboard.home.prescription.AddPrescriptionViewModel
-import com.consultantvendor.utils.*
+import com.consultantvendor.utils.AppRequestCode
+import com.consultantvendor.utils.DateFormat
+import com.consultantvendor.utils.DateUtils
+import com.consultantvendor.utils.DocType
+import com.consultantvendor.utils.EXTRA_REQUEST_ID
 import com.consultantvendor.utils.PermissionUtils
+import com.consultantvendor.utils.PermissionUtils.cameraAndStorageAccess
+import com.consultantvendor.utils.PermissionUtils.hasPermissions
+import com.consultantvendor.utils.PrefsManager
+import com.consultantvendor.utils.PrescriptionType
+import com.consultantvendor.utils.compressImage
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import com.consultantvendor.utils.dialogs.ProgressDialogImage
+import com.consultantvendor.utils.getAge
+import com.consultantvendor.utils.getRequestBody
+import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.loadImage
+import com.consultantvendor.utils.selectImages
+import com.consultantvendor.utils.showSnackBar
 import dagger.android.support.DaggerFragment
 import droidninja.filepicker.FilePickerConst
 import droidninja.filepicker.utils.ContentUriUtils
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import permissions.dispatcher.*
 import java.io.File
 import javax.inject.Inject
 
-@RuntimePermissions
 class ManualPrescriptionFragment : DaggerFragment() {
 
     @Inject
@@ -63,6 +76,16 @@ class ManualPrescriptionFragment : DaggerFragment() {
 
     private var addPrescription: AddPrescription? = null
 
+    private val storagePermissionLauncherLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            if (permissions.values.any { !it }) {
+                PermissionUtils.showAppSettingsDialog(
+                    requireContext(), R.string.media_permission
+                )
+                return@registerForActivityResult
+            }
+            getStorage()
+        }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (rootView == null) {
@@ -90,8 +113,10 @@ class ManualPrescriptionFragment : DaggerFragment() {
 
         binding.tvName.text = request?.from_user?.name
         binding.tvAge.text = "${getAge(request?.from_user?.profile?.dob)} ${getString(R.string.years_old)}"
-        loadImage(binding.ivPic, request?.from_user?.profile_image,
-                R.drawable.ic_profile_placeholder)
+        loadImage(
+            binding.ivPic, request?.from_user?.profile_image,
+            R.drawable.ic_profile_placeholder
+        )
 
         binding.tvAppointmentV.text = "${DateUtils.dateTimeFormatFromUTC(DateFormat.MON_DATE_YEAR, request?.bookingDateUTC)} · " +
                 "${DateUtils.dateTimeFormatFromUTC(DateFormat.TIME_FORMAT, request?.bookingDateUTC)}"
@@ -129,9 +154,11 @@ class ManualPrescriptionFragment : DaggerFragment() {
                 binding.etRecordDetails.text.toString().trim().isEmpty() -> {
                     binding.etRecordDetails.showSnackBar(getString(R.string.record_title))
                 }
+
                 itemImages.isEmpty() -> {
                     binding.etRecordDetails.showSnackBar(getString(R.string.select_image))
                 }
+
                 isConnectedToInternet(requireContext(), true) -> {
                     addPrescription = AddPrescription()
                     addPrescription?.request_id = request?.id
@@ -150,8 +177,10 @@ class ManualPrescriptionFragment : DaggerFragment() {
                     }
 
                     if (addPrescription?.image?.size ?: 0 == itemImages.size)
-                        addPrescriptionViewModel.prescreptions(addPrescription
-                                ?: AddPrescription())
+                        addPrescriptionViewModel.prescreptions(
+                            addPrescription
+                                ?: AddPrescription()
+                        )
                     //uploadFileOnServer(itemImages[0])
                 }
             }
@@ -196,16 +225,20 @@ class ManualPrescriptionFragment : DaggerFragment() {
                         }
 
                         if (addPrescription?.image?.size ?: 0 == itemImages.size)
-                            addPrescriptionViewModel.prescreptions(addPrescription
-                                    ?: AddPrescription())
+                            addPrescriptionViewModel.prescreptions(
+                                addPrescription
+                                    ?: AddPrescription()
+                            )
                     } else {
                         addPrescriptionViewModel.prescreptions(addPrescription ?: AddPrescription())
                     }
                 }
+
                 Status.ERROR -> {
                     progressDialogImage.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialogImage.setLoading(true)
 
@@ -223,10 +256,12 @@ class ManualPrescriptionFragment : DaggerFragment() {
                     requireActivity().finish()
 
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -236,7 +271,11 @@ class ManualPrescriptionFragment : DaggerFragment() {
 
     /*Adapter item click*/
     fun clickItem() {
-        getStorageWithPermissionCheck()
+        if (hasPermissions(cameraAndStorageAccess)) {
+            getStorage()
+        } else {
+            storagePermissionLauncherLauncher.launch(cameraAndStorageAccess)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -245,10 +284,12 @@ class ManualPrescriptionFragment : DaggerFragment() {
             when (requestCode) {
                 AppRequestCode.IMAGE_PICKER -> {
                     val docPaths = ArrayList<Uri>()
-                    docPaths.addAll(data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)
-                            ?: emptyList())
+                    docPaths.addAll(
+                        data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)
+                            ?: emptyList()
+                    )
 
-                    val fileToUpload = compressImage(requireActivity(),File(ContentUriUtils.getFilePath(requireContext(), docPaths[0])))
+                    val fileToUpload = compressImage(requireActivity(), File(ContentUriUtils.getFilePath(requireContext(), docPaths[0])))
 
                     val docImage = DocImage()
                     docImage.type = DocType.IMAGE
@@ -275,15 +316,15 @@ class ManualPrescriptionFragment : DaggerFragment() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
+//        onRequestPermissionsResult(requestCode, grantResults)
     }
 
-    @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    fun getStorage() {
+    //    @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private fun getStorage() {
         selectImages(this, requireActivity())
     }
 
-    @OnShowRationale(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    /*@OnShowRationale(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun showLocationRationale(request: PermissionRequest) {
         PermissionUtils.showRationalDialog(requireContext(), R.string.media_permission, request)
     }
@@ -291,14 +332,14 @@ class ManualPrescriptionFragment : DaggerFragment() {
     @OnNeverAskAgain(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun onNeverAskAgainRationale() {
         PermissionUtils.showAppSettingsDialog(
-                requireContext(), R.string.media_permission
+            requireContext(), R.string.media_permission
         )
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun showDeniedForStorage() {
         PermissionUtils.showAppSettingsDialog(
-                requireContext(), R.string.media_permission
+            requireContext(), R.string.media_permission
         )
-    }
+    }*/
 }

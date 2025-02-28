@@ -19,10 +19,18 @@ import com.consultantvendor.data.network.PushType
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.databinding.FragmentQuestionDetailBinding
 import com.consultantvendor.ui.dashboard.home.questions.QuestionViewModel
-import com.consultantvendor.utils.*
+import com.consultantvendor.utils.EXTRA_REQUEST_ID
+import com.consultantvendor.utils.PrefsManager
 import com.consultantvendor.utils.dialogs.ProgressDialog
+import com.consultantvendor.utils.getDoctorName
+import com.consultantvendor.utils.gone
+import com.consultantvendor.utils.hideKeyboard
+import com.consultantvendor.utils.hideShowView
+import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.loadImage
+import com.consultantvendor.utils.showSnackBar
+import com.consultantvendor.utils.visible
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.item_no_data.view.*
 import javax.inject.Inject
 
 
@@ -55,8 +63,10 @@ class QuestionDetailFragment : DaggerFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (rootView == null) {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_question_detail,
-                    container, false)
+            binding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_question_detail,
+                container, false
+            )
             rootView = binding.root
 
             initialise()
@@ -70,7 +80,7 @@ class QuestionDetailFragment : DaggerFragment() {
     private fun initialise() {
         viewModel = ViewModelProvider(this, viewModelFactory)[QuestionViewModel::class.java]
         progressDialog = ProgressDialog(requireActivity())
-        binding.clLoader.setBackgroundResource(R.color.colorWhite)
+        binding.clLoader.root.setBackgroundResource(R.color.colorWhite)
 
         binding.clNoData.ivNoData.setImageResource(R.drawable.ic_requests_empty_state)
         binding.clNoData.tvNoData.text = getString(R.string.no_answer)
@@ -109,6 +119,7 @@ class QuestionDetailFragment : DaggerFragment() {
                 binding.etMessage.text.toString().trim().isEmpty() -> {
                     binding.etMessage.showSnackBar(getString(R.string.enter_message))
                 }
+
                 isConnectedToInternet(requireContext(), true) -> {
                     val hashMap = HashMap<String, Any>()
                     hashMap["question_id"] = questionId ?: ""
@@ -123,8 +134,10 @@ class QuestionDetailFragment : DaggerFragment() {
         binding.rlMessage.hideShowView(details?.you_answered == false)
 
         binding.tvName.text = getDoctorName(details?.created_by)
-        loadImage(binding.ivPic, details?.created_by?.profile_image,
-                R.drawable.image_placeholder)
+        loadImage(
+            binding.ivPic, details?.created_by?.profile_image,
+            R.drawable.image_placeholder
+        )
 
         binding.tvTitle.text = details?.title
         binding.tvDec.text = details?.description
@@ -133,7 +146,7 @@ class QuestionDetailFragment : DaggerFragment() {
         items.addAll(details?.answers ?: emptyList())
         adapter.notifyDataSetChanged()
 
-        binding.clNoData.hideShowView(items.isEmpty())
+        binding.clNoData.root.hideShowView(items.isEmpty())
     }
 
     private fun bindObservers() {
@@ -141,19 +154,21 @@ class QuestionDetailFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.gone()
-                    binding.clLoader.setBackgroundResource(0)
+                    binding.clLoader.root.gone()
+                    binding.clLoader.root.setBackgroundResource(0)
 
                     details = it.data?.question
                     setData()
 
                 }
+
                 Status.ERROR -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
-                    binding.clLoader.visible()
+                    binding.clLoader.root.visible()
                 }
             }
         })
@@ -165,12 +180,14 @@ class QuestionDetailFragment : DaggerFragment() {
                     hitApi()
                     binding.rlMessage.gone()
                 }
+
                 Status.ERROR -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
-                    binding.clLoader.visible()
+                    binding.clLoader.root.visible()
                 }
             }
         })
@@ -192,7 +209,7 @@ class QuestionDetailFragment : DaggerFragment() {
             val intentFilter = IntentFilter()
             intentFilter.addAction(PushType.FREE_EXPERT_ADVISE)
             LocalBroadcastManager.getInstance(requireContext())
-                    .registerReceiver(refreshRequests, intentFilter)
+                .registerReceiver(refreshRequests, intentFilter)
             isReceiverRegistered = true
         }
     }

@@ -255,7 +255,7 @@ class ServiceFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
 //                    binding.swipeRefresh.isRefreshing = false
                     isLoadingMoreItems = false
 
@@ -295,15 +295,15 @@ class ServiceFragment : DaggerFragment() {
                 Status.ERROR -> {
                     isLoadingMoreItems = false
                     adapter.setAllItemsLoaded(true)
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
 //                    binding.swipeRefresh.isRefreshing = false
 
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
 //                    if (!binding.swipeRefresh.isRefreshing)
-//                        binding.clLoader.visible()
-                    binding.clLoader.visible()
+//                        binding.clLoader.root.visible()
+                    binding.clLoader.root.visible()
                 }
             }
         })

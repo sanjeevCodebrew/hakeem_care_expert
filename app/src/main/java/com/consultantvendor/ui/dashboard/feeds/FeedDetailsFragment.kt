@@ -123,19 +123,19 @@ class FeedDetailsFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.gone()
-                    binding.clLoader.setBackgroundResource(0)
+                    binding.clLoader.root.gone()
+                    binding.clLoader.root.setBackgroundResource(0)
 
                     details = it.data?.feed
                     setData()
 
                 }
                 Status.ERROR -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
-                    //binding.clLoader.visible()
+                    //binding.clLoader.root.visible()
                 }
             }
         })

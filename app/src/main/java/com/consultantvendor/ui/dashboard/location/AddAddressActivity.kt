@@ -15,6 +15,7 @@ import android.os.Looper
 import android.provider.Settings
 import android.view.MotionEvent
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -23,9 +24,21 @@ import com.consultantvendor.R
 import com.consultantvendor.data.models.requests.SaveAddress
 import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.ActivityAddAddressBinding
-import com.consultantvendor.utils.*
+import com.consultantvendor.utils.AppRequestCode
+import com.consultantvendor.utils.LocaleHelper
 import com.consultantvendor.utils.PermissionUtils
-import com.google.android.gms.location.*
+import com.consultantvendor.utils.PermissionUtils.hasPermissions
+import com.consultantvendor.utils.PermissionUtils.locationPermission
+import com.consultantvendor.utils.PrefsManager
+import com.consultantvendor.utils.getAddress
+import com.consultantvendor.utils.hideKeyboard
+import com.consultantvendor.utils.placePicker
+import com.consultantvendor.utils.showSnackBar
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -34,12 +47,9 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.libraries.places.widget.Autocomplete
 import dagger.android.support.DaggerAppCompatActivity
-import permissions.dispatcher.*
-import java.util.*
+import java.util.Locale
 import javax.inject.Inject
 
-
-@RuntimePermissions
 class AddAddressActivity : DaggerAppCompatActivity(), GoogleMap.OnCameraChangeListener, OnMapReadyCallback {
 
     @Inject
@@ -65,6 +75,17 @@ class AddAddressActivity : DaggerAppCompatActivity(), GoogleMap.OnCameraChangeLi
 
     lateinit var mFusedLocationClient: FusedLocationProviderClient
 
+    private val onPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+            if (permissions.values.any { !it }) {
+                PermissionUtils.showAppSettingsDialog(
+                    this@AddAddressActivity, R.string.we_will_need_your_location
+                )
+                return@registerForActivityResult
+            }
+            getLocation()
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_address)
@@ -81,7 +102,11 @@ class AddAddressActivity : DaggerAppCompatActivity(), GoogleMap.OnCameraChangeLi
         geoCoder = Geocoder(this, Locale.getDefault())
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        getLocationWithPermissionCheck()
+        if (hasPermissions(locationPermission)) {
+            getLocation()
+        } else {
+            onPermissionLauncher.launch(locationPermission)
+        }
     }
 
     private fun setEditAddress() {
@@ -137,6 +162,7 @@ class AddAddressActivity : DaggerAppCompatActivity(), GoogleMap.OnCameraChangeLi
             binding.etLocation.text.toString().isEmpty() -> {
                 binding.etLocation.showSnackBar(getString(R.string.address))
             }
+
             else -> {
                 val intent = Intent()
                 intent.putExtra(EXTRA_ADDRESS, saveAddress)
@@ -226,15 +252,20 @@ class AddAddressActivity : DaggerAppCompatActivity(), GoogleMap.OnCameraChangeLi
                     startActivity(intent)
             }
         } else {
-            getLocationWithPermissionCheck()
+            onPermissionLauncher.launch(locationPermission)
         }
     }
 
     private fun checkPermissions(): Boolean {
-        if (ActivityCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
             return true
         }
         return false
@@ -252,16 +283,18 @@ class AddAddressActivity : DaggerAppCompatActivity(), GoogleMap.OnCameraChangeLi
             }
 
             //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-            mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback,
-                    Looper.myLooper())
+            mFusedLocationClient.requestLocationUpdates(
+                mLocationRequest, mLocationCallback,
+                Looper.myLooper()
+            )
 
         }
     }
 
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            val mLastLocation: Location = locationResult.lastLocation
-            val latLng = LatLng(mLastLocation.latitude, mLastLocation.longitude)
+            val mLastLocation = locationResult.lastLocation
+            val latLng = LatLng(mLastLocation?.latitude ?: 0.0, mLastLocation?.longitude ?: 0.0)
 
             mMap?.moveCamera(CameraUpdateFactory.newLatLng(latLng))
             mMap?.animateCamera(CameraUpdateFactory.zoomTo(14f))
@@ -277,17 +310,20 @@ class AddAddressActivity : DaggerAppCompatActivity(), GoogleMap.OnCameraChangeLi
 
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
-                getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-                LocationManager.NETWORK_PROVIDER)
+            LocationManager.NETWORK_PROVIDER
+        )
     }
 
 
     private fun getAddress(): String {
         var locationName = ""
-        val addresses: List<Address> = geoCoder.getFromLocation(saveAddress.lat ?: 0.0,
+        val addresses: List<Address> = geoCoder.getFromLocation(
+            saveAddress.lat ?: 0.0,
             saveAddress.long
-                ?: 0.0, 1) as List<Address> // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                ?: 0.0, 1
+        ) as List<Address> // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
         if (addresses.isNotEmpty()) {
             locationName = when {
@@ -303,16 +339,16 @@ class AddAddressActivity : DaggerAppCompatActivity(), GoogleMap.OnCameraChangeLi
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        onRequestPermissionsResult(requestCode, grantResults)
+//        onRequestPermissionsResult(requestCode, grantResults)
     }
 
-    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun getLocation() {
+    //    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    private fun getLocation() {
         if (saveAddress.lat == null)
             getLastLocation()
     }
 
-    @OnShowRationale(Manifest.permission.ACCESS_FINE_LOCATION)
+    /*@OnShowRationale(Manifest.permission.ACCESS_FINE_LOCATION)
     fun showLocationRationale(request: PermissionRequest) {
         PermissionUtils.showRationalDialog(this, R.string.we_will_need_your_location, request)
     }
@@ -329,7 +365,7 @@ class AddAddressActivity : DaggerAppCompatActivity(), GoogleMap.OnCameraChangeLi
         PermissionUtils.showAppSettingsDialog(
                 this, R.string.we_will_need_your_location)
     }
-
+*/
     companion object {
         const val EXTRA_ADDRESS = "EXTRA_ADDRESS"
     }

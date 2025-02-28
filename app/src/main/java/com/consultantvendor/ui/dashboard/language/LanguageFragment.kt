@@ -121,7 +121,7 @@ class LanguageFragment : DaggerFragment() {
             when (it.status) {
                 Status.SUCCESS -> {
 //                  progressDialog?.setLoading(false)
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     requireActivity().setResult(Activity.RESULT_CANCELED)
                     ActivityCompat.finishAffinity(requireActivity())
                     userRepository.getPages()
@@ -130,12 +130,12 @@ class LanguageFragment : DaggerFragment() {
                 }
                 Status.ERROR -> {
 //                    progressDialog?.setLoading(false)
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
 //                    progressDialog?.setLoading(true)
-                    binding.clLoader.visible()
+                    binding.clLoader.root.visible()
                 }
             }
         })

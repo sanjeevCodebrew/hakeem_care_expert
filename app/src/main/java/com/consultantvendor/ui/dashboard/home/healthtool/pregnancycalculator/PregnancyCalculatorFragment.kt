@@ -13,11 +13,17 @@ import com.consultantvendor.data.models.responses.Filter
 import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.FragmentPregnancyCalculatorBinding
 import com.consultantvendor.ui.adapter.CheckItemAdapter
-import com.consultantvendor.utils.*
+import com.consultantvendor.utils.DateFormat
+import com.consultantvendor.utils.DateUtils
+import com.consultantvendor.utils.OnDateSelected
+import com.consultantvendor.utils.PrefsManager
+import com.consultantvendor.utils.gone
+import com.consultantvendor.utils.showSnackBar
+import com.consultantvendor.utils.visible
 import dagger.android.support.DaggerFragment
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 
 class PregnancyCalculatorFragment : DaggerFragment(), OnDateSelected {
@@ -45,8 +51,8 @@ class PregnancyCalculatorFragment : DaggerFragment(), OnDateSelected {
 
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         if (rootView == null) {
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_pregnancy_calculator, container, false)
@@ -86,8 +92,10 @@ class PregnancyCalculatorFragment : DaggerFragment(), OnDateSelected {
         }
 
         binding.spnCycleLength.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parentView: AdapterView<*>,
-                                        selectedItemView: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View?, position: Int, id: Long
+            ) {
                 binding.tvCycle.text = binding.spnCycleLength.selectedItem.toString()
             }
 
@@ -101,8 +109,10 @@ class PregnancyCalculatorFragment : DaggerFragment(), OnDateSelected {
         }
 
         binding.spnWeek.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parentView: AdapterView<*>,
-                                        selectedItemView: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View?, position: Int, id: Long
+            ) {
                 binding.tvWeek.text = binding.spnWeek.selectedItem.toString()
             }
 
@@ -116,8 +126,10 @@ class PregnancyCalculatorFragment : DaggerFragment(), OnDateSelected {
         }
 
         binding.spnDays.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parentView: AdapterView<*>,
-                                        selectedItemView: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View?, position: Int, id: Long
+            ) {
                 binding.tvDay.text = binding.spnDays.selectedItem.toString()
             }
 
@@ -130,10 +142,13 @@ class PregnancyCalculatorFragment : DaggerFragment(), OnDateSelected {
             if (binding.tvDate.text.toString().isEmpty()) {
                 itemsCalMethod.forEachIndexed { index, filter ->
                     when (filter.isSelected) {
-                        index == 0 -> binding.tvDate.showSnackBar(getString(R.string.the_first_day_of_your_last_period))
-                        index == 1 -> binding.tvDate.showSnackBar(getString(R.string.date_of_conception))
-                        index == 2 -> binding.tvDate.showSnackBar(getString(R.string.date_of_transfer))
-                        index == 3 -> binding.tvDate.showSnackBar(getString(R.string.date_of_ultrasound))
+                        (index == 0) -> binding.tvDate.showSnackBar(getString(R.string.the_first_day_of_your_last_period))
+                        (index == 1) -> binding.tvDate.showSnackBar(getString(R.string.date_of_conception))
+                        (index == 2) -> binding.tvDate.showSnackBar(getString(R.string.date_of_transfer))
+                        (index == 3) -> binding.tvDate.showSnackBar(getString(R.string.date_of_ultrasound))
+                        else -> {
+
+                        }
                     }
                 }
                 return@setOnClickListener
@@ -166,10 +181,12 @@ class PregnancyCalculatorFragment : DaggerFragment(), OnDateSelected {
                 //Period cycle not known
                 return calculateDate(pregnancyDays)
             }
+
             1 -> {
                 //Default menstural cycle 21 days then subtract 7 days
                 return calculateDate(pregnancyDays - 7)
             }
+
             else -> {
                 //Period Cycle Range 22 to 35 days
                 //if mestural cycle is more than 21 days than subtract your menstural cycle days count by 21 (default menstural cycle)
@@ -297,9 +314,11 @@ class PregnancyCalculatorFragment : DaggerFragment(), OnDateSelected {
                 binding.tvTitle2.text = getString(R.string.cycle_length)
 
             }
+
             1 -> {
                 binding.tvTitleDate.text = getString(R.string.date_of_conception)
             }
+
             2 -> {
                 binding.tvTitle2.visible()
                 binding.rvListIVF.visible()
@@ -308,6 +327,7 @@ class PregnancyCalculatorFragment : DaggerFragment(), OnDateSelected {
                 binding.tvTitle2.text = getString(R.string.ivf_transfer_date)
 
             }
+
             3 -> {
                 binding.tvTitleDate.text = getString(R.string.date_of_ultrasound)
                 binding.tvWeek.visible()
@@ -318,8 +338,10 @@ class PregnancyCalculatorFragment : DaggerFragment(), OnDateSelected {
     }
 
     override fun onDateSelected(date: String) {
-        binding.tvDate.text = DateUtils.dateFormatChange(DateFormat.MON_DATE_YEAR,
-                DateFormat.MON_DATE_YEAR, date)
+        binding.tvDate.text = DateUtils.dateFormatChange(
+            DateFormat.MON_DATE_YEAR,
+            DateFormat.MON_DATE_YEAR, date
+        )
 
     }
 }

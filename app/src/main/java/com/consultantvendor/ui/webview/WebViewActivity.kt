@@ -145,7 +145,7 @@ class WebViewActivity : DaggerAppCompatActivity() {
 
                 // Return the app name after finish loading
                 if (progress == 100) {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                 }
             }
         }

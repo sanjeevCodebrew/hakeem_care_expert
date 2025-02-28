@@ -58,7 +58,7 @@ class PayoutFragment : DaggerFragment() {
 
     private fun initialise() {
         progressDialog = ProgressDialog(requireActivity())
-        binding.clLoader.setBackgroundResource(R.color.colorWhite)
+        binding.clLoader.root.setBackgroundResource(R.color.colorWhite)
 
         viewModel = ViewModelProvider(this, viewModelFactory)[BankViewModel::class.java]
         viewModelWallet = ViewModelProvider(this, viewModelFactory)[WalletViewModel::class.java]
@@ -163,7 +163,7 @@ class PayoutFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
 
                     if (it.data?.bank_accounts.isNullOrEmpty()) {
                         binding.tvBankAccount.text = getString(R.string.add_bank)
@@ -182,11 +182,11 @@ class PayoutFragment : DaggerFragment() {
 
                 }
                 Status.ERROR -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
-                    binding.clLoader.visible()
+                    binding.clLoader.root.visible()
                 }
             }
         })

@@ -659,7 +659,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvExtraPaymentDesc" />
 
 
-                <com.borjabravo.readmoretextview.ReadMoreTextView
+                <kr.co.prnd.readmore.ReadMoreTextView
                     android:id="@+id/tvSymptomDec"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -672,15 +672,10 @@
                     android:textDirection="locale"
                     android:textSize="@dimen/sp_14"
                     android:visibility="visible"
-                    app:colorClickableText="@color/colorPrimary"
+
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/tvSymptom"
-                    app:trimCollapsedText="@string/show_more"
-                    app:trimExpandedText="@string/show_less"
-                    app:trimLength="150"
-                    app:trimLines="3"
-                    app:trimMode="trimModeLength" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvSymptom" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvSymptomDoc"

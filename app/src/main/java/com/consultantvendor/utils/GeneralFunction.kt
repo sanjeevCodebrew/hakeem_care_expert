@@ -47,16 +47,19 @@ import com.consultantvendor.ui.loginSignUp.login.LoginActivity
 import com.consultantvendor.ui.webview.WebViewActivity
 import com.consultantvendor.utils.DateUtils.dateFormatForBackend
 import com.consultantvendor.utils.dialogs.ProgressDialog
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.Autocomplete
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.dynamiclinks.ktx.*
+import com.google.firebase.dynamiclinks.ktx.androidParameters
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.dynamiclinks.ktx.iosParameters
+import com.google.firebase.dynamiclinks.ktx.shortLinkAsync
+import com.google.firebase.dynamiclinks.ktx.socialMetaTagParameters
 import com.google.firebase.ktx.Firebase
-import com.stfalcon.frescoimageviewer.ImageViewer
+import com.stfalcon.imageviewer.StfalconImageViewer
 import droidninja.filepicker.FilePickerBuilder
 import droidninja.filepicker.models.sort.SortingTypes
 import id.zelory.compressor.Compressor
@@ -66,7 +69,9 @@ import java.io.File
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Currency
+import java.util.Locale
 
 fun View.gone() {
     visibility = View.GONE
@@ -94,7 +99,7 @@ fun View.showSnackBar(msg: String) {
         val snackBar = Snackbar.make(this, msg, Snackbar.LENGTH_LONG)
         val snackBarView = snackBar.view
         val textView =
-            snackBarView.findViewById<View>(R.id.snackbar_text) as TextView
+            snackBarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
         textView.maxLines = 3
         snackBar.setAction(R.string.ok) { snackBar.dismiss() }
         snackBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
@@ -412,7 +417,7 @@ fun compressImage(activity: Activity?, actualImageFile: File?): File {
 
 fun viewImageFull(activity: Activity, itemsImage: ArrayList<String>, pos: Int) {
 
-    val hierarchyBuilder = GenericDraweeHierarchyBuilder
+    /*val hierarchyBuilder = GenericDraweeHierarchyBuilder
         .newInstance(activity.resources)
         .setFailureImage(R.drawable.image_placeholder)
         .setProgressBarImage(R.drawable.image_placeholder)
@@ -422,7 +427,11 @@ fun viewImageFull(activity: Activity, itemsImage: ArrayList<String>, pos: Int) {
         .setStartPosition(pos)
         .hideStatusBar(false)
         .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
-        .show()
+        .show()*/
+
+    StfalconImageViewer.Builder(activity, itemsImage) { view, image ->
+        Glide.with(view.context).load(image).into(view)
+    }.show()
 }
 
 fun placePicker(fragment: Fragment?, activityMain: Activity) {

@@ -109,18 +109,18 @@ class StatusUpdateFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.setBackgroundResource(0)
-                    binding.clLoader.gone()
+                    binding.clLoader.root.setBackgroundResource(0)
+                    binding.clLoader.root.gone()
                     request = it.data?.request_detail ?: Request()
                     setData()
 
                 }
                 Status.ERROR -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
-                    binding.clLoader.visible()
+                    binding.clLoader.root.visible()
                 }
             }
         })

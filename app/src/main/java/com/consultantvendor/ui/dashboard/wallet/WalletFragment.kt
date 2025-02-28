@@ -30,7 +30,7 @@ import com.consultantvendor.ui.drawermenu.DrawerActivity
 import com.consultantvendor.ui.drawermenu.DrawerActivity.Companion.PAYOUT
 import com.consultantvendor.utils.*
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.item_no_data.view.*
+
 import javax.inject.Inject
 
 
@@ -83,7 +83,7 @@ class WalletFragment : DaggerFragment() {
 
     private fun initialise() {
         viewModel = ViewModelProvider(this, viewModelFactory)[WalletViewModel::class.java]
-        binding.clLoader.setBackgroundResource(R.color.colorWhite)
+        binding.clLoader.root.setBackgroundResource(R.color.colorWhite)
 
         binding.clNoData.ivNoData.setImageResource(R.drawable.ic_wallet_empty)
         binding.clNoData.tvNoData.text = getString(R.string.no_transaction)
@@ -170,8 +170,8 @@ class WalletFragment : DaggerFragment() {
             when (it.status) {
                 Status.SUCCESS -> {
                     binding.swipeRefreshLayout.isRefreshing = false
-                    binding.clLoader.setBackgroundResource(0)
-                    binding.clLoader.gone()
+                    binding.clLoader.root.setBackgroundResource(0)
+                    binding.clLoader.root.gone()
 
                     isLoadingMoreItems = false
 
@@ -192,19 +192,19 @@ class WalletFragment : DaggerFragment() {
                     isLastPage = tempList.size < PER_PAGE_LOAD
                     adapter.setAllItemsLoaded(isLastPage)
 
-                    binding.clNoData.hideShowView(items.isEmpty())
+                    binding.clNoData.root.hideShowView(items.isEmpty())
                 }
                 Status.ERROR -> {
                     isLoadingMoreItems = false
                     adapter.setAllItemsLoaded(true)
 
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     binding.swipeRefreshLayout.isRefreshing = false
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
                     if (!binding.swipeRefreshLayout.isRefreshing && !isLoadingMoreItems)
-                        binding.clLoader.visible()
+                        binding.clLoader.root.visible()
                 }
             }
         })

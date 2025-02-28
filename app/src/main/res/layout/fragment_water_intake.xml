@@ -173,8 +173,7 @@
             app:lottie_autoPlay="false"
             app:lottie_colorFilter="@color/colorPrimary"
             app:lottie_fileName="water_loader.json"
-            app:lottie_loop="false"
-            app:lottie_scale="1" />
+            app:lottie_loop="false" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvDrink"

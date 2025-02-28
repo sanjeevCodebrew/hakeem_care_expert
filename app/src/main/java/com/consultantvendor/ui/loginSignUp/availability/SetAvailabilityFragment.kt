@@ -242,7 +242,7 @@ class SetAvailabilityFragment : DaggerFragment(), OnTimeSelected {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     itemsInterval.clear()
                     if (it.data?.slots.isNullOrEmpty()) {
                         itemsInterval.add(Interval())
@@ -253,13 +253,13 @@ class SetAvailabilityFragment : DaggerFragment(), OnTimeSelected {
 
                 }
                 Status.ERROR -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     adapter.setAllItemsLoaded(true)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
-                    binding.clLoader.setBackgroundResource(R.color.colorWhite)
-                    binding.clLoader.visible()
+                    binding.clLoader.root.setBackgroundResource(R.color.colorWhite)
+                    binding.clLoader.root.visible()
                 }
             }
         })

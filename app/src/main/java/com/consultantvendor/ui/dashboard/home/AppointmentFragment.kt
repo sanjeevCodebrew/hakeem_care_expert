@@ -38,16 +38,33 @@ import com.consultantvendor.ui.dashboard.settings.contactlist.ContactViewModel
 import com.consultantvendor.ui.dashboard.success.NetworkIssueFragment
 import com.consultantvendor.ui.drawermenu.DrawerActivity
 import com.consultantvendor.ui.drawermenu.DrawerActivity.Companion.NOTIFICATION
-import com.consultantvendor.ui.loginSignUp.login.LoginActivity
-import com.consultantvendor.utils.*
+import com.consultantvendor.utils.AlertDialogUtil
+import com.consultantvendor.utils.AppSocket
+import com.consultantvendor.utils.CallAction
+import com.consultantvendor.utils.CallType
+import com.consultantvendor.utils.ConsultType
+import com.consultantvendor.utils.DateFormat
+import com.consultantvendor.utils.DateUtils
+import com.consultantvendor.utils.EXTRA_IS_FIRST
+import com.consultantvendor.utils.EXTRA_REQUEST_ID
+import com.consultantvendor.utils.OnDateSelected
+import com.consultantvendor.utils.PAGE_TO_OPEN
+import com.consultantvendor.utils.PrefsManager
+import com.consultantvendor.utils.RequestStatus
+import com.consultantvendor.utils.USER_ID
+import com.consultantvendor.utils.USER_NAME
 import com.consultantvendor.utils.dialogs.ProgressDialog
+import com.consultantvendor.utils.getCountFormat
+import com.consultantvendor.utils.gone
+import com.consultantvendor.utils.hideShowView
+import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.longToast
+import com.consultantvendor.utils.visible
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.item_no_data.view.*
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Locale
 import javax.inject.Inject
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class AppointmentFragment : DaggerFragment(), OnDateSelected {
 
@@ -117,7 +134,7 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
 
 
     private fun initialise() {
-        binding.clLoader.setBackgroundResource(R.color.colorWhite)
+        binding.clLoader.root.setBackgroundResource(R.color.colorWhite)
         /*Get today date*/
         calendar = Calendar.getInstance(Locale.getDefault())
         val sdf = SimpleDateFormat(DateFormat.MON_DATE_YEAR, Locale.ENGLISH)
@@ -184,13 +201,13 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
         binding.ivEmergency.setOnClickListener {
             if (isConnectedToInternet(requireContext(), true)) {
                 AlertDialog.Builder(requireContext())
-                        .setCancelable(false)
-                        .setTitle(getString(R.string.notify))
-                        .setMessage(getString(R.string.notifying_to_contacts))
-                        .setPositiveButton(getString(R.string.notify)) { dialog, which ->
-                            viewModelContact.sendMessage()
-                        }.setNegativeButton(getString(R.string.no)) { dialog, which ->
-                        }.show()
+                    .setCancelable(false)
+                    .setTitle(getString(R.string.notify))
+                    .setMessage(getString(R.string.notifying_to_contacts))
+                    .setPositiveButton(getString(R.string.notify)) { dialog, which ->
+                        viewModelContact.sendMessage()
+                    }.setNegativeButton(getString(R.string.no)) { dialog, which ->
+                    }.show()
             }
         }
 
@@ -200,8 +217,10 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
 
         binding.ivNotification.setOnClickListener {
             binding.tvUnreadCount.gone()
-            startActivity(Intent(requireContext(), DrawerActivity::class.java)
-                    .putExtra(PAGE_TO_OPEN, NOTIFICATION))
+            startActivity(
+                Intent(requireContext(), DrawerActivity::class.java)
+                    .putExtra(PAGE_TO_OPEN, NOTIFICATION)
+            )
         }
 
         binding.rvListing.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -223,8 +242,10 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
         }
 
         binding.spnRequestType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parentView: AdapterView<*>,
-                                        selectedItemView: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parentView: AdapterView<*>,
+                selectedItemView: View?, position: Int, id: Long
+            ) {
                 binding.tvRequestType.text = binding.spnRequestType.selectedItem.toString()
                 hitApi(true)
             }
@@ -249,8 +270,10 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
             hashMap[PER_PAGE] = PER_PAGE_LOAD.toString()
 
             if (selectedDate.isNotEmpty()) {
-                val date = DateUtils.dateFormatForBackend(DateFormat.MON_DATE_YEAR,
-                        DateFormat.DATE_FORMAT, selectedDate)
+                val date = DateUtils.dateFormatForBackend(
+                    DateFormat.MON_DATE_YEAR,
+                    DateFormat.DATE_FORMAT, selectedDate
+                )
                 hashMap["date"] = date
             }
 
@@ -296,11 +319,11 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
             when (it.status) {
                 Status.SUCCESS -> {
                     binding.swipeRefreshLayout.isRefreshing = false
-                    binding.clLoader.setBackgroundResource(0)
-                    binding.clLoader.gone()
+                    binding.clLoader.root.setBackgroundResource(0)
+                    binding.clLoader.root.gone()
 
                     /*Check Notification count*/
-                    notification_count=it.data?.notification_count
+                    notification_count = it.data?.notification_count
                     checkNotificationCount(notification_count)
 
                     isLoadingMoreItems = false
@@ -322,11 +345,11 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
                     isLastPage = tempList.size < PER_PAGE_LOAD
                     adapter.setAllItemsLoaded(isLastPage)
 
-                    binding.clNoData.hideShowView(items.isEmpty())
+                    binding.clNoData.root.hideShowView(items.isEmpty())
 
                     if (it.data?.isAprroved == false) {
-                        binding.clNoData.setBackgroundResource(R.color.colorWhite)
-                        binding.clNoData.hideShowView(true)
+                        binding.clNoData.root.setBackgroundResource(R.color.colorWhite)
+                        binding.clNoData.root.hideShowView(true)
                         binding.clNoData.ivNoData.setImageResource(R.drawable.ic_profile_empty_state)
                         binding.clNoData.tvNoData.text = getString(R.string.profile_unapproved)
                         binding.clNoData.tvNoDataDesc.text = getString(R.string.profile_unapproved_desc)
@@ -337,17 +360,19 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
                     }
 
                 }
+
                 Status.ERROR -> {
                     isLoadingMoreItems = false
                     adapter.setAllItemsLoaded(true)
 
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     binding.swipeRefreshLayout.isRefreshing = false
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     if (!binding.swipeRefreshLayout.isRefreshing && isFirstPage)
-                        binding.clLoader.visible()
+                        binding.clLoader.root.visible()
                 }
             }
         })
@@ -361,10 +386,12 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
                     requireActivity().setResult(Activity.RESULT_OK)
                     hitApi(true)
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -385,27 +412,34 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
 
                             appSocket.init()
 
-                            startActivity(Intent(requireActivity(), ChatDetailActivity::class.java)
+                            startActivity(
+                                Intent(requireActivity(), ChatDetailActivity::class.java)
                                     .putExtra(USER_ID, requestItem?.from_user?.id)
                                     .putExtra(USER_NAME, requestItem?.from_user?.name)
                                     .putExtra(EXTRA_REQUEST_ID, requestItem?.id)
                                     .putExtra(EXTRA_IS_FIRST, true)
-                                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
+                                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                            )
                         }
+
                         ConsultType.AUDIO_CALL, ConsultType.VIDEO_CALL -> {
                             requireActivity().longToast(getString(R.string.starting_call))
 
-                            startActivity(Intent(requireContext(), CallingActivity::class.java)
+                            startActivity(
+                                Intent(requireContext(), CallingActivity::class.java)
                                     .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    .putExtra(EXTRA_REQUEST_ID, requestItem))
+                                    .putExtra(EXTRA_REQUEST_ID, requestItem)
+                            )
                         }
                     }
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -420,10 +454,12 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
                     requireActivity().setResult(Activity.RESULT_OK)
                     hitApi(true)
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -439,14 +475,18 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
 
                     if (requestItem?.status != CallAction.START_SERVICE) {
                         requestItem?.status = CallAction.START
-                        registerActivityResult.launch(Intent(requireActivity(), AppointmentStatusActivity::class.java)
-                                .putExtra(EXTRA_REQUEST_ID, requestItem))
+                        registerActivityResult.launch(
+                            Intent(requireActivity(), AppointmentStatusActivity::class.java)
+                                .putExtra(EXTRA_REQUEST_ID, requestItem)
+                        )
                     }
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -461,10 +501,12 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
 
                     sentMessageHandle(it.data?.contact_added)
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -475,21 +517,23 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
     private fun sentMessageHandle(contactAdded: Boolean?) {
         if (contactAdded == true) {
             AlertDialog.Builder(requireContext())
-                    .setCancelable(false)
-                    .setTitle(getString(R.string.notified))
-                    .setMessage(getString(R.string.notified_contacts))
-                    .setPositiveButton(getString(R.string.ok)) { dialog, which ->
-                    }.show()
+                .setCancelable(false)
+                .setTitle(getString(R.string.notified))
+                .setMessage(getString(R.string.notified_contacts))
+                .setPositiveButton(getString(R.string.ok)) { dialog, which ->
+                }.show()
         } else if (contactAdded == false) {
             AlertDialog.Builder(requireContext())
-                    .setCancelable(false)
-                    .setTitle(getString(R.string.alert))
-                    .setMessage(getString(R.string.no_contact))
-                    .setPositiveButton(getString(R.string.add_new)) { dialog, which ->
-                        startActivity(Intent(requireContext(), DrawerActivity::class.java)
-                                .putExtra(PAGE_TO_OPEN, DrawerActivity.CONTACT_LIST))
-                    }.setNegativeButton(getString(R.string.no)) { dialog, which ->
-                    }.show()
+                .setCancelable(false)
+                .setTitle(getString(R.string.alert))
+                .setMessage(getString(R.string.no_contact))
+                .setPositiveButton(getString(R.string.add_new)) { dialog, which ->
+                    startActivity(
+                        Intent(requireContext(), DrawerActivity::class.java)
+                            .putExtra(PAGE_TO_OPEN, DrawerActivity.CONTACT_LIST)
+                    )
+                }.setNegativeButton(getString(R.string.no)) { dialog, which ->
+                }.show()
         }
     }
 
@@ -500,13 +544,18 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
             CallAction.PENDING -> {
                 showAcceptRequestDialog()
             }
+
             CallAction.ACCEPT -> {
                 showInitiateRequestDialog()
             }
+
             CallAction.START, CallAction.REACHED -> {
-                registerActivityResult.launch(Intent(requireActivity(), AppointmentStatusActivity::class.java)
-                        .putExtra(EXTRA_REQUEST_ID, request))
+                registerActivityResult.launch(
+                    Intent(requireActivity(), AppointmentStatusActivity::class.java)
+                        .putExtra(EXTRA_REQUEST_ID, request)
+                )
             }
+
             CallAction.START_SERVICE -> {
                 showMarkCompleteDialog()
             }
@@ -522,42 +571,42 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
 
     private fun showAcceptRequestDialog() {
         AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.accept_request,
-                R.string.accept_request_message, R.string.accept_request, R.string.cancel, false,
-                object : AlertDialogUtil.OnOkCancelDialogListener {
-                    override fun onOkButtonClicked() {
-                        hitApiAcceptRequest()
-                    }
+            R.string.accept_request_message, R.string.accept_request, R.string.cancel, false,
+            object : AlertDialogUtil.OnOkCancelDialogListener {
+                override fun onOkButtonClicked() {
+                    hitApiAcceptRequest()
+                }
 
-                    override fun onCancelButtonClicked() {
-                    }
-                }).show()
+                override fun onCancelButtonClicked() {
+                }
+            }).show()
     }
 
     private fun showMarkCompleteDialog() {
         AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.mark_complete,
-                R.string.mark_complete_message, R.string.mark_complete, R.string.cancel, false,
-                object : AlertDialogUtil.OnOkCancelDialogListener {
-                    override fun onOkButtonClicked() {
-                        hitApiCompleteRequest()
-                    }
+            R.string.mark_complete_message, R.string.mark_complete, R.string.cancel, false,
+            object : AlertDialogUtil.OnOkCancelDialogListener {
+                override fun onOkButtonClicked() {
+                    hitApiCompleteRequest()
+                }
 
-                    override fun onCancelButtonClicked() {
-                    }
-                }).show()
+                override fun onCancelButtonClicked() {
+                }
+            }).show()
     }
 
 
     private fun showInitiateRequestDialog() {
         AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.start_request,
-                R.string.start_request_message, R.string.start_request, R.string.cancel, false,
-                object : AlertDialogUtil.OnOkCancelDialogListener {
-                    override fun onOkButtonClicked() {
-                        hitApiStartRequest()
-                    }
+            R.string.start_request_message, R.string.start_request, R.string.cancel, false,
+            object : AlertDialogUtil.OnOkCancelDialogListener {
+                override fun onOkButtonClicked() {
+                    hitApiStartRequest()
+                }
 
-                    override fun onCancelButtonClicked() {
-                    }
-                }).show()
+                override fun onCancelButtonClicked() {
+                }
+            }).show()
     }
 
     private fun hitApiAcceptRequest() {
@@ -590,6 +639,7 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
 
                     viewModel.callStatus(hashMap)
                 }
+
                 else -> {
                     val hashMap = HashMap<String, Any>()
                     hashMap["request_id"] = requestItem?.id ?: ""
@@ -602,23 +652,23 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
 
     fun cancelAppointment(item: Request) {
         AlertDialogUtil.instance.createOkCancelDialog(requireActivity(),
-                R.string.cancel_appointment,
-                R.string.cancel_appointment_msg,
-                R.string.cancel_appointment,
-                R.string.cancel,
-                false,
-                object : AlertDialogUtil.OnOkCancelDialogListener {
-                    override fun onOkButtonClicked() {
-                        if (isConnectedToInternet(requireContext(), true)) {
-                            val hashMap = HashMap<String, String>()
-                            hashMap["request_id"] = item.id ?: ""
-                            viewModel.cancelRequest(hashMap)
-                        }
+            R.string.cancel_appointment,
+            R.string.cancel_appointment_msg,
+            R.string.cancel_appointment,
+            R.string.cancel,
+            false,
+            object : AlertDialogUtil.OnOkCancelDialogListener {
+                override fun onOkButtonClicked() {
+                    if (isConnectedToInternet(requireContext(), true)) {
+                        val hashMap = HashMap<String, String>()
+                        hashMap["request_id"] = item.id ?: ""
+                        viewModel.cancelRequest(hashMap)
                     }
+                }
 
-                    override fun onCancelButtonClicked() {
-                    }
-                }).show()
+                override fun onCancelButtonClicked() {
+                }
+            }).show()
     }
 
 
@@ -679,8 +729,9 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
                 NetworkIssueFragment.NETWORK_ISSUE -> {
                     hitApi(true)
                 }
+
                 PushType.AMOUNT_RECEIVED, PushType.PAYOUT_PROCESSED, PushType.PAYOUT_FAILED, PushType.BALANCE_ADDED,
-                PushType.BALANCE_FAILED, PushType.PAID_EXTRA_PAYMENT, PushType.FREE_EXPERT_ADVISE-> {
+                PushType.BALANCE_FAILED, PushType.PAID_EXTRA_PAYMENT, PushType.FREE_EXPERT_ADVISE -> {
                     checkNotificationCount((notification_count ?: 0) + 1)
                 }
             }
@@ -688,8 +739,10 @@ class AppointmentFragment : DaggerFragment(), OnDateSelected {
     }
 
     override fun onDateSelected(date: String) {
-        binding.tvDate.text = DateUtils.dateFormatChange(DateFormat.MON_DATE_YEAR,
-                DateFormat.MON_DATE_YEAR, date)
+        binding.tvDate.text = DateUtils.dateFormatChange(
+            DateFormat.MON_DATE_YEAR,
+            DateFormat.MON_DATE_YEAR, date
+        )
 
         selectedDate = binding.tvDate.text.toString()
 

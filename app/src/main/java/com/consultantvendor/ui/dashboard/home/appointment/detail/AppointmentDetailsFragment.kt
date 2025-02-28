@@ -106,7 +106,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
     private fun initialise() {
         progressDialog = ProgressDialog(requireActivity())
         viewModel = ViewModelProvider(this, viewModelFactory)[AppointmentViewModel::class.java]
-        binding.clLoader.setBackgroundResource(R.color.colorWhite)
+        binding.clLoader.root.setBackgroundResource(R.color.colorWhite)
 
         binding.tvMedicalHistory.hideShowView(BuildConfig.FLAVOR == "homeDoctor")
 
@@ -685,18 +685,18 @@ class AppointmentDetailsFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.clLoader.setBackgroundResource(0)
-                    binding.clLoader.gone()
+                    binding.clLoader.root.setBackgroundResource(0)
+                    binding.clLoader.root.gone()
                     request = it.data?.request_detail ?: Request()
                     setData()
 
                 }
                 Status.ERROR -> {
-                    binding.clLoader.gone()
+                    binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
                 Status.LOADING -> {
-                    binding.clLoader.visible()
+                    binding.clLoader.root.visible()
                 }
             }
         })
