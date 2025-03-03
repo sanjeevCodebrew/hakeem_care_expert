@@ -47,17 +47,10 @@ class LocationFragment : DaggerFragment() {
             binding = DataBindingUtil.inflate(inflater, R.layout.fragment_location, container, false)
             rootView = binding.root
 
-            initialise()
             listeners()
         }
         return rootView
     }
-
-    private fun initialise() {
-
-
-    }
-
 
     private fun listeners() {
         binding.tvSkip.setOnClickListener {

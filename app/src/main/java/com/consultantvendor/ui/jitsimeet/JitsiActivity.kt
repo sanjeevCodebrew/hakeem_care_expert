@@ -132,6 +132,7 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
     }
 
     override fun onBackPressed() {
+        super.onBackPressed()
     }
 
 
@@ -179,7 +180,6 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
 
     }
 
-
     private fun checkPermission() {
         val PERMISSIONS = arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)
 //        if (!hasPermissions(*PERMISSIONS)) {
@@ -204,9 +204,10 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
         registerReceiver()
         try {
             JitsiMeetActivityDelegate.onHostResume(this)
-        } catch (e: Exception){}
-    }
+        } catch (_: Exception){
 
+        }
+    }
 
     override fun onStop() {
         super.onStop()
@@ -237,7 +238,6 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
         if (isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(callCancelledReceiver)
             isReceiverRegistered = false
-
         }
     }
 
