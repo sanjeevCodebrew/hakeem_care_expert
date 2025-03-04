@@ -745,6 +745,7 @@ class HomeFragment : DaggerFragment() {
                 }
 
                 override fun onCancelButtonClicked() {
+
                 }
             }).show()
     }

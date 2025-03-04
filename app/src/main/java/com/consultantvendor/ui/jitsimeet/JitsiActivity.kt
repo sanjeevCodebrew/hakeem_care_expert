@@ -29,7 +29,7 @@ import java.net.URL
 import javax.inject.Inject
 
 
-class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, JitsiMeetViewListener {
+class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface {
 
     @Inject
     lateinit var userRepository: UserRepository
@@ -125,7 +125,7 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
             jitsiMeetView?.join(options)
 
             setContentView(jitsiMeetView)
-            jitsiMeetView?.listener = this
+//            jitsiMeetView?.listener = this
 
             SoundPoolManager.getInstance(this)?.stopRinging()
         }
@@ -145,13 +145,13 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
         JitsiMeetActivityDelegate.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    override fun onConferenceJoined(data: Map<String?, Any?>) {
+    fun onConferenceJoined(data: Map<String?, Any?>) {
         JitsiMeetLogger.i("Conference joined: $data")
         // Launch the service for the ongoing notification.
         // JitsiMeetOngoingConferenceService.launch(this);
     }
 
-    override fun onConferenceTerminated(data: Map<String?, Any?>) {
+    fun onConferenceTerminated(data: Map<String?, Any?>) {
         JitsiMeetLogger.i("Conference terminated: $data")
 
         if (isConnectedToInternet(this, true) && jitsiClass?.isClass == false) {
@@ -160,13 +160,13 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
 
             longToast(getString(R.string.disconnecting))
         }
-
-        jitsiMeetView?.listener = null
-        jitsiMeetView?.leave()
+//
+//        jitsiMeetView?.listener = null
+//        jitsiMeetView?.leave()
         finish()
     }
 
-    override fun onConferenceWillJoin(data: Map<String?, Any?>) {
+    fun onConferenceWillJoin(data: Map<String?, Any?>) {
         JitsiMeetLogger.i("Conference will join: $data")
     }
 
@@ -218,7 +218,7 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
         super.onDestroy()
         unregisterReceiver()
         JitsiMeetActivityDelegate.onHostDestroy(this)
-        jitsiMeetView?.leave()
+//        jitsiMeetView?.leave()
     }
 
     private fun registerReceiver() {
@@ -245,8 +245,8 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, Jit
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.getStringExtra(EXTRA_REQUEST_ID) == jitsiClass?.call_id) {
                 if (intent.action == Constants.ACTION_CANCEL_CALL || intent.action == PushType.REQUEST_COMPLETED) {
-                    jitsiMeetView?.listener = null
-                    jitsiMeetView?.leave()
+//                    jitsiMeetView?.listener = null
+//                    jitsiMeetView?.leave()
                     finish()
                 }
             }

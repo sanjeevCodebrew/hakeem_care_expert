@@ -51,7 +51,7 @@ android {
         consult {
             dimension "app"
             applicationId "com.hakeem.expert"
-            versionCode 40
+            versionCode 42
             versionName "2.1.8"
             buildConfigField 'String', 'APP_UNIQUE_ID', "\"3b7474e39d4a249a9ecc8aa24b7e8acd42\""
             /*buildConfigField 'String', 'BASE_URL', "\"https://devhakeemcare.hakeemcare.com/\""*/
@@ -253,7 +253,8 @@ dependencies {
 
     // Jitsi Meet
 //    implementation('org.jitsi.react:jitsi-meet-sdk:2.9.3') { transitive = true }
-    implementation ('org.jitsi.react:jitsi-meet-sdk:5.1.0') { transitive = true }
+//    implementation ('org.jitsi.react:jitsi-meet-sdk:5.1.0') { transitive = true }
+    implementation ('org.jitsi.react:jitsi-meet-sdk:10.1.2') { transitive = true }
 
     /*PAGER INDICATOR*/
     implementation 'me.relex:circleindicator:2.1.4'
