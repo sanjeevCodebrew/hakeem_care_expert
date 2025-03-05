@@ -53,7 +53,6 @@ class ChatAdapter(private val fragment: ChatFragment, private val items: ArrayLi
         val context: Context = binding.root.context
         fun bind(item: ChatList) = with(binding) {
            // slideRecyclerItem(binding.root, binding.root.context)
-
             when (item.last_message?.messageType) {
                 DocType.IMAGE -> {
                     tvTextMessage.gone()

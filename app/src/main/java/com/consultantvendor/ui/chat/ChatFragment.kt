@@ -141,8 +141,7 @@ class ChatFragment : DaggerFragment() {
             }
         }
     }
-
-
+    
     private val broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             if (ConnectivityManager.CONNECTIVITY_ACTION == intent.action) {
