@@ -171,13 +171,11 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface {
     }
 
     val audioPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
-
         if (result.all {
                 it.value
             }){
             intialise()
         }
-
     }
 
     private fun checkPermission() {
