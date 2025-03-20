@@ -41,4 +41,20 @@ class Request : Serializable {
     var tier_detail: Filter? = null
     var medical_history_added:Boolean?=null
     var remain_second:Long?=null
+    // Added categoryData
+    var categoryData: CategoryData? = null
+}
+
+
+class CategoryData : Serializable {
+    var id: Int? = null
+    var name: String? = null
+    var ar_name: String? = null
+    var image: String? = null
+    var parent_id: Int? = null
+    var payment_type: String? = null
+    var description: String? = null
+    var color_code: String? = null
+    var enable: Boolean? = null
+    var cat_slug: String? = null
 }

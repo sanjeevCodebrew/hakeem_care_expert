@@ -367,7 +367,13 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 binding.tvCancel.gone()
                 binding.tvCall.gone()
 
-                binding.tvAddPrescription.visible()
+                if (request.categoryData?.cat_slug=="ask-now") {
+                    binding.tvAddPrescription.gone()
+                }
+                else
+                {
+                    binding.tvAddPrescription.visible()
+                }
                 extraPayment()
             }
             CallAction.FAILED -> {

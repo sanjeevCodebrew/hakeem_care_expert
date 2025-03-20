@@ -290,6 +290,41 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvDiagnosis" />
 
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvLabTests"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:fontFamily="@font/campton_semibold"
+                    android:text="@string/lab_test"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/etNotes" />
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etLabTest"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:background="@drawable/drawable_grey_stroke"
+                    android:fontFamily="@font/campton_book"
+                    android:gravity="start"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:lines="8"
+                    android:maxLength="1000"
+                    android:textDirection="locale"
+                    android:maxLines="8"
+                    android:padding="@dimen/dp_16"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvLabTests" />
+
+
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/ilMedicineName"
                     android:layout_width="0dp"
@@ -297,7 +332,7 @@
                     android:layout_marginTop="@dimen/dp_32"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/etNotes">
+                    app:layout_constraintTop_toBottomOf="@+id/etLabTest">
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/etMedicineName"

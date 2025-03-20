@@ -1074,6 +1074,7 @@
     <string name="inhaled">استنشاقه</string>
     <string name="veginal_route_transdermal">طريق نباتي عبر الجلد</string>
     <string name="intraosseous">داخل العظم</string>
+    <string name="lab_test">اختبارات المعمل</string>
     <array name="routes">
         <item>@string/routes</item>
         <item>@string/oral</item>

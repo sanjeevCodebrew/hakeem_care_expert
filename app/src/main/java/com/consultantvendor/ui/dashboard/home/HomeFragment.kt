@@ -176,7 +176,6 @@ class HomeFragment : DaggerFragment() {
         val tvName = headerView.findViewById<AppCompatTextView>(R.id.tvName)
         val ivPic = headerView.findViewById<RoundedImageView>(R.id.ivPic)
 
-// set User Name
         tvName.text = userData?.name
         loadImage(ivPic, userData?.profile_image, R.drawable.ic_profile_placeholder)
 

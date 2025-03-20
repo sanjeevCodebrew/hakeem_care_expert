@@ -12,6 +12,7 @@ class AddPrescription : Serializable {
 
     /*Digital*/
     var pre_scription_notes: String? = null
+    var lab_notes: String? = null
     var pre_scriptions: ArrayList<DigitalPrescription>? = null
 
     /*get data*/

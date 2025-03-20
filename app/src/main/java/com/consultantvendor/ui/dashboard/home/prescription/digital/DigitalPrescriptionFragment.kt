@@ -75,6 +75,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
         editTextScroll(binding.etPrescriptionNotes)
         editTextScroll(binding.etNotes)
+        editTextScroll(binding.etLabTest)
         request = requireActivity().intent.getSerializableExtra(EXTRA_REQUEST_ID) as Request
 
         binding.tvName.text = request?.from_user?.name
@@ -102,6 +103,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
             val prescription = request?.pre_scription
             binding.etPrescriptionNotes.setText(prescription?.pre_scription_notes)
             binding.etNotes.setText(prescription?.pre_scription_notes)
+            binding.etLabTest.setText(prescription?.lab_notes)
 
             itemPrescription.clear()
             itemPrescription.addAll(prescription?.medicines ?: emptyList())
@@ -252,12 +254,16 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                 binding.etNotes.text.toString().trim().isEmpty() -> {
                     binding.tvDosagesType.showSnackBar(getString(R.string.add_diagnosis))
                 }
+                binding.etLabTest.text.toString().trim().isEmpty() -> {
+                    binding.tvDosagesType.showSnackBar(getString(R.string.add_labnotes))
+                }
                 isConnectedToInternet(requireContext(), true) -> {
                     addPrescription = AddPrescription()
                     addPrescription?.request_id = request?.id
                     addPrescription?.type = PrescriptionType.DIGITAL
 
                     addPrescription?.pre_scription_notes = binding.etNotes.text.toString().trim()
+                    addPrescription?.lab_notes = binding.etLabTest.text.toString().trim()
                     addPrescription?.pre_scriptions = ArrayList()
                     addPrescription?.pre_scriptions?.addAll(itemPrescription)
 

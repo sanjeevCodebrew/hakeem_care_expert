@@ -351,6 +351,7 @@
     <string name="appointment">Appointment</string>
     <string name="doctor_name">Doctor Name :</string>
     <string name="diagnosis">Diagnosis:</string>
+    <string name="lab_test">Lab Tests</string>
     <string name="add_prescription">+ Prescription</string>
     <string name="add_manual_prescription">Add Manual Prescription</string>
     <string name="record_details">Record Details</string>
@@ -360,6 +361,7 @@
     <string name="prescription_notes">Prescription Notes</string>
     <string name="add_notes">Add notes</string>
     <string name="add_diagnosis">Add Diagnosis</string>
+    <string name="add_labnotes">Add Lab Notes</string>
     <string name="medicine_name">Medicine Name</string>
     <string name="prescriptions">Prescriptions</string>
     <string name="duration">Duration</string>
