@@ -95,6 +95,7 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface {
             .setFeatureFlag("tile-view.enabled", false)
             .setFeatureFlag("meeting-password.enabled", false)
             .setFeatureFlag("pip.enabled", true)
+            .setFeatureFlag("prejoinpage.enabled", false)
             .setFeatureFlag("close-captions.enabled", false)
             .build()
         JitsiMeet.setDefaultConferenceOptions(defaultOptions)
@@ -122,10 +123,13 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface {
             /* JitsiMeetActivity.launch(this, options)
              finish()*/
 
-            jitsiMeetView?.join(options)
+//            jitsiMeetView?.join(options)
+            JitsiMeetActivity.launch(this, options);
+
 
             setContentView(jitsiMeetView)
 //            jitsiMeetView?.listener = this
+
 
             SoundPoolManager.getInstance(this)?.stopRinging()
         }
@@ -217,6 +221,7 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface {
         unregisterReceiver()
         JitsiMeetActivityDelegate.onHostDestroy(this)
 //        jitsiMeetView?.leave()
+        jitsiMeetView?.dispose()
     }
 
     private fun registerReceiver() {
