@@ -204,7 +204,7 @@ class HomeFragment : DaggerFragment() {
         /*Services*/
         itemsService.clear()
         val services = userRepository.getUser()?.services
-        if (services?.size ?: 0 > 1) {
+        if ((services?.size ?: 0) > 1) {
             val service = Service()
             service.service_name = getString(R.string.all_requests)
             service.service_id = ""
@@ -220,7 +220,7 @@ class HomeFragment : DaggerFragment() {
         binding.rvServices.hideShowView(itemsService.isNotEmpty())
 
         /*Only if Health tools needed*/
-        if (appFeatures.needHealthTools) {
+        if (appFeatures.needHealthTools)  {
             binding.tvHealthTools.visible()
             binding.rvHealthTools.visible()
 

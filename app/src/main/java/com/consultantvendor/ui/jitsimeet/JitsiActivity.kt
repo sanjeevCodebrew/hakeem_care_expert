@@ -26,10 +26,11 @@ import org.jitsi.meet.sdk.*
 import org.jitsi.meet.sdk.log.JitsiMeetLogger
 import java.net.MalformedURLException
 import java.net.URL
+import java.util.HashMap
 import javax.inject.Inject
 
 
-class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface {
+class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface{
 
     @Inject
     lateinit var userRepository: UserRepository
@@ -44,7 +45,8 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface {
     private var jitsiClass: JitsiClass? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        super<DaggerAppCompatActivity>.onCreate(savedInstanceState)
+//        super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_jitsi)
 
         checkPermission()
@@ -133,10 +135,11 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface {
 
             SoundPoolManager.getInstance(this)?.stopRinging()
         }
+
     }
 
     override fun onBackPressed() {
-        super.onBackPressed()
+        super<DaggerAppCompatActivity>.onBackPressed()
     }
 
 
@@ -145,17 +148,17 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        super<DaggerAppCompatActivity>.onRequestPermissionsResult(requestCode, permissions, grantResults)
         JitsiMeetActivityDelegate.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    fun onConferenceJoined(data: Map<String?, Any?>) {
+    fun onConferenceJoined(data: HashMap<String?, Any?>) {
         JitsiMeetLogger.i("Conference joined: $data")
         // Launch the service for the ongoing notification.
         // JitsiMeetOngoingConferenceService.launch(this);
     }
 
-    fun onConferenceTerminated(data: Map<String?, Any?>) {
+    fun onConferenceTerminated(data: HashMap<String?, Any?>) {
         JitsiMeetLogger.i("Conference terminated: $data")
 
         if (isConnectedToInternet(this, true) && jitsiClass?.isClass == false) {
@@ -202,7 +205,7 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface {
     }
 
     override fun onResume() {
-        super.onResume()
+        super<DaggerAppCompatActivity>.onResume()
         registerReceiver()
         try {
             JitsiMeetActivityDelegate.onHostResume(this)
@@ -212,16 +215,16 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface {
     }
 
     override fun onStop() {
-        super.onStop()
+        super<DaggerAppCompatActivity>.onStop()
         JitsiMeetActivityDelegate.onHostPause(this)
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        super<DaggerAppCompatActivity>.onDestroy()
         unregisterReceiver()
         JitsiMeetActivityDelegate.onHostDestroy(this)
 //        jitsiMeetView?.leave()
-        jitsiMeetView?.dispose()
+        endJitsiCall()
     }
 
     private fun registerReceiver() {
@@ -230,9 +233,7 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface {
             intentFilter.addAction(Constants.ACTION_INCOMING_CALL)
             intentFilter.addAction(Constants.ACTION_CANCEL_CALL)
             intentFilter.addAction(PushType.REQUEST_COMPLETED)
-            LocalBroadcastManager.getInstance(this).registerReceiver(
-                    callCancelledReceiver, intentFilter
-            )
+            LocalBroadcastManager.getInstance(this).registerReceiver(callCancelledReceiver, intentFilter)
             isReceiverRegistered = true
         }
     }
@@ -250,10 +251,21 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface {
                 if (intent.action == Constants.ACTION_CANCEL_CALL || intent.action == PushType.REQUEST_COMPLETED) {
 //                    jitsiMeetView?.listener = null
 //                    jitsiMeetView?.leave()
-                    finish()
+                      endJitsiCall()
                 }
             }
         }
+    }
+
+    private fun endJitsiCall() {
+        try {
+            jitsiMeetView?.abort()
+            jitsiMeetView?.dispose()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        JitsiMeetActivityDelegate.onHostDestroy(this)
+        finish()
     }
 
 }

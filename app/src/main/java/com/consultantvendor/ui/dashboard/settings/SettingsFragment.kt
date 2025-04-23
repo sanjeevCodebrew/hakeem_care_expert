@@ -12,10 +12,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.consultantvendor.BuildConfig
 import com.consultantvendor.R
 import com.consultantvendor.appClientDetails
-import com.consultantvendor.appFeatures
 import com.consultantvendor.data.models.responses.Page
 import com.consultantvendor.data.network.ApisRespHandler
-import com.consultantvendor.data.network.ProviderType
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.FragmentSettingsBinding
@@ -34,6 +32,8 @@ class SettingsFragment : DaggerFragment() {
 
     @Inject
     lateinit var prefsManager: PrefsManager
+
+    lateinit var multilogin : MultiLoginManager
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -74,6 +74,7 @@ class SettingsFragment : DaggerFragment() {
     private fun initialise() {
         viewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
         progressDialog = ProgressDialog(requireActivity())
+        multilogin = MultiLoginManager
 
     }
 

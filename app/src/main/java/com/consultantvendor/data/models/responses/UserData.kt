@@ -7,6 +7,7 @@ class UserData : Serializable {
     var id: String? = null
     var name: String? = null
     var phone: String? = null
+    var moh_number: String? = null
     var dob: String? = null
     var gender: String? = null
     var weight: String? = null

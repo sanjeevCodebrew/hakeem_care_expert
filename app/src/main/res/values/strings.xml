@@ -254,6 +254,7 @@
     <string name="at_20"><font size="14">At</font> %s20</string>
     <string name="signup_with_phone_number">Sign Up with Phone Number</string>
     <string name="let_s_get_started">Let’s Get Started !</string>
+    <string name="choose_previous_login">Choose from previous logins</string>
     <string name="minute">Minute</string>
     <string name="min">Min</string>
     <string name="hr">Hr</string>

@@ -121,6 +121,7 @@ fun logoutUser(activity: Activity?, prefsManager: PrefsManager) {
 
     prefsManager.remove(USER_DATA)
 
+
     activity.setResult(Activity.RESULT_CANCELED)
     ActivityCompat.finishAffinity(activity)
 

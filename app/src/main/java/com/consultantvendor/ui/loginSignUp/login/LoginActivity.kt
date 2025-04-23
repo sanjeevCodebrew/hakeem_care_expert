@@ -1,5 +1,6 @@
 package com.consultantvendor.ui.loginSignUp.login
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
@@ -9,12 +10,16 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.consultantvendor.R
+import com.consultantvendor.appClientDetails
+import com.consultantvendor.data.models.responses.LoggedInUser
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.ActivityLoginBinding
 import com.consultantvendor.ui.dashboard.HomeActivity
+import com.consultantvendor.ui.dashboard.home.items.HealthToolsAdapter
 import com.consultantvendor.ui.loginSignUp.LoginViewModel
 import com.consultantvendor.ui.loginSignUp.loginemail.LoginEmailFragment
 import com.consultantvendor.utils.*
@@ -42,17 +47,38 @@ class LoginActivity : DaggerAppCompatActivity() {
 
     private lateinit var viewModel: LoginViewModel
 
+    private lateinit var adapter: LoginUserAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
 
+
         initialise()
         listeners()
         bindObservers()
+        setupPreviousUsers()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    private fun setupPreviousUsers() {
+        val users = MultiLoginManager.getUsers(this)
+        if (users.isNotEmpty()) {
+            binding.clPreviousLogin.visible()
+            adapter = LoginUserAdapter(users) { selectedIndex ->
+                val item=users.get(selectedIndex)
+                binding.etMobileNumber.setText(item.moh)
+                binding.ivNext.performClick()
+            }
+        }
+
+        binding.rvUser.adapter = adapter
+    }
+
+
     private fun initialise() {
-//        binding.ccpCountryCode.setCountryForNameCode(appClientDetails.country_name_code ?: "IN")
+
+//      binding.ccpCountryCode.setCountryForNameCode(appClientDetails.country_name_code ?: "IN")
 
         viewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
         progressDialog = ProgressDialog(this)
@@ -71,6 +97,8 @@ class LoginActivity : DaggerAppCompatActivity() {
             binding.tvTerms.gone()
         }*/
     }
+
+
 
     private fun listeners() {
         binding.toolbar.setNavigationOnClickListener {
@@ -122,6 +150,13 @@ class LoginActivity : DaggerAppCompatActivity() {
                   prefsManager.save(USER_DATA, it.data)
                   if (userRepository.isUserLoggedIn()) {
                       startActivity(Intent(this, HomeActivity::class.java))
+                      val loggedInUser = LoggedInUser(userId = it.data?.id.toString(),
+                          country_code = it.data?.country_code.toString(),
+                          moh = it.data?.moh_number.toString(),
+                          username = it.data?.name.toString(),
+                          profileImageUrl = it.data?.profile_image.toString()
+                          )
+                      MultiLoginManager.saveUser(this, loggedInUser)
                       finish()
                   }
               }

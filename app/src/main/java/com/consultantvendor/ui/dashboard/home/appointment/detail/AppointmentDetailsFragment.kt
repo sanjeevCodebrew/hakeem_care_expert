@@ -224,7 +224,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvDistanceV.text = request.extra_detail?.distance ?: ""
         binding.tvLocation.text = request.extra_detail?.service_address
 
-        if (request.main_service_type=="chat") {
+     /*   if (request.main_service_type=="chat") {
             binding.tvChat.visible()
         }
         else if (userRepository.getUserLanguage()=="ar") {
@@ -234,7 +234,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
         else
         {
             binding.tvChat.gone()
-        }
+        }*/
 
         if (request.insurance_name?.isNotEmpty()!! || request.insurance_number?.isNotEmpty()!!) {
             binding.tvInsuranceName.visible()

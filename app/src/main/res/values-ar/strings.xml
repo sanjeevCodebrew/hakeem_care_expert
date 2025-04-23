@@ -1002,6 +1002,8 @@
 
     <string name="enter_moh_number">أدخل رقم محمد</string>
 
+    <string name="choose_previous_login">اختر من عمليات تسجيل الدخول السابقة</string>
+
     <string name="conversation">محادثة</string>
     <string name="gallary">معرض</string>
     <string name="upload_document">تحميل الوثيقة
