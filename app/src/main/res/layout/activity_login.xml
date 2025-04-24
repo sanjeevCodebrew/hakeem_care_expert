@@ -33,7 +33,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
             app:layout_constraintStart_toStartOf="@+id/startGuideLine"
             app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvMsg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
             app:layout_constraintStart_toStartOf="@id/startGuideLine"
             app:layout_constraintTop_toBottomOf="@id/etMobileNumber" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvLoginTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
             app:layout_constraintStart_toStartOf="@id/startGuideLine"
             app:layout_constraintTop_toTopOf="@+id/tvLoginScreen" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvLoginScreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -167,39 +167,6 @@
             app:layout_constraintStart_toEndOf="@+id/tvLoginTitle"
             app:layout_constraintTop_toBottomOf="@+id/tvTerms" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clPreviousLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
-            android:visibility="gone"
-            android:layout_marginBottom="@dimen/dp_4"
-            app:layout_constraintBottom_toTopOf="@id/ivNext"
-            app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-            app:layout_constraintStart_toStartOf="@id/startGuideLine">
-
-            <TextView
-                android:id="@+id/tvPreviousLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_4"
-                android:text="@string/choose_previous_login"
-                android:textAppearance="@style/Toolbar.TitleText"
-                android:textDirection="locale"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvUser"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_4"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/tvPreviousLogin"
-                tools:listitem="@layout/item_user" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivNext"

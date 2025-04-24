@@ -1,30 +1,24 @@
 package com.consultantvendor.ui.loginSignUp.login
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.consultantvendor.R
-import com.consultantvendor.appClientDetails
 import com.consultantvendor.data.models.responses.LoggedInUser
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.ActivityLoginBinding
 import com.consultantvendor.ui.dashboard.HomeActivity
-import com.consultantvendor.ui.dashboard.home.items.HealthToolsAdapter
 import com.consultantvendor.ui.loginSignUp.LoginViewModel
 import com.consultantvendor.ui.loginSignUp.loginemail.LoginEmailFragment
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog
-import com.google.firebase.messaging.FirebaseMessaging
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
@@ -36,7 +30,7 @@ class LoginActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var prefsManager: PrefsManager
 
-    private lateinit var binding: ActivityLoginBinding
+    internal lateinit var binding: ActivityLoginBinding
 
     private lateinit var progressDialog: ProgressDialog
 
@@ -47,7 +41,7 @@ class LoginActivity : DaggerAppCompatActivity() {
 
     private lateinit var viewModel: LoginViewModel
 
-    private lateinit var adapter: LoginUserAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,22 +51,14 @@ class LoginActivity : DaggerAppCompatActivity() {
         initialise()
         listeners()
         bindObservers()
-        setupPreviousUsers()
+        openBottomPreviousLogin()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun setupPreviousUsers() {
-        val users = MultiLoginManager.getUsers(this)
-        if (users.isNotEmpty()) {
-            binding.clPreviousLogin.visible()
-            adapter = LoginUserAdapter(users) { selectedIndex ->
-                val item=users.get(selectedIndex)
-                binding.etMobileNumber.setText(item.moh)
-                binding.ivNext.performClick()
-            }
-        }
+    private fun openBottomPreviousLogin() {
 
-        binding.rvUser.adapter = adapter
+        val fragment = BottomLoginFragment(this)
+        fragment.show(supportFragmentManager, fragment.tag)
+
     }
 
 

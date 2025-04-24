@@ -3,7 +3,6 @@ package com.consultantvendor.ui.loginSignUp.login
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.consultantvendor.R
 import com.consultantvendor.data.models.responses.LoggedInUser
 import com.consultantvendor.databinding.ItemUserBinding
@@ -15,7 +14,7 @@ class LoginUserAdapter(
     private val onSelect: (position:Int) -> Unit
 ) : RecyclerView.Adapter<LoginUserAdapter.OptionViewHolder>() {
 
-    private val limitedUsers = users.takeLast(3).reversed() // Show most recent first
+    private val limitedUsers = users.takeLast(3).reversed()
 
     inner class OptionViewHolder(val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root){
@@ -45,13 +44,8 @@ class LoginUserAdapter(
             holder.binding.ivPic.setImageResource(R.drawable.image_placeholder)
         }
 
-
-
     }
-
-
     override fun getItemCount(): Int = limitedUsers.size
-
 
 }
 
