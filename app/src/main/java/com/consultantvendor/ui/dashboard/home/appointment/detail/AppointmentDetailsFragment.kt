@@ -224,17 +224,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvDistanceV.text = request.extra_detail?.distance ?: ""
         binding.tvLocation.text = request.extra_detail?.service_address
 
-     /*   if (request.main_service_type=="chat") {
-            binding.tvChat.visible()
-        }
-        else if (userRepository.getUserLanguage()=="ar") {
-            if (request.main_service_type=="chat")
-                binding.tvChat.visible()
-        }
-        else
-        {
-            binding.tvChat.gone()
-        }*/
+
 
         if (request.insurance_name?.isNotEmpty()!! || request.insurance_number?.isNotEmpty()!!) {
             binding.tvInsuranceName.visible()
@@ -314,10 +304,21 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 binding.tvStatus.text = getString(R.string.new_request)
                 binding.tvAccept.text = getString(R.string.accept_request)
             }
+
             CallAction.ACCEPT -> {
                 binding.tvStatus.text = getString(R.string.accepted)
                 binding.tvAccept.text = getString(R.string.start_request)
                 binding.tvCancel.gone()
+//                binding.tvChat.visible()
+
+//                if (request.main_service_type == "chat") {
+//                    binding.tvChat.visible()
+//                } else if (userRepository.getUserLanguage() == "ar") {
+//                    if (request.main_service_type == "chat")
+//                        binding.tvChat.visible()
+//                } else {
+//                    binding.tvChat.gone()
+//                }
 
                 when (request.main_service_type) {
                     ConsultType.AUDIO_CALL, ConsultType.VIDEO_CALL -> {
@@ -327,6 +328,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 }
                 extraPayment()
             }
+
             CallAction.INPROGRESS -> {
                 binding.tvStatus.text = getString(R.string.inprogess)
                 binding.tvCancel.gone()
@@ -335,18 +337,21 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 binding.tvMarkComplete.visible()
                 extraPayment()
             }
+
             CallAction.START -> {
                 binding.tvStatus.text = getString(R.string.inprogess)
                 binding.tvAccept.text = getString(R.string.track_status)
                 binding.tvCancel.gone()
                 extraPayment()
             }
+
             CallAction.REACHED -> {
                 binding.tvStatus.text = getString(R.string.reached_destination)
                 binding.tvAccept.text = getString(R.string.track_status)
                 binding.tvCancel.gone()
                 extraPayment()
             }
+
             CallAction.START_SERVICE -> {
                 binding.tvStatus.text = getString(R.string.started)
                 binding.tvAccept.gone()
@@ -355,6 +360,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 binding.tvMarkComplete.visible()
                 extraPayment()
             }
+
             CallAction.COMPLETED -> {
                 binding.tvStatus.text = getString(R.string.completed)
                 binding.tvStatus.setTextColor(
@@ -367,15 +373,14 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 binding.tvCancel.gone()
                 binding.tvCall.gone()
 
-                if (request.categoryData?.cat_slug=="ask-now") {
+                if (request.categoryData?.cat_slug == "ask-now") {
                     binding.tvAddPrescription.gone()
-                }
-                else
-                {
+                } else {
                     binding.tvAddPrescription.visible()
                 }
                 extraPayment()
             }
+
             CallAction.FAILED -> {
                 binding.tvAccept.gone()
                 binding.tvStatus.text = getString(R.string.no_show)
@@ -388,6 +393,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 binding.tvCancel.gone()
                 binding.tvCall.gone()
             }
+
             CallAction.CANCELED -> {
                 binding.tvStatus.text = getString(R.string.canceled)
                 binding.tvStatus.setTextColor(
@@ -400,15 +406,21 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 binding.tvCancel.gone()
                 binding.tvCall.gone()
             }
+
             CallAction.CANCEL_SERVICE -> {
                 binding.tvStatus.text = getString(R.string.canceled_service)
-                binding.tvStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorCancel))
+                binding.tvStatus.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.colorCancel
+                    )
+                )
                 binding.tvCancel.gone()
                 binding.tvAccept.gone()
                 binding.tvCall.gone()
             }
-            else ->
-                {
+
+            else -> {
                 binding.tvStatus.text = getString(R.string.new_request)
             }
         }
@@ -462,7 +474,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
     }
 
     fun updateCarePlan(item: Filter) {
-        AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.mark_complete,
+        AlertDialogUtil.instance.createOkCancelDialog(
+            requireActivity(), R.string.mark_complete,
             R.string.mark_complete_message, R.string.mark_complete, R.string.cancel, false,
             object : AlertDialogUtil.OnOkCancelDialogListener {
                 override fun onOkButtonClicked() {
@@ -489,6 +502,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 "homeDoctor" -> {
                     binding.tvAskPayment.visible()
                 }
+
                 else -> binding.tvAskPayment.gone()
             }
         } else {
@@ -510,6 +524,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                             R.color.colorPending
                         )
                     )
+
                 CallAction.PAID ->
                     binding.tvExtraStatus.setTextColor(
                         ContextCompat.getColor(
@@ -526,9 +541,11 @@ class AppointmentDetailsFragment : DaggerFragment() {
             CallAction.PENDING -> {
                 showAcceptRequestDialog()
             }
+
             CallAction.ACCEPT -> {
                 showInitiateRequestDialog()
             }
+
             CallAction.COMPLETED -> {
                 if (request.is_prescription == true) {
                     if (!request.pre_scription?.type.isNullOrEmpty()) {
@@ -546,6 +563,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                                     )
                                     openPdf(requireActivity(), link, true)
                                 }
+
                                 R.id.item_edit -> {
                                     registerActivityResult.launch(
                                         Intent(requireActivity(), DrawerActivity::class.java)
@@ -564,12 +582,14 @@ class AppointmentDetailsFragment : DaggerFragment() {
                     fragment.show(requireActivity().supportFragmentManager, fragment.tag)
                 }
             }
+
             CallAction.START, CallAction.REACHED -> {
                 registerActivityResult.launch(
                     Intent(requireActivity(), AppointmentStatusActivity::class.java)
                         .putExtra(EXTRA_REQUEST_ID, request)
                 )
             }
+
             CallAction.START_SERVICE -> {
                 showMarkCompleteDialog()
             }
@@ -577,7 +597,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
     }
 
     private fun showAcceptRequestDialog() {
-        AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.accept_request,
+        AlertDialogUtil.instance.createOkCancelDialog(
+            requireActivity(), R.string.accept_request,
             R.string.accept_request_message, R.string.accept_request, R.string.cancel, false,
             object : AlertDialogUtil.OnOkCancelDialogListener {
                 override fun onOkButtonClicked() {
@@ -590,7 +611,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
     }
 
     private fun showMarkCompleteDialog() {
-        AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.mark_complete,
+        AlertDialogUtil.instance.createOkCancelDialog(
+            requireActivity(), R.string.mark_complete,
             R.string.mark_complete_message, R.string.mark_complete, R.string.cancel, false,
             object : AlertDialogUtil.OnOkCancelDialogListener {
                 override fun onOkButtonClicked() {
@@ -603,7 +625,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
     }
 
     private fun showInitiateRequestDialog() {
-        AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.start_request,
+        AlertDialogUtil.instance.createOkCancelDialog(
+            requireActivity(), R.string.start_request,
             R.string.start_request_message, R.string.start_request, R.string.cancel, false,
             object : AlertDialogUtil.OnOkCancelDialogListener {
                 override fun onOkButtonClicked() {
@@ -645,6 +668,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
 
                     viewModel.callStatus(hashMap)
                 }
+
                 else -> {
                     val hashMap = HashMap<String, Any>()
                     hashMap["request_id"] = request.id ?: ""
@@ -697,10 +721,12 @@ class AppointmentDetailsFragment : DaggerFragment() {
                     setData()
 
                 }
+
                 Status.ERROR -> {
                     binding.clLoader.root.gone()
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     binding.clLoader.root.visible()
                 }
@@ -714,10 +740,12 @@ class AppointmentDetailsFragment : DaggerFragment() {
                     progressDialog.setLoading(false)
                     hitApi()
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -733,10 +761,12 @@ class AppointmentDetailsFragment : DaggerFragment() {
                     requireActivity().setResult(Activity.RESULT_OK)
                     hitApi()
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -767,6 +797,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                                     .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                             )
                         }
+
                         ConsultType.AUDIO_CALL, ConsultType.VIDEO_CALL -> {
                             requireActivity().longToast(getString(R.string.starting_call))
 
@@ -780,10 +811,12 @@ class AppointmentDetailsFragment : DaggerFragment() {
                         }
                     }
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -806,10 +839,12 @@ class AppointmentDetailsFragment : DaggerFragment() {
                             .putExtra(EXTRA_REQUEST_ID, request)
                     )
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -838,10 +873,12 @@ class AppointmentDetailsFragment : DaggerFragment() {
                             .sendBroadcast(broadcastIntent)
                     }
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -858,10 +895,12 @@ class AppointmentDetailsFragment : DaggerFragment() {
                     requireActivity().setResult(Activity.RESULT_OK)
                     hitApi()
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }
@@ -876,10 +915,12 @@ class AppointmentDetailsFragment : DaggerFragment() {
 
                     hitApi()
                 }
+
                 Status.ERROR -> {
                     progressDialog.setLoading(false)
                     ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
                 }
+
                 Status.LOADING -> {
                     progressDialog.setLoading(true)
                 }

@@ -1,7 +1,7 @@
 package com.consultantvendor.utils
 
 import android.content.Context
-import com.consultantvendor.data.models.responses.LoggedInUser
+import com.consultantvendor.data.models.responses.UserSession
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -9,7 +9,7 @@ object MultiLoginManager {
     private const val PREF_NAME = "multi_login_prefs"
     private const val KEY_USERS = "logged_in_users"
 
-    fun saveUser(context: Context, user: LoggedInUser) {
+    fun saveUser(context: Context, user: UserSession) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val gson = Gson()
         val currentUsers = getUsers(context).toMutableList()
@@ -18,11 +18,11 @@ object MultiLoginManager {
         prefs.edit().putString(KEY_USERS, gson.toJson(currentUsers)).apply()
     }
 
-    fun getUsers(context: Context): List<LoggedInUser> {
+    fun getUsers(context: Context): List<UserSession> {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val gson = Gson()
         val json = prefs.getString(KEY_USERS, "[]")
-        val type = object : TypeToken<List<LoggedInUser>>() {}.type
+        val type = object : TypeToken<List<UserSession>>() {}.type
         return gson.fromJson(json, type)
     }
 

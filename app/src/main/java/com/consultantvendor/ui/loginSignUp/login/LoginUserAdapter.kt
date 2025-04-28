@@ -4,13 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.consultantvendor.R
-import com.consultantvendor.data.models.responses.LoggedInUser
+import com.consultantvendor.data.models.responses.UserSession
 import com.consultantvendor.databinding.ItemUserBinding
 import com.consultantvendor.utils.loadImage
 
 
 class LoginUserAdapter(
-    private val users: List<LoggedInUser>,
+    private val users: List<UserSession>,
     private val onSelect: (position:Int) -> Unit
 ) : RecyclerView.Adapter<LoginUserAdapter.OptionViewHolder>() {
 

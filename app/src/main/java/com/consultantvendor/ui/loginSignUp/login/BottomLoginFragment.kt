@@ -1,5 +1,6 @@
 package com.consultantvendor.ui.loginSignUp.login
 
+import android.app.Activity
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -7,21 +8,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import com.consultantvendor.R
+import com.consultantvendor.data.models.responses.UserSession
 import com.consultantvendor.databinding.BottomLoginBinding
 import com.consultantvendor.di.DaggerBottomSheetDialogFragment
 import com.consultantvendor.utils.MultiLoginManager
+import com.consultantvendor.utils.SessionManager
 import com.consultantvendor.utils.visible
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class BottomLoginFragment(private val activity: LoginActivity) : DaggerBottomSheetDialogFragment() {
+class BottomLoginFragment(private val activity: Activity) : DaggerBottomSheetDialogFragment() {
 
     private lateinit var binding: BottomLoginBinding
 
-    private lateinit var adapter: LoginUserAdapter
+    private  var adapter: LoginUserAdapter?=null
+    private var sessions = mutableListOf<UserSession>()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState) as BottomSheetDialog
@@ -40,33 +44,42 @@ class BottomLoginFragment(private val activity: LoginActivity) : DaggerBottomShe
     ): View? {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.bottom_login, container, false)
-
         return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+        setStyle(STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
 
         setupPreviousUsers()
+        listners()
 
-        binding.ivClose.setOnClickListener {
-            dialog?.dismiss()
-        }
     }
 
     private fun setupPreviousUsers() {
         val users = MultiLoginManager.getUsers(requireContext())
         if (users.isNotEmpty()) {
-            binding.clPreviousLogin.visible()
             adapter = LoginUserAdapter(users) { selectedIndex ->
-                val item=users.get(selectedIndex)
-                activity.binding.etMobileNumber.setText(item.moh)
-                activity.binding.ivNext.performClick()
+                val item= users[selectedIndex]
+//                activity.binding.etMobileNumber.setText(item.moh)
+//                activity.binding.ivNext.performClick()
+                 reloadSessions()
+//                Toast.makeText(requireContext(), "Switched to ${item.username}", Toast.LENGTH_SHORT).show()
             }
         }
-
         binding.rvUser.adapter = adapter
+    }
+
+    private fun listners() {
+        binding.ivClose.setOnClickListener {
+            dialog?.dismiss()
+        }
+    }
+
+    private fun reloadSessions() {
+        sessions.clear()
+        sessions.addAll(SessionManager.getSessions(requireActivity()))
+        adapter?.notifyDataSetChanged()
     }
 }

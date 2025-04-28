@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.consultantvendor.R
-import com.consultantvendor.data.models.responses.LoggedInUser
+import com.consultantvendor.data.models.responses.UserSession
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.data.repos.UserRepository
@@ -30,17 +30,16 @@ class LoginActivity : DaggerAppCompatActivity() {
     @Inject
     lateinit var prefsManager: PrefsManager
 
+    @Inject
+    lateinit var userRepository: UserRepository
+
     internal lateinit var binding: ActivityLoginBinding
 
     private lateinit var progressDialog: ProgressDialog
 
-    @Inject
-    lateinit var userRepository: UserRepository
-
     private var fcmId  = ""
 
     private lateinit var viewModel: LoginViewModel
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,21 +50,19 @@ class LoginActivity : DaggerAppCompatActivity() {
         initialise()
         listeners()
         bindObservers()
-        openBottomPreviousLogin()
+//        openBottomPreviousLogin()
     }
 
-    private fun openBottomPreviousLogin() {
-
-        val fragment = BottomLoginFragment(this)
-        fragment.show(supportFragmentManager, fragment.tag)
-
-    }
-
+//    private fun openBottomPreviousLogin() {
+//        val users = MultiLoginManager.getUsers(this)
+//        if (users.isNotEmpty()) {
+//            val fragment = BottomLoginFragment(this)
+//            fragment.show(supportFragmentManager, fragment.tag)
+//        }
+//    }
 
     private fun initialise() {
-
 //      binding.ccpCountryCode.setCountryForNameCode(appClientDetails.country_name_code ?: "IN")
-
         viewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
         progressDialog = ProgressDialog(this)
         binding.tvTerms.movementMethod = LinkMovementMethod.getInstance()
@@ -84,8 +81,6 @@ class LoginActivity : DaggerAppCompatActivity() {
         }*/
     }
 
-
-
     private fun listeners() {
         binding.toolbar.setNavigationOnClickListener {
             if (supportFragmentManager.backStackEntryCount > 0)
@@ -100,7 +95,6 @@ class LoginActivity : DaggerAppCompatActivity() {
         }
 
         // get firebasetoken
-
    /*     FirebaseMessaging.getInstance().token.addOnCompleteListener {
             if (it.isComplete) {
                 Log.d("FCMToken", it.result)
@@ -127,7 +121,6 @@ class LoginActivity : DaggerAppCompatActivity() {
     }
 
     private fun bindObservers() {
-
           viewModel.drLogin.observe(this, Observer {
           it ?: return@Observer
           when (it.status) {
@@ -136,13 +129,13 @@ class LoginActivity : DaggerAppCompatActivity() {
                   prefsManager.save(USER_DATA, it.data)
                   if (userRepository.isUserLoggedIn()) {
                       startActivity(Intent(this, HomeActivity::class.java))
-                      val loggedInUser = LoggedInUser(userId = it.data?.id.toString(),
+                      val loggedInUser = UserSession(userId = it.data?.id.toString(),
                           country_code = it.data?.country_code.toString(),
                           moh = it.data?.moh_number.toString(),
+                          token = it.data?.token.toString(),
                           username = it.data?.name.toString(),
-                          profileImageUrl = it.data?.profile_image.toString()
-                          )
-                      MultiLoginManager.saveUser(this, loggedInUser)
+                          profileImageUrl = it.data?.profile_image.toString())
+                         SessionManager.saveSessions(this, listOf(loggedInUser))
                       finish()
                   }
               }

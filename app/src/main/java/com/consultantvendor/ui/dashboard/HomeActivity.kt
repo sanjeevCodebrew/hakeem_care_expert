@@ -29,6 +29,7 @@ import androidx.navigation.NavController
 import com.consultantvendor.BuildConfig
 import com.consultantvendor.R
 import com.consultantvendor.appFeatures
+import com.consultantvendor.data.models.responses.UserSession
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.PushType
 import com.consultantvendor.data.network.responseUtil.Status
@@ -38,11 +39,14 @@ import com.consultantvendor.ui.dashboard.home.appointment.requests.BottomService
 import com.consultantvendor.ui.drawermenu.DrawerActivity
 import com.consultantvendor.ui.loginSignUp.LoginViewModel
 import com.consultantvendor.ui.loginSignUp.SignUpActivity
+import com.consultantvendor.ui.loginSignUp.login.BottomLoginFragment
 import com.consultantvendor.utils.AppSocket
 import com.consultantvendor.utils.EXTRA_TAB
 import com.consultantvendor.utils.LocaleHelper
+import com.consultantvendor.utils.MultiLoginManager
 import com.consultantvendor.utils.PAGE_TO_OPEN
 import com.consultantvendor.utils.PrefsManager
+import com.consultantvendor.utils.SessionManager
 import com.consultantvendor.utils.UPDATE_NUMBER
 import com.consultantvendor.utils.isConnectedToInternet
 import com.consultantvendor.utils.setupWithNavController
@@ -93,6 +97,8 @@ class HomeActivity : DaggerAppCompatActivity() {
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
+    private var sessions = mutableListOf<UserSession>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,6 +111,17 @@ class HomeActivity : DaggerAppCompatActivity() {
         listeners()
         bindObservers()
         getPendingRequest()
+
+        openBottomPreviousLogin()
+    }
+
+
+        private fun openBottomPreviousLogin() {
+        val users = SessionManager.getSessions(this)
+        if (users.isNotEmpty()) {
+            val fragment = BottomLoginFragment(this)
+            fragment.show(supportFragmentManager, fragment.tag)
+        }
     }
 
 

@@ -500,7 +500,7 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/tvChat"
+                    app:layout_constraintTop_toBottomOf="@+id/ivCancelAccept"
                     app:layout_goneMarginStart="@dimen/dp_0" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -513,13 +513,13 @@
                     android:fontFamily="@font/campton_semibold"
                     android:gravity="center"
                     android:paddingHorizontal="@dimen/dp_20"
-                    android:text="@string/continue_chat"
+                    android:text="@string/start_chat"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/sp_16"
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@+id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/ivCancelAccept"
+                    app:layout_constraintTop_toBottomOf="@id/tvMarkComplete"
                     app:layout_goneMarginStart="@dimen/dp_0" />
 
                 <androidx.constraintlayout.widget.Barrier
