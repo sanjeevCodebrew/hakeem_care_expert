@@ -29,6 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_10"
+                android:visibility="gone"
                 android:text="@string/choose_previous_login"
                 android:textAppearance="@style/Toolbar.TitleText"
                 android:textDirection="locale"
