@@ -158,11 +158,27 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvChat.setOnClickListener {
             registerActivityResult.launch(
                 Intent(context, ChatDetailActivity::class.java)
-                    .putExtra(USER_ID, request.from_user?.id)
-                    .putExtra(USER_NAME, request.from_user?.name)
+                    .putExtra(USER_ID, request.to_user?.id)
+                    .putExtra(USER_NAME, request.to_user?.name)
                     .putExtra(EXTRA_REQUEST_ID, request.id)
                     .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
             )
+
+
+//            requireActivity().intent = Intent(requireContext(), ChatDetailActivity::class.java)
+//                .putExtra(USER_ID, request.to_user?.id)
+//                .putExtra(USER_NAME, request.to_user?.name)
+//                .putExtra(EXTRA_REQUEST_ID, request.id)
+//
+//
+//            val broadcastIntent = Intent()
+//            broadcastIntent.action = PushType.CHAT_STARTED
+//            broadcastIntent.putExtra(USER_ID, request.to_user?.id)
+//                .putExtra(USER_NAME, request.to_user?.name)
+//                .putExtra(EXTRA_REQUEST_ID, request.id)
+//
+//            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(broadcastIntent)
+
         }
 
         binding.tvViewMap.setOnClickListener {
@@ -223,6 +239,9 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvServiceTypeV.text = request.service_type
         binding.tvDistanceV.text = request.extra_detail?.distance ?: ""
         binding.tvLocation.text = request.extra_detail?.service_address
+
+
+
 
 
 
@@ -309,7 +328,10 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 binding.tvStatus.text = getString(R.string.accepted)
                 binding.tvAccept.text = getString(R.string.start_request)
                 binding.tvCancel.gone()
-//                binding.tvChat.visible()
+
+                if (request.to_user?.categoryData?.parent_cat_name=="telehealth"){
+                    binding.tvChat.visible()
+                }
 
 //                if (request.main_service_type == "chat") {
 //                    binding.tvChat.visible()
@@ -319,6 +341,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
 //                } else {
 //                    binding.tvChat.gone()
 //                }
+
+
 
                 when (request.main_service_type) {
                     ConsultType.AUDIO_CALL, ConsultType.VIDEO_CALL -> {

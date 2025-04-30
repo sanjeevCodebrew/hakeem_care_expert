@@ -12,6 +12,7 @@
             android:id="@+id/clPreviousLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/dp_20"
             android:layout_marginBottom="@dimen/dp_4">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -24,18 +25,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvPreviousLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_10"
-                android:visibility="gone"
-                android:text="@string/choose_previous_login"
-                android:textAppearance="@style/Toolbar.TitleText"
-                android:textDirection="locale"
-                app:layout_constraintTop_toBottomOf="@id/ivClose"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvUser"
@@ -43,9 +32,47 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_4"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/tvPreviousLogin"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ivClose"
                 tools:listitem="@layout/item_user" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clMain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/dp_10"
+                    android:background="@drawable/rounded_stroke_corner"
+                    app:layout_constraintTop_toBottomOf="@id/rvUser"
+                    android:padding="12dp">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/ivAdd"
+                        android:layout_width="@dimen/album_dp_35"
+                        android:layout_height="@dimen/album_dp_35"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_add"
+                        app:riv_border_color="@color/lineColor"
+                        app:riv_border_width="2dp"
+                        app:riv_corner_radius="@dimen/album_dp_35"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAddDr"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/campton_semibold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_14"
+                        android:text="@string/add_another_dr"
+                        android:layout_marginStart="12dp"
+                        app:layout_constraintStart_toEndOf="@id/ivAdd"
+                        app:layout_constraintTop_toTopOf="@id/ivAdd"
+                        app:layout_constraintBottom_toBottomOf="@id/ivAdd"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

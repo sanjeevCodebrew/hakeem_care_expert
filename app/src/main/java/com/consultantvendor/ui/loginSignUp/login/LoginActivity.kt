@@ -1,5 +1,6 @@
 package com.consultantvendor.ui.loginSignUp.login
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
@@ -120,6 +121,7 @@ class LoginActivity : DaggerAppCompatActivity() {
         }
     }
 
+
     private fun bindObservers() {
           viewModel.drLogin.observe(this, Observer {
           it ?: return@Observer
@@ -130,13 +132,13 @@ class LoginActivity : DaggerAppCompatActivity() {
                   if (userRepository.isUserLoggedIn()) {
                       startActivity(Intent(this, HomeActivity::class.java))
                       val loggedInUser = UserSession(userId = it.data?.id.toString(),
-                          country_code = it.data?.country_code.toString(),
                           moh = it.data?.moh_number.toString(),
                           token = it.data?.token.toString(),
                           username = it.data?.name.toString(),
+                          isSelect = false,
                           profileImageUrl = it.data?.profile_image.toString())
-                         SessionManager.saveSessions(this, listOf(loggedInUser))
-                      finish()
+                          MultiLoginManager.saveUser(this,loggedInUser)
+                          finish()
                   }
               }
               Status.ERROR -> {

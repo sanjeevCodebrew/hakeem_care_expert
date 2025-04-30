@@ -12,12 +12,11 @@ object MultiLoginManager {
     fun saveUser(context: Context, user: UserSession) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val gson = Gson()
-        val currentUsers = getUsers(context).toMutableList()
-        currentUsers.removeAll { it.userId == user.userId }
-        currentUsers.add(0, user)
-        prefs.edit().putString(KEY_USERS, gson.toJson(currentUsers)).apply()
+        val users = getUsers(context).toMutableList()
+        users.removeAll { it.userId == user.userId }
+        users.add(0, user)
+        prefs.edit().putString(KEY_USERS, gson.toJson(users)).apply()
     }
-
     fun getUsers(context: Context): List<UserSession> {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val gson = Gson()

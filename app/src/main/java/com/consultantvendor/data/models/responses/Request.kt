@@ -54,7 +54,6 @@ class CategoryData : Serializable {
     var image: String? = null
     var parent_id: Int? = null
     var payment_type: String? = null
-    var parent_cat_name: String? = null
     var description: String? = null
     var color_code: String? = null
     var enable: Boolean? = null

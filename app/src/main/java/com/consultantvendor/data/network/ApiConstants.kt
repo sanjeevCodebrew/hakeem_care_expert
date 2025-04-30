@@ -37,6 +37,7 @@ object LoadingStatus {
 object PushType {
     const val PROFILE_APPROVED = "PROFILE_APPROVED"
     const val CHAT = "chat"
+    const val CHAT_STARTED = "Chat Started"
     const val NEW_REQUEST = "NEW_REQUEST"
     const val BOOKING_REQUEST = "BOOKING_REQUEST"
     const val REQUEST_FAILED = "REQUEST_FAILED"

@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
@@ -35,6 +36,8 @@ import com.consultantvendor.databinding.FragmentHomeBinding
 import com.consultantvendor.ui.adapter.CommonFragmentPagerAdapter
 import com.consultantvendor.ui.calling.CallingActivity
 import com.consultantvendor.ui.chat.chatdetail.ChatDetailActivity
+import com.consultantvendor.ui.dashboard.HomeActivity
+import com.consultantvendor.ui.dashboard.LoginListener
 import com.consultantvendor.ui.dashboard.feeds.FeedViewModel
 import com.consultantvendor.ui.dashboard.home.appointment.appointmentStatus.AppointmentStatusActivity
 import com.consultantvendor.ui.dashboard.home.items.ArticleAdapter
@@ -146,6 +149,10 @@ class HomeFragment : DaggerFragment() {
         viewModel = ViewModelProvider(this, viewModelFactory)[AppointmentViewModel::class.java]
         viewModelFeed = ViewModelProvider(this, viewModelFactory)[FeedViewModel::class.java]
 
+        binding.tvLoggedMoh.text = userRepository.getUser()?.moh_number
+
+
+
         //throw RuntimeException("Test Crash") // Force a crash
 
         /*Side Drawer*/
@@ -159,6 +166,9 @@ class HomeFragment : DaggerFragment() {
 //            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
 
+
+
+
         Log.e("TAG", "authToken " + prefsManager.getObject(USER_DATA, UserData::class.java)?.token)
         val hashMap = HashMap<String, String>()
         val language = prefsManager.getString(USER_LANGUAGE, "")
@@ -166,7 +176,10 @@ class HomeFragment : DaggerFragment() {
         viewModelHome.postLanguage1(hashMap)
 
 
+
     }
+
+
 
     private fun handleHeader() {
         val userData = userRepository.getUser()
@@ -187,6 +200,7 @@ class HomeFragment : DaggerFragment() {
             )
         }
     }
+
 
     private fun setAdapter() {
         adapter = AppointmentAdapter(this, items)
@@ -279,6 +293,9 @@ class HomeFragment : DaggerFragment() {
 //        binding.ivDrawer.setOnClickListener {
 //            binding.drawerLayout.openDrawer(GravityCompat.START)
 //        }
+        binding.tvLoggedMoh.setOnClickListener {
+            (activity as? HomeActivity)?.openBottomPreviousLogin()
+        }
 
         binding.swipeRefresh.setOnRefreshListener {
             hitApi()

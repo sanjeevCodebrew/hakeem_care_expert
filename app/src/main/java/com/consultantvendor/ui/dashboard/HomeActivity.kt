@@ -46,8 +46,9 @@ import com.consultantvendor.utils.LocaleHelper
 import com.consultantvendor.utils.MultiLoginManager
 import com.consultantvendor.utils.PAGE_TO_OPEN
 import com.consultantvendor.utils.PrefsManager
-import com.consultantvendor.utils.SessionManager
 import com.consultantvendor.utils.UPDATE_NUMBER
+import com.consultantvendor.utils.USER_DATA
+import com.consultantvendor.utils.dialogs.ProgressDialog
 import com.consultantvendor.utils.isConnectedToInternet
 import com.consultantvendor.utils.setupWithNavController
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -97,7 +98,9 @@ class HomeActivity : DaggerAppCompatActivity() {
 
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
-    private var sessions = mutableListOf<UserSession>()
+    private lateinit var progressDialog: ProgressDialog
+
+    var selectedMoh = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,22 +115,28 @@ class HomeActivity : DaggerAppCompatActivity() {
         bindObservers()
         getPendingRequest()
 
-        openBottomPreviousLogin()
     }
 
 
-        private fun openBottomPreviousLogin() {
-        val users = SessionManager.getSessions(this)
+     fun openBottomPreviousLogin() {
+        val users = MultiLoginManager.getUsers(this)
         if (users.isNotEmpty()) {
-            val fragment = BottomLoginFragment(this)
+            val fragment = BottomLoginFragment()
             fragment.show(supportFragmentManager, fragment.tag)
         }
+    }
+
+    fun hitApiLogin(item: UserSession) {
+        val hashMap = HashMap<String, Any>()
+        hashMap["moh_number"] = item.moh
+        viewModel.drLogin(hashMap)
     }
 
 
     private fun initialise() {
         viewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        progressDialog = ProgressDialog(this)
 
         LocaleHelper.setLocale(this, userRepository.getUserLanguage(), prefsManager)
         appSocket.init()
@@ -175,10 +184,14 @@ class HomeActivity : DaggerAppCompatActivity() {
             Log.e("TAG", "chkLogFirebaseAnalytics :" + params)
         }
 
+
+
     }
 
 
     private fun listeners() {
+
+
     }
 
     private fun checkPendingRequest() {
@@ -224,7 +237,10 @@ class HomeActivity : DaggerAppCompatActivity() {
                 binding.bottomNav.selectedItemId = R.id.navigation_wallet
             }
         }
+
+
     }
+
 
     override fun onSupportNavigateUp(): Boolean {
         return currentNavController?.value?.navigateUp() ?: false
@@ -310,12 +326,13 @@ class HomeActivity : DaggerAppCompatActivity() {
     }
 
 
-    private val registerActivityResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            //val intent = result.data
-            getLastLocation()
+    private val registerActivityResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                //val intent = result.data
+                getLastLocation()
+            }
         }
-    }
 
     private fun getLocationName(lat: Double, lng: Double) {
         runOnUiThread {
@@ -375,6 +392,41 @@ class HomeActivity : DaggerAppCompatActivity() {
                 }
 
                 Status.LOADING -> {
+                }
+            }
+        })
+
+        viewModel.drLogin.observe(this, Observer {
+            it ?: return@Observer
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.setLoading(false)
+                    prefsManager.save(USER_DATA, it.data)
+                    if (userRepository.isUserLoggedIn()) {
+                        startActivity(Intent(this, HomeActivity::class.java))
+                        selectedMoh = it.data?.moh_number.toString()
+                        val loggedInUser = UserSession(
+                            userId = it.data?.id.toString(),
+                            moh = it.data?.moh_number.toString(),
+                            token = it.data?.token.toString(),
+                            username = it.data?.name.toString(),
+                            isSelect = true,
+                            profileImageUrl = it.data?.profile_image.toString()
+                        )
+//                         SessionManager.saveSessions(this, listOf(loggedInUser))
+//                        finish()
+                        MultiLoginManager.saveUser(this,loggedInUser)
+
+                    }
+                }
+
+                Status.ERROR -> {
+                    progressDialog.setLoading(false)
+                    ApisRespHandler.handleError(it.error, this, prefsManager)
+                }
+
+                Status.LOADING -> {
+                    progressDialog.setLoading(true)
                 }
             }
         })
