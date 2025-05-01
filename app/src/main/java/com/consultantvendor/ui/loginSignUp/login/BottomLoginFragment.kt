@@ -17,13 +17,17 @@ import com.consultantvendor.utils.MultiLoginManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import androidx.core.graphics.drawable.toDrawable
+import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.ui.dashboard.HomeActivity
 import com.consultantvendor.utils.longToast
+import javax.inject.Inject
 
 class BottomLoginFragment() : DaggerBottomSheetDialogFragment() {
 
     private lateinit var binding: BottomLoginBinding
     private var adapter: LoginUserAdapter? = null
+    @Inject
+    lateinit var userRepository: UserRepository
     private lateinit var users: List<UserSession>
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -55,25 +59,23 @@ class BottomLoginFragment() : DaggerBottomSheetDialogFragment() {
     private fun setupPreviousUsers() {
         users = MultiLoginManager.getUsers(requireContext())
         if (users.isNotEmpty()) {
+            adapter = LoginUserAdapter(users,userRepository) { selectedIndex ->
+                val item  = users[selectedIndex]
+                (activity as? HomeActivity)?.hitApiLogin(item)
+                dialog?.dismiss()
+                adapter?.notifyDataSetChanged()
+
+            }
+
 //            adapter = LoginUserAdapter(users) { selectedIndex ->
 //                users.forEachIndexed { index, option ->
 //                    option.isSelect = index == selectedIndex
 //                }
-//                (activity as? HomeActivity)?.hitApiLogin(users[selectedIndex])
-//                dialog?.dismiss()
 //                adapter?.notifyDataSetChanged()
 //
+//                (activity as? HomeActivity)?.hitApiLogin(users[selectedIndex])
+//                dialog?.dismiss()
 //            }
-
-            adapter = LoginUserAdapter(users) { selectedIndex ->
-                users.forEachIndexed { index, option ->
-                    option.isSelect = index == selectedIndex
-                }
-                adapter?.notifyDataSetChanged()
-
-                (activity as? HomeActivity)?.hitApiLogin(users[selectedIndex])
-                dialog?.dismiss()
-            }
 
         }
 

@@ -2,10 +2,10 @@ package com.consultantvendor.ui.loginSignUp.login
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.consultantvendor.R
 import com.consultantvendor.data.models.responses.UserSession
+import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.ItemUserBinding
 import com.consultantvendor.utils.gone
 import com.consultantvendor.utils.loadImage
@@ -14,6 +14,7 @@ import com.consultantvendor.utils.visible
 
 class LoginUserAdapter(
     private val users: List<UserSession>,
+    private val userRepository: UserRepository,
     private val onSelect: (position: Int) -> Unit
 ) : RecyclerView.Adapter<LoginUserAdapter.OptionViewHolder>() {
 
@@ -47,8 +48,13 @@ class LoginUserAdapter(
             holder.binding.ivPic.setImageResource(R.drawable.image_placeholder)
         }
 
-//        holder.binding.ivTick.isVisible=item.isSelect
-
+        if (userRepository.getUser()?.moh_number==item.moh){
+            holder.binding.ivTick.visible()
+        }
+        else
+        {
+            holder.binding.ivTick.gone()
+        }
 
     }
 

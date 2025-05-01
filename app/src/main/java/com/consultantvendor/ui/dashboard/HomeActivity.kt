@@ -109,9 +109,7 @@ class HomeActivity : DaggerAppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
 
         initialise()
-
         setNavigation()
-        listeners()
         bindObservers()
         getPendingRequest()
 
@@ -188,11 +186,6 @@ class HomeActivity : DaggerAppCompatActivity() {
 
     }
 
-
-    private fun listeners() {
-
-
-    }
 
     private fun checkPendingRequest() {
         val timeDelay = 60000L
