@@ -100,8 +100,6 @@ class HomeActivity : DaggerAppCompatActivity() {
 
     private lateinit var progressDialog: ProgressDialog
 
-    var selectedMoh = ""
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -397,7 +395,6 @@ class HomeActivity : DaggerAppCompatActivity() {
                     prefsManager.save(USER_DATA, it.data)
                     if (userRepository.isUserLoggedIn()) {
                         startActivity(Intent(this, HomeActivity::class.java))
-                        selectedMoh = it.data?.moh_number.toString()
                         val loggedInUser = UserSession(
                             userId = it.data?.id.toString(),
                             moh = it.data?.moh_number.toString(),
@@ -406,8 +403,6 @@ class HomeActivity : DaggerAppCompatActivity() {
                             isSelect = true,
                             profileImageUrl = it.data?.profile_image.toString()
                         )
-//                         SessionManager.saveSessions(this, listOf(loggedInUser))
-//                        finish()
                         MultiLoginManager.saveUser(this,loggedInUser)
 
                     }

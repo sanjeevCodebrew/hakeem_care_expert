@@ -94,7 +94,7 @@ class BottomLoginFragment() : DaggerBottomSheetDialogFragment() {
             }else{
                 startActivity(
                     Intent(activity, LoginActivity::class.java))
-                dialog?.dismiss()
+                    dialog?.dismiss()
             }
 
         }

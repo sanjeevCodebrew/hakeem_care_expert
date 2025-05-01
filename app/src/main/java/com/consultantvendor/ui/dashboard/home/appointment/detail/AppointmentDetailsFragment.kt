@@ -42,6 +42,7 @@ import com.consultantvendor.ui.dashboard.home.appointment.appointmentStatus.Appo
 import com.consultantvendor.ui.dashboard.home.appointment.medicalhistory.MedicalHistoryFragment
 import com.consultantvendor.ui.dashboard.home.prescription.BottomPrescriptionFragment
 import com.consultantvendor.ui.drawermenu.DrawerActivity
+import com.consultantvendor.ui.jitsimeet.JitsiActivity
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import dagger.android.support.DaggerFragment
@@ -156,28 +157,21 @@ class AppointmentDetailsFragment : DaggerFragment() {
             showMarkCompleteDialog()
         }
         binding.tvChat.setOnClickListener {
-            registerActivityResult.launch(
-                Intent(context, ChatDetailActivity::class.java)
-                    .putExtra(USER_ID, request.to_user?.id)
-                    .putExtra(USER_NAME, request.to_user?.name)
-                    .putExtra(EXTRA_REQUEST_ID, request.id)
-                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-            )
+//            registerActivityResult.launch(
+//                Intent(context, ChatDetailActivity::class.java)
+//                    .putExtra(USER_ID, request.to_user?.id)
+//                    .putExtra(USER_NAME, request.to_user?.name)
+//                    .putExtra(EXTRA_REQUEST_ID, request.id)
+//                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+//            )
 
-
-//            requireActivity().intent = Intent(requireContext(), ChatDetailActivity::class.java)
-//                .putExtra(USER_ID, request.to_user?.id)
-//                .putExtra(USER_NAME, request.to_user?.name)
-//                .putExtra(EXTRA_REQUEST_ID, request.id)
-//
-//
-//            val broadcastIntent = Intent()
-//            broadcastIntent.action = PushType.CHAT_STARTED
-//            broadcastIntent.putExtra(USER_ID, request.to_user?.id)
-//                .putExtra(USER_NAME, request.to_user?.name)
-//                .putExtra(EXTRA_REQUEST_ID, request.id)
-//
-//            LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(broadcastIntent)
+            val intent = Intent(requireContext(), ChatDetailActivity::class.java)
+                     .putExtra(USER_ID, request.from_user?.id)
+                     .putExtra(USER_NAME, request.from_user?.name)
+                     .putExtra(EXTRA_REQUEST_ID, request.id)
+                     .putExtra(EXTRA_IS_FIRST, true)
+                     .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                      startActivity(intent)
 
         }
 

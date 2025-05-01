@@ -62,6 +62,7 @@ import com.consultantvendor.utils.CallAction
 import com.consultantvendor.utils.DocType
 import com.consultantvendor.utils.EXTRA_IS_FIRST
 import com.consultantvendor.utils.EXTRA_REQUEST_ID
+import com.consultantvendor.utils.ISFROMTELEHEALTH
 import com.consultantvendor.utils.LAST_MESSAGE
 import com.consultantvendor.utils.LocaleHelper
 import com.consultantvendor.utils.OTHER_USER_ID
@@ -117,6 +118,9 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
 
     @Inject
     lateinit var userRepository: UserRepository
+
+
+    private var isFromTeleHealth = false
 
 
     companion object {
@@ -250,6 +254,9 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
         userName = intent.getStringExtra(USER_NAME) ?: ""
         binding.tvUserName.text = userName
         lan = userRepository.getUserLanguage()
+        isFromTeleHealth = intent.getBooleanExtra(ISFROMTELEHEALTH, false)
+
+
 
     }
 
@@ -388,6 +395,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                     distinctList(data?.messages)
                     /*Send chat start message*/
                     if (intent.hasExtra(EXTRA_IS_FIRST)) {
+                        binding.rlChatInput.visible()
                         generateNewMessage(getString(R.string.chat_first_message, userName))
                         intent.removeExtra(EXTRA_IS_FIRST)
                     }
@@ -476,7 +484,9 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
 //            startTimer(((data?.currentTimer ?: 0) * 1000))
         } else {
             binding.tvCompleteChat.gone()
-            binding.rlChatInput.gone()
+            if (!isFromTeleHealth) {
+                binding.rlChatInput.gone()
+            }
 
             binding.tvTimer.gone()
             countDownTimer?.cancel()
@@ -1310,31 +1320,6 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
         }
     }
 
-    fun askForOption1(fragment: Fragment?, activity: Activity, view: View) {
-        val context: Context = fragment?.requireContext() ?: activity
-
-        val popup = PopupMenu(context, view)
-        popup.menuInflater.inflate(R.menu.menu_attach, popup.menu)
-
-        popup.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.item_image_camera -> {
-                    openCamera(activity, fragment)
-                }
-
-                R.id.item_image -> {
-                    selectImages(fragment, activity)
-                }
-
-                R.id.item_pdf -> {
-                    selectDocument2()
-                }
-            }
-            true
-        }
-
-        popup.show()
-    }
 
     /*    private fun openAlbum1(activity: Activity, fragment: Fragment?) {
     
@@ -1362,94 +1347,5 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
     
         }*/
 
-    private fun selectDocument2() {
-        val mimeType = "application/pdf"
-        /*Single Document Picker*/
-        // Image , Video , PDF , DOC , DOCX
-        pickMedia.launch(
-            arrayOf(mimeType)
-        )
 
-        /* Multiple Document Picker*/
-        pickMultipleDocument.launch(arrayOf(mimeType))
-    }
-
-    val pickMedia = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri != null) {
-            Log.e("PhotoPicker", "Selected URI: $uri")
-
-            val file = FileUriUtils.getRealPath(this, uri)?.let { File(it) }
-            Log.e("file", "" + file?.exists())
-            Log.e("fileLength", "" + file?.length())
-            Log.e("fileName", "" + file?.name)
-            Log.e("filePath", "" + file?.path)
-            Log.e("file.extension", "" + file?.extension)
-
-            if (file != null) {
-
-                if ((file.extension.equals("pdf", true)) ||
-                    (file.extension.equals("doc", true)) ||
-                    (file.extension.equals("docx", true)) ||
-                    (file.extension.equals("mp4", true)) ||
-                    (file.extension.equals("mp3", true)) ||
-                    (file.extension.equals("eac3", true)) ||
-                    (file.extension.equals("wav", true)) ||
-                    (file.extension.equals("mov", true)) ||
-                    (file.extension.equals("avi", true)) ||
-                    (file.extension.equals("mkv", true)) ||
-                    (file.extension.equals("webm", true))
-                ) {
-
-                    /*   img_pick.setImageBitmap(
-                           FileUtil.getThumbnail(
-                               file,
-                               uri,
-                               context = applicationContext
-                           )
-                       )*/
-
-                } else if ((file.extension.equals("jpg", true)) ||
-                    (file.extension.equals("jpeg", true)) ||
-                    (file.extension.equals("png", true))
-                ) {
-
-//                    img_pick.setImageURI(uri)
-
-                }
-            } else {
-//                img_pick.setImageResource(R.drawable.img_not_supported)
-                Toast.makeText(this, getString(R.string.file_format_not_supported), Toast.LENGTH_SHORT).show()
-            }
-
-
-        } else {
-            Log.d("PhotoPicker", "No media selected")
-        }
-    }
-
-
-    val pickMultipleDocument =
-        registerForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris ->
-            if (uris.isNotEmpty()) {
-
-                for (i in uris.indices) {
-                    val file = FileUriUtils.getRealPath(this, uris[i])?.let { File(it) }
-                    Log.e("file", "" + file?.exists())
-                    Log.e("fileLength", "" + file?.length())
-                    Log.e("fileName", "" + file?.name)
-                    Log.e("filePath", "" + file?.path)
-                    Log.e("file.extension", "" + file?.extension)
-
-
-                    fileToUpload1 = file
-                    Log.e("TAG", "checkDoc: " + fileToUpload1?.toURI())
-
-                }
-                val docImage = DocImage()
-                docImage.type = DocType.PDF
-                docImage.imageFile = fileToUpload1
-                uploadFileOnServer(docImage)
-            }
-
-        }
 }
