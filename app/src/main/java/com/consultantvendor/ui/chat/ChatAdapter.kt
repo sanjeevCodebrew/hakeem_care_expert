@@ -20,6 +20,8 @@ class ChatAdapter(private val fragment: ChatFragment, private val items: ArrayLi
 
     private var allItemsLoaded = true
 
+    private var isAccept = false
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder.itemViewType != LOADING)
             (holder as ViewHolder).bind(items[position])
@@ -95,8 +97,12 @@ class ChatAdapter(private val fragment: ChatFragment, private val items: ArrayLi
                 tvUnreadCount.gone()
             }
 
+            if (item.service_type=="Video"){
+                isAccept = true
+            }
+
             itemView.setOnClickListener {
-                fragment.startActivity(item)
+                fragment.startActivity(item,isAccept)
                 item.unReadCount = 0
                 notifyItemChanged(adapterPosition)
             }

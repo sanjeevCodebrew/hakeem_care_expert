@@ -387,6 +387,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                         R.color.textColorGreen
                     )
                 )
+                binding.tvChat.gone()
                 binding.tvAccept.gone()
                 binding.tvCancel.gone()
                 binding.tvCall.gone()

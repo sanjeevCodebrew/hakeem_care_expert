@@ -36,6 +36,7 @@ const val EXTRA_IS_FIRST = "EXTRA_IS_FIRST"
 const val EXTRA_CALL_NAME = "extra call name"
 const val EXTRA_TAB = "extra tab"
 const val ISFROMTELEHEALTH = "ISFROMTELEHEALTH"
+const val ISACCEPT = "ISACCEPT"
 
 
 object CallType {

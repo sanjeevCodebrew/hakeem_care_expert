@@ -271,11 +271,12 @@ class ChatFragment : DaggerFragment() {
     }
 
 
-    fun startActivity(item: ChatList) {
+    fun startActivity(item: ChatList, isAccept: Boolean) {
         registerActivityResult.launch(Intent(context, ChatDetailActivity::class.java)
                 .putExtra(USER_ID, item.from_user?.id)
                 .putExtra(USER_NAME, item.from_user?.name)
                 .putExtra(EXTRA_REQUEST_ID, item.id)
+                .putExtra(EXTRA_IS_FIRST, isAccept)
                 .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
     }
 

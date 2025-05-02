@@ -62,6 +62,7 @@ import com.consultantvendor.utils.CallAction
 import com.consultantvendor.utils.DocType
 import com.consultantvendor.utils.EXTRA_IS_FIRST
 import com.consultantvendor.utils.EXTRA_REQUEST_ID
+import com.consultantvendor.utils.ISACCEPT
 import com.consultantvendor.utils.ISFROMTELEHEALTH
 import com.consultantvendor.utils.LAST_MESSAGE
 import com.consultantvendor.utils.LocaleHelper
@@ -182,6 +183,8 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
     var isStopLeft = false
 
     private lateinit var permissionUtil: PermissionUtil
+
+    private var isRealChat = false
 
     override fun getVideo(uri: String?, i: Int) {
 
@@ -394,13 +397,16 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                     /*Check for distinct list*/
                     distinctList(data?.messages)
                     /*Send chat start message*/
+
+                    showTimer(data?.request_status == CallAction.INPROGRESS, data)
                     if (intent.hasExtra(EXTRA_IS_FIRST)) {
                         binding.rlChatInput.visible()
+                        isRealChat = true
                         generateNewMessage(getString(R.string.chat_first_message, userName))
                         intent.removeExtra(EXTRA_IS_FIRST)
                     }
                     /*Show Timer if needed*/
-                    showTimer(data?.request_status == CallAction.INPROGRESS, data)
+
                     /*Hide Loader*/
                     binding.clLoader.root.gone()
                     binding.clLoader.root.setBackgroundResource(0)
@@ -740,7 +746,8 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                 messageType = DocType.TEXT,
                 request_id = requestId,
                 sentAt = System.currentTimeMillis(),
-                status = NOT_SENT
+                status = NOT_SENT,
+                isRealChat = isRealChat
             )
 
             sendMessage(msg)

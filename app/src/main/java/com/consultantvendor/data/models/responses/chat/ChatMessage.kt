@@ -20,5 +20,6 @@ data class ChatMessage(
         var __v: Int? = null,
         var mediaUploadStatus: String = MediaUploadStatus.UPLOADED,
         var id: String? = null,
-        var messageId: String? = null
+        var messageId: String? = null,
+        var isRealChat: Boolean? = null
 )

@@ -1,14 +1,20 @@
 package com.consultantvendor.ui.dashboard.home.prescription.digital
 
 import android.app.Activity
+import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.consultantvendor.R
 import com.consultantvendor.data.models.requests.AddPrescription
 import com.consultantvendor.data.models.requests.DigitalPrescription
@@ -17,6 +23,7 @@ import com.consultantvendor.data.models.responses.Request
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.databinding.FragmentDigitalPrescriptionBinding
+import com.consultantvendor.ui.adapter.DiagnosisAdapter
 import com.consultantvendor.ui.dashboard.home.prescription.AddPrescriptionViewModel
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog
@@ -271,7 +278,31 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                 }
             }
         }
+
+
+        binding.etMedicineName.setOnClickListener {
+            val items = listOf("Item 1", "Item 2", "Item 3")
+            showCustomDialog(requireContext(), items )
+        }
     }
+
+    fun showCustomDialog(context: Context, list: List<String>) {
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_diagnosis_list)
+
+        val recyclerView = dialog.findViewById<RecyclerView>(R.id.recyclerViewDialog)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+
+        val adapter = DiagnosisAdapter(list) { selectedItem ->
+            Toast.makeText(context, "Clicked: $selectedItem", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
+        }
+
+        recyclerView.adapter = adapter
+        dialog.show()
+    }
+
 
     fun deletePrescription(pos: Int) {
         itemPrescription.removeAt(pos)

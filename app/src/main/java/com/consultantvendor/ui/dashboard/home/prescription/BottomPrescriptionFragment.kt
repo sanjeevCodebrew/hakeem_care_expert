@@ -71,6 +71,7 @@ class BottomPrescriptionFragment(private val fragment: AppointmentDetailsFragmen
                     .putExtra(PAGE_TO_OPEN, PrescriptionType.MANUAL)
                     .putExtra(EXTRA_REQUEST_ID, request))
             dialog?.dismiss()
+
         }
 
         binding.tvDigital.setOnClickListener {

@@ -14,5 +14,6 @@ data class ChatList(
         var last_message: ChatMessage? = null,
         var unReadCount: Int,
         val chatType: Any? = null,
-        val status:String?=null
+        val status:String?=null,
+        val service_type: String?=null
 )
