@@ -402,7 +402,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                     if (intent.hasExtra(EXTRA_IS_FIRST)) {
                         binding.rlChatInput.visible()
                         isRealChat = true
-                        generateNewMessage(getString(R.string.chat_first_message, userName))
+//                        generateNewMessage(getString(R.string.chat_first_message, userName))
                         intent.removeExtra(EXTRA_IS_FIRST)
                     }
                     /*Show Timer if needed*/

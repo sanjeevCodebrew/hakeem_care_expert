@@ -118,7 +118,7 @@ class ItemDoasesAdapter(private val fragment: DigitalPrescriptionFragment, priva
         }
 
         fun bind(item: Doases) = with(binding) {
-            binding.tvDosage.text = fragment.binding.spnDosagesType.selectedItem.toString()
+//            binding.tvDosage.text = fragment.binding.spnDosagesType.selectedItem.toString()
 
             cbBreakfast.text = item.time
 

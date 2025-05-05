@@ -145,6 +145,7 @@ class MessagingService : FirebaseMessagingService() {
                 intent = Intent(this, ChatDetailActivity::class.java)
                         .putExtra(USER_ID, pushData.senderId)
                         .putExtra(USER_NAME, pushData.senderName)
+                        .putExtra(EXTRA_IS_FIRST, true)
                         .putExtra(EXTRA_REQUEST_ID, pushData.request_id)
 
             }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp"
     android:layout_width="match_parent"
@@ -7,7 +8,7 @@
 
     <TextView
         android:id="@+id/dialogTitle"
-        android:text="Select Item"
+        android:text="Select Medicine"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_width="match_parent"
@@ -16,5 +17,6 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewDialog"
         android:layout_width="match_parent"
-        android:layout_height="300dp"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

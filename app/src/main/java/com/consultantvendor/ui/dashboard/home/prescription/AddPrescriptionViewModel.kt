@@ -2,7 +2,10 @@ package com.consultantvendor.ui.dashboard.home.prescription
 
 import androidx.lifecycle.ViewModel
 import com.consultantvendor.data.apis.WebService
+import com.consultantvendor.data.models.MedicineResponse
 import com.consultantvendor.data.models.requests.AddPrescription
+import com.consultantvendor.data.models.responses.CommonDataModel
+import com.consultantvendor.data.models.responses.DiagnosisResponse
 import com.consultantvendor.data.models.responses.UserData
 import com.consultantvendor.data.network.responseUtil.ApiResponse
 import com.consultantvendor.data.network.responseUtil.ApiUtils
@@ -16,6 +19,10 @@ import javax.inject.Inject
 class AddPrescriptionViewModel @Inject constructor(private val webService: WebService) : ViewModel() {
 
     val prescreptions by lazy { SingleLiveEvent<Resource<UserData>>() }
+
+    val getItemList by lazy { SingleLiveEvent<Resource<MedicineResponse>>() }
+
+    val getdiagnosis by lazy { SingleLiveEvent<Resource<DiagnosisResponse>>() }
 
     fun prescreptions(addPrescription: AddPrescription) {
         prescreptions.value = Resource.loading()
@@ -39,5 +46,66 @@ class AddPrescriptionViewModel @Inject constructor(private val webService: WebSe
                     }
 
                 })
+    }
+
+    fun getItemList(hashMap: HashMap<String, String>) {
+        getItemList.value = Resource.loading()
+
+        webService.getItemList(hashMap)
+            .enqueue(object : Callback<MedicineResponse> {
+
+
+                override fun onResponse(
+                    p0: Call<MedicineResponse?>,
+                    response: Response<MedicineResponse?>
+                ) {
+                    if (response.isSuccessful) {
+                        getItemList.value = Resource.success(response.body())
+                    } else {
+                        getItemList.value = Resource.error(
+                            ApiUtils.getError(response.code(),
+                                response.errorBody()?.string()))
+                    }
+                }
+
+                override fun onFailure(
+                    p0: Call<MedicineResponse?>,
+                    p1: Throwable
+                ) {
+                    getItemList.value = Resource.error(ApiUtils.failure(p1))
+                }
+
+            })
+    }
+
+
+    fun getDiagnosis(hashMap: HashMap<String, String>) {
+        getdiagnosis.value = Resource.loading()
+
+        webService.getDiagnosisList(hashMap)
+            .enqueue(object : Callback<DiagnosisResponse> {
+
+
+                override fun onResponse(
+                    p0: Call<DiagnosisResponse?>,
+                    response: Response<DiagnosisResponse?>
+                ) {
+                    if (response.isSuccessful) {
+                        getdiagnosis.value = Resource.success(response.body())
+                    } else {
+                        getdiagnosis.value = Resource.error(
+                            ApiUtils.getError(response.code(),
+                                response.errorBody()?.string()))
+                    }
+                }
+
+                override fun onFailure(
+                    p0: Call<DiagnosisResponse?>,
+                    p1: Throwable
+                ) {
+                    getdiagnosis.value = Resource.error(ApiUtils.failure(p1))
+                }
+
+            })
     }
 }

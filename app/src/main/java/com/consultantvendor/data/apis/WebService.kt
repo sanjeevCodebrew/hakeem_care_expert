@@ -1,5 +1,6 @@
 package com.consultantvendor.data.apis
 
+import com.consultantvendor.data.models.MedicineResponse
 import com.consultantvendor.data.models.requests.AddPrescription
 import com.consultantvendor.data.models.requests.UpdateDocument
 import com.consultantvendor.data.models.requests.UpdateServices
@@ -111,6 +112,8 @@ interface WebService {
         private const val DRLOGIN = "/api/doctor-login"
         private const val NOTIFICATIONCOUNT = "/api/notifications-count"
         private const val GETPROFILE = "/api/profile"
+        private const val ITEMLIST = "/api/items-list"
+        private const val GETDIAGNOSISLIST = "/api/diagnosis-list"
 
     }
 
@@ -427,7 +430,6 @@ interface WebService {
     @PUT(WORKING_HOURS)
     fun workingHours(@FieldMap hashMap: HashMap<String, String>): Call<ApiResponse<Any>>
 
-
     @FormUrlEncoded
     @POST(LANGUAGE)
     fun postLanguage(@FieldMap hashMap: HashMap<String, String>): Call<ApiResponse<CommonDataModel>>
@@ -441,5 +443,11 @@ interface WebService {
 
     @GET(GETPROFILE)
     fun getProfile(): Call<ApiResponse<CommonDataModel>>
+
+    @GET(ITEMLIST)
+    fun getItemList(@QueryMap hashMap: Map<String, String>): Call<MedicineResponse>
+
+    @GET(GETDIAGNOSISLIST)
+    fun getDiagnosisList(@QueryMap hashMap: Map<String, String>): Call<DiagnosisResponse>
 
 }

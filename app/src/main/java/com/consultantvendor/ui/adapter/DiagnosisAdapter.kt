@@ -5,10 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.consultantvendor.data.models.ResponseMedicine
 
 class DiagnosisAdapter(
-    private val items: List<String>,
-    private val onItemClick: (String) -> Unit
+    private val items: ArrayList<ResponseMedicine>,
+    private val onSelect: (Int) -> Unit
 ) : RecyclerView.Adapter<DiagnosisAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -16,7 +17,7 @@ class DiagnosisAdapter(
 
         init {
             itemView.setOnClickListener {
-                onItemClick(items[adapterPosition])
+                onSelect(absoluteAdapterPosition)
             }
         }
     }
@@ -30,6 +31,6 @@ class DiagnosisAdapter(
     override fun getItemCount() = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.text.text = items[position]
+        holder.text.text = items[position].category
     }
 }

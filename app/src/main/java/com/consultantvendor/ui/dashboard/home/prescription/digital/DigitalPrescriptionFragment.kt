@@ -1,31 +1,28 @@
 package com.consultantvendor.ui.dashboard.home.prescription.digital
 
 import android.app.Activity
-import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.consultantvendor.R
+import com.consultantvendor.data.models.ResponseMedicine
 import com.consultantvendor.data.models.requests.AddPrescription
 import com.consultantvendor.data.models.requests.DigitalPrescription
 import com.consultantvendor.data.models.requests.Doases
 import com.consultantvendor.data.models.responses.Request
+import com.consultantvendor.data.models.responses.Response
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.databinding.FragmentDigitalPrescriptionBinding
-import com.consultantvendor.ui.adapter.DiagnosisAdapter
 import com.consultantvendor.ui.dashboard.home.prescription.AddPrescriptionViewModel
 import com.consultantvendor.utils.*
+import com.consultantvendor.utils.dialogs.DiagnosisDialogFragment
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -59,6 +56,12 @@ class DigitalPrescriptionFragment : DaggerFragment() {
     private var addPrescription: AddPrescription? = null
 
     private var editPosition = -1
+
+    private var isLastPage = false
+
+    private var isFirstPage = true
+
+    private var itemMedicine = ArrayList<ResponseMedicine>()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -151,15 +154,15 @@ class DigitalPrescriptionFragment : DaggerFragment() {
             requireActivity().finish()
         }
 
-        binding.spnDosagesType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parentView: AdapterView<*>,
-                                        selectedItemView: View?, position: Int, id: Long) {
-                doseadAdapter?.notifyDataSetChanged()
-            }
-
-            override fun onNothingSelected(parentView: AdapterView<*>) {
-            }
-        }
+//        binding.spnDosagesType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(parentView: AdapterView<*>,
+//                                        selectedItemView: View?, position: Int, id: Long) {
+//                doseadAdapter?.notifyDataSetChanged()
+//            }
+//
+//            override fun onNothingSelected(parentView: AdapterView<*>) {
+//            }
+//        }
 
         binding.tvAdd.setOnClickListener {
             binding.tvAdd.hideKeyboard()
@@ -167,12 +170,12 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                 binding.etMedicineName.text.toString().trim().isEmpty() -> {
                     binding.etMedicineName.showSnackBar(getString(R.string.medicine_name))
                 }
-                binding.spnDuration.selectedItemPosition == 0 -> {
-                    binding.tvDuration.showSnackBar(getString(R.string.duration))
-                }
-                binding.spnDosagesType.selectedItemPosition == 0 -> {
-                    binding.tvDosagesType.showSnackBar(getString(R.string.dosage_type))
-                }
+//                binding.spnDuration.selectedItemPosition == 0 -> {
+//                    binding.tvDuration.showSnackBar(getString(R.string.duration))
+//                }
+//                binding.spnDosagesType.selectedItemPosition == 0 -> {
+//                    binding.tvDosagesType.showSnackBar(getString(R.string.dosage_type))
+//                }
                 else -> {
                     var addItem = false
                     itemDoases.forEachIndexed { index, doases ->
@@ -189,8 +192,8 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                     if (addItem) {
                         val prescription = DigitalPrescription()
                         prescription.medicine_name = binding.etMedicineName.text.toString().trim()
-                        prescription.duration = binding.spnDuration.selectedItem.toString()
-                        prescription.dosage_type = binding.spnDosagesType.selectedItem.toString()
+//                        prescription.duration = binding.spnDuration.selectedItem.toString()
+//                        prescription.dosage_type = binding.spnDosagesType.selectedItem.toString()
                         prescription.dosage_timing = ArrayList()
 
                         itemDoases.forEach {
@@ -238,8 +241,8 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
             binding.tvAdd.text = getString(R.string.add)
             binding.etMedicineName.setText("")
-            binding.spnDuration.setSelection(0)
-            binding.spnDosagesType.setSelection(0)
+//            binding.spnDuration.setSelection(0)
+//            binding.spnDosagesType.setSelection(0)
 
             itemDoases.forEachIndexed { index, doases ->
                 itemDoases[index].checked = index == 0
@@ -258,12 +261,12 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                /* binding.etPrescriptionNotes.text.toString().trim().isEmpty() -> {
                     binding.tvDosagesType.showSnackBar(getString(R.string.add_notes))
                 }*/
-                binding.etNotes.text.toString().trim().isEmpty() -> {
-                    binding.tvDosagesType.showSnackBar(getString(R.string.add_diagnosis))
-                }
-                binding.etLabTest.text.toString().trim().isEmpty() -> {
-                    binding.tvDosagesType.showSnackBar(getString(R.string.add_labnotes))
-                }
+//                binding.etNotes.text.toString().trim().isEmpty() -> {
+//                    binding.tvDosagesType.showSnackBar(getString(R.string.add_diagnosis))
+//                }
+//                binding.etLabTest.text.toString().trim().isEmpty() -> {
+//                    binding.tvDosagesType.showSnackBar(getString(R.string.add_labnotes))
+//                }
                 isConnectedToInternet(requireContext(), true) -> {
                     addPrescription = AddPrescription()
                     addPrescription?.request_id = request?.id
@@ -281,27 +284,31 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
 
         binding.etMedicineName.setOnClickListener {
-            val items = listOf("Item 1", "Item 2", "Item 3")
-            showCustomDialog(requireContext(), items )
+                binding.etMedicineName.setText("")
+                binding.etDoses.setText("")
+                binding.etfrequency.setText("")
+                 hitApi(true)
         }
     }
 
-    fun showCustomDialog(context: Context, list: List<String>) {
-        val dialog = Dialog(context)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_diagnosis_list)
+    private fun hitApi(firstHit: Boolean) {
+        if (isConnectedToInternet(requireContext(), true)) {
+            if (firstHit) {
+                isFirstPage = true
+                isLastPage = false
+            }
 
-        val recyclerView = dialog.findViewById<RecyclerView>(R.id.recyclerViewDialog)
-        recyclerView.layoutManager = LinearLayoutManager(context)
+            val hashMap = HashMap<String, String>()
 
-        val adapter = DiagnosisAdapter(list) { selectedItem ->
-            Toast.makeText(context, "Clicked: $selectedItem", Toast.LENGTH_SHORT).show()
-            dialog.dismiss()
+            hashMap["page"] = "1"
+            hashMap["itemNumber"] = ""
+            hashMap["description"] = ""
+            addPrescriptionViewModel.getItemList(hashMap)
+
         }
 
-        recyclerView.adapter = adapter
-        dialog.show()
     }
+
 
 
     fun deletePrescription(pos: Int) {
@@ -326,11 +333,11 @@ class DigitalPrescriptionFragment : DaggerFragment() {
         val item = itemPrescription[editPosition]
         binding.etMedicineName.setText(item.medicine_name)
 
-        val duration = resources.getStringArray(R.array.duration)
-        binding.spnDuration.setSelection(duration.indexOf(item.duration))
-
-        val dose_type = resources.getStringArray(R.array.dose_type)
-        binding.spnDosagesType.setSelection(dose_type.indexOf(item.dosage_type))
+//        val duration = resources.getStringArray(R.array.duration)
+//        binding.spnDuration.setSelection(duration.indexOf(item.duration))
+//
+//        val dose_type = resources.getStringArray(R.array.dose_type)
+//        binding.spnDosagesType.setSelection(dose_type.indexOf(item.dosage_type))
 
         item.dosage_timing?.forEachIndexed { index, doases ->
             itemDoases.forEachIndexed { indexInternal, doasesInternal ->
@@ -356,6 +363,31 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
                     requireActivity().setResult(Activity.RESULT_OK)
                     requireActivity().finish()
+
+                }
+                Status.ERROR -> {
+                    progressDialog.setLoading(false)
+                    ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
+                }
+                Status.LOADING -> {
+                    progressDialog.setLoading(true)
+                }
+            }
+        })
+
+        addPrescriptionViewModel.getItemList.observe(requireActivity(), Observer {
+            it ?: return@Observer
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.setLoading(false)
+
+                    itemMedicine.clear()
+                    itemMedicine.addAll(it.data?.response?: emptyList())
+
+                    Log.e("TAG", "bindObserversP: "+it.data?.response )
+
+                    val dialog = DiagnosisDialogFragment(this,itemMedicine)
+                    dialog.show(childFragmentManager, "ItemDialog")
 
                 }
                 Status.ERROR -> {

@@ -755,4 +755,6 @@
     <string name="upload_document">Upload Document</string>
     <string name="add_another_dr">Add another Dr account</string>
     <string name="maximum_user_limit">You can add maximum 4 accounts</string>
+
+    <string name="frequency">Frequency</string>
 </resources>

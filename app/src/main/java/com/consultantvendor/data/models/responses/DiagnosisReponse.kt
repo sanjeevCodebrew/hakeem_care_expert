@@ -5,12 +5,14 @@ data class DiagnosisResponse(
     val messageAR: String,
     val messageEN: String,
     val pages: Int,
-    val response: List<Response>,
+    val response: ArrayList<Response>,
     val status: Boolean,
     val total: Int
 )
 
 data class Response(
     val code: String,
-    val title: String
+    val title: String,
+    val duration: String,
+    val doses_type: String
 )
