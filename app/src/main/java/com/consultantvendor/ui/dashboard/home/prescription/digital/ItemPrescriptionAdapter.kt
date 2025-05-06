@@ -41,7 +41,7 @@ class ItemPrescriptionAdapter(private val fragment: DigitalPrescriptionFragment,
         }
 
         fun bind(item: DigitalPrescription) = with(binding) {
-            tvName.text = "${item.medicine_name}\n(${item.duration}) (${item.dosage_type})"
+            tvName.text = "${item.medicine_name}\n(${item.duration}) (${item.quantity})"
         }
     }
 }

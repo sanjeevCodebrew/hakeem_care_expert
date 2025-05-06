@@ -1009,9 +1009,12 @@
     <string name="upload_document">تحميل الوثيقة
 </string>
 
+
     <string name="start_chat">ابدأ المحادثة</string>
     <string name="add_another_dr">أضف حساب طبيب آخر</string>
     <string name="maximum_user_limit">يمكنك إضافة ٤ حسابات كحد أقصى</string>
+    <string name="select_medicine">اختر الدواء</string>
+    <string name="select_diagnosis">اختر التشخيص</string>
 
     <string name="routes">الطرق</string>
     <string name="syrups">شراب</string>

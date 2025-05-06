@@ -38,39 +38,41 @@ class ItemDoasesAdapter(private val fragment: DigitalPrescriptionFragment, priva
 
         init {
             binding.cbBreakfast.setOnCheckedChangeListener { compoundButton, b ->
-                binding.group.hideShowView(b)
+                binding.group1.hideShowView(b)
                 items[adapterPosition].checked = b
             }
 
-            binding.spnDosage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                    if (position == 0)
-                        items[adapterPosition].dose_value = ""
-                    else
-                        items[adapterPosition].dose_value = binding.spnDosage.selectedItem.toString()
-                }
-
-                override fun onNothingSelected(parentView: AdapterView<*>?) {
-                    // your code here
-                }
-            }
 
 
-            binding.spnroute.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                    if (position == 0)
-                        items[adapterPosition].routes = ""
-                    else
-                        items[adapterPosition].routes = binding.spnroute.selectedItem.toString()
-                }
-
-                override fun onNothingSelected(parentView: AdapterView<*>?) {
-                    // your code here
-                }
-            }
+//            binding.spnDosage.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//                override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+//                    if (position == 0)
+//                        items[adapterPosition].dose_value = ""
+//                    else
+//                        items[adapterPosition].dose_value = binding.spnDosage.selectedItem.toString()
+//                }
+//
+//                override fun onNothingSelected(parentView: AdapterView<*>?) {
+//                    // your code here
+//                }
+//            }
+//
+//
+//            binding.spnroute.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//                override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
+//                    if (position == 0)
+//                        items[adapterPosition].routes = ""
+//                    else
+//                        items[adapterPosition].routes = binding.spnroute.selectedItem.toString()
+//                }
+//
+//                override fun onNothingSelected(parentView: AdapterView<*>?) {
+//                    // your code here
+//                }
+//            }
 
             binding.tvBreakfastSave.setOnClickListener {
-                binding.group.hideShowView(false)
+                binding.group1.hideShowView(false)
             }
 
             binding.tvBefore.setOnClickListener {
@@ -120,22 +122,26 @@ class ItemDoasesAdapter(private val fragment: DigitalPrescriptionFragment, priva
         fun bind(item: Doases) = with(binding) {
 //            binding.tvDosage.text = fragment.binding.spnDosagesType.selectedItem.toString()
 
+
+
             cbBreakfast.text = item.time
 
             cbBreakfast.isChecked = item.checked ?: false
-            group.hideShowView(item.checked == true)
+            group1.hideShowView(item.checked == true)
+
 
             if (item.checked == true) {
-                if (item.dose_value.isNullOrEmpty()) {
-                    spnDosage.setSelection(0)
+                if (item.duration.isNullOrEmpty()) {
+//                    spnDosage.setSelection(0)
                     makeActiveInactive(context.getString(R.string.before))
                 } else {
                     makeActiveInactive(item.with ?: "")
-                    binding.spnDosage.setSelection(doases.indexOf(item.dose_value))
+                    binding.etDuration.setText(doases.indexOf(item.duration))
+                    binding.etQuantity.setText(doases.indexOf(item.quantity))
                 }
             } else {
                 makeActiveInactive(context.getString(R.string.before))
-                spnDosage.setSelection(0)
+//                spnDosage.setSelection(0)
             }
         }
     }

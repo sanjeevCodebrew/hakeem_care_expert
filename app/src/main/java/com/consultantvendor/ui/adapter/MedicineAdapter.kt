@@ -6,12 +6,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.consultantvendor.data.models.ResponseMedicine
-import com.consultantvendor.data.models.responses.Response
 
-class DiagnosisAdapter(
-    private val items: ArrayList<Response>,
+class MedicineAdapter(
+    private val items: ArrayList<ResponseMedicine>,
     private val onSelect: (Int) -> Unit
-) : RecyclerView.Adapter<DiagnosisAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MedicineAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val text: TextView = itemView.findViewById(android.R.id.text1)
@@ -32,6 +31,6 @@ class DiagnosisAdapter(
     override fun getItemCount() = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.text.text = items[position].title
+        holder.text.text = items[position].category
     }
 }

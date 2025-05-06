@@ -1,12 +1,13 @@
 package com.consultantvendor.ui.dashboard.home.prescription.digital
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
+import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -63,6 +64,17 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
     private var itemMedicine = ArrayList<ResponseMedicine>()
 
+    private var itemDiagnosis = ArrayList<Response>()
+
+    private var isDiagnosis = false
+
+    private var diagnosisDialog: DiagnosisDialogFragment? = null
+
+    var duration = ""
+    var quantity = ""
+    var etDuration : EditText?=null
+    var etQuantity : EditText?=null
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (rootView == null) {
@@ -111,8 +123,13 @@ class DigitalPrescriptionFragment : DaggerFragment() {
     private fun setEditPrescriptionData() {
         if (request?.pre_scription != null) {
             val prescription = request?.pre_scription
+            binding.etMedicineName.setText(prescription?.medicines?.get(0)?.medicine_name)
             binding.etPrescriptionNotes.setText(prescription?.pre_scription_notes)
             binding.etNotes.setText(prescription?.pre_scription_notes)
+
+            binding.etDoses.setText(prescription?.medicines?.get(0)?.doses)
+            binding.etfrequency.setText(prescription?.medicines?.get(0)?.dosage_type)
+
             binding.etLabTest.setText(prescription?.lab_notes)
 
             itemPrescription.clear()
@@ -149,6 +166,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
         binding.rvPrescriptions.adapter = prescriptionAdapter
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun listeners() {
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().finish()
@@ -176,24 +194,41 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 //                binding.spnDosagesType.selectedItemPosition == 0 -> {
 //                    binding.tvDosagesType.showSnackBar(getString(R.string.dosage_type))
 //                }
+
+                binding.etDoses.text.toString().trim().isEmpty()->{
+                    binding.etMedicineName.showSnackBar(getString(R.string.dosage))
+                }
+                binding.etfrequency.text.toString().trim().isEmpty()->{
+                    binding.etMedicineName.showSnackBar(getString(R.string.frequency))
+                }
+
                 else -> {
                     var addItem = false
                     itemDoases.forEachIndexed { index, doases ->
                         if (doases.checked == true) {
                             addItem = true
-                            if (doases.dose_value.isNullOrEmpty()) {
-                                addItem = false
-                                binding.etMedicineName.showSnackBar(getString(R.string.select_doasages_for, doases.time))
-                                return@setOnClickListener
-                            }
+
+                            etDuration= binding.rvDoasesTiming.findViewHolderForAdapterPosition(index)?.itemView?.findViewById<EditText>(R.id.etDuration)
+                            etQuantity = binding.rvDoasesTiming.findViewHolderForAdapterPosition(index)?.itemView?.findViewById<EditText>(R.id.etQuantity)
+                            duration = etDuration?.text.toString()
+                            quantity = etQuantity?.text.toString()
+
+//                            if (doases.duration.isNullOrEmpty()) {
+//                                addItem = false
+//                                binding.etMedicineName.showSnackBar(getString(R.string.select_doasages_for, doases.time))
+//                                return@setOnClickListener
+//                            }
                         }
                     }
 
                     if (addItem) {
                         val prescription = DigitalPrescription()
                         prescription.medicine_name = binding.etMedicineName.text.toString().trim()
-//                        prescription.duration = binding.spnDuration.selectedItem.toString()
-//                        prescription.dosage_type = binding.spnDosagesType.selectedItem.toString()
+                        prescription.duration = duration
+                        prescription.quantity = quantity
+                        prescription.doses = binding.etDoses.text.toString().trim()
+                        prescription.dosage_type = binding.etfrequency.text.toString().trim()
+                        prescription.quantity = quantity
                         prescription.dosage_timing = ArrayList()
 
                         itemDoases.forEach {
@@ -202,8 +237,10 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                                 digitalDose = Doases()
                                 digitalDose.time = it.time
                                 digitalDose.with = it.with
-                                digitalDose.dose_value = it.dose_value
-                                digitalDose.routes = it.routes
+                                digitalDose.duration = it.duration
+                                digitalDose.quantity = it.quantity
+                                digitalDose.doses = it.doses
+                                digitalDose.dosage_type = it.dosage_type
                                 digitalDose.checked = null
 
                                 prescription.dosage_timing?.add(digitalDose)
@@ -241,13 +278,18 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
             binding.tvAdd.text = getString(R.string.add)
             binding.etMedicineName.setText("")
+            binding.etDoses.setText("")
+            binding.etfrequency.setText("")
 //            binding.spnDuration.setSelection(0)
 //            binding.spnDosagesType.setSelection(0)
+            etDuration?.setText("")
+            etQuantity?.setText("")
 
             itemDoases.forEachIndexed { index, doases ->
                 itemDoases[index].checked = index == 0
                 itemDoases[index].with = getString(R.string.before)
-                itemDoases[index].dose_value = ""
+                itemDoases[index].doses = ""
+                itemDoases[index].dosage_type = ""
             }
             doseadAdapter?.notifyDataSetChanged()
         }
@@ -257,6 +299,10 @@ class DigitalPrescriptionFragment : DaggerFragment() {
             when {
                 itemPrescription.isEmpty() -> {
                     binding.etMedicineName.showSnackBar(getString(R.string.add_digital_prescription))
+                }
+
+                binding.etNotes.text.toString().trim().isEmpty()->{
+                    binding.etMedicineName.showSnackBar(getString(R.string.select_diagnosis))
                 }
                /* binding.etPrescriptionNotes.text.toString().trim().isEmpty() -> {
                     binding.tvDosagesType.showSnackBar(getString(R.string.add_notes))
@@ -273,7 +319,6 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                     addPrescription?.type = PrescriptionType.DIGITAL
 
                     addPrescription?.pre_scription_notes = binding.etNotes.text.toString().trim()
-                    addPrescription?.lab_notes = binding.etLabTest.text.toString().trim()
                     addPrescription?.pre_scriptions = ArrayList()
                     addPrescription?.pre_scriptions?.addAll(itemPrescription)
 
@@ -287,11 +332,35 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                 binding.etMedicineName.setText("")
                 binding.etDoses.setText("")
                 binding.etfrequency.setText("")
-                 hitApi(true)
+                 hitApi(true, "")
+        }
+
+        binding.etNotes.setOnClickListener {
+            hitApiDiagnosis(true, "")
         }
     }
 
-    private fun hitApi(firstHit: Boolean) {
+     fun hitApi(firstHit: Boolean, etSearch: String) {
+        if (isConnectedToInternet(requireContext(), true)) {
+            if (firstHit) {
+                isFirstPage = true
+                isLastPage = false
+            }
+
+
+            val hashMap = HashMap<String, String>()
+
+            hashMap["page"] = "1"
+            hashMap["itemNumber"] = ""
+            hashMap["description"] = etSearch
+            isDiagnosis = false
+            addPrescriptionViewModel.getItemList(hashMap)
+
+        }
+
+    }
+
+     fun hitApiDiagnosis(firstHit: Boolean, etSearch: String) {
         if (isConnectedToInternet(requireContext(), true)) {
             if (firstHit) {
                 isFirstPage = true
@@ -301,14 +370,14 @@ class DigitalPrescriptionFragment : DaggerFragment() {
             val hashMap = HashMap<String, String>()
 
             hashMap["page"] = "1"
-            hashMap["itemNumber"] = ""
-            hashMap["description"] = ""
-            addPrescriptionViewModel.getItemList(hashMap)
+            hashMap["code"] = ""
+            hashMap["description"] = etSearch
+            isDiagnosis = true
+            addPrescriptionViewModel.getDiagnosis(hashMap)
 
         }
 
     }
-
 
 
     fun deletePrescription(pos: Int) {
@@ -344,7 +413,8 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                 if (doases.time == doasesInternal.time) {
                     itemDoases[indexInternal].checked = true
                     itemDoases[indexInternal].with = doases.with
-                    itemDoases[indexInternal].dose_value = doases.dose_value
+                    itemDoases[indexInternal].doses = doases.doses
+                    itemDoases[indexInternal].dosage_type = doases.dosage_type
                     itemDoases[indexInternal].routes = doases.routes
                     return@forEachIndexed
                 }
@@ -383,11 +453,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
                     itemMedicine.clear()
                     itemMedicine.addAll(it.data?.response?: emptyList())
-
-                    Log.e("TAG", "bindObserversP: "+it.data?.response )
-
-                    val dialog = DiagnosisDialogFragment(this,itemMedicine)
-                    dialog.show(childFragmentManager, "ItemDialog")
+                    showDiagnosisDialog(isDiagnosis)
 
                 }
                 Status.ERROR -> {
@@ -399,5 +465,31 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                 }
             }
         })
+
+        addPrescriptionViewModel.getdiagnosis.observe(requireActivity(), Observer {
+            it ?: return@Observer
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.setLoading(false)
+
+                    itemDiagnosis.clear()
+                    itemDiagnosis.addAll(it.data?.response?: emptyList())
+                    showDiagnosisDialog(isDiagnosis)
+
+                }
+                Status.ERROR -> {
+                    progressDialog.setLoading(false)
+                    ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
+                }
+                Status.LOADING -> {
+                    progressDialog.setLoading(true)
+                }
+            }
+        })
+    }
+
+    fun showDiagnosisDialog(isDiagnosis: Boolean) {
+        diagnosisDialog = DiagnosisDialogFragment(this, itemMedicine, itemDiagnosis, isDiagnosis)
+        diagnosisDialog?.show(childFragmentManager, "DiagnosisDialog")
     }
 }

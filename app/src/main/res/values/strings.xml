@@ -687,6 +687,7 @@
 
     <!--Bmi-->
     <string name="weight">Weight</string>
+    <string name="quantity">Quantity</string>
     <string name="height">Height</string>
     <string name="your_bmi">Your BMI</string>
     <string name="weight_empty_validation">Please enter weight</string>
@@ -757,4 +758,6 @@
     <string name="maximum_user_limit">You can add maximum 4 accounts</string>
 
     <string name="frequency">Frequency</string>
+    <string name="select_medicine">Select Medicine</string>
+    <string name="select_diagnosis">Select Diagnosis</string>
 </resources>

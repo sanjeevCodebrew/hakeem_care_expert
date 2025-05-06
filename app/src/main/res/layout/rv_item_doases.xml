@@ -97,69 +97,137 @@
             app:layout_constraintTop_toTopOf="@+id/tvBefore" />
 
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvDosage"
+<!--        <androidx.appcompat.widget.AppCompatTextView-->
+<!--            android:id="@+id/tvDosage"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="@dimen/dp_16"-->
+<!--            android:alpha="0.7"-->
+<!--            android:fontFamily="@font/campton_book"-->
+<!--            android:text="@string/duration"-->
+<!--            android:textColor="@color/colorBlack"-->
+<!--            android:textSize="@dimen/sp_14"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/tvWith"-->
+<!--            app:layout_constraintStart_toStartOf="@id/tvBefore"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/tvBefore" />-->
+
+<!--        <Spinner-->
+<!--            android:id="@+id/spnDosage"-->
+<!--            style="@style/Base.Widget.AppCompat.Spinner.Underlined"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+
+<!--            android:layout_marginTop="@dimen/dp_12"-->
+<!--            android:entries="@array/doases"-->
+<!--            android:fontFamily="@font/campton_medium"-->
+<!--            android:textColor="@color/textColor"-->
+<!--            android:textSize="@dimen/sp_14"-->
+
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/spnroute"-->
+<!--            app:layout_constraintStart_toStartOf="@id/tvDosage"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/tvDosage" />-->
+
+<!--        <Spinner-->
+<!--            android:id="@+id/spnroute"-->
+<!--            style="@style/Base.Widget.AppCompat.Spinner.Underlined"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+
+<!--            android:entries="@array/quantities"-->
+<!--            android:fontFamily="@font/campton_medium"-->
+<!--            android:textColor="@color/textColor"-->
+<!--            android:textSize="@dimen/sp_14"-->
+
+<!--            app:layout_constraintBottom_toBottomOf="@+id/spnDosage"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/endGuideLine"-->
+<!--            app:layout_constraintStart_toEndOf="@id/spnDosage"-->
+<!--            app:layout_constraintTop_toTopOf="@id/spnDosage" />-->
+
+<!--        <androidx.constraintlayout.widget.Group-->
+<!--            android:id="@+id/group"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:visibility="gone"-->
+<!--            app:constraint_referenced_ids="tvBefore,tvBefore,tvAfter,tvWith,tvDosage,spnDosage,spnroute" />-->
+
+<!--        <View-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="2dp"-->
+<!--            android:layout_marginStart="@dimen/dp_24"-->
+<!--            android:layout_marginTop="@dimen/dp_8"-->
+<!--            android:background="@color/lineColor"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/endGuideLine"-->
+<!--            app:layout_constraintStart_toStartOf="@id/startGuideLine"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/spnDosage" />-->
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ilDuration"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_16"
-            android:alpha="0.7"
-            android:fontFamily="@font/campton_book"
-            android:text="@string/dosage"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/sp_14"
-            app:layout_constraintEnd_toEndOf="@id/tvWith"
-            app:layout_constraintStart_toStartOf="@id/tvBefore"
-            app:layout_constraintTop_toBottomOf="@+id/tvBefore" />
-
-        <Spinner
-            android:id="@+id/spnDosage"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-
-            android:layout_marginTop="@dimen/dp_12"
-            android:entries="@array/doases"
-            android:fontFamily="@font/campton_medium"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/sp_14"
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/spnroute"
-            app:layout_constraintStart_toStartOf="@id/tvDosage"
-            app:layout_constraintTop_toBottomOf="@+id/tvDosage" />
-
-        <Spinner
-            android:id="@+id/spnroute"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-
-            android:entries="@array/routes"
-            android:fontFamily="@font/campton_medium"
-            android:textColor="@color/textColor"
-            android:textSize="@dimen/sp_14"
-
-            app:layout_constraintBottom_toBottomOf="@+id/spnDosage"
-            app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-            app:layout_constraintStart_toEndOf="@id/spnDosage"
-            app:layout_constraintTop_toTopOf="@id/spnDosage" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:constraint_referenced_ids="tvBefore,tvBefore,tvAfter,tvWith,tvDosage,spnDosage,spnroute" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="@dimen/dp_24"
-            android:layout_marginTop="@dimen/dp_8"
-            android:background="@color/lineColor"
-            app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+            android:layout_marginTop="@dimen/dp_32"
+            app:layout_constraintEnd_toStartOf="@id/ilQuantity"
             app:layout_constraintStart_toStartOf="@id/startGuideLine"
-            app:layout_constraintTop_toBottomOf="@+id/spnDosage" />
+            app:layout_constraintTop_toBottomOf="@+id/tvBefore">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etDuration"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/campton_medium"
+                android:hint="@string/duration"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLength="100"
+                android:textColor="@color/colorBlack"
+                android:textDirection="locale"
+                android:textSize="@dimen/sp_16" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ilQuantity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_32"
+            app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+            app:layout_constraintStart_toEndOf="@id/ilDuration"
+            app:layout_constraintTop_toBottomOf="@+id/tvBefore">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etQuantity"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/campton_medium"
+                android:hint="@string/quantity"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:maxLength="100"
+                android:textColor="@color/colorBlack"
+                android:textDirection="locale"
+                android:textSize="@dimen/sp_16" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="tvBefore,tvBefore,tvAfter,tvWith,ilDuration,ilQuantity" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="2dp"
+                    android:layout_marginStart="@dimen/dp_24"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:background="@color/lineColor"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/ilDuration" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
