@@ -3,7 +3,6 @@ package com.consultantvendor.ui.dashboard.home.prescription.digital
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +20,8 @@ import com.consultantvendor.data.models.responses.Response
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.databinding.FragmentDigitalPrescriptionBinding
+import com.consultantvendor.ui.adapter.DiagnosisAdapter
+import com.consultantvendor.ui.adapter.MedicineAdapter
 import com.consultantvendor.ui.dashboard.home.prescription.AddPrescriptionViewModel
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.DiagnosisDialogFragment
@@ -75,6 +76,14 @@ class DigitalPrescriptionFragment : DaggerFragment() {
     var etDuration : EditText?=null
     var etQuantity : EditText?=null
 
+    private var medicneAdapter: MedicineAdapter?=null
+
+    private var adpterDiagnosis : DiagnosisAdapter?=null
+
+    private var isMedicineSelect = false
+
+    private var isDiagnosisSelect = false
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (rootView == null) {
@@ -102,10 +111,16 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
         binding.tvName.text = request?.from_user?.name
         binding.tvMobileNumber.text = request?.from_user?.phone
-        binding.tvDob.append(request?.from_user?.profile?.dob)
+        if (!request?.from_user?.profile?.dob.isNullOrEmpty()) {
+            binding.tvDob.append(request?.from_user?.profile?.dob)
+        }
         binding.tvAge.text = "${getAge(request?.from_user?.profile?.dob)} ${getString(R.string.years_old)}"
-        binding.tvGender.append(request?.from_user?.profile?.gender)
-        binding.tvId.append(request?.id)
+        if (!request?.from_user?.profile?.gender.isNullOrEmpty()) {
+            binding.tvGender.append(request?.from_user?.profile?.gender)
+        }
+        if (!request?.id.isNullOrEmpty()) {
+            binding.tvId.append(request?.id)
+        }
         if (!request?.from_user?.profile?.weight.isNullOrEmpty())
         {
             binding.tvWeight.append(request?.from_user?.profile?.weight)
@@ -117,7 +132,9 @@ class DigitalPrescriptionFragment : DaggerFragment() {
         binding.tvAppointmentV.text = "${DateUtils.dateTimeFormatFromUTC(DateFormat.MON_DATE_YEAR, request?.bookingDateUTC)} · " +
                 "${DateUtils.dateTimeFormatFromUTC(DateFormat.TIME_FORMAT, request?.bookingDateUTC)}"
 
-        binding.tvDoctorName.append(request?.to_user?.name)
+        if (!request?.to_user?.name.isNullOrEmpty()) {
+            binding.tvDoctorName.append(request?.to_user?.name)
+        }
     }
 
     private fun setEditPrescriptionData() {
@@ -332,20 +349,28 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                 binding.etMedicineName.setText("")
                 binding.etDoses.setText("")
                 binding.etfrequency.setText("")
-                 hitApi(true, "")
+                 hitApi(true, "", null, false)
         }
 
         binding.etNotes.setOnClickListener {
-            hitApiDiagnosis(true, "")
+            hitApiDiagnosis(true, "", null,false)
         }
     }
 
-     fun hitApi(firstHit: Boolean, etSearch: String) {
+     fun hitApi(
+         firstHit: Boolean,
+         etSearch: String,
+         medicineAdapter: MedicineAdapter?,
+         isSelect: Boolean
+     ) {
         if (isConnectedToInternet(requireContext(), true)) {
             if (firstHit) {
                 isFirstPage = true
                 isLastPage = false
             }
+
+            isMedicineSelect = isSelect
+            medicneAdapter = medicineAdapter
 
 
             val hashMap = HashMap<String, String>()
@@ -360,12 +385,20 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
     }
 
-     fun hitApiDiagnosis(firstHit: Boolean, etSearch: String) {
+     fun hitApiDiagnosis(
+         firstHit: Boolean,
+         etSearch: String,
+         diagnosisAdapter: DiagnosisAdapter?,
+         isSelectDiagnosis: Boolean
+     ) {
         if (isConnectedToInternet(requireContext(), true)) {
             if (firstHit) {
                 isFirstPage = true
                 isLastPage = false
             }
+
+            adpterDiagnosis = diagnosisAdapter
+            isDiagnosisSelect = isSelectDiagnosis
 
             val hashMap = HashMap<String, String>()
 
@@ -424,6 +457,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun bindObservers() {
         addPrescriptionViewModel.prescreptions.observe(requireActivity(), Observer {
             it ?: return@Observer
@@ -453,7 +487,11 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
                     itemMedicine.clear()
                     itemMedicine.addAll(it.data?.response?: emptyList())
-                    showDiagnosisDialog(isDiagnosis)
+                    if (!isMedicineSelect) {
+                        showDiagnosisDialog(isDiagnosis)
+                    }else{
+                        medicneAdapter?.notifyDataSetChanged()
+                    }
 
                 }
                 Status.ERROR -> {
@@ -474,7 +512,12 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
                     itemDiagnosis.clear()
                     itemDiagnosis.addAll(it.data?.response?: emptyList())
-                    showDiagnosisDialog(isDiagnosis)
+                    if (!isDiagnosisSelect) {
+                        showDiagnosisDialog(isDiagnosis)
+                    }
+                    else{
+                        adpterDiagnosis?.notifyDataSetChanged()
+                    }
 
                 }
                 Status.ERROR -> {

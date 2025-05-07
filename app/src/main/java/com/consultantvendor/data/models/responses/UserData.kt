@@ -14,6 +14,7 @@ class UserData : Serializable {
     var country_code: String? = null
     var profile_image: String? = null
     var clinic_logo: String? = null
+    var clinic_name: String? = null
     var fcm_id: String? = null
     var email: String? = null
     var email_verified_at: Any? = null

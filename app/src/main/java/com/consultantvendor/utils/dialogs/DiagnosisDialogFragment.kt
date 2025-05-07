@@ -16,7 +16,6 @@ import com.consultantvendor.data.models.responses.Response
 import com.consultantvendor.ui.adapter.DiagnosisAdapter
 import com.consultantvendor.ui.adapter.MedicineAdapter
 import com.consultantvendor.ui.dashboard.home.prescription.digital.DigitalPrescriptionFragment
-import com.consultantvendor.utils.addFragment
 
 class DiagnosisDialogFragment(
     private val fragment: DigitalPrescriptionFragment,
@@ -27,6 +26,8 @@ class DiagnosisDialogFragment(
 
     private var medicineAdapter : MedicineAdapter?=null
     private var diagnosisAdapter : DiagnosisAdapter?=null
+    private var isSelectMedicine = false
+    private var isSelectDiagnosis = false
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -42,7 +43,6 @@ class DiagnosisDialogFragment(
             tvTitle.text = fragment.getString(R.string.select_medicine)
             medicineAdapter = MedicineAdapter(itemList) { selectedItem ->
                 fragment.binding.etMedicineName.setText(itemList[selectedItem].category)
-                if (dialog?.isShowing == true)
                 dialog?.dismiss()
             }
 
@@ -53,22 +53,20 @@ class DiagnosisDialogFragment(
             tvTitle.text = fragment.getString(R.string.select_diagnosis)
             diagnosisAdapter = DiagnosisAdapter(itemDiagnosis) { selectedItem ->
                 fragment.binding.etNotes.setText(itemDiagnosis[selectedItem].title)
-                if (dialog?.isShowing == true)
                 dialog?.dismiss()
             }
-
             recyclerView.adapter = diagnosisAdapter
         }
 
         ivSearch.setOnClickListener {
             if (!isDiagnosis){
-                fragment.hitApi(true,etSearch.text.toString())
-                medicineAdapter?.notifyDataSetChanged()
-
+                isSelectMedicine = true
+                fragment.hitApi(true,etSearch.text.toString(),medicineAdapter,isSelectMedicine)
             }
-            else{
-                fragment.hitApiDiagnosis(true,etSearch.text.toString())
-                diagnosisAdapter?.notifyDataSetChanged()
+            else
+            {
+                isSelectDiagnosis = true
+                fragment.hitApiDiagnosis(true,etSearch.text.toString(),diagnosisAdapter,isSelectDiagnosis)
             }
 
         }

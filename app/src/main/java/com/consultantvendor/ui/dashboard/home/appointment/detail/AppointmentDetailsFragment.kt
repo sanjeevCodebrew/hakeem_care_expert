@@ -234,6 +234,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvDistanceV.text = request.extra_detail?.distance ?: ""
         binding.tvLocation.text = request.extra_detail?.service_address
 
+        binding.tvClinicNameV.text = request.to_user?.clinic_name
+
 
 
 

@@ -1,9 +1,12 @@
 package com.consultantvendor.ui.dashboard.home.prescription.manual
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,16 +14,19 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.consultantvendor.R
 import com.consultantvendor.data.models.requests.AddPrescription
 import com.consultantvendor.data.models.requests.DocImage
 import com.consultantvendor.data.models.responses.Request
 import com.consultantvendor.data.network.ApisRespHandler
+import com.consultantvendor.data.network.responseUtil.Resource
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.databinding.FragmentManualPrescriptionBinding
 import com.consultantvendor.ui.chat.UploadFileViewModel
 import com.consultantvendor.ui.dashboard.home.prescription.AddPrescriptionViewModel
 import com.consultantvendor.utils.AppRequestCode
+import com.consultantvendor.utils.BasePhotoUplaodFragment
 import com.consultantvendor.utils.DateFormat
 import com.consultantvendor.utils.DateUtils
 import com.consultantvendor.utils.DocType
@@ -48,7 +54,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import javax.inject.Inject
 
-class ManualPrescriptionFragment : DaggerFragment() {
+class ManualPrescriptionFragment : BasePhotoUplaodFragment(){
 
     @Inject
     lateinit var prefsManager: PrefsManager
@@ -76,16 +82,18 @@ class ManualPrescriptionFragment : DaggerFragment() {
 
     private var addPrescription: AddPrescription? = null
 
-    private val storagePermissionLauncherLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-            if (permissions.values.any { !it }) {
-                PermissionUtils.showAppSettingsDialog(
-                    requireContext(), R.string.media_permission
-                )
-                return@registerForActivityResult
-            }
-            getStorage()
-        }
+    private var fileToUpload: File? = null
+
+//    private val storagePermissionLauncherLauncher =
+//        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+//            if (permissions.values.any { !it }) {
+//                PermissionUtils.showAppSettingsDialog(
+//                    requireContext(), R.string.media_permission
+//                )
+//                return@registerForActivityResult
+//            }
+//            getStorage()
+//        }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (rootView == null) {
@@ -176,7 +184,7 @@ class ManualPrescriptionFragment : DaggerFragment() {
                         }
                     }
 
-                    if (addPrescription?.image?.size ?: 0 == itemImages.size)
+                    if ((addPrescription?.image?.size ?: 0) == itemImages.size)
                         addPrescriptionViewModel.prescreptions(
                             addPrescription
                                 ?: AddPrescription()
@@ -203,7 +211,7 @@ class ManualPrescriptionFragment : DaggerFragment() {
     }
 
     private fun bindObservers() {
-        viewModelUpload.uploadFile.observe(requireActivity(), Observer {
+      /*  viewModelUpload.uploadFile.observe(requireActivity(), Observer {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
@@ -229,7 +237,9 @@ class ManualPrescriptionFragment : DaggerFragment() {
                                 addPrescription
                                     ?: AddPrescription()
                             )
-                    } else {
+                    }
+                    else
+                    {
                         addPrescriptionViewModel.prescreptions(addPrescription ?: AddPrescription())
                     }
                 }
@@ -242,6 +252,44 @@ class ManualPrescriptionFragment : DaggerFragment() {
                 Status.LOADING -> {
                     progressDialogImage.setLoading(true)
 
+                }
+            }
+        })*/
+
+        viewModelUpload.uploadFile.observe(requireActivity(), Observer {
+            it ?: return@Observer
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialogImage.setLoading(false)
+
+                    // Add the uploaded image name
+                    addPrescription?.image?.add(it.data?.image_name ?: "")
+
+                    val currentSize = addPrescription?.image?.size ?: 0
+
+                    // Check if all images are uploaded
+                    if (currentSize == itemImages.size) {
+                        addPrescriptionViewModel.prescreptions(addPrescription ?: AddPrescription())
+                    } else {
+                        // Upload the next image if not already uploaded
+                        val nextDocImage = itemImages[currentSize]
+                        if (nextDocImage.imageFile != null) {
+                            uploadFileOnServer(nextDocImage)
+                        } else if (!nextDocImage.image.isNullOrEmpty()) {
+                            addPrescription?.image?.add(nextDocImage.image ?: "")
+                            // Re-trigger observer to move to the next one
+                            viewModelUpload.uploadFile.postValue(Resource.success(it.data)) // Fake trigger to continue
+                        }
+                    }
+                }
+
+                Status.ERROR -> {
+                    progressDialogImage.setLoading(false)
+                    ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
+                }
+
+                Status.LOADING -> {
+                    progressDialogImage.setLoading(true)
                 }
             }
         })
@@ -271,14 +319,15 @@ class ManualPrescriptionFragment : DaggerFragment() {
 
     /*Adapter item click*/
     fun clickItem() {
-        if (hasPermissions(cameraAndStorageAccess)) {
-            getStorage()
-        } else {
-            storagePermissionLauncherLauncher.launch(cameraAndStorageAccess)
-        }
+//        if (hasPermissions(cameraAndStorageAccess)) {
+//            getStorage()
+//        } else {
+//            storagePermissionLauncherLauncher.launch(cameraAndStorageAccess)
+//        }
+        showImageDialog(false,false,false)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
@@ -300,7 +349,7 @@ class ManualPrescriptionFragment : DaggerFragment() {
                 }
             }
 
-            /* if (requestCode == AppRequestCode.IMAGE_PICKER) {
+            *//* if (requestCode == AppRequestCode.IMAGE_PICKER) {
                  val docPaths = ArrayList<Uri>()
                  docPaths.addAll(data?.getParcelableArrayListExtra(FilePickerConst.KEY_SELECTED_MEDIA)
                          ?: emptyList())
@@ -309,20 +358,69 @@ class ManualPrescriptionFragment : DaggerFragment() {
 
                  itemImages.add(fileToUpload)
                  imagesAdapter?.notifyDataSetChanged()
-             }*/
+             }*//*
+        }
+    }*/
+
+    override fun getPdf(uri: String?) {
+        TODO("Not yet implemented")
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    override fun getImage(uri: String?, data: Uri) {
+
+        val selectedImageUri: Uri? = data
+        selectedImageUri?.let {
+            val file: File? = uriToFile(requireContext(), it)
+            file?.let {
+                val docImage = DocImage()
+                docImage.type = DocType.IMAGE
+                docImage.imageFile = it
+
+                itemImages.add(docImage)
+                imagesAdapter?.notifyDataSetChanged()
+
+            }
         }
     }
 
+    override fun getVideo(uri: String?, i: Int) {
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        onRequestPermissionsResult(requestCode, grantResults)
     }
+
+    fun uriToFile(context: Context, uri: Uri): File? {
+        val path = getRealPathFromUri(context, uri)
+        return path?.let { File(it) }
+    }
+
+    private fun getRealPathFromUri(context: Context, uri: Uri): String? {
+        var realPath: String? = null
+        // Depending on the URI scheme, use different query methods
+        if (uri.scheme == "content") {
+            // MediaStore (and general content provider) scheme
+            context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                    realPath = cursor.getString(columnIndex)
+                }
+            }
+        } else if (uri.scheme == "file") {
+            // File scheme
+            realPath = uri.path
+        }
+        return realPath
+    }
+
+
+//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        onRequestPermissionsResult(requestCode, grantResults)
+//    }
 
     //    @NeedsPermission(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    private fun getStorage() {
-        selectImages(this, requireActivity())
-    }
+//    private fun getStorage() {
+//        selectImages(this, requireActivity())
+//    }
 
     /*@OnShowRationale(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun showLocationRationale(request: PermissionRequest) {

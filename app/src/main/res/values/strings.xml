@@ -601,6 +601,7 @@
     <string name="time">Time</string>
     <string name="insurance_name">Insurance Name</string>
     <string name="resident_id">Resident Id / National id</string>
+    <string name="clinic_name">Clinic name</string>
     <string name="map_not_found">Google map application not found</string>
     <string name="all_requests">All Requests</string>
     <string name="pdf">Pdf</string>

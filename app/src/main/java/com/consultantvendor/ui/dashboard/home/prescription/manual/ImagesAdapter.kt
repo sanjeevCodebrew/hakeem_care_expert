@@ -24,7 +24,13 @@ class ImagesAdapter(private val fragment: ManualPrescriptionFragment, private va
         else if (items.size == MAX_ITEM)
             holder.bind(items[position])
         else
-            holder.bind(items[position - 1])
+            try {
+                holder.bind(items[position - 1])
+            }
+            catch (e: Exception){
+
+            }
+
     }
 
 
