@@ -1016,6 +1016,7 @@
     <string name="maximum_user_limit">يمكنك إضافة ٤ حسابات كحد أقصى</string>
     <string name="select_medicine">اختر الدواء</string>
     <string name="select_diagnosis">اختر التشخيص</string>
+    <string name="download">تحميل</string>
 
     <string name="routes">الطرق</string>
     <string name="syrups">شراب</string>

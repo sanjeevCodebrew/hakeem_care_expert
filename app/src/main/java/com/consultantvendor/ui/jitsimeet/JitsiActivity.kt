@@ -90,10 +90,10 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface{
 
     private fun regiseterLocalBraodCast() {
         val intentFilter = IntentFilter();
-        intentFilter.addAction(BroadcastEvent.Type.CONFERENCE_JOINED.getAction());
-        intentFilter.addAction(BroadcastEvent.Type.CONFERENCE_TERMINATED.getAction());
+        intentFilter.addAction(BroadcastEvent.Type.CONFERENCE_JOINED.action)
+        intentFilter.addAction(BroadcastEvent.Type.CONFERENCE_TERMINATED.action)
         LocalBroadcastManager.getInstance(this@JitsiActivity)
-            .registerReceiver(boradCasr, intentFilter);
+            .registerReceiver(boradCasr, intentFilter)
     }
 
     private fun intialise() {
@@ -118,8 +118,6 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface{
         }
 
         //longToast("$roomName,$subjectName")
-
-
         // Initialize default options for Jitsi Meet conferences.
         val serverURL: URL = try {
             URL(appClientDetails.jitsi_meet_url)

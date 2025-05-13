@@ -2,11 +2,14 @@ package com.consultantvendor.ui.dashboard.home.appointment.detail
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.DownloadManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -591,6 +594,28 @@ class AppointmentDetailsFragment : DaggerFragment() {
                                             .putExtra(PAGE_TO_OPEN, request.pre_scription?.type)
                                             .putExtra(EXTRA_REQUEST_ID, request)
                                     )
+                                }
+
+                                R.id.item_download -> {
+                                    val link = getString(
+                                        R.string.pdf_link,
+                                        BuildConfig.BASE_URL,
+                                        request.id,
+                                        BuildConfig.APP_UNIQUE_ID
+                                    )
+
+                                    val request = DownloadManager.Request(Uri.parse(link))
+                                        .setTitle("Downloading PDF")
+                                        .setDescription("Please wait while the PDF is downloading...")
+                                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "report_${request.id}.pdf")
+                                        .setAllowedOverMetered(true)
+                                        .setAllowedOverRoaming(true)
+
+                                    val downloadManager = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                                    downloadManager.enqueue(request)
+
+                                    requireActivity().longToast("Downloading complete")
                                 }
                             }
                             true
