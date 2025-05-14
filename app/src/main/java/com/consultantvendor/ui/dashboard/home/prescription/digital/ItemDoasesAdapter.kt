@@ -126,8 +126,8 @@ class ItemDoasesAdapter(private val fragment: DigitalPrescriptionFragment, priva
 
             cbBreakfast.text = item.time
 
-            cbBreakfast.isChecked = item.checked ?: false
-            group1.hideShowView(item.checked == true)
+//            cbBreakfast.isChecked = item.checked ?: false
+//            group1.hideShowView(item.checked == true)
 
 
             if (item.checked == true) {

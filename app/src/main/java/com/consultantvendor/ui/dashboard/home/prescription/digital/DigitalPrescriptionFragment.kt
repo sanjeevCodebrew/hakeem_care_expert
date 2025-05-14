@@ -212,12 +212,12 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 //                    binding.tvDosagesType.showSnackBar(getString(R.string.dosage_type))
 //                }
 
-                binding.etDoses.text.toString().trim().isEmpty()->{
-                    binding.etMedicineName.showSnackBar(getString(R.string.dosage))
-                }
-                binding.etfrequency.text.toString().trim().isEmpty()->{
-                    binding.etMedicineName.showSnackBar(getString(R.string.frequency))
-                }
+//                binding.etDoses.text.toString().trim().isEmpty()->{
+//                    binding.etMedicineName.showSnackBar(getString(R.string.dosage))
+//                }
+//                binding.etfrequency.text.toString().trim().isEmpty()->{
+//                    binding.etMedicineName.showSnackBar(getString(R.string.frequency))
+//                }
 
                 else -> {
                     var addItem = false
@@ -227,8 +227,8 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
                             etDuration= binding.rvDoasesTiming.findViewHolderForAdapterPosition(index)?.itemView?.findViewById<EditText>(R.id.etDuration)
                             etQuantity = binding.rvDoasesTiming.findViewHolderForAdapterPosition(index)?.itemView?.findViewById<EditText>(R.id.etQuantity)
-                            duration = etDuration?.text.toString()
-                            quantity = etQuantity?.text.toString()
+                            duration = etDuration?.text?.toString()?.takeIf { it.isNotBlank() } ?: "0"
+                            quantity = etQuantity?.text?.toString()?.takeIf { it.isNotBlank() } ?: "0"
 
 //                            if (doases.duration.isNullOrEmpty()) {
 //                                addItem = false
@@ -282,9 +282,11 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                         /*Clear item*/
                         binding.tvReset.performClick()
 
-                    } else {
-                        binding.etMedicineName.showSnackBar(getString(R.string.select_dosage_timings))
                     }
+
+//                    else {
+//                        binding.etMedicineName.showSnackBar(getString(R.string.select_dosage_timings))
+//                    }
                 }
             }
         }
