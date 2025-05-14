@@ -152,6 +152,9 @@ class HomeFragment : DaggerFragment() {
         binding.tvLoggedMoh.text = userRepository.getUser()?.moh_number
 
 
+        Log.e("TAG", "token: "+userRepository.getUser()?.token )
+
+
 
         //throw RuntimeException("Test Crash") // Force a crash
 

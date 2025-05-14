@@ -10,6 +10,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -604,7 +605,11 @@ class AppointmentDetailsFragment : DaggerFragment() {
                                         BuildConfig.APP_UNIQUE_ID
                                     )
 
-                                    val request = DownloadManager.Request(Uri.parse(link))
+                                    val finalLink = if (link.contains("?")) "$link&download" else "$link?download"
+
+                                    Log.d("PDF_DOWNLOAD", "Enqueuing download for URL: $finalLink")
+
+                                    val downloadRequest = DownloadManager.Request(Uri.parse(finalLink))
                                         .setTitle("Downloading PDF")
                                         .setDescription("Please wait while the PDF is downloading...")
                                         .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
@@ -613,7 +618,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
                                         .setAllowedOverRoaming(true)
 
                                     val downloadManager = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-                                    downloadManager.enqueue(request)
+                                    downloadManager.enqueue(downloadRequest)
+
 
                                     requireActivity().longToast("Downloading complete")
                                 }

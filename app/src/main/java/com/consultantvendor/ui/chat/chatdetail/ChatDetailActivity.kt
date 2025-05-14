@@ -129,6 +129,8 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
         var otherUserID = "-1"
         var requestId = "-1"
         var isActive = false
+
+        var isCompleteChat = false
     }
 
     lateinit var binding: ActivityChatDetailBinding
@@ -400,11 +402,13 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
 
                     showTimer(data?.request_status == CallAction.INPROGRESS, data)
                     if (intent.hasExtra(EXTRA_IS_FIRST)) {
-                        binding.rlChatInput.visible()
-                        binding.tvCompleteChat.visible()
-                        isRealChat = true
+                        if (!isCompleteChat) {
+                            binding.rlChatInput.visible()
+                            binding.tvCompleteChat.visible()
+                            isRealChat = true
 //                        generateNewMessage(getString(R.string.chat_first_message, userName))
-                        intent.removeExtra(EXTRA_IS_FIRST)
+                            intent.removeExtra(EXTRA_IS_FIRST)
+                        }
                     }
                     /*Show Timer if needed*/
 
@@ -465,7 +469,9 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                 Status.SUCCESS -> {
                     progressDialog.setLoading(false)
 
+                    isCompleteChat = true
                     showTimer(false, null)
+
 
                 }
 
@@ -1354,6 +1360,8 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                 .start()
     
         }*/
+
+
 
 
 }
