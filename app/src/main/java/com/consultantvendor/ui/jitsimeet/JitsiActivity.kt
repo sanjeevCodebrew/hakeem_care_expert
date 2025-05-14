@@ -30,7 +30,7 @@ import java.util.HashMap
 import javax.inject.Inject
 
 
-class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface{
+class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface, JitsiMeetViewListener {
 
     @Inject
     lateinit var userRepository: UserRepository
@@ -45,55 +45,11 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface{
     private var jitsiClass: JitsiClass? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super<DaggerAppCompatActivity>.onCreate(savedInstanceState)
-//        super.onCreate(savedInstanceState)
+        super.onCreate(savedInstanceState)
         //setContentView(R.layout.activity_jitsi)
 
-        regiseterLocalBraodCast()
         checkPermission()
 
-    }
-
-    val boradCasr = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            Log.d(TAG, "onReceive: broadCast receiver called")
-            when (intent?.data.toString()) {
-                BroadcastEvent.Type.CONFERENCE_JOINED.action -> {
-                    Log.d(TAG, "onReceive: joined call  ")
-                    val list: List<Pair<String, Any?>>? =intent?.extras?.keySet()?.mapNotNull {
-                        it to intent?.extras?.get(it)
-                    }
-                    val map2: Map<String?, Any?> =buildMap {
-                        list?.forEach {
-                            put(it?.first,it?.second)
-                        }
-                    }
-                    onConferenceJoined(map2)
-                }
-
-                BroadcastEvent.Type.CONFERENCE_TERMINATED.action -> {
-//                  onConferenceTerminated(intent.extras)
-                    Log.d(TAG, "onReceive: terminated call")
-                    val list: List<Pair<String, Any?>>? =intent?.extras?.keySet()?.mapNotNull {
-                        it to intent?.extras?.get(it)
-                    }
-                    val map2: Map<String?, Any?> =buildMap {
-                        list?.forEach {
-                            put(it?.first,it?.second)
-                        }
-                    }
-                    onConferenceTerminated(map2)
-                }
-            }
-        }
-    }
-
-    private fun regiseterLocalBraodCast() {
-        val intentFilter = IntentFilter();
-        intentFilter.addAction(BroadcastEvent.Type.CONFERENCE_JOINED.action)
-        intentFilter.addAction(BroadcastEvent.Type.CONFERENCE_TERMINATED.action)
-        LocalBroadcastManager.getInstance(this@JitsiActivity)
-            .registerReceiver(boradCasr, intentFilter)
     }
 
     private fun intialise() {
@@ -118,6 +74,8 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface{
         }
 
         //longToast("$roomName,$subjectName")
+
+
         // Initialize default options for Jitsi Meet conferences.
         val serverURL: URL = try {
             URL(appClientDetails.jitsi_meet_url)
@@ -138,7 +96,6 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface{
             .setFeatureFlag("tile-view.enabled", false)
             .setFeatureFlag("meeting-password.enabled", false)
             .setFeatureFlag("pip.enabled", true)
-            .setFeatureFlag("prejoinpage.enabled", false)
             .setFeatureFlag("close-captions.enabled", false)
             .build()
         JitsiMeet.setDefaultConferenceOptions(defaultOptions)
@@ -150,11 +107,9 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface{
             val userData = userRepository.getUser()
             userInfo.displayName = userData?.name
             userInfo.avatar = URL(getImageBaseUrl(ImageFolder.UPLOADS, userData?.profile_image))
-
             val setAudioOnly = jitsiClass?.callType?.lowercase() == ConsultType.AUDIO_CALL || jitsiClass?.callType?.lowercase() == ConsultType.CALL
 
             Log.e("TAG", "intialiseJitsi: "+jitsiClass?.callType?.lowercase() )
-
             val options = JitsiMeetConferenceOptions.Builder()
                 .setUserInfo(userInfo)
                 .setRoom(roomName)
@@ -166,21 +121,16 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface{
             /* JitsiMeetActivity.launch(this, options)
              finish()*/
 
-//            jitsiMeetView?.join(options)
-            JitsiMeetActivity.launch(this, options);
-
+            jitsiMeetView?.join(options)
 
             setContentView(jitsiMeetView)
-//            jitsiMeetView?.listener = this
-
+            jitsiMeetView?.listener = this
 
             SoundPoolManager.getInstance(this)?.stopRinging()
         }
-
     }
 
     override fun onBackPressed() {
-        super<DaggerAppCompatActivity>.onBackPressed()
     }
 
 
@@ -189,42 +139,45 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface{
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super<DaggerAppCompatActivity>.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         JitsiMeetActivityDelegate.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    fun onConferenceJoined(data: Map<String?, Any?>) {
+    override fun onConferenceJoined(data: Map<String?, Any?>) {
         JitsiMeetLogger.i("Conference joined: $data")
         // Launch the service for the ongoing notification.
         // JitsiMeetOngoingConferenceService.launch(this);
     }
 
-    fun onConferenceTerminated(data: Map<String?, Any?>) {
+    override fun onConferenceTerminated(data: Map<String?, Any?>) {
         JitsiMeetLogger.i("Conference terminated: $data")
 
         if (isConnectedToInternet(this, true) && jitsiClass?.isClass == false) {
             userRepository.callStatus(jitsiClass?.id ?: "", jitsiClass?.call_id ?: "",
-                    PushType.CALL_CANCELED)
+                PushType.CALL_CANCELED)
 
             longToast(getString(R.string.disconnecting))
         }
-//
-//        jitsiMeetView?.listener = null
-//        jitsiMeetView?.leave()
+
+        jitsiMeetView?.listener = null
+        jitsiMeetView?.leave()
         finish()
     }
 
-    fun onConferenceWillJoin(data: Map<String?, Any?>) {
+    override fun onConferenceWillJoin(data: Map<String?, Any?>) {
         JitsiMeetLogger.i("Conference will join: $data")
     }
 
     val audioPermissions = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+
         if (result.all {
                 it.value
             }){
             intialise()
         }
+
     }
+
 
     private fun checkPermission() {
         val PERMISSIONS = arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)
@@ -246,26 +199,24 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface{
     }
 
     override fun onResume() {
-        super<DaggerAppCompatActivity>.onResume()
+        super.onResume()
         registerReceiver()
         try {
             JitsiMeetActivityDelegate.onHostResume(this)
-        } catch (_: Exception){
-
-        }
+        } catch (e: Exception){}
     }
 
+
     override fun onStop() {
-        super<DaggerAppCompatActivity>.onStop()
+        super.onStop()
         JitsiMeetActivityDelegate.onHostPause(this)
     }
 
     override fun onDestroy() {
-        super<DaggerAppCompatActivity>.onDestroy()
+        super.onDestroy()
         unregisterReceiver()
         JitsiMeetActivityDelegate.onHostDestroy(this)
-//        jitsiMeetView?.leave()
-        endJitsiCall()
+        jitsiMeetView?.leave()
     }
 
     private fun registerReceiver() {
@@ -274,7 +225,9 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface{
             intentFilter.addAction(Constants.ACTION_INCOMING_CALL)
             intentFilter.addAction(Constants.ACTION_CANCEL_CALL)
             intentFilter.addAction(PushType.REQUEST_COMPLETED)
-            LocalBroadcastManager.getInstance(this).registerReceiver(callCancelledReceiver, intentFilter)
+            LocalBroadcastManager.getInstance(this).registerReceiver(
+                callCancelledReceiver, intentFilter
+            )
             isReceiverRegistered = true
         }
     }
@@ -283,6 +236,7 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface{
         if (isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(callCancelledReceiver)
             isReceiverRegistered = false
+
         }
     }
 
@@ -290,28 +244,12 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface{
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.getStringExtra(EXTRA_REQUEST_ID) == jitsiClass?.call_id) {
                 if (intent.action == Constants.ACTION_CANCEL_CALL || intent.action == PushType.REQUEST_COMPLETED) {
-//                    jitsiMeetView?.listener = null
-//                    jitsiMeetView?.leave()
-                      endJitsiCall()
+                    jitsiMeetView?.listener = null
+                    jitsiMeetView?.leave()
+                    finish()
                 }
             }
         }
-    }
-
-    private fun endJitsiCall() {
-        try {
-            jitsiMeetView?.abort()
-            jitsiMeetView?.dispose()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        JitsiMeetActivityDelegate.onHostDestroy(this)
-        finish()
-    }
-
-
-    companion object {
-        const val TAG = "JitsiActivity"
     }
 
 }

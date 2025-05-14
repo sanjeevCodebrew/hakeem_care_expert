@@ -333,7 +333,7 @@
                         android:fontFamily="@font/campton_medium"
                         android:hint="@string/dosage"
                         android:imeOptions="actionDone"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         android:maxLength="100"
                         android:textColor="@color/colorBlack"
                         android:textDirection="locale"

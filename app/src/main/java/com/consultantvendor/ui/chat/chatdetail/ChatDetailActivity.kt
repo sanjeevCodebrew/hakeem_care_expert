@@ -401,6 +401,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                     showTimer(data?.request_status == CallAction.INPROGRESS, data)
                     if (intent.hasExtra(EXTRA_IS_FIRST)) {
                         binding.rlChatInput.visible()
+                        binding.tvCompleteChat.visible()
                         isRealChat = true
 //                        generateNewMessage(getString(R.string.chat_first_message, userName))
                         intent.removeExtra(EXTRA_IS_FIRST)
