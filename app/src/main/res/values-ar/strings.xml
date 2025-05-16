@@ -1133,5 +1133,7 @@
         <item>30 يومًا</item>
     </array>
 
+    <string name="downloading">جارى التحميل…</string>
+
 
 </resources>

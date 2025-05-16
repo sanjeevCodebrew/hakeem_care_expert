@@ -34,6 +34,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivDownload"
+            android:layout_width="@dimen/dp_36"
+            android:layout_height="?actionBarSize"
+            android:layout_alignParentEnd="true"
+            android:elevation="@dimen/dp_4"
+            android:visibility="gone"
+            android:layout_marginEnd="@dimen/dp_12"
+            app:srcCompat="@drawable/ic_download" />
+
         <WebView
             android:id="@+id/webView"
             android:layout_width="match_parent"

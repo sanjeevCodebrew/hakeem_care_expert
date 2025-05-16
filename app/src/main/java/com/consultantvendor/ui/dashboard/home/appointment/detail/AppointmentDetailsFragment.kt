@@ -605,7 +605,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                                         BuildConfig.APP_UNIQUE_ID
                                     )
 
-                                    val finalLink = if (link.contains("?")) "$link&download" else "$link?download"
+                                  /*  val finalLink = if (link.contains("?")) "$link&download" else "$link?download"
 
                                     Log.d("PDF_DOWNLOAD", "Enqueuing download for URL: $finalLink")
 
@@ -621,7 +621,9 @@ class AppointmentDetailsFragment : DaggerFragment() {
                                     downloadManager.enqueue(downloadRequest)
 
 
-                                    requireActivity().longToast("Downloading complete")
+                                    requireActivity().longToast("Downloading complete")*/
+
+                                    openPdf(requireActivity(), link, true)
                                 }
                             }
                             true

@@ -91,12 +91,13 @@ class BottomLoginFragment() : DaggerBottomSheetDialogFragment() {
         binding.clMain.setOnClickListener {
             if (users.size > 3){
                 requireActivity().longToast(getString(R.string.maximum_user_limit))
-            }else{
+            }
+            else
+            {
                 startActivity(
                     Intent(activity, LoginActivity::class.java))
                     dialog?.dismiss()
             }
-
         }
     }
 

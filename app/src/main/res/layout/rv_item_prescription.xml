@@ -48,6 +48,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
+            android:visibility="gone"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/sp_14"
             app:layout_constraintEnd_toEndOf="@id/endGuideLine"

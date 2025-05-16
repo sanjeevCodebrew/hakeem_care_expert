@@ -22,14 +22,12 @@ import com.consultantvendor.databinding.ActivitySplashBinding
 import com.consultantvendor.ui.dashboard.HomeActivity
 import com.consultantvendor.ui.dashboard.success.NetworkIssueFragment
 import com.consultantvendor.ui.drawermenu.DrawerActivity
-import com.consultantvendor.ui.loginSignUp.SignUpActivity
 import com.consultantvendor.ui.loginSignUp.login.LoginActivity
 import com.consultantvendor.ui.walkthrough.WalkThroughFragment.Companion.WALK_THROUGH_SCREEN
 import com.consultantvendor.utils.*
 import dagger.android.support.DaggerAppCompatActivity
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.HashMap
 
 
 class SplashActivity : DaggerAppCompatActivity() {
@@ -67,7 +65,7 @@ class SplashActivity : DaggerAppCompatActivity() {
 
         viewModel = ViewModelProvider(this, viewModelFactory)[AppVersionViewModel::class.java]
 
-//        prefsManager.save(USER_LANGUAGE, "en")
+//      prefsManager.save(USER_LANGUAGE, "en")
         hitApi()
     }
 
@@ -138,6 +136,7 @@ class SplashActivity : DaggerAppCompatActivity() {
                     ApisRespHandler.handleError(it.error, this, prefsManager)
                 }
                 Status.LOADING -> {
+
                 }
             }
         })
@@ -177,7 +176,7 @@ class SplashActivity : DaggerAppCompatActivity() {
             try {
                 startActivity(Intent(Intent.ACTION_VIEW,
                         Uri.parse("market://details?id=${BuildConfig.APPLICATION_ID}")))
-            } catch (anfe: android.content.ActivityNotFoundException) {
+            } catch (_: android.content.ActivityNotFoundException) {
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PLAY_STORE + BuildConfig.APPLICATION_ID)))
             }
         }

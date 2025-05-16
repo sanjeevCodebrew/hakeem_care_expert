@@ -492,9 +492,10 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
         if (show) {
             binding.tvCompleteChat.visible()
             binding.rlChatInput.visible()
-//
+
 //            binding.tvTimer.visible()
 //            startTimer(((data?.currentTimer ?: 0) * 1000))
+
         } else {
             binding.tvCompleteChat.gone()
             if (!isFromTeleHealth) {

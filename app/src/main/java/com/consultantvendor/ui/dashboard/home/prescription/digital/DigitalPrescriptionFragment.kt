@@ -329,15 +329,16 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 //                binding.etNotes.text.toString().trim().isEmpty() -> {
 //                    binding.tvDosagesType.showSnackBar(getString(R.string.add_diagnosis))
 //                }
-//                binding.etLabTest.text.toString().trim().isEmpty() -> {
-//                    binding.tvDosagesType.showSnackBar(getString(R.string.add_labnotes))
-//                }
+                binding.etLabTest.text.toString().trim().isEmpty() -> {
+                    binding.etLabTest.showSnackBar(getString(R.string.add_labnotes))
+                }
                 isConnectedToInternet(requireContext(), true) -> {
                     addPrescription = AddPrescription()
                     addPrescription?.request_id = request?.id
                     addPrescription?.type = PrescriptionType.DIGITAL
 
                     addPrescription?.pre_scription_notes = binding.etNotes.text.toString().trim()
+                    addPrescription?.lab_notes = binding.etLabTest.text.toString().trim()
                     addPrescription?.pre_scriptions = ArrayList()
                     addPrescription?.pre_scriptions?.addAll(itemPrescription)
 
@@ -415,6 +416,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     fun deletePrescription(pos: Int) {
         itemPrescription.removeAt(pos)
         prescriptionAdapter?.notifyDataSetChanged()

@@ -10,6 +10,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.webkit.*
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -146,6 +147,8 @@ class WebViewActivity : DaggerAppCompatActivity() {
                 // Return the app name after finish loading
                 if (progress == 100) {
                     binding.clLoader.root.gone()
+                    if (intent.hasExtra(PDF_LINK))
+                        binding.ivDownload.visible()
                 }
             }
         }
@@ -153,6 +156,12 @@ class WebViewActivity : DaggerAppCompatActivity() {
 
     private fun setListeners() {
         binding.toolbar.setNavigationOnClickListener { finish() }
+
+        binding.ivDownload.setOnClickListener {
+            downloadFile(this, loadUrl)
+            val chk = "$loadUrl&download"
+            Log.e("TAG", "chkUrl: "+chk)
+        }
 
     }
 
@@ -197,7 +206,7 @@ class WebViewActivity : DaggerAppCompatActivity() {
             if (intent.getStringExtra(EXTRA_REQUEST_ID) == transactionId) {
                 if (intent.action == PushType.BALANCE_ADDED) {
                     longToast(getString(R.string.transaction_success))
-                    setResult(Activity.RESULT_OK)
+                    setResult(RESULT_OK)
                     finish()
                 } else if (intent.action == PushType.BALANCE_FAILED) {
                     longToast(getString(R.string.transaction_failed))

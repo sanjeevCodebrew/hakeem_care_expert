@@ -762,4 +762,6 @@
     <string name="frequency">Frequency</string>
     <string name="select_medicine">Select Medicine</string>
     <string name="select_diagnosis">Select Diagnosis</string>
+
+    <string name="downloading">Downloading…</string>
 </resources>

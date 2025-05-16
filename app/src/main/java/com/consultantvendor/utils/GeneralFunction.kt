@@ -3,6 +3,7 @@ package com.consultantvendor.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
+import android.app.DownloadManager
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
@@ -13,6 +14,7 @@ import android.graphics.Canvas
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
+import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
 import android.text.SpannableString
@@ -901,6 +903,27 @@ fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescri
         val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
         draw(Canvas(bitmap))
         BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+}
+
+fun downloadFile(activity: Activity, url: String, imageRequestId: String? = null) {
+    try {
+        val requestId = imageRequestId ?: Uri.parse(url).getQueryParameter("request_id")
+
+        // Create request for android download manager
+        val downloadManager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+
+        val downloadUrl = if (imageRequestId != null) url else "$url&download"
+        val request = DownloadManager.Request(Uri.parse(downloadUrl))
+        val fileName = "${activity.getString(R.string.app_name)}_$requestId.pdf"
+        request.setTitle(fileName)
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        request.setVisibleInDownloadsUi(true)
+
+        downloadManager.enqueue(request)
+        activity.longToast(activity.getString(R.string.downloading))
+    } catch (e: java.lang.Exception) {
     }
 }
 
