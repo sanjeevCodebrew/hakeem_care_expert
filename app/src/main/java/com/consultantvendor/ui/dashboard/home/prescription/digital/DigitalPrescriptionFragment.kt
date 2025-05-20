@@ -100,6 +100,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun initialise() {
         addPrescriptionViewModel = ViewModelProvider(this, viewModelFactory)[AddPrescriptionViewModel::class.java]
         progressDialog = ProgressDialog(requireActivity())
@@ -137,6 +138,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun setEditPrescriptionData() {
         if (request?.pre_scription != null) {
             val prescription = request?.pre_scription
@@ -263,13 +265,12 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                                 prescription.dosage_timing?.add(digitalDose)
                             }
                         }
-
                         /*If edit item*/
                         if (binding.tvAdd.text == getString(R.string.edit))
                             itemPrescription.set(editPosition, prescription)
                         else
                             itemPrescription.add(prescription)
-                        prescriptionAdapter?.notifyDataSetChanged()
+                            prescriptionAdapter?.notifyDataSetChanged()
 
                         editPosition = -1
                         requireActivity().longToast(getString(R.string.prescription_added))
@@ -284,7 +285,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
                     }
 
-//                    else {
+//                   else {
 //                        binding.etMedicineName.showSnackBar(getString(R.string.select_dosage_timings))
 //                    }
                 }
@@ -347,12 +348,11 @@ class DigitalPrescriptionFragment : DaggerFragment() {
             }
         }
 
-
         binding.etMedicineName.setOnClickListener {
                 binding.etMedicineName.setText("")
                 binding.etDoses.setText("")
                 binding.etfrequency.setText("")
-                 hitApi(true, "", null, false)
+                hitApi(true, "", null, false)
         }
 
         binding.etNotes.setOnClickListener {
@@ -406,8 +406,8 @@ class DigitalPrescriptionFragment : DaggerFragment() {
             val hashMap = HashMap<String, String>()
 
             hashMap["page"] = "1"
-            hashMap["code"] = ""
-            hashMap["description"] = etSearch
+            hashMap["code"] = etSearch
+            hashMap["description"] = ""
             isDiagnosis = true
             addPrescriptionViewModel.getDiagnosis(hashMap)
 
@@ -429,6 +429,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
             binding.tvPrescriptions.gone()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun editPrescription(pos: Int) {
         binding.tvAdd.hideKeyboard()
 
@@ -490,7 +491,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                     progressDialog.setLoading(false)
 
                     itemMedicine.clear()
-                    itemMedicine.addAll(it.data?.response?: emptyList())
+                    itemMedicine.addAll(it.data?.response?:emptyList())
                     if (!isMedicineSelect) {
                         showDiagnosisDialog(isDiagnosis)
                     }else{
@@ -512,6 +513,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
+
                     progressDialog.setLoading(false)
 
                     itemDiagnosis.clear()
@@ -519,7 +521,8 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                     if (!isDiagnosisSelect) {
                         showDiagnosisDialog(isDiagnosis)
                     }
-                    else{
+                    else
+                    {
                         adpterDiagnosis?.notifyDataSetChanged()
                     }
 

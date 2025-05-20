@@ -2,6 +2,7 @@ package com.consultantvendor.utils.dialogs
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,13 +40,11 @@ class DiagnosisDialogFragment(
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewDialog)
 
         if (!isDiagnosis) {
-
             tvTitle.text = fragment.getString(R.string.select_medicine)
             medicineAdapter = MedicineAdapter(itemList) { selectedItem ->
                 fragment.binding.etMedicineName.setText(itemList[selectedItem].category)
                 dialog?.dismiss()
             }
-
             recyclerView.adapter = medicineAdapter
         }
         else
@@ -68,7 +67,6 @@ class DiagnosisDialogFragment(
                 isSelectDiagnosis = true
                 fragment.hitApiDiagnosis(true,etSearch.text.toString(),diagnosisAdapter,isSelectDiagnosis)
             }
-
         }
 
         ivCross.setOnClickListener {
@@ -77,8 +75,6 @@ class DiagnosisDialogFragment(
 
         return view
     }
-
-
 
     override fun onStart() {
         super.onStart()

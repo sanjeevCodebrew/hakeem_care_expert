@@ -31,6 +31,6 @@ class MedicineAdapter(
     override fun getItemCount() = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.text.text = items[position].category
+        holder.text.text = items[position].description
     }
 }
