@@ -61,7 +61,7 @@ class BottomLoginFragment() : DaggerBottomSheetDialogFragment() {
         if (users.isNotEmpty()) {
             adapter = LoginUserAdapter(users,userRepository) { selectedIndex ->
                 val item  = users[selectedIndex]
-                (activity as? HomeActivity)?.hitApiLogin(item)
+                (activity as? HomeActivity)?.hitApiLogin(item.moh)
                 dialog?.dismiss()
                 adapter?.notifyDataSetChanged()
 

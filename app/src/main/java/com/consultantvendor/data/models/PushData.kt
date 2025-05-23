@@ -21,5 +21,6 @@ data class PushData(
     val request_time: String,
     val sender_name: String,
     val sender_image: String,
-    val vendor_category_name: String
+    val vendor_category_name: String,
+    val mohNumber: String
 ) : Serializable

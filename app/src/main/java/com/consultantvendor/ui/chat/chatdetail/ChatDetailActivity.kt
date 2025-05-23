@@ -382,6 +382,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
             }*/
     }
 
+    @SuppressLint("StringFormatInvalid")
     private fun liveData() {
         viewModel.chatMessages.observe(this, Observer {
             it ?: return@Observer
@@ -409,6 +410,9 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
 //                        generateNewMessage(getString(R.string.chat_first_message, userName))
                             intent.removeExtra(EXTRA_IS_FIRST)
                         }
+                    }
+                    else{
+                        generateNewMessage(getString(R.string.chat_first_message, userName))
                     }
                     /*Show Timer if needed*/
 

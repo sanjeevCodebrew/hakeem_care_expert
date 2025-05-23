@@ -39,6 +39,7 @@ object PushType {
     const val CHAT = "chat"
     const val CHAT_STARTED = "Chat Started"
     const val NEW_REQUEST = "NEW_REQUEST"
+    const val NEW_USER = "NEW_USER"
     const val BOOKING_REQUEST = "BOOKING_REQUEST"
     const val REQUEST_FAILED = "REQUEST_FAILED"
     const val CANCELED_REQUEST = "CANCELED_REQUEST"

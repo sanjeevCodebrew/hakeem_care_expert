@@ -241,10 +241,6 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvClinicNameV.text = request.to_user?.clinic_name
 
 
-
-
-
-
         if (request.insurance_name?.isNotEmpty()!! || request.insurance_number?.isNotEmpty()!!) {
             binding.tvInsuranceName.visible()
             binding.tvInsuranceNameV.visible()
@@ -393,7 +389,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                         R.color.textColorGreen
                     )
                 )
-                binding.tvChat.gone()
+//                binding.tvChat.gone()
                 binding.tvAccept.gone()
                 binding.tvCancel.gone()
                 binding.tvCall.gone()
@@ -402,6 +398,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                     binding.tvAddPrescription.gone()
                 } else {
                     binding.tvAddPrescription.visible()
+                    binding.tvChat.visible()
                 }
                 extraPayment()
             }

@@ -29,18 +29,24 @@ import androidx.navigation.NavController
 import com.consultantvendor.BuildConfig
 import com.consultantvendor.R
 import com.consultantvendor.appFeatures
+import com.consultantvendor.data.models.PushData
 import com.consultantvendor.data.models.responses.UserSession
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.PushType
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.ActivityHomeBinding
+import com.consultantvendor.ui.calling.Constants
+import com.consultantvendor.ui.calling.IncomingCallNotificationService
+import com.consultantvendor.ui.chat.chatdetail.ChatDetailActivity
 import com.consultantvendor.ui.dashboard.home.appointment.requests.BottomServiceRequestFragment
 import com.consultantvendor.ui.drawermenu.DrawerActivity
 import com.consultantvendor.ui.loginSignUp.LoginViewModel
 import com.consultantvendor.ui.loginSignUp.SignUpActivity
 import com.consultantvendor.ui.loginSignUp.login.BottomLoginFragment
 import com.consultantvendor.utils.AppSocket
+import com.consultantvendor.utils.EXTRA_IS_FIRST
+import com.consultantvendor.utils.EXTRA_REQUEST_ID
 import com.consultantvendor.utils.EXTRA_TAB
 import com.consultantvendor.utils.LocaleHelper
 import com.consultantvendor.utils.MultiLoginManager
@@ -48,6 +54,8 @@ import com.consultantvendor.utils.PAGE_TO_OPEN
 import com.consultantvendor.utils.PrefsManager
 import com.consultantvendor.utils.UPDATE_NUMBER
 import com.consultantvendor.utils.USER_DATA
+import com.consultantvendor.utils.USER_ID
+import com.consultantvendor.utils.USER_NAME
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import com.consultantvendor.utils.isConnectedToInternet
 import com.consultantvendor.utils.setupWithNavController
@@ -100,6 +108,12 @@ class HomeActivity : DaggerAppCompatActivity() {
 
     private lateinit var progressDialog: ProgressDialog
 
+    private var moh_number = ""
+
+    private lateinit var pushData: PushData
+
+    private var isFromSwitchUser = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,9 +136,9 @@ class HomeActivity : DaggerAppCompatActivity() {
         }
     }
 
-    fun hitApiLogin(item: UserSession) {
+    fun hitApiLogin(moh_number: String) {
         val hashMap = HashMap<String, Any>()
-        hashMap["moh_number"] = item.moh
+        hashMap["moh_number"] = moh_number
         viewModel.drLogin(hashMap)
     }
 
@@ -136,6 +150,15 @@ class HomeActivity : DaggerAppCompatActivity() {
 
         LocaleHelper.setLocale(this, userRepository.getUserLanguage(), prefsManager)
         appSocket.init()
+
+        if (intent.hasExtra("comeFrom")
+            &&intent.getStringExtra("comeFrom") == "switchUser"
+        ) {
+            moh_number = intent.getStringExtra("moh_number").toString()
+            pushData = intent.getSerializableExtra(Constants.INCOMING_CALL_INVITE) as PushData
+            isFromSwitchUser = true
+            hitApiLogin(moh_number)
+        }
 
         // Android 13 post notification permission
 
@@ -394,16 +417,114 @@ class HomeActivity : DaggerAppCompatActivity() {
                     progressDialog.setLoading(false)
                     prefsManager.save(USER_DATA, it.data)
                     if (userRepository.isUserLoggedIn()) {
-                        startActivity(Intent(this, HomeActivity::class.java))
-                        val loggedInUser = UserSession(
-                            userId = it.data?.id.toString(),
-                            moh = it.data?.moh_number.toString(),
-                            token = it.data?.token.toString(),
-                            username = it.data?.name.toString(),
-                            isSelect = true,
-                            profileImageUrl = it.data?.profile_image.toString()
-                        )
-                        MultiLoginManager.saveUser(this,loggedInUser)
+                        if (!isFromSwitchUser) {
+                            startActivity(Intent(this, HomeActivity::class.java))
+                            val loggedInUser = UserSession(
+                                userId = it.data?.id.toString(),
+                                moh = it.data?.moh_number.toString(),
+                                token = it.data?.token.toString(),
+                                username = it.data?.name.toString(),
+                                isSelect = true,
+                                profileImageUrl = it.data?.profile_image.toString()
+                            )
+                            MultiLoginManager.saveUser(this, loggedInUser)
+                        }
+                        else{
+
+                            startActivity(Intent(this, HomeActivity::class.java))
+
+                            val loggedInUser = UserSession(
+                                userId = it.data?.id.toString(),
+                                moh = it.data?.moh_number.toString(),
+                                token = it.data?.token.toString(),
+                                username = it.data?.name.toString(),
+                                isSelect = true,
+                                profileImageUrl = it.data?.profile_image.toString()
+                            )
+                            MultiLoginManager.saveUser(this, loggedInUser)
+
+                            when (pushData.pushType) {
+                                PushType.CHAT -> {
+                                    title = pushData.senderName
+                                    intent = Intent(this, ChatDetailActivity::class.java)
+                                        .putExtra(USER_ID, pushData.senderId)
+                                        .putExtra(USER_NAME, pushData.senderName)
+                                        .putExtra(EXTRA_IS_FIRST, true)
+                                        .putExtra(EXTRA_REQUEST_ID, pushData.request_id)
+
+                                }
+
+                                PushType.FREE_EXPERT_ADVISE -> {
+                                    intent = Intent(this, DrawerActivity::class.java)
+                                        .putExtra(PAGE_TO_OPEN, DrawerActivity.QUESTION_DETAILS)
+                                        .putExtra(EXTRA_REQUEST_ID, pushData.request_id)
+
+                                    val broadcastIntent = Intent()
+                                    broadcastIntent.action = pushData.pushType
+                                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
+                                }
+
+                                PushType.PROFILE_APPROVED -> {
+
+                                    val broadcastIntent = Intent()
+                                    broadcastIntent.action = pushData.pushType
+                                    broadcastIntent.putExtra(EXTRA_REQUEST_ID, pushData.request_id)
+
+                                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
+                                }
+
+                                PushType.NEW_REQUEST, PushType.REQUEST_FAILED, PushType.REQUEST_COMPLETED, PushType.PATIENT_ADDED_SYMPTOMS,
+                                PushType.CANCELED_REQUEST, PushType.RESCHEDULED_REQUEST, PushType.UPCOMING_APPOINTMENT,
+                                PushType.PAID_EXTRA_PAYMENT -> {
+                                    intent = Intent(this, DrawerActivity::class.java)
+                                        .putExtra(PAGE_TO_OPEN, DrawerActivity.APPOINTMENT_DETAILS)
+                                        .putExtra(EXTRA_REQUEST_ID, pushData.request_id)
+
+                                    val broadcastIntent = Intent()
+                                    broadcastIntent.action = pushData.pushType
+                                    broadcastIntent.putExtra(EXTRA_REQUEST_ID, pushData.request_id)
+
+                                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
+                                }
+
+                                PushType.BOOKING_REQUEST -> {
+                                    val broadcastIntent = Intent()
+                                    broadcastIntent.action = pushData.pushType
+                                    broadcastIntent.putExtra(EXTRA_REQUEST_ID, pushData.request_id)
+
+                                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
+                                }
+
+                                PushType.AMOUNT_RECEIVED, PushType.PAYOUT_PROCESSED, PushType.PAYOUT_FAILED,
+                                PushType.BALANCE_ADDED, PushType.BALANCE_FAILED -> {
+//                                homeIntent.putExtra(EXTRA_TAB, "1")
+
+                                    val broadcastIntent = Intent()
+                                    broadcastIntent.action = pushData.pushType
+                                    broadcastIntent.putExtra(EXTRA_REQUEST_ID, pushData.request_id)
+
+                                    LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
+                                }
+
+                                PushType.ASSINGED_USER -> {
+//                                    intent = Intent(this, DrawerActivity::class.java)
+//                                        .putExtra(PAGE_TO_OPEN, CLASSES)
+                                }
+
+
+                                PushType.CALL_ACCEPTED -> {
+                                    val callIntent = Intent(this, IncomingCallNotificationService::class.java)
+                                    callIntent.action = Constants.ACTION_ACCEPT
+                                    callIntent.putExtra(Constants.INCOMING_CALL_INVITE, pushData)
+
+                                    startService(callIntent)
+
+                                }
+                                PushType.CALL_CANCELED -> {
+                                    handleCanceledCallInvite(pushData)
+                                }
+                            }
+                        }
 
                     }
                 }
@@ -418,6 +539,15 @@ class HomeActivity : DaggerAppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun handleCanceledCallInvite(pushData: PushData) {
+        val intent = Intent(this, IncomingCallNotificationService::class.java)
+        intent.action = Constants.ACTION_CANCEL_CALL
+        intent.putExtra(Constants.INCOMING_CALL_INVITE, pushData)
+        intent.putExtra(EXTRA_REQUEST_ID, pushData.call_id)
+
+        startService(intent)
     }
 
 
@@ -455,6 +585,7 @@ class HomeActivity : DaggerAppCompatActivity() {
                     try {
                         getPendingRequest()
                     } catch (e: Exception) {
+
                     }
                 }
             }

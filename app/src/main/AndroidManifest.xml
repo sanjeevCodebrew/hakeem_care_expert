@@ -68,10 +68,10 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:host="@string/deep_link_url"
-                    android:scheme="https"
-                    android:pathPrefix="/offerPackage"/>
+<!--                <data-->
+<!--                    android:host="@string/deep_link_url"-->
+<!--                    android:scheme="https"-->
+<!--                    android:pathPrefix="/offerPackage"/>-->
             </intent-filter>
 
         </activity>

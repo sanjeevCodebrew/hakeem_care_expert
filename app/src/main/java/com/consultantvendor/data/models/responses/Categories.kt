@@ -12,6 +12,7 @@ class Categories : Serializable {
     var color_code: String? = null
     var description: String? = null
     var parent_cat_name: String? = null
+    var slug: String? = null
     var image_icon: String? = null
     var multi_select: String? = null
     var is_subcategory: Boolean? = null
