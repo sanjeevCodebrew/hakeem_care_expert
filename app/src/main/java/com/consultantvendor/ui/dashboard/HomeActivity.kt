@@ -41,6 +41,7 @@ import com.consultantvendor.ui.calling.IncomingCallNotificationService
 import com.consultantvendor.ui.chat.chatdetail.ChatDetailActivity
 import com.consultantvendor.ui.dashboard.home.appointment.requests.BottomServiceRequestFragment
 import com.consultantvendor.ui.drawermenu.DrawerActivity
+import com.consultantvendor.ui.drawermenu.DrawerActivity.Companion.CLASSES
 import com.consultantvendor.ui.loginSignUp.LoginViewModel
 import com.consultantvendor.ui.loginSignUp.SignUpActivity
 import com.consultantvendor.ui.loginSignUp.login.BottomLoginFragment
@@ -58,6 +59,7 @@ import com.consultantvendor.utils.USER_ID
 import com.consultantvendor.utils.USER_NAME
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.longToast
 import com.consultantvendor.utils.setupWithNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -114,6 +116,8 @@ class HomeActivity : DaggerAppCompatActivity() {
 
     private var isFromSwitchUser = false
 
+    val homeIntent : Intent?=null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -152,7 +156,7 @@ class HomeActivity : DaggerAppCompatActivity() {
         appSocket.init()
 
         if (intent.hasExtra("comeFrom")
-            &&intent.getStringExtra("comeFrom") == "switchUser"
+            && intent.getStringExtra("comeFrom") == "switchUser"
         ) {
             moh_number = intent.getStringExtra("moh_number").toString()
             pushData = intent.getSerializableExtra(Constants.INCOMING_CALL_INVITE) as PushData
@@ -202,7 +206,6 @@ class HomeActivity : DaggerAppCompatActivity() {
             param(FirebaseAnalytics.Param.CONTENT_TYPE, "dev_test")
             Log.e("TAG", "chkLogFirebaseAnalytics :" + params)
         }
-
 
 
     }
@@ -419,6 +422,7 @@ class HomeActivity : DaggerAppCompatActivity() {
                     if (userRepository.isUserLoggedIn()) {
                         if (!isFromSwitchUser) {
                             startActivity(Intent(this, HomeActivity::class.java))
+                            longToast("${getString(R.string.switch_to)} ${it.data?.name}")
                             val loggedInUser = UserSession(
                                 userId = it.data?.id.toString(),
                                 moh = it.data?.moh_number.toString(),
@@ -429,9 +433,11 @@ class HomeActivity : DaggerAppCompatActivity() {
                             )
                             MultiLoginManager.saveUser(this, loggedInUser)
                         }
-                        else{
+                        else
+                        {
 
                             startActivity(Intent(this, HomeActivity::class.java))
+                            longToast("${getString(R.string.switch_to)} ${it.data?.name}")
 
                             val loggedInUser = UserSession(
                                 userId = it.data?.id.toString(),
@@ -497,7 +503,7 @@ class HomeActivity : DaggerAppCompatActivity() {
 
                                 PushType.AMOUNT_RECEIVED, PushType.PAYOUT_PROCESSED, PushType.PAYOUT_FAILED,
                                 PushType.BALANCE_ADDED, PushType.BALANCE_FAILED -> {
-//                                homeIntent.putExtra(EXTRA_TAB, "1")
+                                homeIntent?.putExtra(EXTRA_TAB, "1")
 
                                     val broadcastIntent = Intent()
                                     broadcastIntent.action = pushData.pushType
@@ -507,8 +513,8 @@ class HomeActivity : DaggerAppCompatActivity() {
                                 }
 
                                 PushType.ASSINGED_USER -> {
-//                                    intent = Intent(this, DrawerActivity::class.java)
-//                                        .putExtra(PAGE_TO_OPEN, CLASSES)
+                                    intent = Intent(this, DrawerActivity::class.java)
+                                        .putExtra(PAGE_TO_OPEN, CLASSES)
                                 }
 
 

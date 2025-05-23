@@ -71,6 +71,7 @@
     <string name="age">Age:</string>
     <string name="phone_number">Phone Number</string>
     <string name="moh_number">Moh Number</string>
+    <string name="switch_to">Switch to</string>
     <string name="dob">DOB</string>
     <string name="dob_1">DOB: </string>
     <string name="we_need_your_email_password">We need your Email &amp; Password to identify you.</string>

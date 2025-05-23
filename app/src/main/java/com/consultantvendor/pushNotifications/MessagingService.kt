@@ -159,8 +159,8 @@ class MessagingService : FirebaseMessagingService() {
         if (userRepository.getUser()?.moh_number == pushData.mohNumber == false) {
             switchUser(pushData)
         }
-        else{
-
+        else
+        {
 
         when (pushData.pushType) {
             PushType.CHAT -> {
