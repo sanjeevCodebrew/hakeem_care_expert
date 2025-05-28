@@ -329,17 +329,6 @@ class AppointmentDetailsFragment : DaggerFragment() {
                     binding.tvChat.visible()
                 }
 
-//                if (request.main_service_type == "chat") {
-//                    binding.tvChat.visible()
-//                } else if (userRepository.getUserLanguage() == "ar") {
-//                    if (request.main_service_type == "chat")
-//                        binding.tvChat.visible()
-//                } else {
-//                    binding.tvChat.gone()
-//                }
-
-
-
                 when (request.main_service_type) {
                     ConsultType.AUDIO_CALL, ConsultType.VIDEO_CALL -> {
                         binding.tvMarkComplete.visible()
@@ -389,7 +378,6 @@ class AppointmentDetailsFragment : DaggerFragment() {
                         R.color.textColorGreen
                     )
                 )
-//                binding.tvChat.gone()
                 binding.tvAccept.gone()
                 binding.tvCancel.gone()
                 binding.tvCall.gone()
@@ -398,6 +386,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                     binding.tvAddPrescription.gone()
                 } else {
                     binding.tvAddPrescription.visible()
+                    if (request.to_user?.categoryData?.parent_cat_name=="telehealth")
                     binding.tvChat.visible()
                 }
                 extraPayment()

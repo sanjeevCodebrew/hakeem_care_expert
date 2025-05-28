@@ -164,24 +164,19 @@ class HomeFragment : DaggerFragment() {
             binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             handleHeader()
         }
-        else {
+        else
+        {
 //            binding.ivDrawer.gone()
 //            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
 
-
-
-
-        Log.e("TAG", "authToken " + prefsManager.getObject(USER_DATA, UserData::class.java)?.token)
+        Log.e("TAG", "authToken: " + prefsManager.getObject(USER_DATA, UserData::class.java)?.token)
         val hashMap = HashMap<String, String>()
         val language = prefsManager.getString(USER_LANGUAGE, "")
         hashMap["language"] = language
         viewModelHome.postLanguage1(hashMap)
 
-
-
     }
-
 
 
     private fun handleHeader() {

@@ -204,12 +204,9 @@ class HomeActivity : DaggerAppCompatActivity() {
             params.putString("dev_name", "Zorawar")
             params.putString("dev_description", "Quality Tester")
             param(FirebaseAnalytics.Param.CONTENT_TYPE, "dev_test")
-            Log.e("TAG", "chkLogFirebaseAnalytics :" + params)
         }
 
-
     }
-
 
     private fun checkPendingRequest() {
         val timeDelay = 60000L
@@ -254,10 +251,7 @@ class HomeActivity : DaggerAppCompatActivity() {
                 binding.bottomNav.selectedItemId = R.id.navigation_wallet
             }
         }
-
-
     }
-
 
     override fun onSupportNavigateUp(): Boolean {
         return currentNavController?.value?.navigateUp() ?: false
@@ -401,6 +395,7 @@ class HomeActivity : DaggerAppCompatActivity() {
                             fragment.show(supportFragmentManager, fragment.tag)
                         }
                     }
+                    
                 }
 
                 Status.ERROR -> {
@@ -435,7 +430,6 @@ class HomeActivity : DaggerAppCompatActivity() {
                         }
                         else
                         {
-
                             startActivity(Intent(this, HomeActivity::class.java))
                             longToast("${getString(R.string.switch_to)} ${it.data?.name}")
 
@@ -457,7 +451,6 @@ class HomeActivity : DaggerAppCompatActivity() {
                                         .putExtra(USER_NAME, pushData.senderName)
                                         .putExtra(EXTRA_IS_FIRST, true)
                                         .putExtra(EXTRA_REQUEST_ID, pushData.request_id)
-
                                 }
 
                                 PushType.FREE_EXPERT_ADVISE -> {
@@ -552,7 +545,6 @@ class HomeActivity : DaggerAppCompatActivity() {
         intent.action = Constants.ACTION_CANCEL_CALL
         intent.putExtra(Constants.INCOMING_CALL_INVITE, pushData)
         intent.putExtra(EXTRA_REQUEST_ID, pushData.call_id)
-
         startService(intent)
     }
 

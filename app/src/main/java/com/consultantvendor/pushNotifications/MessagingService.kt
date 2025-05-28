@@ -2,6 +2,7 @@ package com.consultantvendor.pushNotifications
 
 import android.annotation.TargetApi
 import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.AudioAttributes
@@ -161,7 +162,6 @@ class MessagingService : FirebaseMessagingService() {
         }
         else
         {
-
         when (pushData.pushType) {
             PushType.CHAT -> {
                 title = pushData.senderName
@@ -330,100 +330,30 @@ class MessagingService : FirebaseMessagingService() {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
 
-       /* val hashMap = HashMap<String, Any>()
-        hashMap["moh_number"] = pushData.mohNumber
+      /*  val intent = Intent(this, HomeActivity::class.java).apply {
+            putExtra("moh_number", pushData.mohNumber)
+            putExtra("comeFrom", "switchUser")
+            putExtra(Constants.INCOMING_CALL_INVITE, pushData)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
 
-        webService?.login(hashMap)
-            ?.enqueue(object : Callback<ApiResponse<UserData>> {
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
 
-                override fun onResponse(call: Call<ApiResponse<UserData>>, response: Response<ApiResponse<UserData>>) {
-                    if (response.isSuccessful) {
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle("Switch User")
+            .setContentText("Tap to continue as ${pushData.mohNumber}")
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .build()
 
-                        when (pushData.pushType) {
-                            PushType.CHAT -> {
-                                title = pushData.senderName
-                                intent = Intent(this, ChatDetailActivity::class.java)
-                                    .putExtra(USER_ID, pushData.senderId)
-                                    .putExtra(USER_NAME, pushData.senderName)
-                                    .putExtra(EXTRA_IS_FIRST, true)
-                                    .putExtra(EXTRA_REQUEST_ID, pushData.request_id)
-
-                            }
-                            PushType.FREE_EXPERT_ADVISE -> {
-                                intent = Intent(this, DrawerActivity::class.java)
-                                    .putExtra(PAGE_TO_OPEN, DrawerActivity.QUESTION_DETAILS)
-                                    .putExtra(EXTRA_REQUEST_ID, pushData.request_id)
-
-                                val broadcastIntent = Intent()
-                                broadcastIntent.action = pushData.pushType
-                                LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
-                            }
-                            PushType.PROFILE_APPROVED -> {
-
-                                val broadcastIntent = Intent()
-                                broadcastIntent.action = pushData.pushType
-                                broadcastIntent.putExtra(EXTRA_REQUEST_ID, pushData.request_id)
-
-                                LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
-                            }
-                            PushType.NEW_REQUEST, PushType.REQUEST_FAILED, PushType.REQUEST_COMPLETED, PushType.PATIENT_ADDED_SYMPTOMS,
-                            PushType.CANCELED_REQUEST, PushType.RESCHEDULED_REQUEST, PushType.UPCOMING_APPOINTMENT,
-                            PushType.PAID_EXTRA_PAYMENT -> {
-                                intent = Intent(this, DrawerActivity::class.java)
-                                    .putExtra(PAGE_TO_OPEN, DrawerActivity.APPOINTMENT_DETAILS)
-                                    .putExtra(EXTRA_REQUEST_ID, pushData.request_id)
-
-                                val broadcastIntent = Intent()
-                                broadcastIntent.action = pushData.pushType
-                                broadcastIntent.putExtra(EXTRA_REQUEST_ID, pushData.request_id)
-
-                                LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
-                            }
-
-                            PushType.BOOKING_REQUEST -> {
-                                val broadcastIntent = Intent()
-                                broadcastIntent.action = pushData.pushType
-                                broadcastIntent.putExtra(EXTRA_REQUEST_ID, pushData.request_id)
-
-                                LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
-                            }
-                            PushType.AMOUNT_RECEIVED, PushType.PAYOUT_PROCESSED, PushType.PAYOUT_FAILED,
-                            PushType.BALANCE_ADDED, PushType.BALANCE_FAILED -> {
-                                homeIntent.putExtra(EXTRA_TAB, "1")
-
-                                val broadcastIntent = Intent()
-                                broadcastIntent.action = pushData.pushType
-                                broadcastIntent.putExtra(EXTRA_REQUEST_ID, pushData.request_id)
-
-                                LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
-                            }
-                            PushType.ASSINGED_USER -> {
-                                intent = Intent(this, DrawerActivity::class.java)
-                                    .putExtra(PAGE_TO_OPEN, CLASSES)
-                            }
-                            PushType.CALL_RINGING -> {
-                                return
-                            }
-                            PushType.CALL_ACCEPTED -> {
-                                val callIntent = Intent(this, IncomingCallNotificationService::class.java)
-                                callIntent.action = Constants.ACTION_ACCEPT
-                                callIntent.putExtra(Constants.INCOMING_CALL_INVITE, pushData)
-
-                                startService(callIntent)
-                                return
-                            }
-                            PushType.CALL_CANCELED -> {
-                                handleCanceledCallInvite(pushData)
-                                return
-                            }
-                        }
-                    }
-                }
-
-                override fun onFailure(call: Call<ApiResponse<UserData>>, throwable: Throwable) {
-                    Log.e("fcmToken", "faliue 500")
-                }
-            })*/
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(1001, notification)*/
     }
 
     private fun wakeDevice() {
