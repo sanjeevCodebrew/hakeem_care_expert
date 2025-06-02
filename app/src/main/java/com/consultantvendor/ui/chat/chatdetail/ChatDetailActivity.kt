@@ -404,16 +404,21 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                     showTimer(data?.request_status == CallAction.INPROGRESS, data)
                     if (intent.hasExtra(EXTRA_IS_FIRST)) {
                         if (!isCompleteChat) {
-                            binding.rlChatInput.visible()
-                            binding.tvCompleteChat.visible()
-                            isRealChat = true
-//                        generateNewMessage(getString(R.string.chat_first_message, userName))
-                            intent.removeExtra(EXTRA_IS_FIRST)
+                            if (data?.end_chat==1){
+                                binding.rlChatInput.gone()
+                            }else {
+                                binding.rlChatInput.visible()
+                                binding.tvCompleteChat.visible()
+                                isRealChat = true
+//                             generateNewMessage(getString(R.string.chat_first_message, userName))
+                                intent.removeExtra(EXTRA_IS_FIRST)
+                            }
+                        }
+                        else{
+                            generateNewMessage(getString(R.string.chat_first_message, userName))
                         }
                     }
-                    else{
-                        generateNewMessage(getString(R.string.chat_first_message, userName))
-                    }
+
                     /*Show Timer if needed*/
 
                     /*Hide Loader*/
@@ -502,9 +507,9 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
 
         } else {
             binding.tvCompleteChat.gone()
-            if (!isFromTeleHealth) {
-                binding.rlChatInput.gone()
-            }
+//            if (!isFromTeleHealth) {
+//                binding.rlChatInput.gone()
+//            }
 
             binding.tvTimer.gone()
             countDownTimer?.cancel()

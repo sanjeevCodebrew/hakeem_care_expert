@@ -19,25 +19,32 @@ import com.consultantvendor.ui.adapter.MedicineAdapter
 import com.consultantvendor.ui.dashboard.home.prescription.digital.DigitalPrescriptionFragment
 
 class DiagnosisDialogFragment(
+    private val onNoteSelected: (String) -> Unit,
+
     private val fragment: DigitalPrescriptionFragment,
     private val itemList: ArrayList<ResponseMedicine>,
     private val itemDiagnosis: ArrayList<Response>,
     private val isDiagnosis: Boolean
 ) : DialogFragment() {
 
-    private var medicineAdapter : MedicineAdapter?=null
-    private var diagnosisAdapter : DiagnosisAdapter?=null
+    private var medicineAdapter: MedicineAdapter? = null
+    private var diagnosisAdapter: DiagnosisAdapter? = null
     private var isSelectMedicine = false
     private var isSelectDiagnosis = false
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val view = inflater.inflate(R.layout.dialog_diagnosis_list, container, false)
-        val tvTitle : TextView = view.findViewById(R.id.dialogTitle)
-        val etSearch : EditText = view.findViewById(R.id.etSearch)
-        val ivSearch : ImageView = view.findViewById(R.id.ivSearch)
-        val ivCross : ImageView = view.findViewById(R.id.ivCancel)
+        val tvTitle: TextView = view.findViewById(R.id.dialogTitle)
+        val etSearch: EditText = view.findViewById(R.id.etSearch)
+        val ivSearch: ImageView = view.findViewById(R.id.ivSearch)
+        val ivCross: ImageView = view.findViewById(R.id.ivCancel)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewDialog)
+        val tvDone: TextView = view.findViewById(R.id.tvDone)
 
         if (!isDiagnosis) {
             tvTitle.text = fragment.getString(R.string.select_medicine)
@@ -46,9 +53,7 @@ class DiagnosisDialogFragment(
                 dialog?.dismiss()
             }
             recyclerView.adapter = medicineAdapter
-        }
-        else
-        {
+        } else {
             tvTitle.text = fragment.getString(R.string.select_diagnosis)
             diagnosisAdapter = DiagnosisAdapter(itemDiagnosis) { selectedItem ->
                 fragment.binding.etNotes.setText(itemDiagnosis[selectedItem].title)
@@ -58,14 +63,17 @@ class DiagnosisDialogFragment(
         }
 
         ivSearch.setOnClickListener {
-            if (!isDiagnosis){
+            if (!isDiagnosis) {
                 isSelectMedicine = true
-                fragment.hitApi(true,etSearch.text.toString(),medicineAdapter,isSelectMedicine)
-            }
-            else
-            {
+                fragment.hitApi(true, etSearch.text.toString(), medicineAdapter, isSelectMedicine)
+            } else {
                 isSelectDiagnosis = true
-                fragment.hitApiDiagnosis(true,etSearch.text.toString(),diagnosisAdapter,isSelectDiagnosis)
+                fragment.hitApiDiagnosis(
+                    true,
+                    etSearch.text.toString(),
+                    diagnosisAdapter,
+                    isSelectDiagnosis
+                )
             }
         }
 
@@ -73,11 +81,24 @@ class DiagnosisDialogFragment(
             dialog?.dismiss()
         }
 
+        tvDone.setOnClickListener {
+            val searchText = etSearch.text.toString().trim()
+            if (searchText.isNotEmpty()) {
+                onNoteSelected(searchText)
+                dialog?.dismiss()
+            }
+        }
+
+
+
         return view
     }
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 }

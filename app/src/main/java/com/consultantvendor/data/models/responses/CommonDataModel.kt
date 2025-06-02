@@ -20,6 +20,7 @@ class CommonDataModel {
     var banners: List<Banner>? = null
 
     var balance: String? = null
+    var end_chat: Int? = null
     var after: String? = null
     var before: String? = null
     var per_page: String? = null

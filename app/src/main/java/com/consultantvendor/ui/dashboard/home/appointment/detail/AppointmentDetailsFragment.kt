@@ -325,7 +325,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 binding.tvAccept.text = getString(R.string.start_request)
                 binding.tvCancel.gone()
 
-                if (request.to_user?.categoryData?.parent_cat_name=="telehealth"){
+                if (request.to_user?.categoryData?.parent_cat_name=="telehealth"|| request.to_user?.categoryData?.parent_cat_name=="urgent-consultation"){
                     binding.tvChat.visible()
                 }
 
@@ -386,7 +386,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                     binding.tvAddPrescription.gone()
                 } else {
                     binding.tvAddPrescription.visible()
-                    if (request.to_user?.categoryData?.parent_cat_name=="telehealth")
+                    if (request.to_user?.categoryData?.parent_cat_name=="telehealth" || request.to_user?.categoryData?.parent_cat_name=="urgent-consultation")
                     binding.tvChat.visible()
                 }
                 extraPayment()

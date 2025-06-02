@@ -538,8 +538,16 @@ class DigitalPrescriptionFragment : DaggerFragment() {
         })
     }
 
+    fun setNotesText(note: String) {
+        binding.etMedicineName.setText(note)
+    }
+
     fun showDiagnosisDialog(isDiagnosis: Boolean) {
-        diagnosisDialog = DiagnosisDialogFragment(this, itemMedicine, itemDiagnosis, isDiagnosis)
+        diagnosisDialog = DiagnosisDialogFragment(
+            onNoteSelected = { note ->
+                setNotesText(note)
+            },
+            this, itemMedicine, itemDiagnosis, isDiagnosis)
         diagnosisDialog?.show(childFragmentManager, "DiagnosisDialog")
     }
 }
