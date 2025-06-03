@@ -1135,6 +1135,11 @@
 
     <string name="downloading">جارى التحميل…</string>
     <string name="switch_to">التبديل إلى</string>
+    <string name="add_reports">+ تقارير</string>
+
+    <string name="report_details">تفاصيل التقرير</string>
+    <string name="add_reports_header">إضافة تقارير</string>
+    <string name="reports">التقارير</string>
 
 
 </resources>

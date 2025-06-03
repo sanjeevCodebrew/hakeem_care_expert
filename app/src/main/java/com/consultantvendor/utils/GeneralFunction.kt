@@ -101,8 +101,8 @@ fun View.showSnackBar(msg: String) {
         val snackBar = Snackbar.make(this, msg, Snackbar.LENGTH_LONG)
         val snackBarView = snackBar.view
         val textView =
-            snackBarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
-        textView.maxLines = 3
+//            snackBarView.findViewById<View>(com.google.android.material.R.id.snackbar_text) as TextView
+//        textView.maxLines = 3
         snackBar.setAction(R.string.ok) { snackBar.dismiss() }
         snackBarView.setBackgroundColor(ContextCompat.getColor(context, R.color.colorPrimary))
         snackBar.setActionTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
@@ -881,15 +881,28 @@ fun getProteinUnit(activity: Activity, value: Int, unitNeeded: Boolean): String 
 }
 
 
-fun openPdf(activity: Activity, link: String, prescription: Boolean = false) {
+fun openPdf(activity: Activity, link: String, prescription: Boolean = false,isReport: Boolean=false) {
     Log.e("PDG======", link)
-
-    if (prescription)
+    if (prescription) {
         activity.startActivity(
             Intent(activity, WebViewActivity::class.java)
-                .putExtra(WebViewActivity.LINK_TITLE, activity.getString(R.string.prescription_details))
+                .putExtra(
+                    WebViewActivity.LINK_TITLE,
+                    activity.getString(R.string.prescription_details)
+                )
                 .putExtra(WebViewActivity.PDF_LINK, link)
         )
+    }
+    else if (isReport){
+        activity.startActivity(
+            Intent(activity, WebViewActivity::class.java)
+                .putExtra(
+                    WebViewActivity.LINK_TITLE,
+                    activity.getString(R.string.report_details)
+                )
+                .putExtra(WebViewActivity.PDF_LINK, link)
+        )
+    }
     else {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
         if (activity.packageName.equals(BuildConfig.APPLICATION_ID))

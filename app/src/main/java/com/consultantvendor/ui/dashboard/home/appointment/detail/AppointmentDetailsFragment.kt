@@ -160,6 +160,51 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvMarkComplete.setOnClickListener {
             showMarkCompleteDialog()
         }
+
+
+        binding.tvAddReports.setOnClickListener {
+
+            if (request.is_report==false) {
+                registerActivityResult.launch(
+                    Intent(requireActivity(), DrawerActivity::class.java)
+                        .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_REPORTS)
+                        .putExtra(EXTRA_REQUEST_ID, request)
+                )
+            }
+            else
+            {
+                val popup = PopupMenu(requireContext(), binding.tvAddReports)
+                popup.menuInflater.inflate(R.menu.menu_prescription, popup.menu)
+
+                popup.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.item_view -> {
+                            val link = "https://hakeemcare.hakeemcare.com/medical-report?request_id=${request.id}"
+                            openPdf(requireActivity(), link,false,true)
+                        }
+                        R.id.item_edit -> {
+                            registerActivityResult.launch(
+                                Intent(requireActivity(), DrawerActivity::class.java)
+                                    .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_REPORTS)
+                                    .putExtra(EXTRA_REQUEST_ID, request)
+                            )
+                        }
+                        R.id.item_download -> {
+                            val link = getString(
+                                R.string.pdf_link,
+                                BuildConfig.BASE_URL,
+                                request.id,
+                                BuildConfig.APP_UNIQUE_ID
+                            )
+                            openPdf(requireActivity(), link, true)
+                        }
+                    }
+                    true
+                }
+                popup.show()
+            }
+        }
+
         binding.tvChat.setOnClickListener {
 //            registerActivityResult.launch(
 //                Intent(context, ChatDetailActivity::class.java)
@@ -168,7 +213,6 @@ class AppointmentDetailsFragment : DaggerFragment() {
 //                    .putExtra(EXTRA_REQUEST_ID, request.id)
 //                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 //            )
-
             val intent = Intent(requireContext(), ChatDetailActivity::class.java)
                      .putExtra(USER_ID, request.from_user?.id)
                      .putExtra(USER_NAME, request.from_user?.name)
@@ -296,6 +340,13 @@ class AppointmentDetailsFragment : DaggerFragment() {
         else
             binding.tvAddPrescription.text = getString(R.string.add_prescription)
 
+        if (request.is_report == true){
+            binding.tvAddReports.text = getString(R.string.reports)
+        }
+        else{
+            binding.tvAddReports.text = getString(R.string.add_reports)
+        }
+
         when (request.main_service_type) {
             ConsultType.HOME_VISIT -> {
                 if (request.extra_detail?.service_address != null) {
@@ -384,10 +435,12 @@ class AppointmentDetailsFragment : DaggerFragment() {
 
                 if (request.categoryData?.cat_slug == "ask-now") {
                     binding.tvAddPrescription.gone()
+                    binding.tvAddReports.gone()
                 } else {
                     binding.tvAddPrescription.visible()
                     if (request.to_user?.categoryData?.parent_cat_name=="telehealth" || request.to_user?.categoryData?.parent_cat_name=="urgent-consultation")
                     binding.tvChat.visible()
+                    binding.tvAddReports.visible()
                 }
                 extraPayment()
             }
@@ -617,7 +670,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
 
                         popup.show()
                     }
-                } else {
+                }
+                else {
                     val fragment = BottomPrescriptionFragment(this, request)
                     fragment.show(requireActivity().supportFragmentManager, fragment.tag)
                 }

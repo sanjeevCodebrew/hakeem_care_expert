@@ -26,13 +26,16 @@ class Request : Serializable {
 
     var call_id: String? = null
     var is_prescription: Boolean? = null
+    var is_report: Boolean? = null
     var extra_detail: Extra_detail? = null
 
     var symptoms: List<Filter>? = null
+    var medical_reports: List<Reports>? = null
     var symptom_details: String? = null
     var symptom_images: List<DocImage>? = null
 
     var pre_scription: AddPrescription? = null
+
     var extra_payment: Extra_payment? = null
 
     var cancel_reason: String? = null
@@ -44,6 +47,10 @@ class Request : Serializable {
     var remain_second:Long?=null
     // Added categoryData
     var categoryData: CategoryData? = null
+}
+
+class Reports {
+
 }
 
 
