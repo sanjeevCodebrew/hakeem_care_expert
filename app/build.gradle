@@ -51,8 +51,8 @@ android {
         consult {
             dimension "app"
             applicationId "com.hakeem.expert"
-            versionCode 53
-            versionName "2.1.9"
+            versionCode 54
+            versionName "2.2.0"
             buildConfigField 'String', 'APP_UNIQUE_ID', "\"3b7474e39d4a249a9ecc8aa24b7e8acd42\""
             /*buildConfigField 'String', 'BASE_URL', "\"https://devhakeemcare.hakeemcare.com/\""*/
             buildConfigField 'String', 'BASE_URL', "\"https://hakeemcare.hakeemcare.com/\""

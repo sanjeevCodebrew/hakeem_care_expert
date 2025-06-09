@@ -1,5 +1,6 @@
 package com.consultantvendor.ui.dashboard.home.appointment.detail
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.DownloadManager
@@ -256,6 +257,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun setData() {
         binding.tvAccept.visible()
         binding.tvCancel.hideShowView(request.canCancel)
