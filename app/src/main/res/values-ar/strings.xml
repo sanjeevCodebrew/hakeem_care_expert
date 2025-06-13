@@ -1140,6 +1140,11 @@
     <string name="report_details">تفاصيل التقرير</string>
     <string name="add_reports_header">إضافة تقارير</string>
     <string name="reports">التقارير</string>
+    <string name="date">التاريخ</string>
+    <string name="country">الدولة</string>
+    <string name="resident_id">رقمالهوية</string>
+    <string name="insurance_name">اسم التأمين</string>
+    <string name="sar">﷼</string>
 
 
 </resources>

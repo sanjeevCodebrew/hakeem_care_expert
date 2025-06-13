@@ -257,7 +257,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
         }
     }
 
-    @SuppressLint("SuspiciousIndentation")
+    @SuppressLint("SuspiciousIndentation", "SetTextI18n")
     private fun setData() {
         binding.tvAccept.visible()
         binding.tvCancel.hideShowView(request.canCancel)
@@ -328,7 +328,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 DateUtils.dateTimeFormatFromUTC(DateFormat.TIME_FORMAT, request.bookingDateUTC)
         }
 
-        binding.tvBookingPriceV.text = getCurrency(request.price)
+        binding.tvBookingPriceV.text = getString(R.string.sar) + request.price
 
         binding.tvStatus.setTextColor(
             ContextCompat.getColor(
