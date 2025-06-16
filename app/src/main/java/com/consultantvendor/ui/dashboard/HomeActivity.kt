@@ -121,6 +121,7 @@ class HomeActivity : DaggerAppCompatActivity() {
     val homeIntent : Intent?=null
 
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -144,7 +145,7 @@ class HomeActivity : DaggerAppCompatActivity() {
 
     fun hitApiLogin(moh_number: String) {
         val hashMap = HashMap<String, Any>()
-        hashMap["moh_number"] = pushData.mohNumber
+        hashMap["moh_number"] = moh_number
         viewModel.drLogin(hashMap)
     }
 
