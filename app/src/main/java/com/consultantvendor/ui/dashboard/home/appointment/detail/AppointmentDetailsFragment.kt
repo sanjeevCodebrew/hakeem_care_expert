@@ -425,12 +425,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
 
             CallAction.COMPLETED -> {
                 binding.tvStatus.text = getString(R.string.completed)
-                binding.tvStatus.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.textColorGreen
-                    )
-                )
+                binding.tvStatus.setTextColor(ContextCompat.getColor(requireContext(), R.color.textColorGreen))
+
                 binding.tvAccept.gone()
                 binding.tvCancel.gone()
                 binding.tvCall.gone()
@@ -438,7 +434,9 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 if (request.categoryData?.cat_slug == "ask-now") {
                     binding.tvAddPrescription.gone()
                     binding.tvAddReports.gone()
-                } else {
+                }
+                else
+                {
                     binding.tvAddPrescription.visible()
                     if (request.to_user?.categoryData?.parent_cat_name=="telehealth" || request.to_user?.categoryData?.parent_cat_name=="urgent-consultation")
                     binding.tvChat.visible()

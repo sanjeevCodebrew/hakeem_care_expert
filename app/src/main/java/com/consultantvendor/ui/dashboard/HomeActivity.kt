@@ -11,6 +11,7 @@ import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
@@ -18,6 +19,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -142,11 +144,12 @@ class HomeActivity : DaggerAppCompatActivity() {
 
     fun hitApiLogin(moh_number: String) {
         val hashMap = HashMap<String, Any>()
-        hashMap["moh_number"] = moh_number
+        hashMap["moh_number"] = pushData.mohNumber
         viewModel.drLogin(hashMap)
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun initialise() {
         viewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -163,9 +166,7 @@ class HomeActivity : DaggerAppCompatActivity() {
             isFromSwitchUser = true
             hitApiLogin(moh_number)
         }
-
         // Android 13 post notification permission
-
         val permissionState =
             ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
         // If the permission is not granted, request it.
