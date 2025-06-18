@@ -371,6 +371,7 @@
     <string name="add_labnotes">Add Lab Notes</string>
     <string name="medicine_name">Medicine Name</string>
     <string name="prescriptions">Prescriptions</string>
+    <string name="prescription_type">Prescription Type</string>
     <string name="duration">Duration</string>
     <string name="dosage_type">Dosage Type</string>
     <string name="dosage_timings">Dosage Timings</string>
@@ -770,4 +771,24 @@
 
     <string name="downloading">Downloading…</string>
     <string name="sar">﷼</string>
+
+
+    <string name="insurace_select">Select Insurance</string>
+    <string name="fill_type">Fill Type</string>
+
+
+
+
+    <array name="prescription_type">
+        <item>@string/insurace_select</item>
+        <item>Insurance</item>
+        <item>Cash</item>
+    </array>
+
+    <array name="fill_type">
+        <item>@string/fill_type</item>
+        <item>Fill Form</item>
+        <item>Upload Prescription</item>
+    </array>
+
 </resources>

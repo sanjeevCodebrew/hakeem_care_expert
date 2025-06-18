@@ -61,7 +61,7 @@ import com.google.firebase.dynamiclinks.ktx.iosParameters
 import com.google.firebase.dynamiclinks.ktx.shortLinkAsync
 import com.google.firebase.dynamiclinks.ktx.socialMetaTagParameters
 import com.google.firebase.ktx.Firebase
-import com.stfalcon.imageviewer.StfalconImageViewer
+//import com.stfalcon.imageviewer.StfalconImageViewer
 import droidninja.filepicker.FilePickerBuilder
 import droidninja.filepicker.models.sort.SortingTypes
 import id.zelory.compressor.Compressor
@@ -432,9 +432,9 @@ fun viewImageFull(activity: Activity, itemsImage: ArrayList<String>, pos: Int) {
         .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
         .show()*/
 
-    StfalconImageViewer.Builder(activity, itemsImage) { view, image ->
-        Glide.with(view.context).load(image).into(view)
-    }.show()
+//    StfalconImageViewer.Builder(activity, itemsImage) { view, image ->
+//        Glide.with(view.context).load(image).into(view)
+//    }.show()
 }
 
 fun placePicker(fragment: Fragment?, activityMain: Activity) {

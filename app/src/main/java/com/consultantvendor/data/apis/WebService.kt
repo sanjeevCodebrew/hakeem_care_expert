@@ -8,6 +8,7 @@ import com.consultantvendor.data.models.responses.*
 import com.consultantvendor.data.models.responses.appdetails.AppVersion
 import com.consultantvendor.data.models.responses.directions.Direction
 import com.consultantvendor.data.network.responseUtil.ApiResponse
+import com.consultantvendor.ui.dashboard.home.prescription.model.InsuranceResponse
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -115,6 +116,7 @@ interface WebService {
         private const val ITEMLIST = "/api/items-list"
         private const val GETDIAGNOSISLIST = "/api/diagnosis-list"
         private const val MEDICAL_REPORT = "/api/medical-report"
+        private const val INSURANCE_LIST = "api/insurance-list"
 
     }
 
@@ -455,6 +457,9 @@ interface WebService {
     @FormUrlEncoded
     @POST(MEDICAL_REPORT)
     fun postMedicalReports(@FieldMap hashMap: HashMap<String, Any>): Call<ApiResponse<CommonDataModel>>
+
+    @GET(INSURANCE_LIST)
+    fun getInsurance(): Call<InsuranceResponse>
 
 
 }

@@ -17,6 +17,7 @@ import com.consultantvendor.data.models.responses.Response
 import com.consultantvendor.ui.adapter.DiagnosisAdapter
 import com.consultantvendor.ui.adapter.MedicineAdapter
 import com.consultantvendor.ui.dashboard.home.prescription.digital.DigitalPrescriptionFragment
+import com.consultantvendor.utils.visible
 
 class DiagnosisDialogFragment(
     private val onNoteSelected: (String) -> Unit,
@@ -56,7 +57,12 @@ class DiagnosisDialogFragment(
         } else {
             tvTitle.text = fragment.getString(R.string.select_diagnosis)
             diagnosisAdapter = DiagnosisAdapter(itemDiagnosis) { selectedItem ->
-                fragment.binding.etNotes.setText(itemDiagnosis[selectedItem].title)
+//                fragment.binding.etNotes.setText(itemDiagnosis[selectedItem].title)
+
+                fragment.binding.headerRow.visible()
+                fragment.binding.tvCodeV.text = itemDiagnosis[selectedItem].code
+                fragment.binding.tvTitleV.text = itemDiagnosis[selectedItem].title
+
                 dialog?.dismiss()
             }
             recyclerView.adapter = diagnosisAdapter

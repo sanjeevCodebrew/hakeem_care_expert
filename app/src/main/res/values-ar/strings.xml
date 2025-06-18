@@ -1145,6 +1145,10 @@
     <string name="resident_id">رقمالهوية</string>
     <string name="insurance_name">اسم التأمين</string>
     <string name="sar">﷼</string>
+    <string name="prescription_type">نوع الوصفة الطبية</string>
+
+    <string name="insurace_select">اختر التأمين</string>
+
 
 
 </resources>

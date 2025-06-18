@@ -2,10 +2,15 @@ package com.consultantvendor.ui.dashboard.home.prescription.digital
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -19,10 +24,13 @@ import com.consultantvendor.data.models.responses.Request
 import com.consultantvendor.data.models.responses.Response
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.responseUtil.Status
+import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.FragmentDigitalPrescriptionBinding
 import com.consultantvendor.ui.adapter.DiagnosisAdapter
 import com.consultantvendor.ui.adapter.MedicineAdapter
 import com.consultantvendor.ui.dashboard.home.prescription.AddPrescriptionViewModel
+import com.consultantvendor.ui.dashboard.home.prescription.model.InsuranceResponse
+import com.consultantvendor.ui.dashboard.home.prescription.model.ResponseInsurance
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.DiagnosisDialogFragment
 import com.consultantvendor.utils.dialogs.ProgressDialog
@@ -36,6 +44,9 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var userRepository: UserRepository
 
     lateinit var binding: FragmentDigitalPrescriptionBinding
 
@@ -84,6 +95,10 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
     private var isDiagnosisSelect = false
 
+    private var spinnerInsuranceAdapter: InsuranceAdapter? = null
+
+    private val itemsInsurance = ArrayList<ResponseInsurance>()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (rootView == null) {
@@ -106,7 +121,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
         progressDialog = ProgressDialog(requireActivity())
 
         editTextScroll(binding.etPrescriptionNotes)
-        editTextScroll(binding.etNotes)
+//        editTextScroll(binding.etNotes)
         editTextScroll(binding.etLabTest)
         request = requireActivity().intent.getSerializableExtra(EXTRA_REQUEST_ID) as Request
 
@@ -136,6 +151,49 @@ class DigitalPrescriptionFragment : DaggerFragment() {
         if (!request?.to_user?.name.isNullOrEmpty()) {
             binding.tvDoctorName.append(request?.to_user?.name)
         }
+
+
+        val hint = getString(R.string.prescription_type)
+        val coloredHint = SpannableString("$hint *")
+        coloredHint.setSpan(
+            ForegroundColorSpan(Color.RED),
+            coloredHint.length - 1,
+            coloredHint.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        binding.tvPrescriptionType.hint = coloredHint
+
+
+        binding.spnPrescriptionType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedItem = parent?.getItemAtPosition(position).toString()
+
+//                if (selectedItem == "Prescription") {
+//
+//                }
+
+                if (position==1){
+                    binding.spnInsurance.visibility = View.VISIBLE
+                    addPrescriptionViewModel.getInsurance()
+                }
+                else{
+                    binding.spnInsurance.visibility = View.GONE
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                // Optional: handle if nothing is selected
+            }
+        }
+
+
+
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -144,10 +202,10 @@ class DigitalPrescriptionFragment : DaggerFragment() {
             val prescription = request?.pre_scription
             binding.etMedicineName.setText(prescription?.medicines?.get(0)?.medicine_name)
             binding.etPrescriptionNotes.setText(prescription?.pre_scription_notes)
-            binding.etNotes.setText(prescription?.pre_scription_notes)
-
-            binding.etDoses.setText(prescription?.medicines?.get(0)?.doses)
-            binding.etfrequency.setText(prescription?.medicines?.get(0)?.dosage_type)
+//            binding.etNotes.setText(prescription?.pre_scription_notes)
+//
+//            binding.etDoses.setText(prescription?.medicines?.get(0)?.doses)
+//            binding.etfrequency.setText(prescription?.medicines?.get(0)?.dosage_type)
 
             binding.etLabTest.setText(prescription?.lab_notes)
 
@@ -183,12 +241,19 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
         prescriptionAdapter = ItemPrescriptionAdapter(this, itemPrescription)
         binding.rvPrescriptions.adapter = prescriptionAdapter
+
+        spinnerInsuranceAdapter = InsuranceAdapter(this, itemsInsurance)
+        binding.spnInsurance.adapter = spinnerInsuranceAdapter
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun listeners() {
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().finish()
+        }
+
+        binding.btnSelect.setOnClickListener {
+            binding.headerRow.gone()
         }
 
 //        binding.spnDosagesType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -315,15 +380,15 @@ class DigitalPrescriptionFragment : DaggerFragment() {
         }
 
         binding.tvDone.setOnClickListener {
-            binding.tvAdd.hideKeyboard()
+//            binding.tvAdd.hideKeyboard()
             when {
                 itemPrescription.isEmpty() -> {
                     binding.etMedicineName.showSnackBar(getString(R.string.add_digital_prescription))
                 }
-
-                binding.etNotes.text.toString().trim().isEmpty()->{
-                    binding.etMedicineName.showSnackBar(getString(R.string.select_diagnosis))
-                }
+//
+//                binding.etNotes.text.toString().trim().isEmpty()->{
+//                    binding.etMedicineName.showSnackBar(getString(R.string.select_diagnosis))
+//                }
                /* binding.etPrescriptionNotes.text.toString().trim().isEmpty() -> {
                     binding.tvDosagesType.showSnackBar(getString(R.string.add_notes))
                 }*/
@@ -483,6 +548,28 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                 }
             }
         })
+
+
+        addPrescriptionViewModel.getInsurance.observe(requireActivity(), Observer {
+            it ?: return@Observer
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.setLoading(false)
+                    itemsInsurance.clear()
+                    itemsInsurance.addAll(it.data?.response?:emptyList())
+                    spinnerInsuranceAdapter?.notifyDataSetChanged()
+
+                }
+                Status.ERROR -> {
+                    progressDialog.setLoading(false)
+                    ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
+                }
+                Status.LOADING -> {
+                    progressDialog.setLoading(true)
+                }
+            }
+        })
+
 
         addPrescriptionViewModel.getItemList.observe(requireActivity(), Observer {
             it ?: return@Observer

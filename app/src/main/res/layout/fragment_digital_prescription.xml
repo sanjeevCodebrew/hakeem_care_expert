@@ -257,239 +257,403 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvAppointmentV" />
 
 
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ilMedicineName"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPrescriptionType"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_32"
-                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/tvDoctorName">
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/etMedicineName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:fontFamily="@font/campton_medium"
-                        android:drawableEnd="@drawable/ic_dropdown"
-                        android:hint="@string/medicine_name"
-                        android:imeOptions="actionDone"
-                        android:inputType="textCapSentences"
-                        android:maxLength="100"
-                        android:textColor="@color/colorBlack"
-                        android:textDirection="locale"
-                        android:textSize="@dimen/sp_16" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvDoses"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_20"
-                    android:layout_marginEnd="@dimen/dp_20"
-                    android:alpha="0.7"
                     android:fontFamily="@font/campton_book"
-                    android:text="@string/dosage"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintEnd_toStartOf="@+id/tvFrequency"
-                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/ilMedicineName" />
-
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvFrequency"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_20"
-                    android:alpha="0.7"
-                    android:fontFamily="@font/campton_book"
-                    android:text="@string/frequency"
+                    android:text="@string/prescription_type"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                    app:layout_constraintStart_toEndOf="@+id/tvDoses"
-                    app:layout_constraintTop_toTopOf="@+id/tvDoses" />
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ilDoses"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_32"
-                    app:layout_constraintEnd_toStartOf="@id/ilFrequency"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/tvDoses">
+                    app:layout_constraintTop_toTopOf="@+id/tvDoctorName" />
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/etDoses"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/campton_medium"
-                        android:hint="@string/dosage"
-                        android:imeOptions="actionDone"
-                        android:inputType="numberDecimal"
-                        android:maxLength="100"
-                        android:textColor="@color/colorBlack"
-                        android:textDirection="locale"
-                        android:textSize="@dimen/sp_16" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ilFrequency"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_32"
-                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                    app:layout_constraintStart_toEndOf="@id/ilDoses"
-                    app:layout_constraintTop_toBottomOf="@+id/tvDoses">
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/etfrequency"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/campton_medium"
-                        android:hint="@string/frequency"
-                        android:imeOptions="actionDone"
-                        android:inputType="number"
-                        android:maxLength="100"
-                        android:textColor="@color/colorBlack"
-                        android:textDirection="locale"
-                        android:textSize="@dimen/sp_16" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-<!--                <Spinner-->
-<!--                    android:id="@+id/spnDuration"-->
-<!--                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_marginTop="@dimen/dp_12"-->
-<!--                    android:entries="@array/duration"-->
-<!--                    android:visibility=""-->
-<!--                    android:fontFamily="@font/campton_medium"-->
-<!--                    android:textColor="@color/textColor"-->
-<!--                    android:textSize="@dimen/sp_14"-->
-<!--                    app:layout_constraintEnd_toEndOf="@id/tvDuration"-->
-<!--                    app:layout_constraintStart_toStartOf="@id/tvDuration"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/tvDuration" />-->
-
-
-<!--                <Spinner-->
-<!--                    android:id="@+id/spnDosagesType"-->
-<!--                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_marginTop="@dimen/dp_12"-->
-<!--                    android:entries="@array/dose_type"-->
-<!--                    android:fontFamily="@font/campton_medium"-->
-<!--                    android:textColor="@color/textColor"-->
-<!--                    android:textSize="@dimen/sp_14"-->
-<!--                    app:layout_constraintEnd_toEndOf="@id/tvDosagesType"-->
-<!--                    app:layout_constraintStart_toStartOf="@id/tvDosagesType"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/tvDosagesType" />-->
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvDosagesTiming"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_24"
-                    android:alpha="0.7"
-                    android:fontFamily="@font/campton_book"
-                    android:text="@string/dosage_timings"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/ilDoses" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvDoasesTiming"
-                    android:layout_width="@dimen/dp_0"
-                    android:layout_height="wrap_content"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvDosagesTiming"
-                    tools:itemCount="2"
-                    tools:listitem="@layout/rv_item_doases" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvAdd"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_24"
-                    android:layout_marginEnd="@dimen/dp_12"
-                    android:alpha="0.7"
-                    android:background="@drawable/drawable_theme_stroke_60"
-                    android:fontFamily="@font/campton_semibold"
-                    android:gravity="center"
-                    android:text="@string/add"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/sp_16"
-                    app:layout_constraintEnd_toStartOf="@id/tvReset"
-                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/rvDoasesTiming" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvReset"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_12"
-                    android:alpha="0.7"
-                    android:background="@drawable/drawable_stroke_reset"
-                    android:fontFamily="@font/campton_semibold"
-                    android:gravity="center"
-                    android:text="@string/reset"
-                    android:textColor="@color/colorReset"
-                    android:textSize="@dimen/sp_16"
-                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                    app:layout_constraintStart_toEndOf="@+id/tvAdd"
-                    app:layout_constraintTop_toTopOf="@+id/tvAdd" />
-
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvDiagnosis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_20"
-                    android:fontFamily="@font/campton_semibold"
-                    android:text="@string/diagnosis"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/sp_14"
-                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/tvAdd" />
-
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etNotes"
+                <Spinner
+                    android:id="@+id/spnPrescriptionType"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/dp_48"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:background="@drawable/drawable_grey_stroke"
-                    android:fontFamily="@font/campton_book"
-                    android:gravity="start"
-                    android:focusable="false"
-                    android:clickable="true"
+                    android:layout_marginTop="@dimen/dp_32"
                     android:drawableEnd="@drawable/ic_dropdown"
-                    android:inputType="textCapSentences|textMultiLine"
-                    android:lines="8"
-                    android:maxLength="1000"
-                    android:maxLines="8"
-                    android:padding="@dimen/dp_16"
-                    android:textColor="@color/colorBlack"
-                    android:textDirection="locale"
+                    android:entries="@array/prescription_type"
+                    android:fontFamily="@font/campton_medium"
+                    android:textColor="@color/textColor"
                     android:textSize="@dimen/sp_14"
-                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintEnd_toEndOf="@id/tvPrescriptionType"
+                    app:layout_constraintStart_toStartOf="@id/tvPrescriptionType"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPrescriptionType" />
+
+
+                <Spinner
+                    android:id="@+id/spnInsurance"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_48"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:drawableEnd="@drawable/ic_dropdown"
+                    android:visibility="gone"
+                    android:entries="@array/prescription_type"
+                    android:fontFamily="@font/campton_medium"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/tvPrescriptionType"
+                    app:layout_constraintStart_toStartOf="@id/tvPrescriptionType"
+                    app:layout_constraintTop_toBottomOf="@+id/spnPrescriptionType" />
+
+
+                <Spinner
+                    android:id="@+id/spnFillType"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/dp_48"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:drawableEnd="@drawable/ic_dropdown"
+                    android:entries="@array/fill_type"
+                    android:fontFamily="@font/campton_medium"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/tvPrescriptionType"
+                    app:layout_constraintStart_toStartOf="@id/tvPrescriptionType"
+                    app:layout_constraintTop_toBottomOf="@+id/spnInsurance" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clfillform"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/spnFillType"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/tvDiagnosis" />
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvDiagnosis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:fontFamily="@font/campton_semibold"
+                        android:text="@string/diagnosis"
+                        android:textColor="@color/textColor"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etNotes"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_48"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:background="@drawable/drawable_grey_stroke"
+                        android:fontFamily="@font/campton_book"
+                        android:gravity="start"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:hint="@string/select_diagnosis"
+                        android:drawableEnd="@drawable/ic_dropdown"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:lines="8"
+                        android:maxLength="1000"
+                        android:maxLines="8"
+                        android:padding="@dimen/dp_16"
+                        android:textColor="@color/colorBlack"
+                        android:textDirection="locale"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvDiagnosis" />
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/headerRow"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:paddingBottom="8dp"
+                        android:visibility="invisible"
+                        app:layout_constraintTop_toBottomOf="@id/etNotes"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvCode"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="CODE"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/tvTitle"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvCodeV"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="CODE"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:layout_marginTop="@dimen/dp_10"
+                            app:layout_constraintTop_toBottomOf="@id/tvCode"
+                            app:layout_constraintStart_toStartOf="@id/tvCode"
+                            app:layout_constraintEnd_toStartOf="@+id/tvTitle"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvTitle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="TITLE"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toTopOf="@id/tvCode"
+                            app:layout_constraintBottom_toBottomOf="@id/tvCode"
+                            app:layout_constraintStart_toEndOf="@+id/tvCode"
+                            app:layout_constraintEnd_toStartOf="@id/tvAction"/>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvTitleV"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="CODE"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:layout_marginTop="@dimen/dp_10"
+                            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+                            app:layout_constraintStart_toStartOf="@id/tvTitle"
+                            app:layout_constraintEnd_toEndOf="@+id/tvTitle"/>
+
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvAction"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="ACTION"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            app:layout_constraintTop_toTopOf="@id/tvCode"
+                            app:layout_constraintStart_toEndOf="@+id/tvTitle"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                        <Button
+                            android:id="@+id/btnSelect"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/delete"
+                            android:textColor="#FFFFFF"
+                            android:textSize="13sp"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:backgroundTint="@android:color/holo_red_dark"
+                            app:layout_constraintEnd_toEndOf="@id/tvAction"
+                            app:layout_constraintTop_toBottomOf="@id/tvAction"
+                            app:layout_constraintStart_toStartOf="@id/tvAction" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ilMedicineName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_20"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/headerRow">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/etMedicineName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:focusable="false"
+                            android:fontFamily="@font/campton_medium"
+                            android:drawableEnd="@drawable/ic_dropdown"
+                            android:hint="@string/medicine_name"
+                            android:imeOptions="actionDone"
+                            android:inputType="textCapSentences"
+                            android:maxLength="100"
+                            android:textColor="@color/colorBlack"
+                            android:textDirection="locale"
+                            android:textSize="@dimen/sp_16" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvDoses"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:layout_marginEnd="@dimen/dp_20"
+                        android:alpha="0.7"
+                        android:fontFamily="@font/campton_book"
+                        android:text="@string/dosage"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintEnd_toStartOf="@+id/tvFrequency"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ilMedicineName" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvFrequency"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_20"
+                        android:alpha="0.7"
+                        android:fontFamily="@font/campton_book"
+                        android:text="@string/frequency"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tvDoses"
+                        app:layout_constraintTop_toTopOf="@+id/tvDoses" />
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ilDoses"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_32"
+                        app:layout_constraintEnd_toStartOf="@id/ilFrequency"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvDoses">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/etDoses"
+                            android:layout_width="140dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/campton_medium"
+                            android:hint="@string/dosage"
+                            android:imeOptions="actionDone"
+                            android:inputType="numberDecimal"
+                            android:maxLength="100"
+                            android:textColor="@color/colorBlack"
+                            android:textDirection="locale"
+                            android:textSize="@dimen/sp_16" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ilFrequency"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_32"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ilDoses"
+                        app:layout_constraintTop_toBottomOf="@+id/tvDoses">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/etfrequency"
+                            android:layout_width="140dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/campton_medium"
+                            android:hint="@string/frequency"
+                            android:imeOptions="actionDone"
+                            android:inputType="number"
+                            android:maxLength="100"
+                            android:textColor="@color/colorBlack"
+                            android:textDirection="locale"
+                            android:textSize="@dimen/sp_16" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!--                <Spinner-->
+                    <!--                    android:id="@+id/spnDuration"-->
+                    <!--                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"-->
+                    <!--                    android:layout_width="0dp"-->
+                    <!--                    android:layout_height="match_parent"-->
+                    <!--                    android:layout_marginTop="@dimen/dp_12"-->
+                    <!--                    android:entries="@array/duration"-->
+                    <!--                    android:visibility=""-->
+                    <!--                    android:fontFamily="@font/campton_medium"-->
+                    <!--                    android:textColor="@color/textColor"-->
+                    <!--                    android:textSize="@dimen/sp_14"-->
+                    <!--                    app:layout_constraintEnd_toEndOf="@id/tvDuration"-->
+                    <!--                    app:layout_constraintStart_toStartOf="@id/tvDuration"-->
+                    <!--                    app:layout_constraintTop_toBottomOf="@+id/tvDuration" />-->
+
+
+                    <!--                <Spinner-->
+                    <!--                    android:id="@+id/spnDosagesType"-->
+                    <!--                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"-->
+                    <!--                    android:layout_width="0dp"-->
+                    <!--                    android:layout_height="match_parent"-->
+                    <!--                    android:layout_marginTop="@dimen/dp_12"-->
+                    <!--                    android:entries="@array/dose_type"-->
+                    <!--                    android:fontFamily="@font/campton_medium"-->
+                    <!--                    android:textColor="@color/textColor"-->
+                    <!--                    android:textSize="@dimen/sp_14"-->
+                    <!--                    app:layout_constraintEnd_toEndOf="@id/tvDosagesType"-->
+                    <!--                    app:layout_constraintStart_toStartOf="@id/tvDosagesType"-->
+                    <!--                    app:layout_constraintTop_toBottomOf="@+id/tvDosagesType" />-->
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvDosagesTiming"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_24"
+                        android:alpha="0.7"
+                        android:fontFamily="@font/campton_book"
+                        android:text="@string/dosage_timings"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/sp_14"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ilDoses" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvDoasesTiming"
+                        android:layout_width="@dimen/dp_0"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvDosagesTiming"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/rv_item_doases" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAdd"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_24"
+                        android:layout_marginEnd="@dimen/dp_12"
+                        android:alpha="0.7"
+                        android:background="@drawable/drawable_theme_stroke_60"
+                        android:fontFamily="@font/campton_semibold"
+                        android:gravity="center"
+                        android:text="@string/add"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintEnd_toStartOf="@id/tvReset"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/rvDoasesTiming" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvReset"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_12"
+                        android:alpha="0.7"
+                        android:background="@drawable/drawable_stroke_reset"
+                        android:fontFamily="@font/campton_semibold"
+                        android:gravity="center"
+                        android:text="@string/reset"
+                        android:textColor="@color/colorReset"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tvAdd"
+                        app:layout_constraintTop_toTopOf="@+id/tvAdd" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -502,7 +666,7 @@
                     android:textColor="@color/textColor"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/etNotes" />
+                    app:layout_constraintTop_toBottomOf="@+id/clfillform" />
 
 
                 <androidx.appcompat.widget.AppCompatEditText
