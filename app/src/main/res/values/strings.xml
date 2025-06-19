@@ -791,4 +791,6 @@
         <item>Upload Prescription</item>
     </array>
 
+    <string name="duration_per_hour">Duration per hour</string>
+
 </resources>

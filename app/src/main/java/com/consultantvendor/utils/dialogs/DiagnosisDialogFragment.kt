@@ -28,9 +28,7 @@ class DiagnosisDialogFragment(
     private val isDiagnosis: Boolean
 ) : DialogFragment() {
 
-    private var medicineAdapter: MedicineAdapter? = null
     private var diagnosisAdapter: DiagnosisAdapter? = null
-    private var isSelectMedicine = false
     private var isSelectDiagnosis = false
 
     @SuppressLint("NotifyDataSetChanged")
@@ -47,14 +45,7 @@ class DiagnosisDialogFragment(
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewDialog)
         val tvDone: TextView = view.findViewById(R.id.tvDone)
 
-        if (!isDiagnosis) {
-            tvTitle.text = fragment.getString(R.string.select_medicine)
-            medicineAdapter = MedicineAdapter(itemList) { selectedItem ->
-                fragment.binding.etMedicineName.setText(itemList[selectedItem].category)
-                dialog?.dismiss()
-            }
-            recyclerView.adapter = medicineAdapter
-        } else {
+
             tvTitle.text = fragment.getString(R.string.select_diagnosis)
             diagnosisAdapter = DiagnosisAdapter(itemDiagnosis) { selectedItem ->
 //                fragment.binding.etNotes.setText(itemDiagnosis[selectedItem].title)
@@ -66,10 +57,9 @@ class DiagnosisDialogFragment(
                 dialog?.dismiss()
             }
             recyclerView.adapter = diagnosisAdapter
-        }
 
         ivSearch.setOnClickListener {
-            if (!isDiagnosis) {
+         /*   if (!isDiagnosis) {
                 isSelectMedicine = true
                 fragment.hitApi(true, etSearch.text.toString(), medicineAdapter, isSelectMedicine)
             } else {
@@ -80,7 +70,15 @@ class DiagnosisDialogFragment(
                     diagnosisAdapter,
                     isSelectDiagnosis
                 )
-            }
+            }*/
+
+            isSelectDiagnosis = true
+            fragment.hitApiDiagnosis(
+                true,
+                etSearch.text.toString(),
+                diagnosisAdapter,
+                isSelectDiagnosis
+            )
         }
 
         ivCross.setOnClickListener {
@@ -94,7 +92,6 @@ class DiagnosisDialogFragment(
                 dialog?.dismiss()
             }
         }
-
 
 
         return view

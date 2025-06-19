@@ -23,6 +23,7 @@ import com.consultantvendor.ui.dashboard.home.healthtool.protienintake.ProteinIn
 import com.consultantvendor.ui.dashboard.home.healthtool.waterintake.BottomWaterLimitFragment
 import com.consultantvendor.ui.dashboard.home.healthtool.waterintake.WaterIntakeFragment
 import com.consultantvendor.ui.dashboard.home.prescription.BottomPrescriptionFragment
+import com.consultantvendor.ui.dashboard.home.prescription.digital.DialogMedicineFragment
 import com.consultantvendor.ui.dashboard.home.prescription.digital.DigitalPrescriptionFragment
 import com.consultantvendor.ui.dashboard.home.prescription.manual.ManualPrescriptionFragment
 import com.consultantvendor.ui.dashboard.home.questions.QuestionsFragment
@@ -284,4 +285,7 @@ abstract class BindingsModule {
 
     @ContributesAndroidInjector
     abstract fun addReportFragment(): AddReportFragment
+
+    @ContributesAndroidInjector
+    abstract fun medicineFragment(): DialogMedicineFragment
 }
