@@ -365,291 +365,31 @@
                         app:layout_constraintTop_toBottomOf="@+id/tvDiagnosis" />
 
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/headerRow"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvDiagnosisList"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_8"
-                        android:paddingBottom="8dp"
-                        android:visibility="invisible"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/item_diagnosis_list"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/etDiagnosis"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent">
+                        android:layout_marginTop="@dimen/dp_12" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvCode"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="CODE"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/tvTitle"/>
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvCodeV"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="CODE"
-                            android:maxLines="1"
-                            android:ellipsize="end"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:layout_marginTop="@dimen/dp_10"
-                            app:layout_constraintTop_toBottomOf="@id/tvCode"
-                            app:layout_constraintStart_toStartOf="@id/tvCode"
-                            app:layout_constraintEnd_toStartOf="@+id/tvTitle"/>
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvTitle"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="TITLE"
-                            android:maxLines="2"
-                            android:ellipsize="end"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            app:layout_constraintTop_toTopOf="@id/tvCode"
-                            app:layout_constraintBottom_toBottomOf="@id/tvCode"
-                            app:layout_constraintStart_toEndOf="@+id/tvCode"
-                            app:layout_constraintEnd_toStartOf="@id/tvAction"/>
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvTitleV"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="CODE"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            android:layout_marginTop="@dimen/dp_10"
-                            app:layout_constraintTop_toBottomOf="@id/tvTitle"
-                            app:layout_constraintStart_toStartOf="@id/tvTitle"
-                            app:layout_constraintEnd_toEndOf="@+id/tvTitle"/>
-
-
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvAction"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="ACTION"
-                            android:textStyle="bold"
-                            android:textSize="14sp"
-                            app:layout_constraintTop_toTopOf="@id/tvCode"
-                            app:layout_constraintStart_toEndOf="@+id/tvTitle"
-                            app:layout_constraintEnd_toEndOf="parent"/>
-
-                        <Button
-                            android:id="@+id/btnSelect"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/delete"
-                            android:textColor="#FFFFFF"
-                            android:textSize="13sp"
-                            android:layout_marginTop="@dimen/dp_10"
-                            android:backgroundTint="@android:color/holo_red_dark"
-                            app:layout_constraintEnd_toEndOf="@id/tvAction"
-                            app:layout_constraintTop_toBottomOf="@id/tvAction"
-                            app:layout_constraintStart_toStartOf="@id/tvAction" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardPrescriptionDetails"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvMedicinelisy"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        app:cardCornerRadius="8dp"
-                        app:cardElevation="4dp"
-                        app:layout_constraintTop_toBottomOf="@id/headerRow"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/item_medicine_list"
+                        app:layout_constraintTop_toBottomOf="@id/rvDiagnosisList"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent">
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="@dimen/dp_12" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:padding="16dp">
 
-                            <!-- Prescription Details Title -->
-                            <TextView
-                                android:id="@+id/tvPrescriptionDetails"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Prescription Details"
-                                android:textColor="@color/colorBlack"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:fontFamily="@font/campton_semibold" />
-
-                            <!-- Add Medicine Button -->
-                            <Button
-                                android:id="@+id/btnAddMedicine"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Add Medicine"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:backgroundTint="@color/colorPrimary"
-                                android:fontFamily="@font/campton_medium"
-                                android:textSize="14sp"
-                                android:layout_marginTop="12dp" />
-
-                            <!-- Table Header -->
-                            <LinearLayout
-                                android:id="@+id/layoutPrescriptionHeader"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:visibility="invisible"
-                                android:orientation="horizontal"
-                                android:layout_marginTop="12dp"
-                                android:paddingBottom="8dp">
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="2"
-                                    android:text="Medicine Name"
-                                    android:textStyle="bold"
-                                    android:textSize="12sp" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="DOSES"
-                                    android:textStyle="bold"
-                                    android:textSize="12sp"
-                                    android:gravity="center" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="FREQ"
-                                    android:textStyle="bold"
-                                    android:textSize="12sp"
-                                    android:gravity="center" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="DURATION"
-                                    android:textStyle="bold"
-                                    android:textSize="12sp"
-                                    android:gravity="center" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="QTY"
-                                    android:textStyle="bold"
-                                    android:textSize="12sp"
-                                    android:gravity="center" />
-
-                                <TextView
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="ACTION"
-                                    android:textStyle="bold"
-                                    android:textSize="12sp"
-                                    android:gravity="center" />
-                            </LinearLayout>
-
-                            <!-- Sample Medicine Row -->
-                            <LinearLayout
-                                android:id="@+id/layoutMedicineRow"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                android:layout_marginTop="8dp"
-                                android:visibility="invisible"
-                                android:padding="8dp"
-                                android:background="@android:color/white">
-
-                                <TextView
-                                    android:id="@+id/tvMedicineName"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="2"
-                                    android:textColor="@color/colorBlack"
-                                    android:textSize="12sp" />
-
-                                <TextView
-                                    android:id="@+id/tvDoses"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="center"
-                                    android:textSize="12sp" />
-
-                                <TextView
-                                    android:id="@+id/tvfrequency"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="center"
-                                    android:textSize="12sp" />
-
-                                <TextView
-                                    android:id="@+id/tvDuration"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="center"
-                                    android:textSize="12sp" />
-
-                                <TextView
-                                    android:id="@+id/tvQuantity"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:gravity="center"
-                                    android:textSize="12sp" />
-
-                                <!-- Action Buttons -->
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:orientation="horizontal"
-                                    android:gravity="center"
-                                    android:layout_marginStart="4dp">
-
-                                    <Button
-                                        android:id="@+id/btnDelete"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/delete"
-                                        android:textAllCaps="false"
-                                        android:visibility="invisible"
-                                        android:textColor="@android:color/white"
-                                        android:textSize="12sp"
-                                        android:backgroundTint="@android:color/holo_red_dark" />
-
-                                </LinearLayout>
-                            </LinearLayout>
-
-                            <Button
-                                android:id="@+id/btnEdit"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/edit"
-                                android:visibility="invisible"
-                                android:textColor="@android:color/white"
-                                android:textAllCaps="false"
-                                android:textSize="12sp"
-                                android:layout_gravity="end"
-                                android:layout_marginStart="4dp"
-                                android:backgroundTint="@android:color/holo_purple" />
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -659,7 +399,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     android:layout_marginBottom="24dp"
                     app:layout_constraintTop_toBottomOf="@id/clfillform"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
@@ -709,6 +449,7 @@
                             android:gravity="center">
 
                             <ImageView
+                                android:id="@+id/ivDoc"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
                                 android:src="@drawable/ic_cloud_upload"

@@ -127,16 +127,16 @@ class DialogMedicineFragment(private val fragment: DigitalPrescriptionFragment) 
                 }
             }
 
-            fragment.binding.tvMedicineName.setText(binding.etMedicineName.text.toString())
-            fragment.binding.tvDoses.setText(binding.etDoses.text.toString())
-            fragment.binding.tvfrequency.setText(binding.etFrequency.text.toString())
-            fragment.binding.tvDuration.setText(binding.etduration.text.toString())
-            fragment.binding.tvQuantity.setText(binding.etQuantity.text.toString())
-
-            fragment.binding.layoutPrescriptionHeader.visible()
-            fragment.binding.layoutMedicineRow.visible()
-            fragment.binding.btnDelete.visible()
-            fragment.binding.btnEdit.visible()
+//            fragment.binding.tvMedicineName.setText(binding.etMedicineName.text.toString())
+//            fragment.binding.tvDoses.setText(binding.etDoses.text.toString())
+//            fragment.binding.tvfrequency.setText(binding.etFrequency.text.toString())
+//            fragment.binding.tvDuration.setText(binding.etduration.text.toString())
+//            fragment.binding.tvQuantity.setText(binding.etQuantity.text.toString())
+//
+//            fragment.binding.layoutPrescriptionHeader.visible()
+//            fragment.binding.layoutMedicineRow.visible()
+//            fragment.binding.btnDelete.visible()
+//            fragment.binding.btnEdit.visible()
 
             dialog?.dismiss()
 

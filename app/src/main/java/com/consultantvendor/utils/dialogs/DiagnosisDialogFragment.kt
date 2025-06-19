@@ -21,11 +21,8 @@ import com.consultantvendor.utils.visible
 
 class DiagnosisDialogFragment(
     private val onNoteSelected: (String) -> Unit,
-
     private val fragment: DigitalPrescriptionFragment,
-    private val itemList: ArrayList<ResponseMedicine>,
     private val itemDiagnosis: ArrayList<Response>,
-    private val isDiagnosis: Boolean
 ) : DialogFragment() {
 
     private var diagnosisAdapter: DiagnosisAdapter? = null
@@ -48,30 +45,16 @@ class DiagnosisDialogFragment(
 
             tvTitle.text = fragment.getString(R.string.select_diagnosis)
             diagnosisAdapter = DiagnosisAdapter(itemDiagnosis) { selectedItem ->
-//                fragment.binding.etNotes.setText(itemDiagnosis[selectedItem].title)
+//                fragment.binding.headerRow.visible()
+//                fragment.binding.tvCodeV.text = itemDiagnosis[selectedItem].code
+//                fragment.binding.tvTitleV.text = itemDiagnosis[selectedItem].title
 
-                fragment.binding.headerRow.visible()
-                fragment.binding.tvCodeV.text = itemDiagnosis[selectedItem].code
-                fragment.binding.tvTitleV.text = itemDiagnosis[selectedItem].title
 
                 dialog?.dismiss()
             }
             recyclerView.adapter = diagnosisAdapter
 
         ivSearch.setOnClickListener {
-         /*   if (!isDiagnosis) {
-                isSelectMedicine = true
-                fragment.hitApi(true, etSearch.text.toString(), medicineAdapter, isSelectMedicine)
-            } else {
-                isSelectDiagnosis = true
-                fragment.hitApiDiagnosis(
-                    true,
-                    etSearch.text.toString(),
-                    diagnosisAdapter,
-                    isSelectDiagnosis
-                )
-            }*/
-
             isSelectDiagnosis = true
             fragment.hitApiDiagnosis(
                 true,

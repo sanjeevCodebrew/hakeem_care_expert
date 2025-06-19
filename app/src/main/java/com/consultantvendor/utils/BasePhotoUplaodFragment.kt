@@ -64,6 +64,8 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
     var triescamera = 0
     var triesgallary = 0
 
+    private lateinit var permissionUtil: PermissionUtil
+
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun showImageDialog(b: Boolean,isCamera:Boolean,isPdf:Boolean) {
@@ -78,6 +80,11 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
 
         if (!isCamera){
             view.tvCamera.gone()
+        }
+
+        if (isPdf){
+            view.tvGallery.gone()
+            view.tvPdf.visible()
         }
 
 
@@ -125,6 +132,14 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
 
             dialog.dismiss()
         }
+
+        view.tvPdf.setOnClickListener {
+            openPdf()
+            dialog.dismiss()
+        }
+
+
+
         dialog.show()
     }
 

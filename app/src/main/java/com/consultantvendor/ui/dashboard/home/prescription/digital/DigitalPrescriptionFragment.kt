@@ -3,6 +3,7 @@ package com.consultantvendor.ui.dashboard.home.prescription.digital
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.EditText
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -20,25 +22,34 @@ import com.consultantvendor.data.models.ResponseMedicine
 import com.consultantvendor.data.models.requests.AddPrescription
 import com.consultantvendor.data.models.requests.DigitalPrescription
 import com.consultantvendor.data.models.requests.Doases
+import com.consultantvendor.data.models.requests.DocImage
 import com.consultantvendor.data.models.responses.Request
 import com.consultantvendor.data.models.responses.Response
 import com.consultantvendor.data.network.ApisRespHandler
+import com.consultantvendor.data.network.responseUtil.Resource
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.FragmentDigitalPrescriptionBinding
 import com.consultantvendor.ui.adapter.DiagnosisAdapter
 import com.consultantvendor.ui.adapter.MedicineAdapter
+import com.consultantvendor.ui.chat.UploadFileViewModel
 import com.consultantvendor.ui.dashboard.home.healthtool.pregnancycalculator.BottomPregnancyFragment
 import com.consultantvendor.ui.dashboard.home.prescription.AddPrescriptionViewModel
 import com.consultantvendor.ui.dashboard.home.prescription.model.InsuranceResponse
 import com.consultantvendor.ui.dashboard.home.prescription.model.ResponseInsurance
+import com.consultantvendor.ui.dashboard.home.prescription.model.itemModelDiagnosis
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.DiagnosisDialogFragment
 import com.consultantvendor.utils.dialogs.ProgressDialog
+import com.consultantvendor.utils.dialogs.ProgressDialogImage
 import dagger.android.support.DaggerFragment
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import javax.inject.Inject
 
-class DigitalPrescriptionFragment : DaggerFragment() {
+class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
 
     @Inject
     lateinit var prefsManager: PrefsManager
@@ -55,7 +66,11 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
     private lateinit var addPrescriptionViewModel: AddPrescriptionViewModel
 
+    private lateinit var viewModelUpload: UploadFileViewModel
+
     private lateinit var progressDialog: ProgressDialog
+
+    private lateinit var progressDialogImage: ProgressDialogImage
 
     private var doseadAdapter: ItemDoasesAdapter? = null
 
@@ -79,6 +94,8 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
     private var itemDiagnosis = ArrayList<Response>()
 
+    private var itemDiagnosisList = ArrayList<itemModelDiagnosis>()
+
     private var isDiagnosis = false
 
     private var diagnosisDialog: DiagnosisDialogFragment? = null
@@ -92,6 +109,8 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
     private var adpterDiagnosis: DiagnosisAdapter? = null
 
+    private var adpterDiagnosisList: DiagnosisListAdapter? = null
+
     private var isMedicineSelect = false
 
     private var isDiagnosisSelect = false
@@ -99,6 +118,12 @@ class DigitalPrescriptionFragment : DaggerFragment() {
     private var spinnerInsuranceAdapter: InsuranceAdapter? = null
 
     private val itemsInsurance = ArrayList<ResponseInsurance>()
+
+    private var imageUrl  = ""
+
+    private var prescription_type  = ""
+
+    private var filltype  = ""
 
 
     override fun onCreateView(
@@ -129,7 +154,10 @@ class DigitalPrescriptionFragment : DaggerFragment() {
     private fun initialise() {
         addPrescriptionViewModel =
             ViewModelProvider(this, viewModelFactory)[AddPrescriptionViewModel::class.java]
+
+        viewModelUpload = ViewModelProvider(this, viewModelFactory)[UploadFileViewModel::class.java]
         progressDialog = ProgressDialog(requireActivity())
+        progressDialogImage = ProgressDialogImage(requireActivity())
 
         editTextScroll(binding.etPrescriptionNotes)
 //        editTextScroll(binding.etNotes)
@@ -237,16 +265,15 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
         spinnerInsuranceAdapter = InsuranceAdapter(this, itemsInsurance)
         binding.spnInsurance.adapter = spinnerInsuranceAdapter
+
+        spinnerInsuranceAdapter = InsuranceAdapter(this, itemsInsurance)
+        binding.spnInsurance.adapter = spinnerInsuranceAdapter
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun listeners() {
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().finish()
-        }
-
-        binding.btnSelect.setOnClickListener {
-            binding.headerRow.gone()
         }
 
 
@@ -301,12 +328,17 @@ class DigitalPrescriptionFragment : DaggerFragment() {
             }
 
 
-        binding.btnDelete.setOnClickListener {
-            binding.layoutPrescriptionHeader.gone()
-            binding.layoutMedicineRow.gone()
-            binding.btnDelete.gone()
-            binding.btnEdit.gone()
+        binding.etDiagnosis.setOnClickListener {
+            hitApiDiagnosis(true, "", null, false)
         }
+
+
+
+        binding.clUploadPrescription.setOnClickListener {
+            showImageDialog(false,false,true)
+
+        }
+
 
 //        binding.spnDosagesType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
 //            override fun onItemSelected(parentView: AdapterView<*>,
@@ -452,36 +484,86 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                 }
 
                 isConnectedToInternet(requireContext(), true) -> {
-                    addPrescription = AddPrescription()
-                    addPrescription?.request_id = request?.id
-                    addPrescription?.type = PrescriptionType.DIGITAL
-
+//                    addPrescription = AddPrescription()
+//                    addPrescription?.request_id = request?.id
+//                    addPrescription?.type = PrescriptionType.DIGITAL
+//
 //                    addPrescription?.pre_scription_notes = binding.etNotes.text.toString().trim()
 //                    addPrescription?.lab_notes = binding.etLabTest.text.toString().trim()
-                    addPrescription?.pre_scriptions = ArrayList()
-                    addPrescription?.pre_scriptions?.addAll(itemPrescription)
+//                    addPrescription?.pre_scriptions = ArrayList()
+//                    addPrescription?.pre_scriptions?.addAll(itemPrescription)
+//
+//                    addPrescriptionViewModel.prescreptions(addPrescription ?: AddPrescription())
 
-                    addPrescriptionViewModel.prescreptions(addPrescription ?: AddPrescription())
+
+                    val hashMap = HashMap<String, Any>()
+                    hashMap["request_id"] = request?.id.toString()
+                    hashMap["report_detals"] = binding.etNotes.text.toString()
+                    hashMap["prescription_type"] = prescription_type
+                    hashMap["fill_type"] = filltype
+                    hashMap["insurance_id"] = "123456789"
+
+
+                    val prescriptions = arrayListOf<HashMap<String, Any>>()
+
+                    prescriptions.add(
+                        hashMapOf(
+                            "item_no" to "001",
+                            "description" to "Paracetamol 500mg",
+                            "doses" to "1 tablet",
+                            "frequency" to "Twice a day",
+                            "duration" to "5 days",
+                            "quantity" to "10"
+                        )
+                    )
+
+                    prescriptions.add(
+                        hashMapOf(
+                            "item_no" to "002",
+                            "description" to "Ibuprofen 400mg",
+                            "doses" to "1 tablet",
+                            "frequency" to "Three times a day",
+                            "duration" to "3 days",
+                            "quantity" to "9"
+                        )
+                    )
+
+                    hashMap["pre_scriptions"] = prescriptions
+
+                    val diagnosis = arrayListOf<HashMap<String, Any>>()
+
+                    diagnosis.add(
+                        hashMapOf(
+                            "code" to "A01",
+                            "title" to "Typhoid Fever"
+                        )
+                    )
+
+                    diagnosis.add(
+                        hashMapOf(
+                            "code" to "J11",
+                            "title" to "Influenza"
+                        )
+                    )
+
+                    hashMap["diagnosis"] = diagnosis
+                    addPrescriptionViewModel.addReports(hashMap)
+
                 }
             }
         }
 
-//        binding.etMedicineName.setOnClickListener {
-//                binding.etMedicineName.setText("")
-////                binding.etDoses.setText("")
-////                binding.etfrequency.setText("")
-//                hitApi(true, "", null, false)
+
+
+
+//        binding.btnAddMedicine.setOnClickListener {
+//            val fragment = DialogMedicineFragment(this)
+//            fragment.show(requireActivity().supportFragmentManager, fragment.tag)
 //        }
-
-        binding.etDiagnosis.setOnClickListener {
-            hitApiDiagnosis(true, "", null, false)
-        }
-
-        binding.btnAddMedicine.setOnClickListener {
-            val fragment = DialogMedicineFragment(this)
-            fragment.show(requireActivity().supportFragmentManager, fragment.tag)
-        }
     }
+
+
+
 
     fun hitApi(
         firstHit: Boolean,
@@ -687,6 +769,53 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                 }
             }
         })
+
+        viewModelUpload.uploadFile.observe(requireActivity(), Observer {
+            it ?: return@Observer
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialogImage.setLoading(false)
+
+                    // Add the uploaded image name
+//                    addPrescription?.image?.add(it.data?.image_name ?: "")
+                    imageUrl  = it.data?.url.toString()
+                    Toast.makeText(requireContext(),imageUrl, Toast.LENGTH_SHORT).show()
+
+                }
+
+                Status.ERROR -> {
+                    progressDialogImage.setLoading(false)
+                    ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
+                }
+
+                Status.LOADING -> {
+                    progressDialogImage.setLoading(true)
+                }
+            }
+        })
+
+        addPrescriptionViewModel.addReports.observe(requireActivity(), Observer {
+            it ?: return@Observer
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.setLoading(false)
+
+                    requireActivity().setResult(Activity.RESULT_OK)
+                    requireActivity().finish()
+
+                }
+
+                Status.ERROR -> {
+                    progressDialog.setLoading(false)
+                    ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
+                }
+
+                Status.LOADING -> {
+                    progressDialog.setLoading(true)
+                }
+            }
+        })
+
     }
 
     fun setNotesText(note: String) {
@@ -698,8 +827,35 @@ class DigitalPrescriptionFragment : DaggerFragment() {
             onNoteSelected = { note ->
                 setNotesText(note)
             },
-            this, itemMedicine, itemDiagnosis, isDiagnosis
+            this,  itemDiagnosis
         )
         diagnosisDialog?.show(childFragmentManager, "DiagnosisDialog")
+    }
+
+    override fun getVideo(uri: String?, i: Int) {
+
+    }
+
+    override fun getPdf(uri: String?) {
+        val fileToUpload = File(uri)
+
+        val docImage = DocImage()
+        docImage.type = DocType.PDF
+        docImage.imageFile = fileToUpload
+        uploadFileOnServer(docImage)
+    }
+
+    override fun getImage(uri: String?, data: Uri) {
+
+    }
+
+    private fun uploadFileOnServer(docImage: DocImage?) {
+        val hashMap = HashMap<String, RequestBody>()
+        hashMap["type"] = getRequestBody(docImage?.type)
+
+        val body: RequestBody = docImage?.imageFile?.asRequestBody("image/*".toMediaType())!!
+        hashMap["image\"; fileName=\"" + docImage?.imageFile?.name] = body
+
+        viewModelUpload.uploadFile(hashMap)
     }
 }
