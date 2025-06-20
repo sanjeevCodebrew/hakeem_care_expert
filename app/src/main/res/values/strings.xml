@@ -772,14 +772,6 @@
     <string name="downloading">Downloading…</string>
     <string name="sar">﷼</string>
 
-
-
-    <string name="select_payment_type">Select Payment Type</string>
-    <string name="fill_type">Fill Type</string>
-
-
-
-
     <array name="prescription_type">
         <item>@string/select_payment_type</item>
         <item>Insurance</item>
@@ -792,6 +784,19 @@
         <item>Upload Prescription</item>
     </array>
 
+
+
+    <string name="select_payment_type">Select Payment Type</string>
+    <string name="fill_type">Fill Type</string>
     <string name="duration_per_hour">Duration per hour</string>
+    <string name="select_fill_type">Select Fill Type</string>
+    <string name="select_diagnosis_code_and_title">Select diagnosis code and title</string>
+    <string name="add_medicine">Add Medicines</string>
+    <string name="upload_prescription">Upload Prescription</string>
+
+
+
+
+
 
 </resources>

@@ -113,11 +113,11 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
 
     private val itemsInsurance = ArrayList<ResponseInsurance>()
 
-    private var docUrl  = ""
+    private var docUrl = ""
 
-    private var prescription_type  = ""
+    private var prescription_type = ""
 
-    private var filltype  = ""
+    private var filltype = ""
 
     var adpterDiagnosisList: DiagnosisListAdapter? = null
 
@@ -127,7 +127,7 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
 
     var itemMedicineList = ArrayList<ItemModelMedicine>()
 
-    var insuraceId  = ""
+    var insuraceId = ""
 
     var isEditMedicine = false
 
@@ -206,16 +206,7 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
             binding.tvDoctorName.append(request?.to_user?.name)
         }
 
-
-        val hint = getString(R.string.prescription_type)
-        val coloredHint = SpannableString("$hint *")
-        coloredHint.setSpan(
-            ForegroundColorSpan(Color.RED),
-            coloredHint.length - 1,
-            coloredHint.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        binding.tvPrescriptionType.hint = coloredHint
+        binding.clUploadPrescription.gone()
 
 
     }
@@ -274,8 +265,8 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
 
     }
 
-    fun setAdapterMedicine(){
-        adpterMedicineList = medicineListAdapter(this,itemMedicineList)
+    fun setAdapterMedicine() {
+        adpterMedicineList = medicineListAdapter(this, itemMedicineList)
         binding.rvMedicinelist.adapter = adpterMedicineList
     }
 
@@ -320,10 +311,10 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
                         binding.spnInsurance.visible()
                         addPrescriptionViewModel.getInsurance()
                         prescription_type = "insurance"
-                    } else {
+                    } else if (position == 2) {
                         binding.spnInsurance.visibility = View.GONE
                         prescription_type = "cash"
-                        insuraceId=""
+                        insuraceId = ""
                     }
                 }
 
@@ -346,7 +337,7 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
                         binding.clfillform.visible()
                         binding.clUploadPrescription.gone()
                         filltype = "form"
-                    } else {
+                    } else if (position == 2) {
                         binding.clfillform.gone()
                         binding.clUploadPrescription.visible()
                         filltype = "upload prescription"
@@ -364,14 +355,14 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
         }
 
         binding.btnAddMedicine.setOnClickListener {
-            val fragment = DialogMedicineFragment(this,isEditMedicine)
+            val fragment = DialogMedicineFragment(this, isEditMedicine)
             fragment.show(requireActivity().supportFragmentManager, fragment.tag)
         }
 
 
 
         binding.clUploadPrescription.setOnClickListener {
-            showImageDialog(false,false,true)
+            showImageDialog(false, false, true)
         }
 
 
@@ -498,22 +489,39 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
                     doseadAdapter?.notifyDataSetChanged()
                 }*/
 
-        binding.tvDone.setOnClickListener {
-//            binding.tvAdd.hideKeyboard()
+        /*  binding.tvDone.setOnClickListener {
             when {
-//                itemPrescription.isEmpty() -> {
-//                    binding.etMedicineName.showSnackBar(getString(R.string.add_digital_prescription))
-//                }
-//
-//                binding.etNotes.text.toString().trim().isEmpty()->{
-//                    binding.etMedicineName.showSnackBar(getString(R.string.select_diagnosis))
-//                }
-                /* binding.etPrescriptionNotes.text.toString().trim().isEmpty() -> {
-                     binding.tvDosagesType.showSnackBar(getString(R.string.add_notes))
-                 }*/
-//                binding.etNotes.text.toString().trim().isEmpty() -> {
-//                    binding.tvDosagesType.showSnackBar(getString(R.string.add_diagnosis))
-//                }
+                binding.spnPrescriptionType.selectedItemPosition == 0 -> {
+                    binding.spnPrescriptionType.showSnackBar(getString(R.string.select_payment_type))
+                }
+
+                binding.spnFillType.selectedItemPosition == 0 -> {
+                    binding.spnFillType.showSnackBar(getString(R.string.select_fill_type))
+                }
+
+                binding.spnFillType.selectedItemPosition == 1 -> {
+                    when {
+                        binding.etDiagnosis.text.toString().trim().isEmpty() -> {
+                            binding.etDiagnosis.showSnackBar(getString(R.string.select_diagnosis))
+                        }
+
+                        itemDiagnosisList.isEmpty() -> {
+                            binding.etDiagnosis.showSnackBar(getString(R.string.select_diagnosis_code_and_title))
+
+                        }
+                        itemMedicineList.isEmpty() -> {
+                            binding.etDiagnosis.showSnackBar(getString(R.string.add_medicine))
+
+                        }
+                    }
+                }
+
+                binding.spnFillType.selectedItemPosition== 2 -> {
+                    if (docUrl.isEmpty()){
+                        binding.ivDoc.showSnackBar(getString(R.string.upload_prescription))
+                    }
+                }
+
                 binding.etNotes.text.toString().trim().isEmpty() -> {
                     binding.etNotes.showSnackBar(getString(R.string.add_notes))
                 }
@@ -550,6 +558,64 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
                 }
             }
         }
+    }*/
+
+
+        binding.tvDone.setOnClickListener {
+
+            if (binding.spnPrescriptionType.selectedItemPosition == 0) {
+                binding.spnPrescriptionType.showSnackBar(getString(R.string.select_payment_type))
+                return@setOnClickListener
+            }
+
+            if (binding.spnFillType.selectedItemPosition == 0) {
+                binding.spnFillType.showSnackBar(getString(R.string.select_fill_type))
+                return@setOnClickListener
+            }
+
+            if (binding.spnFillType.selectedItemPosition == 1) {
+
+                if (itemDiagnosisList.isEmpty()) {
+                    binding.etDiagnosis.showSnackBar(getString(R.string.select_diagnosis_code_and_title))
+                    return@setOnClickListener
+                }
+
+                if (itemMedicineList.isEmpty()) {
+                    binding.etDiagnosis.showSnackBar(getString(R.string.add_medicine))
+                    return@setOnClickListener
+                }
+            }
+
+            if (binding.spnFillType.selectedItemPosition == 2) {
+                if (docUrl.isEmpty()) {
+                    binding.ivDoc.showSnackBar(getString(R.string.upload_prescription))
+                    return@setOnClickListener
+                }
+            }
+
+            if (binding.etNotes.text.toString().trim().isEmpty()) {
+                binding.etNotes.showSnackBar(getString(R.string.add_notes))
+                return@setOnClickListener
+            }
+
+            if (isConnectedToInternet(requireContext(), true)) {
+                val hashMap = HashMap<String, Any>()
+                hashMap["request_id"] = request?.id.toString()
+                hashMap["report_detals"] = binding.etNotes.text.toString()
+                hashMap["prescription_type"] = prescription_type
+                hashMap["fill_type"] = filltype
+                hashMap["insurance_id"] = insuraceId
+
+                val gson = Gson()
+                hashMap["pre_scriptions"] = gson.toJson(itemMedicineList)
+                hashMap["diagnosis"] = gson.toJson(itemDiagnosisList)
+                hashMap["prescription_file"] = docUrl
+
+                addPrescriptionViewModel.addReports(hashMap)
+            }
+        }
+
+
     }
 
     fun hitApi(
@@ -763,7 +829,7 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
                 Status.SUCCESS -> {
                     progressDialogImage.setLoading(false)
 
-                    docUrl  = it.data?.image_name.toString()
+                    docUrl = it.data?.image_name.toString()
                     binding.ivDoc.setImageResource(R.drawable.ic_pdf)
                     binding.tvFileName.text = docUrl
                 }
@@ -812,7 +878,7 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
             onNoteSelected = { note ->
                 setdiagnosisText(note)
             },
-            this,  itemDiagnosis
+            this, itemDiagnosis
         )
         diagnosisDialog?.show(childFragmentManager, "DiagnosisDialog")
     }
