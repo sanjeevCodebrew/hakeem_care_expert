@@ -17,6 +17,7 @@ import android.graphics.drawable.Drawable
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
@@ -65,6 +66,12 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
     var triesgallary = 0
 
     private lateinit var permissionUtil: PermissionUtil
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        permissionUtil = PermissionUtil(requireActivity())
+        permissionUtil.registerLauncher(this)
+    }
 
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -134,7 +141,26 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
         }
 
         view.tvPdf.setOnClickListener {
-            openPdf()
+            val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
+            } else {
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+
+            permissionUtil.checkPermissions(
+                permissions = permissions,
+                onGranted = {
+                    openPdf()
+                },
+                onDenied = {
+                    // Handle the case where permissions are denied but not permanently
+                },
+                onPermanentlyDenied = {
+                    // Optionally handle additional logic here after showing the settings dialog
+
+                }
+            )
+
             dialog.dismiss()
         }
 

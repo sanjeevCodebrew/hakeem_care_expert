@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.consultantvendor.data.models.ResponseMedicine
 import com.consultantvendor.data.models.responses.Response
 import com.consultantvendor.databinding.ItemLayoutDiagnosisBinding
+import com.consultantvendor.ui.dashboard.home.prescription.digital.DigitalPrescriptionFragment
 
 class DiagnosisAdapter(
     private val items: ArrayList<Response>,

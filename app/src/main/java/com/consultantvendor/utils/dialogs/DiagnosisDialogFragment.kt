@@ -2,7 +2,6 @@ package com.consultantvendor.utils.dialogs
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +11,10 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.consultantvendor.R
-import com.consultantvendor.data.models.ResponseMedicine
 import com.consultantvendor.data.models.responses.Response
 import com.consultantvendor.ui.adapter.DiagnosisAdapter
-import com.consultantvendor.ui.adapter.MedicineAdapter
 import com.consultantvendor.ui.dashboard.home.prescription.digital.DigitalPrescriptionFragment
-import com.consultantvendor.utils.visible
+import com.consultantvendor.ui.dashboard.home.prescription.model.ItemModelDiagnosis
 
 class DiagnosisDialogFragment(
     private val onNoteSelected: (String) -> Unit,
@@ -42,13 +39,15 @@ class DiagnosisDialogFragment(
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewDialog)
         val tvDone: TextView = view.findViewById(R.id.tvDone)
 
-
             tvTitle.text = fragment.getString(R.string.select_diagnosis)
             diagnosisAdapter = DiagnosisAdapter(itemDiagnosis) { selectedItem ->
-//                fragment.binding.headerRow.visible()
-//                fragment.binding.tvCodeV.text = itemDiagnosis[selectedItem].code
-//                fragment.binding.tvTitleV.text = itemDiagnosis[selectedItem].title
-
+                fragment.itemDiagnosisList.add(
+                    ItemModelDiagnosis(
+                        code = itemDiagnosis[selectedItem].code,
+                        title = itemDiagnosis[selectedItem].title
+                    )
+                )
+                fragment.adpterDiagnosisList?.notifyDataSetChanged()
 
                 dialog?.dismiss()
             }
@@ -88,3 +87,5 @@ class DiagnosisDialogFragment(
         )
     }
 }
+
+

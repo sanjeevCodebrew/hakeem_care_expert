@@ -377,36 +377,78 @@
                         app:layout_constraintTop_toBottomOf="@id/etDiagnosis"
                         android:layout_marginTop="@dimen/dp_12" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvMedicinelisy"
-                        android:layout_width="0dp"
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardPrescriptionDetails"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:itemCount="2"
-                        tools:listitem="@layout/item_medicine_list"
+                        android:layout_marginTop="16dp"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp"
                         app:layout_constraintTop_toBottomOf="@id/rvDiagnosisList"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginTop="@dimen/dp_12" />
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                    <!-- Prescription Details Title -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvPrescriptionDetails"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Prescription Details"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/campton_semibold" />
+
+                    <!-- Add Medicine Button -->
+                    <Button
+                        android:id="@+id/btnAddMedicine"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Add Medicine"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:fontFamily="@font/campton_medium"
+                        android:textSize="14sp"
+                        android:layout_marginTop="12dp" />
 
 
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvMedicinelist"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            tools:itemCount="2"
+                            tools:listitem="@layout/item_medicine_list"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/btnAddMedicine"
+                            android:layout_marginTop="@dimen/dp_12" />
+
+                    </LinearLayout>
+                    </androidx.cardview.widget.CardView>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clUploadPrescription"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:visibility="invisible"
                     android:layout_marginBottom="24dp"
                     app:layout_constraintTop_toBottomOf="@id/clfillform"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine">
 
                     <!-- Section Title -->
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvUploadPrescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -448,14 +490,14 @@
                             android:orientation="vertical"
                             android:gravity="center">
 
-                            <ImageView
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/ivDoc"
                                 android:layout_width="48dp"
                                 android:layout_height="48dp"
-                                android:src="@drawable/ic_cloud_upload"
-                                app:tint="@android:color/darker_gray" />
+                                android:src="@drawable/ic_cloud_upload" />
 
-                            <TextView
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tvFileName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Drag and drop a file here or click"

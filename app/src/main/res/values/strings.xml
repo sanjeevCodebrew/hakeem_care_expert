@@ -773,14 +773,15 @@
     <string name="sar">﷼</string>
 
 
-    <string name="insurace_select">Select Insurance</string>
+
+    <string name="select_payment_type">Select Payment Type</string>
     <string name="fill_type">Fill Type</string>
 
 
 
 
     <array name="prescription_type">
-        <item>@string/insurace_select</item>
+        <item>@string/select_payment_type</item>
         <item>Insurance</item>
         <item>Cash</item>
     </array>

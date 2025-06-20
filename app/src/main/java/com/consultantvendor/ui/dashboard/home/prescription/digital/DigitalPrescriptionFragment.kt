@@ -33,12 +33,14 @@ import com.consultantvendor.ui.adapter.DiagnosisAdapter
 import com.consultantvendor.ui.adapter.MedicineAdapter
 import com.consultantvendor.ui.chat.UploadFileViewModel
 import com.consultantvendor.ui.dashboard.home.prescription.AddPrescriptionViewModel
+import com.consultantvendor.ui.dashboard.home.prescription.model.ItemModelDiagnosis
 import com.consultantvendor.ui.dashboard.home.prescription.model.ResponseInsurance
-import com.consultantvendor.ui.dashboard.home.prescription.model.itemModelDiagnosis
+import com.consultantvendor.ui.dashboard.home.prescription.model.ItemModelMedicine
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.DiagnosisDialogFragment
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import com.consultantvendor.utils.dialogs.ProgressDialogImage
+import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -90,7 +92,6 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
 
     private var itemDiagnosis = ArrayList<Response>()
 
-    private var itemDiagnosisList = ArrayList<itemModelDiagnosis>()
 
     private var isDiagnosis = false
 
@@ -102,10 +103,7 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
     var etQuantity: EditText? = null
 
     private var medicneAdapter: MedicineAdapter? = null
-
     private var adpterDiagnosis: DiagnosisAdapter? = null
-
-    private var adpterDiagnosisList: DiagnosisListAdapter? = null
 
     private var isMedicineSelect = false
 
@@ -115,12 +113,23 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
 
     private val itemsInsurance = ArrayList<ResponseInsurance>()
 
-    private var imageUrl  = ""
+    private var docUrl  = ""
 
     private var prescription_type  = ""
 
     private var filltype  = ""
 
+    var adpterDiagnosisList: DiagnosisListAdapter? = null
+
+    val itemDiagnosisList = ArrayList<ItemModelDiagnosis>()
+
+    var adpterMedicineList: medicineListAdapter? = null
+
+    var itemMedicineList = ArrayList<ItemModelMedicine>()
+
+    var insuraceId  = ""
+
+    var isEditMedicine = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -188,12 +197,10 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
                 request?.bookingDateUTC
             )
         } · " +
-                "${
-                    DateUtils.dateTimeFormatFromUTC(
-                        DateFormat.TIME_FORMAT,
-                        request?.bookingDateUTC
-                    )
-                }"
+                DateUtils.dateTimeFormatFromUTC(
+                    DateFormat.TIME_FORMAT,
+                    request?.bookingDateUTC
+                )
 
         if (!request?.to_user?.name.isNullOrEmpty()) {
             binding.tvDoctorName.append(request?.to_user?.name)
@@ -262,8 +269,14 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
         spinnerInsuranceAdapter = InsuranceAdapter(this, itemsInsurance)
         binding.spnInsurance.adapter = spinnerInsuranceAdapter
 
-        spinnerInsuranceAdapter = InsuranceAdapter(this, itemsInsurance)
-        binding.spnInsurance.adapter = spinnerInsuranceAdapter
+        adpterDiagnosisList = DiagnosisListAdapter(itemDiagnosisList)
+        binding.rvDiagnosisList.adapter = adpterDiagnosisList
+
+    }
+
+    fun setAdapterMedicine(){
+        adpterMedicineList = medicineListAdapter(this,itemMedicineList)
+        binding.rvMedicinelist.adapter = adpterMedicineList
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -271,6 +284,24 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().finish()
         }
+
+
+        binding.spnInsurance.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+
+                    insuraceId = itemsInsurance[position]._id
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) {
+                    // Optional: handle if nothing is selected
+                }
+            }
 
 
         binding.spnPrescriptionType.onItemSelectedListener =
@@ -282,16 +313,17 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
                     id: Long
                 ) {
                     val selectedItem = parent?.getItemAtPosition(position).toString()
-
-//                if (selectedItem == "Prescription") {
+//                  if (selectedItem == "Prescription") {
 //
-//                }
-
+//                  }
                     if (position == 1) {
                         binding.spnInsurance.visible()
                         addPrescriptionViewModel.getInsurance()
+                        prescription_type = "insurance"
                     } else {
                         binding.spnInsurance.visibility = View.GONE
+                        prescription_type = "cash"
+                        insuraceId=""
                     }
                 }
 
@@ -309,12 +341,15 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
                     position: Int,
                     id: Long
                 ) {
+
                     if (position == 1) {
                         binding.clfillform.visible()
                         binding.clUploadPrescription.gone()
+                        filltype = "form"
                     } else {
                         binding.clfillform.gone()
                         binding.clUploadPrescription.visible()
+                        filltype = "upload prescription"
                     }
                 }
 
@@ -328,11 +363,15 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
             hitApiDiagnosis(true, "", null, false)
         }
 
+        binding.btnAddMedicine.setOnClickListener {
+            val fragment = DialogMedicineFragment(this,isEditMedicine)
+            fragment.show(requireActivity().supportFragmentManager, fragment.tag)
+        }
+
 
 
         binding.clUploadPrescription.setOnClickListener {
             showImageDialog(false,false,true)
-
         }
 
 
@@ -497,69 +536,21 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
                     hashMap["report_detals"] = binding.etNotes.text.toString()
                     hashMap["prescription_type"] = prescription_type
                     hashMap["fill_type"] = filltype
-                    hashMap["insurance_id"] = "123456789"
+                    hashMap["insurance_id"] = insuraceId
 
+                    val gson = Gson()
+                    val prescriptionsJson = gson.toJson(itemMedicineList)
+                    val diagnosisJson = gson.toJson(itemDiagnosisList)
 
-                    val prescriptions = arrayListOf<HashMap<String, Any>>()
-
-                    prescriptions.add(
-                        hashMapOf(
-                            "item_no" to "001",
-                            "description" to "Paracetamol 500mg",
-                            "doses" to "1 tablet",
-                            "frequency" to "Twice a day",
-                            "duration" to "5 days",
-                            "quantity" to "10"
-                        )
-                    )
-
-                    prescriptions.add(
-                        hashMapOf(
-                            "item_no" to "002",
-                            "description" to "Ibuprofen 400mg",
-                            "doses" to "1 tablet",
-                            "frequency" to "Three times a day",
-                            "duration" to "3 days",
-                            "quantity" to "9"
-                        )
-                    )
-
-                    hashMap["pre_scriptions"] = prescriptions
-
-                    val diagnosis = arrayListOf<HashMap<String, Any>>()
-
-                    diagnosis.add(
-                        hashMapOf(
-                            "code" to "A01",
-                            "title" to "Typhoid Fever"
-                        )
-                    )
-
-                    diagnosis.add(
-                        hashMapOf(
-                            "code" to "J11",
-                            "title" to "Influenza"
-                        )
-                    )
-
-                    hashMap["diagnosis"] = diagnosis
+                    hashMap["pre_scriptions"] = prescriptionsJson
+                    hashMap["diagnosis"] = diagnosisJson
+                    hashMap["prescription_file"] = docUrl
                     addPrescriptionViewModel.addReports(hashMap)
 
                 }
             }
         }
-
-
-
-
-//        binding.btnAddMedicine.setOnClickListener {
-//            val fragment = DialogMedicineFragment(this)
-//            fragment.show(requireActivity().supportFragmentManager, fragment.tag)
-//        }
     }
-
-
-
 
     fun hitApi(
         firstHit: Boolean,
@@ -772,11 +763,9 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
                 Status.SUCCESS -> {
                     progressDialogImage.setLoading(false)
 
-                    // Add the uploaded image name
-//                    addPrescription?.image?.add(it.data?.image_name ?: "")
-                    imageUrl  = it.data?.url.toString()
-                    Toast.makeText(requireContext(),imageUrl, Toast.LENGTH_SHORT).show()
-
+                    docUrl  = it.data?.image_name.toString()
+                    binding.ivDoc.setImageResource(R.drawable.ic_pdf)
+                    binding.tvFileName.text = docUrl
                 }
 
                 Status.ERROR -> {
@@ -814,14 +803,14 @@ class DigitalPrescriptionFragment : BasePhotoUplaodFragment() {
 
     }
 
-    fun setNotesText(note: String) {
-//        binding.etMedicineName.setText(note)
+    fun setdiagnosisText(note: String) {
+        binding.etDiagnosis.setText(note)
     }
 
     fun showDiagnosisDialog(isDiagnosis: Boolean) {
         diagnosisDialog = DiagnosisDialogFragment(
             onNoteSelected = { note ->
-                setNotesText(note)
+                setdiagnosisText(note)
             },
             this,  itemDiagnosis
         )

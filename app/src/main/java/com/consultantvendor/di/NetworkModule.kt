@@ -8,6 +8,8 @@ import com.consultantvendor.data.network.Config
 import com.consultantvendor.utils.*
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.moczul.ok2curl.CurlInterceptor
+import com.moczul.ok2curl.logger.Logger
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -29,13 +31,18 @@ object NetworkModule {
     @JvmStatic
     fun okHttpClient(prefsManager: PrefsManager): OkHttpClient {
         return OkHttpClient.Builder()
-                .connectTimeout(100, TimeUnit.SECONDS)
-                .readTimeout(100, TimeUnit.SECONDS)
-                .writeTimeout(100, TimeUnit.SECONDS)
-                .addInterceptor(getHttpLoggingInterceptor())
-                .cache(null)
-                .addInterceptor(getNetworkInterceptor(prefsManager))
-                .build()
+            .connectTimeout(100, TimeUnit.SECONDS)
+            .readTimeout(100, TimeUnit.SECONDS)
+            .writeTimeout(100, TimeUnit.SECONDS)
+            .addInterceptor(getHttpLoggingInterceptor())
+            .cache(null)
+            .addNetworkInterceptor(CurlInterceptor(object : Logger {
+                override fun log(message: String) {
+                    Log.v("Ok2Curl", message)
+                }
+            }))
+            .addInterceptor(getNetworkInterceptor(prefsManager))
+            .build()
     }
 
     @Provides
@@ -43,12 +50,12 @@ object NetworkModule {
     @JvmStatic
     fun retrofit(client: OkHttpClient, gson: Gson): Retrofit {
         return Retrofit.Builder()
-                .baseUrl(Config.baseURL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addCallAdapterFactory(CoroutineCallAdapterFactory())
-                .build()
+            .baseUrl(Config.baseURL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(ScalarsConverterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .build()
     }
 
     private fun getNetworkInterceptor(prefsManager: PrefsManager): Interceptor {
@@ -60,12 +67,12 @@ object NetworkModule {
 
             val requestBuilder = request.newBuilder()
             requestBuilder.addHeader("Accept", "application/json")
-                    .header("Connection", "close")
-                    .addHeader("user-type", APP_TYPE)
-                    .addHeader("language", prefsManager.getString(USER_LANGUAGE, "en"))
-                    .addHeader("timezone", TimeZone.getDefault().id)
-                    .addHeader("app-id", app_id)
-                    .addHeader("devicetype", ANDROID)
+                .header("Connection", "close")
+                .addHeader("user-type", APP_TYPE)
+                .addHeader("language", prefsManager.getString(USER_LANGUAGE, "en"))
+                .addHeader("timezone", TimeZone.getDefault().id)
+                .addHeader("app-id", app_id)
+                .addHeader("devicetype", ANDROID)
 
             val accessToken = prefsManager.getObject(USER_DATA, UserData::class.java)?.token
             Log.e("accessToken", accessToken ?: "")

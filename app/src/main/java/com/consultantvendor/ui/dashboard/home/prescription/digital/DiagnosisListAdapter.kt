@@ -3,21 +3,17 @@ package com.consultantvendor.ui.dashboard.home.prescription.digital
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.consultantvendor.data.models.responses.Response
 import com.consultantvendor.databinding.ItemDiagnosisListBinding
-import com.consultantvendor.databinding.ItemLayoutDiagnosisBinding
-import com.consultantvendor.ui.dashboard.home.prescription.model.itemModelDiagnosis
+import com.consultantvendor.ui.dashboard.home.prescription.model.ItemModelDiagnosis
 
 class DiagnosisListAdapter(
-    private val items: ArrayList<itemModelDiagnosis>,
-    private val onSelect: (Int) -> Unit
+    private val items: ArrayList<ItemModelDiagnosis>,
 ) : RecyclerView.Adapter<DiagnosisListAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemDiagnosisListBinding) : RecyclerView.ViewHolder(binding.root) {
+
         init {
-            binding.btnSelect.setOnClickListener {
-                onSelect(absoluteAdapterPosition)
-            }
+
         }
     }
 
@@ -30,9 +26,16 @@ class DiagnosisListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
+        holder.binding.tvCodeV.text = item.code
+        holder.binding.tvTitleV.text = item.title
 
+        holder.binding.btnDelete.setOnClickListener {
+            removeItem(position)
+        }
+    }
 
-        holder.binding.tvCode.text = item.code
-        holder.binding.tvTitle.text = item.title
+    fun removeItem(position: Int) {
+        items.removeAt(position)
+        notifyItemRemoved(position)
     }
 }

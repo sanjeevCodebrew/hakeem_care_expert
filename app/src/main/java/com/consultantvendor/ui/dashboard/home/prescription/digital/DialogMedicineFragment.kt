@@ -14,20 +14,27 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.consultantvendor.R
 import com.consultantvendor.data.models.ResponseMedicine
+import com.consultantvendor.data.models.responses.UserData
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.databinding.DialogMedicineBinding
 import com.consultantvendor.ui.adapter.MedicineAdapter
 import com.consultantvendor.ui.dashboard.home.prescription.AddPrescriptionViewModel
+import com.consultantvendor.ui.dashboard.home.prescription.model.ItemModelMedicine
 import com.consultantvendor.utils.PrefsManager
+import com.consultantvendor.utils.USER_DATA
 import com.consultantvendor.utils.gone
 import com.consultantvendor.utils.isConnectedToInternet
 import com.consultantvendor.utils.showSnackBar
 import com.consultantvendor.utils.visible
+import com.google.gson.Gson
 import dagger.android.support.DaggerDialogFragment
 import javax.inject.Inject
 
-class DialogMedicineFragment(private val fragment: DigitalPrescriptionFragment) : DaggerDialogFragment() {
+class DialogMedicineFragment(
+    private val fragment: DigitalPrescriptionFragment,
+    private var isEditMedicine: Boolean
+) : DaggerDialogFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -43,8 +50,6 @@ class DialogMedicineFragment(private val fragment: DigitalPrescriptionFragment) 
     private var itemMedicine = ArrayList<ResponseMedicine>()
 
     private var medicineAdapter: MedicineAdapter? = null
-
-    private var isSelectMedicine = false
 
     private var isLastPage = false
 
@@ -80,7 +85,12 @@ class DialogMedicineFragment(private val fragment: DigitalPrescriptionFragment) 
         addPrescriptionViewModel = ViewModelProvider(this, viewModelFactory)[AddPrescriptionViewModel::class.java]
 
 
-        hitApiMedicineList(true)
+        if (!isEditMedicine) {
+            hitApiMedicineList(true)
+        }
+        else{
+            binding.clOptions.visible()
+        }
 
         binding.rvMedicine.isNestedScrollingEnabled = false
         binding.rvMedicine.setHasFixedSize(true)
@@ -88,7 +98,7 @@ class DialogMedicineFragment(private val fragment: DigitalPrescriptionFragment) 
 
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint("ClickableViewAccessibility", "NotifyDataSetChanged")
     private fun listeners() {
 
         binding.ivCross.setOnClickListener {
@@ -127,19 +137,17 @@ class DialogMedicineFragment(private val fragment: DigitalPrescriptionFragment) 
                 }
             }
 
-//            fragment.binding.tvMedicineName.setText(binding.etMedicineName.text.toString())
-//            fragment.binding.tvDoses.setText(binding.etDoses.text.toString())
-//            fragment.binding.tvfrequency.setText(binding.etFrequency.text.toString())
-//            fragment.binding.tvDuration.setText(binding.etduration.text.toString())
-//            fragment.binding.tvQuantity.setText(binding.etQuantity.text.toString())
-//
-//            fragment.binding.layoutPrescriptionHeader.visible()
-//            fragment.binding.layoutMedicineRow.visible()
-//            fragment.binding.btnDelete.visible()
-//            fragment.binding.btnEdit.visible()
+            fragment.itemMedicineList.add(ItemModelMedicine(
+                medicine_name = binding.etMedicineName.text.toString(),
+                doses = binding.etDoses.text.toString(),
+                frequency = binding.etFrequency.text.toString(),
+                duration = binding.etduration.text.toString(),
+                quantity = binding.etQuantity.text.toString()
+            ))
 
+
+            fragment.setAdapterMedicine()
             dialog?.dismiss()
-
 
         }
     }
@@ -151,7 +159,6 @@ class DialogMedicineFragment(private val fragment: DigitalPrescriptionFragment) 
             binding.tvMedicineName.gone()
             binding.tvAction.gone()
             binding.clOptions.visible()
-
         }
         binding.rvMedicine.adapter = medicineAdapter
     }
