@@ -8,8 +8,9 @@ import android.widget.TextView
 import com.consultantvendor.R
 import com.consultantvendor.ui.dashboard.home.prescription.model.InsuranceResponse
 import com.consultantvendor.ui.dashboard.home.prescription.model.ResponseInsurance
+import com.consultantvendor.ui.dashboard.home.reports.AddReportFragment
 
-class InsuranceAdapter(private val fragment: DigitalPrescriptionFragment,private var items: List<ResponseInsurance>) : BaseAdapter() {
+class InsuranceAdapter(private val fragment: AddReportFragment,private var items: List<ResponseInsurance>) : BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View

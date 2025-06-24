@@ -1,6 +1,7 @@
 package com.consultantvendor.utils.dialogs
 
 import android.annotation.SuppressLint
+import android.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +16,11 @@ import com.consultantvendor.data.models.responses.Response
 import com.consultantvendor.ui.adapter.DiagnosisAdapter
 import com.consultantvendor.ui.dashboard.home.prescription.digital.DigitalPrescriptionFragment
 import com.consultantvendor.ui.dashboard.home.prescription.model.ItemModelDiagnosis
+import com.consultantvendor.ui.dashboard.home.reports.AddReportFragment
 
 class DiagnosisDialogFragment(
     private val onNoteSelected: (String) -> Unit,
-    private val fragment: DigitalPrescriptionFragment,
+    private val fragment: AddReportFragment,
     private val itemDiagnosis: ArrayList<Response>,
 ) : DialogFragment() {
 

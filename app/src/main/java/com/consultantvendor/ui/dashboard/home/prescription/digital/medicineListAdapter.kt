@@ -2,12 +2,14 @@ package com.consultantvendor.ui.dashboard.home.prescription.digital
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.consultantvendor.databinding.ItemMedicineListBinding
 import com.consultantvendor.ui.dashboard.home.prescription.model.ItemModelMedicine
+import com.consultantvendor.ui.dashboard.home.reports.AddReportFragment
 
 class medicineListAdapter(
-    private var fragment: DigitalPrescriptionFragment,
+    private var fragment: Fragment??,
     private val items: ArrayList<ItemModelMedicine>
 ) : RecyclerView.Adapter<medicineListAdapter.ViewHolder>() {
 
@@ -27,7 +29,7 @@ class medicineListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.binding.tvMedicineName.text = item.medicine_name
+        holder.binding.tvMedicineName.text = item.description
         holder.binding.tvDoses.text = item.doses
         holder.binding.tvfrequency.text = item.frequency
         holder.binding.tvDuration.text = item.duration
@@ -39,8 +41,10 @@ class medicineListAdapter(
         }
 
         holder.binding.btnEdit.setOnClickListener {
-            fragment.isEditMedicine = true
-            fragment.binding.btnAddMedicine.performClick()
+            if (fragment is AddReportFragment) {
+                (fragment as AddReportFragment).isEditMedicine = true
+                (fragment as AddReportFragment).binding.btnAddMedicine.performClick()
+            }
         }
 
     }

@@ -30,7 +30,7 @@ class Request : Serializable {
     var extra_detail: Extra_detail? = null
 
     var symptoms: List<Filter>? = null
-    var medical_reports: List<Reports>? = null
+//    var medical_reports: List<MedicalReport>? = null
     var symptom_details: String? = null
     var symptom_images: List<DocImage>? = null
 
@@ -47,12 +47,9 @@ class Request : Serializable {
     var remain_second:Long?=null
     // Added categoryData
     var categoryData: CategoryData? = null
+
+    var medicalReport: MedicalReport?=null
 }
-
-class Reports {
-
-}
-
 
 class CategoryData : Serializable {
     var id: Int? = null
@@ -66,3 +63,4 @@ class CategoryData : Serializable {
     var enable: Boolean? = null
     var cat_slug: String? = null
 }
+

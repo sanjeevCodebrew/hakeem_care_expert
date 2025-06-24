@@ -10,30 +10,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.consultantvendor.R
 import com.consultantvendor.data.models.ResponseMedicine
-import com.consultantvendor.data.models.responses.UserData
+import com.consultantvendor.data.models.responses.Prescription
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.databinding.DialogMedicineBinding
 import com.consultantvendor.ui.adapter.MedicineAdapter
 import com.consultantvendor.ui.dashboard.home.prescription.AddPrescriptionViewModel
 import com.consultantvendor.ui.dashboard.home.prescription.model.ItemModelMedicine
+import com.consultantvendor.ui.dashboard.home.reports.AddReportFragment
 import com.consultantvendor.utils.PrefsManager
-import com.consultantvendor.utils.USER_DATA
 import com.consultantvendor.utils.gone
 import com.consultantvendor.utils.isConnectedToInternet
 import com.consultantvendor.utils.showSnackBar
 import com.consultantvendor.utils.visible
-import com.google.gson.Gson
 import dagger.android.support.DaggerDialogFragment
 import javax.inject.Inject
 
 class DialogMedicineFragment(
-    private val fragment: DigitalPrescriptionFragment,
-    private var isEditMedicine: Boolean
+    private val fragment: Fragment?,
+    private var isEditMedicine: Boolean,
+    private val prescription: List<Prescription>?
 ) : DaggerDialogFragment() {
 
     @Inject
@@ -43,7 +44,6 @@ class DialogMedicineFragment(
     lateinit var prefsManager: PrefsManager
 
     private lateinit var addPrescriptionViewModel: AddPrescriptionViewModel
-
 
     private lateinit var binding: DialogMedicineBinding
 
@@ -89,7 +89,19 @@ class DialogMedicineFragment(
             hitApiMedicineList(true)
         }
         else{
-            binding.clOptions.visible()
+
+            if (fragment is AddReportFragment) {
+                binding.clOptions.visible()
+                fragment.itemMedicineList.clear()
+                prescription?.forEach {
+                    binding.etMedicineName.setText(it.description)
+                    binding.etDoses.setText(it.doses)
+                    binding.etFrequency.setText(it.frequency)
+                    binding.etduration.setText(it.duration)
+                    binding.etQuantity.setText(it.quantity)
+                }
+            }
+
         }
 
         binding.rvMedicine.isNestedScrollingEnabled = false
@@ -137,16 +149,26 @@ class DialogMedicineFragment(
                 }
             }
 
-            fragment.itemMedicineList.add(ItemModelMedicine(
-                medicine_name = binding.etMedicineName.text.toString(),
-                doses = binding.etDoses.text.toString(),
-                frequency = binding.etFrequency.text.toString(),
-                duration = binding.etduration.text.toString(),
-                quantity = binding.etQuantity.text.toString()
-            ))
+
+            if (fragment is AddReportFragment) {
+                fragment.itemMedicineList.add(
+                    ItemModelMedicine(
+                        description = binding.etMedicineName.text.toString(),
+                        doses = binding.etDoses.text.toString(),
+                        frequency = binding.etFrequency.text.toString(),
+                        duration = binding.etduration.text.toString(),
+                        item_no = fragment.item_number,
+                        quantity = binding.etQuantity.text.toString()
+                    )
+
+                )
 
 
-            fragment.setAdapterMedicine()
+               if (fragment.isEditMedicine){
+                   fragment.isEditMedicine =false
+               }
+               fragment.adpterMedicineList?.notifyDataSetChanged()
+            }
             dialog?.dismiss()
 
         }
@@ -159,6 +181,10 @@ class DialogMedicineFragment(
             binding.tvMedicineName.gone()
             binding.tvAction.gone()
             binding.clOptions.visible()
+
+            if (fragment is AddReportFragment)
+            fragment.item_number = itemMedicine[selectedItem].sku
+
         }
         binding.rvMedicine.adapter = medicineAdapter
     }
