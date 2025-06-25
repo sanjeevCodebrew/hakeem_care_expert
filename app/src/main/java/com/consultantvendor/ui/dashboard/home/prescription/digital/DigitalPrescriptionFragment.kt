@@ -407,8 +407,8 @@ class DigitalPrescriptionFragment : DaggerFragment() {
             val hashMap = HashMap<String, String>()
 
             hashMap["page"] = "1"
-            hashMap["code"] = ""
-            hashMap["description"] = etSearch
+            hashMap["code"] = etSearch
+            hashMap["description"] = ""
             isDiagnosis = true
             addPrescriptionViewModel.getDiagnosis(hashMap)
 

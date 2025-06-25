@@ -84,12 +84,8 @@ class AddReportFragment : BasePhotoUplaodFragment() {
 
     private var isFirstPage = true
 
-    private var itemMedicine = ArrayList<ResponseMedicine>()
 
     private var itemDiagnosis = ArrayList<Response>()
-
-
-    private var isDiagnosis = false
 
     private var diagnosisDialog: DiagnosisDialogFragment? = null
 
@@ -97,9 +93,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
     private var medicneAdapter: MedicineAdapter? = null
     private var adpterDiagnosis: DiagnosisAdapter? = null
 
-    private var isMedicineSelect = false
-
-    private var isDiagnosisSelect = false
+    private var isSearchDiagnosis = false
 
     private var spinnerInsuranceAdapter: InsuranceAdapter? = null
 
@@ -408,39 +402,11 @@ class AddReportFragment : BasePhotoUplaodFragment() {
 
     }
 
-    fun hitApi(
-        firstHit: Boolean,
-        etSearch: String,
-        medicineAdapter: MedicineAdapter?,
-        isSelect: Boolean
-    ) {
-        if (isConnectedToInternet(requireContext(), true)) {
-            if (firstHit) {
-                isFirstPage = true
-                isLastPage = false
-            }
-
-            isMedicineSelect = isSelect
-            medicneAdapter = medicineAdapter
-
-
-            val hashMap = HashMap<String, String>()
-
-            hashMap["page"] = "1"
-            hashMap["itemNumber"] = ""
-            hashMap["description"] = etSearch
-            isDiagnosis = false
-            addPrescriptionViewModel.getItemList(hashMap)
-
-        }
-
-    }
-
     fun hitApiDiagnosis(
         firstHit: Boolean,
         etSearch: String,
         diagnosisAdapter: DiagnosisAdapter?,
-        isSelectDiagnosis: Boolean
+        isSearch: Boolean
     ) {
         if (isConnectedToInternet(requireContext(), true)) {
             if (firstHit) {
@@ -448,15 +414,14 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                 isLastPage = false
             }
 
+            isSearchDiagnosis = isSearch
             adpterDiagnosis = diagnosisAdapter
-            isDiagnosisSelect = isSelectDiagnosis
 
             val hashMap = HashMap<String, String>()
 
             hashMap["page"] = "1"
             hashMap["code"] = etSearch
             hashMap["description"] = ""
-            isDiagnosis = true
             addPrescriptionViewModel.getDiagnosis(hashMap)
 
         }
@@ -490,33 +455,6 @@ class AddReportFragment : BasePhotoUplaodFragment() {
         })
 
 
-        addPrescriptionViewModel.getItemList.observe(requireActivity(), Observer {
-            it ?: return@Observer
-            when (it.status) {
-                Status.SUCCESS -> {
-                    progressDialog.setLoading(false)
-
-                    itemMedicine.clear()
-                    itemMedicine.addAll(it.data?.response ?: emptyList())
-                    if (!isMedicineSelect) {
-                        showDiagnosisDialog(isDiagnosis)
-                    } else {
-                        medicneAdapter?.notifyDataSetChanged()
-                    }
-
-                }
-
-                Status.ERROR -> {
-                    progressDialog.setLoading(false)
-                    ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
-                }
-
-                Status.LOADING -> {
-                    progressDialog.setLoading(true)
-                }
-            }
-        })
-
         addPrescriptionViewModel.getdiagnosis.observe(requireActivity(), Observer {
             it ?: return@Observer
             when (it.status) {
@@ -526,8 +464,8 @@ class AddReportFragment : BasePhotoUplaodFragment() {
 
                     itemDiagnosis.clear()
                     itemDiagnosis.addAll(it.data?.response ?: emptyList())
-                    if (!isDiagnosisSelect) {
-                        showDiagnosisDialog(isDiagnosis)
+                    if (!isSearchDiagnosis) {
+                        showDiagnosisDialog()
                     } else {
                         adpterDiagnosis?.notifyDataSetChanged()
                     }
@@ -595,7 +533,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
         binding.etDiagnosis.setText(note)
     }
 
-    fun showDiagnosisDialog(isDiagnosis: Boolean) {
+    fun showDiagnosisDialog() {
         diagnosisDialog = DiagnosisDialogFragment(
             onNoteSelected = { note ->
                 setdiagnosisText(note)

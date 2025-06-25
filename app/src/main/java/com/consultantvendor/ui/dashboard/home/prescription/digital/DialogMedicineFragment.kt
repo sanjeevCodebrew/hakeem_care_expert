@@ -94,7 +94,7 @@ class DialogMedicineFragment(
                 binding.clOptions.visible()
                 fragment.itemMedicineList.clear()
                 prescription?.forEach {
-                    binding.etMedicineName.setText(it.description)
+                    binding.etSearch.setText(it.description)
                     binding.etDoses.setText(it.doses)
                     binding.etFrequency.setText(it.frequency)
                     binding.etduration.setText(it.duration)
@@ -117,10 +117,15 @@ class DialogMedicineFragment(
             dialog?.dismiss()
         }
 
-        binding.etMedicineName.setOnClickListener {
+        binding.etSearch.setOnClickListener {
             binding.clOptions.gone()
             hitApiMedicineList(true)
         }
+
+        binding.ivSearch.setOnClickListener {
+            hitApiMedicineList(true)
+        }
+
         binding.rvMedicine.setOnTouchListener { _, event ->
             binding.rvMedicine.requestDisallowInterceptTouchEvent(true)
             false
@@ -129,31 +134,29 @@ class DialogMedicineFragment(
         binding.tvSave.setOnClickListener {
             when {
                 binding.etDoses.text.toString().trim().isEmpty() -> {
-                    binding.etDoses.showSnackBar("add doses")
+                    binding.etDoses.showSnackBar(getString(R.string.add_doses))
                     return@setOnClickListener
                 }
-
                 binding.etFrequency.text.toString().trim().isEmpty() -> {
-                    binding.etFrequency.showSnackBar("add frequency")
+                    binding.etFrequency.showSnackBar(getString(R.string.add_frequency))
                     return@setOnClickListener
                 }
-
                 binding.etduration.text.toString().trim().isEmpty() -> {
-                    binding.etduration.showSnackBar("add duration")
+                    binding.etduration.showSnackBar(getString(R.string.add_duration))
+                    return@setOnClickListener
+                }
+                binding.etQuantity.text.toString().trim().isEmpty() -> {
+                    binding.etQuantity.showSnackBar(getString(R.string.add_quantity))
                     return@setOnClickListener
                 }
 
-                binding.etQuantity.text.toString().trim().isEmpty() -> {
-                    binding.etQuantity.showSnackBar("add quantitiy")
-                    return@setOnClickListener
-                }
             }
 
 
             if (fragment is AddReportFragment) {
                 fragment.itemMedicineList.add(
                     ItemModelMedicine(
-                        description = binding.etMedicineName.text.toString(),
+                        description = binding.etSearch.text.toString(),
                         doses = binding.etDoses.text.toString(),
                         frequency = binding.etFrequency.text.toString(),
                         duration = binding.etduration.text.toString(),
@@ -176,7 +179,7 @@ class DialogMedicineFragment(
 
     private fun setAdapter() {
         medicineAdapter = MedicineAdapter(itemMedicine) { selectedItem ->
-            binding.etMedicineName.setText(itemMedicine[selectedItem].description)
+            binding.etSearch.setText(itemMedicine[selectedItem].description)
             binding.rvMedicine.gone()
             binding.tvMedicineName.gone()
             binding.tvAction.gone()
@@ -200,7 +203,7 @@ class DialogMedicineFragment(
             val hashMap = HashMap<String, String>()
             hashMap["page"] = "1"
             hashMap["itemNumber"] = ""
-            hashMap["description"] = ""
+            hashMap["description"] = binding.etSearch.text.toString()
             addPrescriptionViewModel.getItemList(hashMap)
 
         }

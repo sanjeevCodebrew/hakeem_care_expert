@@ -28,32 +28,52 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ilMedicineName"
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etSearch"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_20"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:background="@drawable/drawable_bg_button"
+                    android:paddingStart="@dimen/dp_8"
+                    android:paddingEnd="@dimen/dp_48"
+                    android:fontFamily="@font/campton_book"
+                    android:hint="@string/search"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textCapSentences"
+                    android:maxLength="50"
+                    android:padding="@dimen/dp_8"
+                    android:textColor="@color/textColor"
+                    android:textDirection="locale"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivCross">
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/etMedicineName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:drawableEnd="@drawable/ic_dropdown"
-                        android:focusable="false"
-                        android:fontFamily="@font/campton_medium"
-                        android:hint="@string/medicine_name"
-                        android:imeOptions="actionDone"
-                        android:inputType="textCapSentences"
-                        android:maxLength="100"
-                        android:textColor="@color/colorBlack"
-                        android:textDirection="locale"
-                        android:textSize="@dimen/sp_16" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:padding="@dimen/dp_4"
+                    android:layout_marginEnd="@dimen/dp_4"
+                    android:src="@drawable/ic_search_app"
+                    app:layout_constraintTop_toTopOf="@id/etSearch"
+                    app:layout_constraintBottom_toBottomOf="@id/etSearch"
+                    app:layout_constraintEnd_toEndOf="@+id/etSearch" />
 
-                </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:id="@+id/tvDone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_14"
+                    android:layout_marginTop="@dimen/dp_4"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/campton_book"
+                    android:text="@string/done"
+                    app:layout_constraintTop_toBottomOf="@id/etSearch"
+                    app:layout_constraintEnd_toEndOf="@id/etSearch"/>
 
                 <TextView
                     android:id="@+id/tvAction"
@@ -61,14 +81,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="Action"
+                    android:text="@string/action"
                     android:visibility="gone"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginEnd="@dimen/dp_10"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ilMedicineName" />
+                    app:layout_constraintTop_toBottomOf="@id/tvDone" />
 
 
                 <TextView
@@ -77,14 +97,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="Medicine Name"
+                    android:text="@string/medicine_name"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:visibility="gone"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/tvAction"
-                    app:layout_constraintTop_toBottomOf="@id/ilMedicineName" />
+                    app:layout_constraintTop_toBottomOf="@id/tvDone" />
 
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -176,7 +196,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_48"
                             android:fontFamily="@font/campton_medium"
-                            android:hint="@string/frequency"
+                            android:hint="@string/frequecy_1"
                             android:imeOptions="actionDone"
                             android:inputType="numberDecimal"
                             android:maxLength="100"
@@ -258,7 +278,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/dp_48"
                             android:fontFamily="@font/campton_medium"
-                            android:hint="@string/quantity"
+                            android:hint="@string/quantity_1"
                             android:imeOptions="actionDone"
                             android:inputType="numberDecimal"
                             android:maxLength="100"

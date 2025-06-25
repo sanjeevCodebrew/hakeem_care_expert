@@ -27,6 +27,7 @@ class DiagnosisDialogFragment(
     private var diagnosisAdapter: DiagnosisAdapter? = null
     private var isSelectDiagnosis = false
 
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,7 +62,7 @@ class DiagnosisDialogFragment(
                 true,
                 etSearch.text.toString(),
                 diagnosisAdapter,
-                isSelectDiagnosis
+                true
             )
         }
 

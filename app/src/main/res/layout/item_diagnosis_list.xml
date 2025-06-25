@@ -15,7 +15,7 @@
             android:id="@+id/tvCode"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="CODE"
+            android:text="@string/code"
             android:textStyle="bold"
             android:textSize="14sp"
             app:layout_constraintTop_toTopOf="parent"
@@ -26,7 +26,6 @@
             android:id="@+id/tvCodeV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="CODE"
             android:maxLines="1"
             android:ellipsize="end"
             android:textStyle="bold"
@@ -40,7 +39,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="TITLE"
+            android:text="@string/title"
             android:maxLines="2"
             android:ellipsize="end"
             android:textStyle="bold"
@@ -54,7 +53,6 @@
             android:id="@+id/tvTitleV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="CODE"
             android:textStyle="bold"
             android:textSize="14sp"
             android:layout_marginTop="@dimen/dp_10"
@@ -63,12 +61,11 @@
             app:layout_constraintEnd_toEndOf="@+id/tvTitle"/>
 
 
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvAction"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="ACTION"
+            android:text="@string/action"
             android:textStyle="bold"
             android:textSize="14sp"
             app:layout_constraintTop_toTopOf="@id/tvCode"

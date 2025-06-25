@@ -62,160 +62,168 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_end="@dimen/dp_16" />
 
-                <TextView
-                    android:id="@+id/tvPatient"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@id/clPatientDetail"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_24"
-                    android:fontFamily="@font/campton_semibold"
-                    android:text="@string/patient"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/sp_18"
-                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/ivPic"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:layout_marginTop="@dimen/dp_16"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_profile_placeholder"
-                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/tvPatient"
-                    app:riv_corner_radius="44dp" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_12"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/campton_book"
-                    android:maxLines="1"
-                    android:text="@string/patient"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/sp_16"
-                    app:layout_constraintEnd_toStartOf="@id/view_line"
-                    app:layout_constraintStart_toEndOf="@id/ivPic"
-                    app:layout_constraintTop_toTopOf="@+id/ivPic" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvMobileNumber"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_12"
-                    android:layout_marginTop="@dimen/dp_4"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/campton_semibold"
-                    android:maxLines="1"
-                    android:text="@string/moh_number"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/sp_16"
-                    app:layout_constraintEnd_toStartOf="@id/view_line"
-                    app:layout_constraintStart_toEndOf="@id/ivPic"
-                    app:layout_constraintTop_toBottomOf="@+id/tvName" />
-
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvDob"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_12"
-                    android:layout_marginTop="@dimen/dp_4"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/campton_semibold"
-                    android:maxLines="1"
-                    android:text="@string/dob_1"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/sp_16"
-                    app:layout_constraintEnd_toStartOf="@id/view_line"
-                    app:layout_constraintStart_toEndOf="@id/ivPic"
-                    app:layout_constraintTop_toBottomOf="@+id/tvMobileNumber" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvAge"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_12"
-                    android:layout_marginTop="@dimen/dp_4"
-                    android:alpha="0.5"
-                    android:fontFamily="@font/campton_book"
-                    android:text="@string/patient"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/sp_16"
-                    app:layout_constraintEnd_toStartOf="@+id/view_line"
-                    app:layout_constraintStart_toEndOf="@id/ivPic"
-                    app:layout_constraintTop_toBottomOf="@+id/tvDob" />
-
-
-                <View
-                    android:id="@+id/view_line"
-                    android:layout_width="5dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintBottom_toBottomOf="@id/tvAge"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias=".55"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tvPatient" />
-
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvGender"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/campton_semibold"
-                    android:gravity="start"
-                    android:maxLines="1"
-                    android:text="@string/gender_1"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/sp_16"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvName"
+                    android:layoutDirection="locale"
+                    android:padding="16dp"
+                    android:textDirection="locale"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                    app:layout_constraintStart_toEndOf="@+id/view_line"
-                    app:layout_constraintTop_toTopOf="@+id/tvName" />
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvId"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/campton_semibold"
-                    android:maxLines="1"
-                    android:text="@string/id"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/sp_16"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/view_line"
-                    app:layout_constraintTop_toBottomOf="@+id/tvGender" />
+                    <TextView
+                        android:id="@+id/tvPatient"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_24"
+                        android:fontFamily="@font/campton_semibold"
+                        android:text="@string/patient"
+                        android:textColor="@color/textColor"
+                        android:textSize="@dimen/sp_18"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/ivPic"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="@dimen/dp_16"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_profile_placeholder"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvPatient"
+                        app:riv_corner_radius="44dp" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvWeight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/campton_semibold"
-                    android:maxLines="1"
-                    android:text="@string/weight_1"
-                    android:textColor="@color/textColor"
-                    android:textSize="@dimen/sp_16"
-                    app:layout_constraintStart_toStartOf="@id/tvId"
-                    app:layout_constraintTop_toBottomOf="@+id/tvId" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_12"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/campton_book"
+                        android:maxLines="1"
+                        android:text="@string/patient"
+                        android:textColor="@color/textColor"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintEnd_toStartOf="@id/view_line"
+                        app:layout_constraintStart_toEndOf="@id/ivPic"
+                        app:layout_constraintTop_toTopOf="@+id/ivPic" />
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvMobileNumber"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_12"
+                        android:layout_marginTop="@dimen/dp_4"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/campton_semibold"
+                        android:maxLines="1"
+                        android:text="@string/moh_number"
+                        android:textColor="@color/textColor"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintEnd_toStartOf="@id/view_line"
+                        app:layout_constraintStart_toEndOf="@id/ivPic"
+                        app:layout_constraintTop_toBottomOf="@+id/tvName" />
 
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="@dimen/dp_24"
-                    android:background="@color/lineColor"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvAge" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvDob"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_12"
+                        android:layout_marginTop="@dimen/dp_4"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/campton_semibold"
+                        android:maxLines="1"
+                        android:text="@string/dob_1"
+                        android:textColor="@color/textColor"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintEnd_toStartOf="@id/view_line"
+                        app:layout_constraintStart_toEndOf="@id/ivPic"
+                        app:layout_constraintTop_toBottomOf="@+id/tvMobileNumber" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_12"
+                        android:layout_marginTop="@dimen/dp_4"
+                        android:alpha="0.5"
+                        android:fontFamily="@font/campton_book"
+                        android:text="@string/patient"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintEnd_toStartOf="@id/view_line"
+                        app:layout_constraintStart_toEndOf="@id/ivPic"
+                        app:layout_constraintTop_toBottomOf="@+id/tvDob" />
+
+                    <View
+                        android:id="@+id/view_line"
+                        android:layout_width="5dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="@id/tvAge"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias=".55"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tvPatient" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvGender"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/campton_semibold"
+                        android:gravity="start"
+                        android:maxLines="1"
+                        android:text="@string/gender_1"
+                        android:textColor="@color/textColor"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintBottom_toBottomOf="@+id/tvName"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/view_line"
+                        app:layout_constraintTop_toTopOf="@+id/tvName" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvId"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/campton_semibold"
+                        android:maxLines="1"
+                        android:text="@string/id"
+                        android:textColor="@color/textColor"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/view_line"
+                        app:layout_constraintTop_toBottomOf="@+id/tvGender" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvWeight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/campton_semibold"
+                        android:maxLines="1"
+                        android:text="@string/weight_1"
+                        android:textColor="@color/textColor"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintStart_toStartOf="@id/tvId"
+                        app:layout_constraintTop_toBottomOf="@+id/tvId" />
+
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="@dimen/dp_24"
+                        android:background="@color/lineColor"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvAge" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -228,7 +236,7 @@
                     android:textColor="@color/textColor"
                     android:textSize="@dimen/sp_18"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/view" />
+                    app:layout_constraintTop_toBottomOf="@+id/clPatientDetail" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvAppointmentV"

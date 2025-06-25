@@ -41,7 +41,7 @@ class DiagnosisDialogNewFragment(
 
             tvTitle.text = fragment.getString(R.string.select_medicine)
             medicineAdapter = MedicineAdapter(itemList) { selectedItem ->
-                fragment.binding.etMedicineName.setText(itemList[selectedItem].category)
+                fragment.binding.etMedicineName.setText(itemList[selectedItem].description)
                 if (dialog?.isShowing == true)
                     dialog?.dismiss()
             }
@@ -62,13 +62,13 @@ class DiagnosisDialogNewFragment(
 
         ivSearch.setOnClickListener {
             if (!isDiagnosis){
-//                fragment.hitApi(true,etSearch.text.toString())
-//                medicineAdapter?.notifyDataSetChanged()
+                fragment.hitApi(true,etSearch.text.toString(),medicineAdapter,true)
+                medicineAdapter?.notifyDataSetChanged()
 
             }
             else{
-//                fragment.hitApiDiagnosis(true,etSearch.text.toString())
-//                diagnosisAdapter?.notifyDataSetChanged()
+                fragment.hitApiDiagnosis(true,etSearch.text.toString(),diagnosisAdapter,true)
+                diagnosisAdapter?.notifyDataSetChanged()
             }
 
         }
