@@ -17,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
@@ -165,10 +166,10 @@ class AppointmentDetailsFragment : DaggerFragment() {
 
         binding.tvAddReports.setOnClickListener {
 
-            if (request.is_report==false) {
+            if (request.is_prescription_report==false) {
                 registerActivityResult.launch(
                     Intent(requireActivity(), DrawerActivity::class.java)
-                        .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_REPORTS)
+                        .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_REPORT_NEW)
                         .putExtra(EXTRA_REQUEST_ID, request)
                 )
             }
@@ -186,7 +187,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                         R.id.item_edit -> {
                             registerActivityResult.launch(
                                 Intent(requireActivity(), DrawerActivity::class.java)
-                                    .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_REPORTS)
+                                    .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_REPORT_NEW)
                                     .putExtra(EXTRA_REQUEST_ID, request)
                             )
                         }
@@ -337,12 +338,12 @@ class AppointmentDetailsFragment : DaggerFragment() {
             )
         )
 
-        if (request.is_prescription == true)
+        if (request.is_report == true)
             binding.tvAddPrescription.text = getString(R.string.prescriptions)
         else
             binding.tvAddPrescription.text = getString(R.string.add_prescription)
 
-        if (request.is_report == true){
+        if (request.is_prescription_report == true){
             binding.tvAddReports.text = getString(R.string.reports)
         }
         else{
@@ -611,38 +612,31 @@ class AppointmentDetailsFragment : DaggerFragment() {
             }
 
             CallAction.COMPLETED -> {
-                if (request.is_prescription == true) {
-                    if (!request.pre_scription?.type.isNullOrEmpty()) {
+                if (request.is_report == true) {
+
                         val popup = PopupMenu(requireContext(), binding.tvAddPrescription)
                         popup.menuInflater.inflate(R.menu.menu_prescription, popup.menu)
 
                         popup.setOnMenuItemClickListener { item ->
                             when (item.itemId) {
                                 R.id.item_view -> {
-                                    val link = getString(
-                                        R.string.pdf_link,
-                                        BuildConfig.BASE_URL,
-                                        request.id,
-                                        BuildConfig.APP_UNIQUE_ID
-                                    )
+                                    val link = "https://hakeemcare.hakeemcare.com/medical-prescription-report/generate-pdf?request_id=${request.id}&download"
+                                    Log.e("TAG", "proceedRequest: "+link )
                                     openPdf(requireActivity(), link, true)
                                 }
 
                                 R.id.item_edit -> {
                                     registerActivityResult.launch(
                                         Intent(requireActivity(), DrawerActivity::class.java)
-                                            .putExtra(PAGE_TO_OPEN, request.pre_scription?.type)
+                                            .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_REPORTS)
                                             .putExtra(EXTRA_REQUEST_ID, request)
                                     )
                                 }
 
                                 R.id.item_download -> {
-                                    val link = getString(
-                                        R.string.pdf_link,
-                                        BuildConfig.BASE_URL,
-                                        request.id,
-                                        BuildConfig.APP_UNIQUE_ID
-                                    )
+                                    val link = "https://hakeemcare.hakeemcare.com/medical-prescription-report/generate-pdf?request_id=${request.id}&download"
+
+                                    Log.e("TAG", "proceedRequest: "+link )
 
                                   /*  val finalLink = if (link.contains("?")) "$link&download" else "$link?download"
 
@@ -669,7 +663,6 @@ class AppointmentDetailsFragment : DaggerFragment() {
                         }
 
                         popup.show()
-                    }
                 }
                 else {
                     val fragment = BottomPrescriptionFragment(this, request)

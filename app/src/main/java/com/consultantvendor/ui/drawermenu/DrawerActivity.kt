@@ -21,6 +21,7 @@ import com.consultantvendor.ui.dashboard.home.prescription.manual.ManualPrescrip
 import com.consultantvendor.ui.dashboard.home.questions.QuestionsFragment
 import com.consultantvendor.ui.dashboard.home.questions.detail.QuestionDetailFragment
 import com.consultantvendor.ui.dashboard.home.reports.AddReportFragment
+import com.consultantvendor.ui.dashboard.home.reports.AddReportNewFragment
 import com.consultantvendor.ui.dashboard.language.LanguageFragment
 import com.consultantvendor.ui.dashboard.location.LocationFragment
 import com.consultantvendor.ui.dashboard.settings.contactlist.ContactListFragment
@@ -103,6 +104,7 @@ class DrawerActivity : DaggerAppCompatActivity() {
             PREGNANCY_CALCULATOR -> addFragment(PregnancyCalculatorFragment())
             CONTACT_LIST -> addFragment(ContactListFragment())
             ADD_REPORTS -> addFragment(AddReportFragment())
+            ADD_REPORT_NEW -> addFragment(AddReportNewFragment())
         }
     }
 
@@ -137,6 +139,7 @@ class DrawerActivity : DaggerAppCompatActivity() {
         const val BANK_INFO = "BANK_INFO"
         const val CONTACT_LIST = "CONTACT_LIST"
         const val ADD_REPORTS = "ADD_REPORTS"
+        const val ADD_REPORT_NEW = "ADD_REPORT_NEW"
     }
 
 }

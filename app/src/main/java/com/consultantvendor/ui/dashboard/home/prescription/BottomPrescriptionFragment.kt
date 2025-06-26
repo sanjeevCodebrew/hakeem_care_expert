@@ -75,10 +75,16 @@ class BottomPrescriptionFragment(private val fragment: AppointmentDetailsFragmen
         }
 
         binding.tvDigital.setOnClickListener {
-            fragment.registerActivityResult.launch(Intent(requireActivity(), DrawerActivity::class.java)
+            /*fragment.registerActivityResult.launch(Intent(requireActivity(), DrawerActivity::class.java)
                     .putExtra(PAGE_TO_OPEN, PrescriptionType.DIGITAL)
                     .putExtra(EXTRA_REQUEST_ID, request))
-            dialog?.dismiss()
+            dialog?.dismiss()*/
+
+            fragment.registerActivityResult.launch(
+                Intent(requireActivity(), DrawerActivity::class.java)
+                    .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_REPORTS)
+                    .putExtra(EXTRA_REQUEST_ID, request))
+                    dialog?.dismiss()
         }
 
         binding.tvCancel.setOnClickListener {

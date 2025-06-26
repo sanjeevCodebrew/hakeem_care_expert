@@ -117,6 +117,7 @@ interface WebService {
         private const val GETDIAGNOSISLIST = "/api/diagnosis-list"
         private const val MEDICAL_REPORT = "/api/medical-report"
         private const val INSURANCE_LIST = "api/insurance-list"
+        private const val MEDICAL_PRESCRIPTION = "/api/medical-prescription"
 
     }
 
@@ -457,6 +458,10 @@ interface WebService {
     @FormUrlEncoded
     @POST(MEDICAL_REPORT)
     fun postMedicalReports(@FieldMap hashMap: HashMap<String, Any>): Call<ApiResponse<CommonDataModel>>
+
+    @FormUrlEncoded
+    @POST(MEDICAL_PRESCRIPTION)
+    fun postMedicalPrescription(@FieldMap hashMap: HashMap<String, Any>): Call<ApiResponse<CommonDataModel>>
 
     @GET(INSURANCE_LIST)
     fun getInsurance(): Call<InsuranceResponse>

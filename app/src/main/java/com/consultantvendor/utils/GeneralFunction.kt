@@ -35,6 +35,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
@@ -884,14 +885,18 @@ fun getProteinUnit(activity: Activity, value: Int, unitNeeded: Boolean): String 
 fun openPdf(activity: Activity, link: String, prescription: Boolean = false,isReport: Boolean=false) {
     Log.e("PDG======", link)
     if (prescription) {
-        activity.startActivity(
+        /*activity.startActivity(
             Intent(activity, WebViewActivity::class.java)
                 .putExtra(
                     WebViewActivity.LINK_TITLE,
                     activity.getString(R.string.prescription_details)
                 )
                 .putExtra(WebViewActivity.PDF_LINK, link)
-        )
+        )*/
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setDataAndType(link.toUri(), "application/pdf")
+        intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        activity.startActivity(intent)
     }
     else if (isReport){
         activity.startActivity(

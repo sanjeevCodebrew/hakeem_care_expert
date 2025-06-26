@@ -74,6 +74,7 @@ class WebViewActivity : DaggerAppCompatActivity() {
             }
             intent.hasExtra(PDF_LINK) -> {
                 loadUrl = intent.getStringExtra(PDF_LINK) ?: ""
+
             }
             else -> {
                 loadUrl = "${appClientDetails.domain_url}/${intent.getStringExtra(LINK_URL)}"

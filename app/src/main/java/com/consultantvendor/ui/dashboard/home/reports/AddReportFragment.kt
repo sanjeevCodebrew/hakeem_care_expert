@@ -190,15 +190,13 @@ class AddReportFragment : BasePhotoUplaodFragment() {
             binding.tvDoctorName.append(request?.to_user?.name)
         }
 
-
-
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun setEditPrescriptionData() {
         val medicalReport = request?.medicalReport ?: return
 
-        binding.tvHeader.text = "Edit Report"
+        binding.tvHeader.text = getString(R.string.edit_precription)
 
         if (medicalReport.prescription_type=="insurance"){
             binding.spnPrescriptionType.setSelection(1)

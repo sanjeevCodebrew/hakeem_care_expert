@@ -27,6 +27,7 @@ class Request : Serializable {
     var call_id: String? = null
     var is_prescription: Boolean? = null
     var is_report: Boolean? = null
+    var is_prescription_report: Boolean? = null
     var extra_detail: Extra_detail? = null
 
     var symptoms: List<Filter>? = null

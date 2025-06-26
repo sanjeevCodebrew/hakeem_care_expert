@@ -30,6 +30,8 @@ class AddPrescriptionViewModel @Inject constructor(private val webService: WebSe
 
     val getInsurance by lazy { SingleLiveEvent<Resource<InsuranceResponse>>() }
 
+    val addPrescription by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
+
     fun prescreptions(addPrescription: AddPrescription) {
         prescreptions.value = Resource.loading()
 
@@ -165,6 +167,30 @@ class AddPrescriptionViewModel @Inject constructor(private val webService: WebSe
                     p1: Throwable
                 ) {
                     getInsurance.value = Resource.error(ApiUtils.failure(p1))
+                }
+
+            })
+    }
+
+    fun addPrescription(hashMap: HashMap<String, Any>) {
+        addPrescription.value = Resource.loading()
+
+        webService.postMedicalPrescription(hashMap)
+            .enqueue(object : Callback<ApiResponse<CommonDataModel>> {
+
+                override fun onResponse(call: Call<ApiResponse<CommonDataModel>>,
+                                        response: Response<ApiResponse<CommonDataModel>>) {
+                    if (response.isSuccessful) {
+                        addPrescription.value = Resource.success(response.body()?.data)
+                    } else {
+                        addPrescription.value = Resource.error(
+                            ApiUtils.getError(response.code(),
+                                response.errorBody()?.string()))
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
+                    addPrescription.value = Resource.error(ApiUtils.failure(throwable))
                 }
 
             })
