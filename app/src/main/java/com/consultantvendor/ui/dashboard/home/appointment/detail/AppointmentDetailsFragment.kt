@@ -192,13 +192,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
                             )
                         }
                         R.id.item_download -> {
-                            val link = getString(
-                                R.string.pdf_link,
-                                BuildConfig.BASE_URL,
-                                request.id,
-                                BuildConfig.APP_UNIQUE_ID
-                            )
-                            openPdf(requireActivity(), link, true)
+                            val link = "https://hakeemcare.hakeemcare.com/medical-report?request_id=${request.id}"
+                            openPdf(requireActivity(), link, false,true)
                         }
                     }
                     true

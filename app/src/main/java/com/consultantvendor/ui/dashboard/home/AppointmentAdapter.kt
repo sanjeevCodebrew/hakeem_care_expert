@@ -93,7 +93,7 @@ class AppointmentAdapter(private val fragment: Fragment, private val items: Arra
                     "${DateUtils.dateTimeFormatFromUTC(DateFormat.TIME_FORMAT, request.bookingDateUTC)}"
 
             tvRequestType.text = request.service_type
-            tvPrice.text = getCurrency(request.price)
+            tvPrice.text = fragment.getString(R.string.sar) + request.price
 
             tvStatus.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
 

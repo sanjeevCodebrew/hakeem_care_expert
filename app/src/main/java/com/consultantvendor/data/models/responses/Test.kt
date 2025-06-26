@@ -1,7 +1,7 @@
 package com.consultantvendor.data.models.responses
 
 /*
-data class TestResponse(
+data class Test(
     val `data`: Data,
     val message: String,
     val status: String,
@@ -41,6 +41,7 @@ data class RequestDetail(
     val insurance_name: String,
     val insurance_number: String,
     val is_prescription: Boolean,
+    val is_prescription_report: Boolean,
     val is_report: Boolean,
     val is_second_oponion: Boolean,
     val is_time_exced: Boolean,
@@ -51,6 +52,8 @@ data class RequestDetail(
     val medical_report: MedicalReport,
     val packages: Any,
     val prescription: Any,
+    val prescriptionReport: PrescriptionReport,
+    val prescription_report: PrescriptionReport,
     val price: String,
     val profile_id: Int,
     val question_answers: List<Any?>,
@@ -149,7 +152,7 @@ data class FromUser(
     val clinic_number: String,
     val clinic_owner_name: String,
     val country_code: String,
-    val email: String,
+    val email: Any,
     val email_hide: Boolean,
     val heath_files: List<Any>,
     val id: Int,
@@ -157,12 +160,12 @@ data class FromUser(
     val master_preferences: List<Any>,
     val name: String,
     val name_hide: Boolean,
-    val national_id: String,
+    val national_id: Any,
     val patient_count_hide: Boolean,
     val phone: String,
     val phone_hide: Boolean,
     val profile: Profile,
-    val profile_image: String,
+    val profile_image: Any,
     val resident_id: String,
     val review_count_hide: Boolean,
     val total_rating_hide: Boolean
@@ -174,9 +177,18 @@ data class MedicalReport(
     val fill_type: String,
     val id: Int,
     val insurance_id: String,
+    val insurance_name: String,
     val prescription: List<Prescription>,
     val prescription_file: String,
     val prescription_type: String,
+    val report_detals: String,
+    val request_id: Int,
+    val updated_at: String
+)
+
+data class PrescriptionReport(
+    val created_at: String,
+    val id: Int,
     val report_detals: String,
     val request_id: Int,
     val updated_at: String
@@ -232,7 +244,7 @@ data class ToUser(
     val profile_image: String,
     val resident_id: String,
     val review_count_hide: Boolean,
-    val totalRating: Double,
+    val totalRating: Int,
     val total_rating_hide: Boolean
 )
 
@@ -244,7 +256,7 @@ data class TransType(
 data class Profile(
     val about: String,
     val accept_self_pay: Boolean,
-    val address: String,
+    val address: Any,
     val address_hide: Boolean,
     val avatar: Any,
     val call_price: Any,
@@ -285,7 +297,7 @@ data class Profile(
     val trans_short_description: Any,
     val updated_at: String,
     val user_id: Int,
-    val weight: Any,
+    val weight: String,
     val working_since: Any,
     val working_since_hide: Boolean
 )
@@ -395,7 +407,7 @@ data class ProfileX(
     val pet_category_id: Any,
     val qualification: String,
     val qualification_hide: Boolean,
-    val rating: Double,
+    val rating: Int,
     val short_description: String,
     val special_marking: Any,
     val speciality: Any,

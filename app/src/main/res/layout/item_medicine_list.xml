@@ -22,52 +22,64 @@
                     android:layout_weight="2"
                     android:text="@string/medicine_name"
                     android:textStyle="bold"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:text="@string/doses_1"
                     android:textStyle="bold"
                     android:textSize="12sp"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:text="@string/frequecy_1"
                     android:textStyle="bold"
                     android:textSize="12sp"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:text="@string/duration_1"
                     android:textStyle="bold"
                     android:textSize="12sp"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:text="@string/quantity_1"
                     android:textStyle="bold"
                     android:textSize="12sp"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.5"
                     android:text="@string/action"
                     android:textStyle="bold"
                     android:textSize="12sp"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp" />
             </LinearLayout>
 
             <!-- Sample Medicine Row -->

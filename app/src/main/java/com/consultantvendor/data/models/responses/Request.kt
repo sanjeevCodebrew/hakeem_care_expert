@@ -50,6 +50,10 @@ class Request : Serializable {
     var categoryData: CategoryData? = null
 
     var medicalReport: MedicalReport?=null
+
+    val prescriptionReport: PrescriptionReport?=null
+
+
 }
 
 class CategoryData : Serializable {
@@ -63,5 +67,13 @@ class CategoryData : Serializable {
     var color_code: String? = null
     var enable: Boolean? = null
     var cat_slug: String? = null
+}
+
+class PrescriptionReport: Serializable  {
+    val created_at: String?=null
+    val id: Int?=null
+    val report_detals: String?=null
+    val request_id: Int?=null
+    val updated_at: String?=null
 }
 

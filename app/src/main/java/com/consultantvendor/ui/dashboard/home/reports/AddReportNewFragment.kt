@@ -86,6 +86,7 @@ class AddReportNewFragment : DaggerFragment() {
 
             initialise()
             listeners()
+            setEditReport()
             bindObservers()
 
 
@@ -93,6 +94,10 @@ class AddReportNewFragment : DaggerFragment() {
         return rootView
     }
 
+    private fun setEditReport() {
+        val medicalReport = request?.prescriptionReport ?: return
+        binding.etReportDescription.setText(medicalReport.report_detals)
+    }
 
     private fun initialise() {
         viewModelUpload = ViewModelProvider(this, viewModelFactory)[UploadFileViewModel::class.java]
