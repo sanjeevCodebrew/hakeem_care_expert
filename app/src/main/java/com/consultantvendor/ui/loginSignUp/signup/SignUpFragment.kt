@@ -22,6 +22,7 @@ import com.consultantvendor.BuildConfig
 import com.consultantvendor.R
 import com.consultantvendor.appClientDetails
 import com.consultantvendor.appFeatures
+import com.consultantvendor.data.models.requests.DocImage
 import com.consultantvendor.data.models.requests.SaveAddress
 import com.consultantvendor.data.models.requests.SetFilter
 import com.consultantvendor.data.models.responses.CountryCity
@@ -45,6 +46,7 @@ import com.consultantvendor.ui.loginSignUp.verifyotp.VerifyOTPFragment
 import com.consultantvendor.ui.loginSignUp.welcome.WelcomeFragment.Companion.EXTRA_SOCIAL
 import com.consultantvendor.utils.APP_TYPE
 import com.consultantvendor.utils.AppRequestCode
+import com.consultantvendor.utils.BasePhotoUplaodFragment
 import com.consultantvendor.utils.ConsultType
 import com.consultantvendor.utils.CountryListType
 import com.consultantvendor.utils.DateFormat
@@ -87,7 +89,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import javax.inject.Inject
 
-class SignUpFragment : DaggerFragment(), OnDateSelected {
+class SignUpFragment : BasePhotoUplaodFragment(), OnDateSelected {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -150,7 +152,7 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
 
     private var saveAddress = SaveAddress()
 
-    private val storagePermissionLauncherLauncher =
+   /* private val storagePermissionLauncherLauncher =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
             if (permissions.values.any { !it }) {
                 PermissionUtils.showAppSettingsDialog(
@@ -159,7 +161,7 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
                 return@registerForActivityResult
             }
             selectImages(this, requireActivity())
-        }
+        }*/
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -397,11 +399,13 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
         }
 
         binding.ivPic.setOnClickListener {
-            if (hasPermissions(cameraAndStorageAccess)) {
+           /* if (hasPermissions(cameraAndStorageAccess)) {
                 selectImages(this, requireActivity())
             } else {
                 storagePermissionLauncherLauncher.launch(cameraAndStorageAccess)
-            }
+            }*/
+
+            showImageDialog(false,false,false)
         }
 
         binding.spnTitle.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -1028,5 +1032,33 @@ class SignUpFragment : DaggerFragment(), OnDateSelected {
 
     fun longToast(text: CharSequence) {
         Toast.makeText(requireContext(), text, Toast.LENGTH_LONG).show()
+    }
+
+    override fun getPdf(uri: String?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getImage(uri: String?, data: Uri) {
+
+        val selectedImageUri: Uri? = data
+        selectedImageUri?.let {
+            val file: File? = uriToFile( it)
+            file?.let {
+                val docImage = DocImage()
+                docImage.type = DocType.IMAGE
+                docImage.imageFile = it
+
+                // fileToUpload = compressImage(requireActivity(), File(ContentUriUtils.getFilePath(requireContext(),data)))
+                // Glide.with(requireContext()).load(fileToUpload).into(binding.ivPic)
+
+                fileToUpload = uri?.let { it1 -> File(it1) }
+                Glide.with(requireContext()).load(fileToUpload).into(binding.ivPic)
+            }
+        }
+
+    }
+
+    override fun getVideo(uri: String?, i: Int) {
+        TODO("Not yet implemented")
     }
 }
