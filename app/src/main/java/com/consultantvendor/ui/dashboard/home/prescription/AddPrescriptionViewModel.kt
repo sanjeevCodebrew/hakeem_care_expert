@@ -141,6 +141,31 @@ class AddPrescriptionViewModel @Inject constructor(private val webService: WebSe
             })
     }
 
+    fun addReports1(addPrescription: AddPrescription) {
+        addReports.value = Resource.loading()
+
+        webService.postMedicalReports1(addPrescription)
+            .enqueue(object : Callback<ApiResponse<CommonDataModel>> {
+
+                override fun onResponse(call: Call<ApiResponse<CommonDataModel>>,
+                                        response: Response<ApiResponse<CommonDataModel>>) {
+                    if (response.isSuccessful) {
+                        addReports.value = Resource.success(response.body()?.data)
+                    } else {
+                        addReports.value = Resource.error(
+                            ApiUtils.getError(response.code(),
+                                response.errorBody()?.string()))
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
+                    addReports.value = Resource.error(ApiUtils.failure(throwable))
+                }
+
+            })
+    }
+
+
 
     fun getInsurance() {
         getInsurance.value = Resource.loading()

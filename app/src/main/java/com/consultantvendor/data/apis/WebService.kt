@@ -460,6 +460,10 @@ interface WebService {
     fun postMedicalReports(@FieldMap hashMap: HashMap<String, Any>): Call<ApiResponse<CommonDataModel>>
 
     @FormUrlEncoded
+    @POST(MEDICAL_REPORT)
+    fun postMedicalReports1(@Body addPrescription: AddPrescription): Call<ApiResponse<CommonDataModel>>
+
+    @FormUrlEncoded
     @POST(MEDICAL_PRESCRIPTION)
     fun postMedicalPrescription(@FieldMap hashMap: HashMap<String, Any>): Call<ApiResponse<CommonDataModel>>
 

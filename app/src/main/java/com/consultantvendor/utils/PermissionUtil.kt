@@ -7,9 +7,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
+import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
 class PermissionUtil(private val context: Context) {
@@ -29,7 +31,7 @@ class PermissionUtil(private val context: Context) {
     }
 
     fun registerLauncher(activity: Activity) {
-        requestPermissionLauncher = (activity as androidx.activity.ComponentActivity).registerForActivityResult(
+        requestPermissionLauncher = (activity as ComponentActivity).registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
             handlePermissionsResult(permissions)
@@ -38,12 +40,12 @@ class PermissionUtil(private val context: Context) {
 
     private fun handlePermissionsResult(permissions: Map<String, Boolean>) {
         var shouldShowDialog = false
+        var grantedCount = 0
+
         permissions.entries.forEach { (permission, granted) ->
             if (granted) {
-                onPermissionGranted?.invoke()
-            }
-            else
-            {
+                grantedCount++
+            } else {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(context as Activity, permission)) {
                     onPermissionDenied?.invoke()
                 } else {
@@ -52,7 +54,9 @@ class PermissionUtil(private val context: Context) {
             }
         }
 
-        if (shouldShowDialog) {
+        if (grantedCount == permissions.size) {
+            onPermissionGranted?.invoke()
+        } else if (shouldShowDialog) {
             showSettingsDialog()
             onPermissionPermanentlyDenied?.invoke()
         }
@@ -69,7 +73,7 @@ class PermissionUtil(private val context: Context) {
         onPermissionPermanentlyDenied = onPermanentlyDenied
 
         val deniedPermissions = permissions.filter {
-            ActivityCompat.checkSelfPermission(context, it) != PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(context, it) != PackageManager.PERMISSION_GRANTED
         }.toTypedArray()
 
         if (deniedPermissions.isNotEmpty()) {
@@ -80,16 +84,16 @@ class PermissionUtil(private val context: Context) {
     }
 
     private fun showSettingsDialog() {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("Permission Required")
-        builder.setMessage("This app requires permission to function properly. Please grant the permission in the app settings.")
-        builder.setPositiveButton("Go to Settings") { _, _ ->
-            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            val uri = Uri.fromParts("package", context.packageName, null)
-            intent.data = uri
-            context.startActivity(intent)
-        }
-        builder.setNegativeButton("Cancel", null)
-        builder.show()
+        AlertDialog.Builder(context)
+            .setTitle("Permission Required")
+            .setMessage("This app requires permission to function properly. Please grant the permission in the app settings.")
+            .setPositiveButton("Go to Settings") { _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri = Uri.fromParts("package", context.packageName, null)
+                intent.data = uri
+                context.startActivity(intent)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
     }
 }

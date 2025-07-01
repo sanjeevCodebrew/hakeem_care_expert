@@ -24,7 +24,6 @@ import com.consultantvendor.utils.BlogType
 import com.consultantvendor.utils.DocType
 import com.consultantvendor.utils.PAGE_TO_OPEN
 import com.consultantvendor.utils.PermissionUtils
-import com.consultantvendor.utils.PermissionUtils.cameraAndStorageAccess
 import com.consultantvendor.utils.PermissionUtils.hasPermissions
 import com.consultantvendor.utils.PrefsManager
 import com.consultantvendor.utils.compressImage
@@ -147,11 +146,11 @@ class AddFeedFragment : DaggerFragment() {
         }
 
         binding.ivPic.setOnClickListener {
-            if (hasPermissions(cameraAndStorageAccess)) {
+        /*    if (hasPermissions(cameraAndStorageAccess)) {
                 getStorage()
             } else {
                 storagePermissionLauncherLauncher.launch(cameraAndStorageAccess)
-            }
+            }*/
         }
     }
 

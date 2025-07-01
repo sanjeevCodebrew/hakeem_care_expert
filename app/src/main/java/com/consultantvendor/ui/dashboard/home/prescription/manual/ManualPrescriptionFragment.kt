@@ -31,9 +31,9 @@ import com.consultantvendor.utils.DateFormat
 import com.consultantvendor.utils.DateUtils
 import com.consultantvendor.utils.DocType
 import com.consultantvendor.utils.EXTRA_REQUEST_ID
-import com.consultantvendor.utils.PermissionUtils
+/*import com.consultantvendor.utils.PermissionUtils
 import com.consultantvendor.utils.PermissionUtils.cameraAndStorageAccess
-import com.consultantvendor.utils.PermissionUtils.hasPermissions
+import com.consultantvendor.utils.PermissionUtils.hasPermissions*/
 import com.consultantvendor.utils.PrefsManager
 import com.consultantvendor.utils.PrescriptionType
 import com.consultantvendor.utils.compressImage
@@ -363,7 +363,7 @@ class ManualPrescriptionFragment : BasePhotoUplaodFragment(){
     }*/
 
     override fun getPdf(uri: String?) {
-        TODO("Not yet implemented")
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
