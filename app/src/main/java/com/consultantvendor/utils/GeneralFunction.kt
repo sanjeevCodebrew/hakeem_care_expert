@@ -32,10 +32,14 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
@@ -945,20 +949,17 @@ fun downloadFile(activity: Activity, url: String, imageRequestId: String? = null
     }
 }
 
-fun unicodeStringConvertion(unicodeString: String?): String? {
-//    val unicodeString = "\\u0645\\u062d\\u0627\\u062f\\u062b\\u0629"
-    val originalString = unicodeString
-        ?.replace("\\u", "")
-        ?.chunked(4)
-        ?.map { it.toInt(16).toChar() }
-        ?.joinToString("")
+fun AppCompatActivity.applyInsets(view: View, isLightStatusBar: Boolean = true) {
+    // Set status bar color to colorPrimary
+    window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
 
-    val regex = originalString?.toRegex()
-
-    return unicodeString?.let {
-        regex?.replace(it) { matchResult ->
-            val hexCode = matchResult.groupValues[1]
-            String(Character.toChars(hexCode.toInt(16)))
-        }
+    // Handle system bar insets (status + nav bars)
+    ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+        val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+        ViewCompat.onApplyWindowInsets(view, WindowInsetsCompat.CONSUMED)// don't consume so child views can handle insets too
     }
+
+    // Set light/dark status bar icons
+    WindowCompat.getInsetsController(window, view)?.isAppearanceLightStatusBars = isLightStatusBar
 }

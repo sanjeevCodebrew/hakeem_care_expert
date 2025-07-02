@@ -1,6 +1,7 @@
 package com.consultantvendor.ui.drawermenu
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.consultantvendor.R
@@ -51,7 +52,11 @@ class DrawerActivity : DaggerAppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_container)
+        setContentView(binding.root)
+        applyInsets(binding.root)
 
         initialise()
     }
@@ -59,7 +64,7 @@ class DrawerActivity : DaggerAppCompatActivity() {
     private fun initialise() {
         LocaleHelper.setLocale(this, userRepository.getUserLanguage(), prefsManager)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_container)
+
 
 
         when (intent.getStringExtra(PAGE_TO_OPEN)) {

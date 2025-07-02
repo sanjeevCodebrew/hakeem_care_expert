@@ -660,8 +660,12 @@ class AppointmentDetailsFragment : DaggerFragment() {
                         popup.show()
                 }
                 else {
-                    val fragment = BottomPrescriptionFragment(this, request)
-                    fragment.show(requireActivity().supportFragmentManager, fragment.tag)
+//                    val fragment = BottomPrescriptionFragment(this, request)
+//                    fragment.show(requireActivity().supportFragmentManager, fragment.tag)
+                    registerActivityResult.launch(
+                        Intent(requireActivity(), DrawerActivity::class.java)
+                            .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_REPORTS)
+                            .putExtra(EXTRA_REQUEST_ID, request))
                 }
             }
 

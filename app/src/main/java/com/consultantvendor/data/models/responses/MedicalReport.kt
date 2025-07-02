@@ -8,6 +8,7 @@ class MedicalReport : Serializable {
     val fill_type: String?=null
     val id: Int?=null
     val insurance_id: String?=null
+    val insurance_name: String?=null
     val doc_url: String?=null
     val prescription: List<Prescription>?=null
     val prescription_file: String?=null

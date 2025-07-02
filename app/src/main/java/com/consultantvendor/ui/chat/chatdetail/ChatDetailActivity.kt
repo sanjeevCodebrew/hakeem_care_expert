@@ -22,6 +22,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -71,6 +72,7 @@ import com.consultantvendor.utils.PermissionUtil
 import com.consultantvendor.utils.PrefsManager
 import com.consultantvendor.utils.USER_ID
 import com.consultantvendor.utils.USER_NAME
+import com.consultantvendor.utils.applyInsets
 import com.consultantvendor.utils.dialogs.BasePhotoUploadActivity
 import com.consultantvendor.utils.dialogs.FileUriUtils
 import com.consultantvendor.utils.dialogs.ProgressDialog
@@ -237,9 +239,15 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
         //LocaleHelper.setLocale(this, getUserLanguage())
+
+
+        enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_chat_detail)
+        setContentView(binding.root)
+        applyInsets(binding.root)
 
         setAdapter()
         initialise()

@@ -10,28 +10,41 @@ import com.consultantvendor.ui.dashboard.home.prescription.model.InsuranceRespon
 import com.consultantvendor.ui.dashboard.home.prescription.model.ResponseInsurance
 import com.consultantvendor.ui.dashboard.home.reports.AddReportFragment
 
-class InsuranceAdapter(private val fragment: AddReportFragment,private var items: List<ResponseInsurance>) : BaseAdapter() {
+class InsuranceAdapter(
+    private val fragment: AddReportFragment,
+    private var items: List<ResponseInsurance>
+) : BaseAdapter() {
+
+    var selectedname = ""
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view: View
         val vh: ViewHolder
         if (convertView == null) {
-            view = LayoutInflater.from(fragment.requireContext()).inflate(R.layout.item_spinner, parent, false)
+            view = LayoutInflater.from(fragment.requireContext())
+                .inflate(R.layout.item_spinner, parent, false)
             vh = ViewHolder(view)
             view?.tag = vh
         } else {
             view = convertView
             vh = view.tag as ViewHolder
         }
+        vh.tvTitle.text =items[position].titleEN
 
-        vh.tvTitle.text = items[position].titleEN
+      /*  if (fragment.insuraceId.isNotEmpty()) {
+            items.firstOrNull { it._id==fragment.insuraceId }?.let {
+
+            }
+        } else {
 
 
-       /* if (fragment.userRepository.getUserLanguage()=="en"){
-            vh.tvTitle.text = items[position].titleEN
-        }
-        else{
-            vh.tvTitle.text = items[position].titleAR
+            val currentItem = items[position]
+
+            if (fragment.userRepository.getUserLanguage() == "en") {
+                vh.tvTitle.text = currentItem.titleEN
+            } else {
+                vh.tvTitle.text = currentItem.titleAR
+            }
         }*/
 
 

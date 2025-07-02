@@ -66,17 +66,6 @@ class BottomLoginFragment() : DaggerBottomSheetDialogFragment() {
                 adapter?.notifyDataSetChanged()
 
             }
-
-//            adapter = LoginUserAdapter(users) { selectedIndex ->
-//                users.forEachIndexed { index, option ->
-//                    option.isSelect = index == selectedIndex
-//                }
-//                adapter?.notifyDataSetChanged()
-//
-//                (activity as? HomeActivity)?.hitApiLogin(users[selectedIndex])
-//                dialog?.dismiss()
-//            }
-
         }
 
         binding.rvUser.adapter = adapter
@@ -89,7 +78,7 @@ class BottomLoginFragment() : DaggerBottomSheetDialogFragment() {
         }
 
         binding.clMain.setOnClickListener {
-            if (users.size > 3){
+           /* if (users.size > 3){
                 requireActivity().longToast(getString(R.string.maximum_user_limit))
             }
             else
@@ -97,13 +86,11 @@ class BottomLoginFragment() : DaggerBottomSheetDialogFragment() {
                 startActivity(
                     Intent(activity, LoginActivity::class.java))
                     dialog?.dismiss()
-            }
+            }*/
+            startActivity(
+                Intent(activity, LoginActivity::class.java))
+            dialog?.dismiss()
         }
     }
 
-//    companion object {
-//        fun newInstance(): BottomLoginFragment {
-//            return BottomLoginFragment()
-//        }
-//    }
 }

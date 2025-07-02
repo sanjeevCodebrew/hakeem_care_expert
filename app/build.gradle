@@ -11,13 +11,13 @@ apply plugin: 'com.google.firebase.crashlytics'
 android {
 
     namespace "com.consultantvendor"
-    compileSdk 35
+    compileSdk 36
 
 
     defaultConfig {
         applicationId "com.hakeem.expert"
-        minSdk 24
-        targetSdk 35
+        minSdk 26
+        targetSdk 36
         versionCode 1
         versionName "1.0.0"
         multiDexEnabled true
@@ -51,7 +51,7 @@ android {
         consult {
             dimension "app"
             applicationId "com.hakeem.expert"
-            versionCode 69
+            versionCode 70
             versionName "2.2.1"
             buildConfigField 'String', 'APP_UNIQUE_ID', "\"3b7474e39d4a249a9ecc8aa24b7e8acd42\""
             /*buildConfigField 'String', 'BASE_URL', "\"https://devhakeemcare.hakeemcare.com/\""*/

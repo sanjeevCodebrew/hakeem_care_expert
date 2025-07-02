@@ -65,19 +65,31 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
         permissionUtil.registerLauncher(this)
     }
 
-    private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let { handleImageResult(it) }
-    }
-
-    private val pdfPickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let { handlePdfResult(it) }
-    }
-
-    private val captureImageLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        if (success) {
-            handleImageResult(cameraUri)
+    private val imagePickerLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let { handleImageResult(it) }
         }
-    }
+
+    private val pdfPickerLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let { handlePdfResult(it) }
+        }
+
+    private val captureImageLauncher =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+                handleImageResult(cameraUri)
+            }
+        }
+
+    private val cameraIntentVideo =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            val uri = it.data?.data
+            uri?.let {
+                val file = uriToFile(uri)
+                getVideo(file?.absolutePath, 2)
+            }
+        }
 
     fun openGallery() {
         imagePickerLauncher.launch("image/*")
@@ -88,9 +100,29 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
     }
 
     fun openCameraImageCapture() {
-        val photoFile = File.createTempFile("IMG_", ".jpg", requireContext().getExternalFilesDir(null))
-        cameraUri = FileProvider.getUriForFile(requireContext(), "${requireContext().packageName}.provider", photoFile)
+        val photoFile =
+            File.createTempFile("IMG_", ".jpg", requireContext().getExternalFilesDir(null))
+        cameraUri = FileProvider.getUriForFile(
+            requireContext(),
+            "${requireContext().packageName}.provider",
+            photoFile
+        )
         captureImageLauncher.launch(cameraUri)
+    }
+
+    fun openVideoGallery() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "video/*"
+            addCategory(Intent.CATEGORY_OPENABLE)
+        }
+        cameraIntentVideo.launch(intent)
+    }
+
+    fun startCameraIntentVideo(context: Context) {
+        val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE).apply {
+            putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1)
+        }
+        cameraIntentVideo.launch(intent)
     }
 
     private fun handleImageResult(uri: Uri) {
@@ -107,7 +139,7 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
         } ?: showError("Unable to get PDF file.")
     }
 
-    fun uriToFile(uri: Uri): File? {
+    internal fun uriToFile(uri: Uri): File? {
         return try {
             val inputStream = requireContext().contentResolver.openInputStream(uri)
             val fileName = getFileName(uri) ?: "temp_file"
@@ -143,7 +175,11 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun showImageDialog(isVideo: Boolean = false, showCamera: Boolean = true, showPdf: Boolean = false) {
+    fun showImageDialog(
+        isVideo: Boolean = false,
+        showCamera: Boolean = true,
+        showPdf: Boolean = false
+    ) {
         val dialog = Dialog(requireContext())
         val view = ItemDialogImageBinding.inflate(layoutInflater)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -185,18 +221,18 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
     }
 
     private fun checkAndLaunchPdf() {
-        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arrayOf(Manifest.permission.READ_MEDIA_IMAGES)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // No permission needed from Android 13 onwards for PDFs
+            openPdfPicker()
         } else {
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+            val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+            permissionUtil.checkPermissions(
+                permissions,
+                onGranted = { openPdfPicker() },
+                onDenied = {},
+                onPermanentlyDenied = { showPermissionSettingsDialog() }
+            )
         }
-
-        permissionUtil.checkPermissions(
-            permissions,
-            onGranted = { openPdfPicker() },
-            onDenied = {},
-            onPermanentlyDenied = { showPermissionSettingsDialog() }
-        )
     }
 
     fun showPermissionSettingsDialog() {
@@ -210,29 +246,6 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
             }
             .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
             .show()
-    }
-
-    open fun openVideoGallery() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-            type = "video/*"
-            addCategory(Intent.CATEGORY_OPENABLE)
-        }
-        cameraIntentVideo.launch(intent)
-    }
-
-    open fun startCameraIntentVideo(context: Context) {
-        val intent = Intent(MediaStore.ACTION_VIDEO_CAPTURE).apply {
-            putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1)
-        }
-        cameraIntentVideo.launch(intent)
-    }
-
-    private val cameraIntentVideo = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-        val uri = it.data?.data
-        if (uri != null) {
-            val file = uriToFile(uri)
-            getVideo(file?.absolutePath, 2)
-        }
     }
 
     abstract fun getPdf(uri: String?)

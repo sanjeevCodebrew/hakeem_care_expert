@@ -91,6 +91,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
 
 
     private var medicneAdapter: MedicineAdapter? = null
+
     private var adpterDiagnosis: DiagnosisAdapter? = null
 
     private var isSearchDiagnosis = false
@@ -127,7 +128,8 @@ class AddReportFragment : BasePhotoUplaodFragment() {
     ): View? {
         if (rootView == null) {
             binding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_add_reports, container, false)
+                inflater, R.layout.fragment_add_reports, container, false
+            )
             rootView = binding.root
 
             initialise()
@@ -198,34 +200,44 @@ class AddReportFragment : BasePhotoUplaodFragment() {
 
         binding.tvHeader.text = getString(R.string.edit_precription)
 
-        if (medicalReport.prescription_type=="insurance"){
+        if (medicalReport.prescription_type == "insurance") {
             binding.spnPrescriptionType.setSelection(1)
-        }
-        else{
+        } else {
             binding.spnPrescriptionType.setSelection(2)
         }
 
-        if (medicalReport.fill_type=="form"){
+        insuraceId = medicalReport.insurance_id.toString()
+
+        if (medicalReport.fill_type == "form") {
             binding.spnFillType.setSelection(1)
-        }
-        else
-        {
+        } else {
             binding.spnFillType.setSelection(2)
+
+            medicalReport.prescription_file?.isEmpty()?.let {
+                if (!it)
+                    docUrl = medicalReport.prescription_file.toString()
+                binding.ivDoc.setImageResource(R.drawable.ic_pdf)
+                binding.tvFileName.text = docUrl
+            }
+
         }
 
-        if (medicalReport.diagnosis?.isNotEmpty() == true)
-        {
+        if (medicalReport.diagnosis?.isNotEmpty() == true) {
             medicalReport.diagnosis.forEach {
-                itemDiagnosisList.add(ItemModelDiagnosis(it.code,it.title))
+                itemDiagnosisList.add(ItemModelDiagnosis(it.code, it.title))
             }
             adpterDiagnosisList?.notifyDataSetChanged()
 
         }
 
-         if (medicalReport.prescription?.isNotEmpty() == true){
+        if (medicalReport.prescription?.isNotEmpty() == true) {
             medicalReport.prescription.forEach {
-                itemMedicineList.add(ItemModelMedicine(it.description,
-                    it.doses,it.frequency,it.duration,"",it.quantity))
+                itemMedicineList.add(
+                    ItemModelMedicine(
+                        it.description,
+                        it.doses, it.frequency, it.duration, "", it.quantity
+                    )
+                )
             }
             adpterMedicineList?.notifyDataSetChanged()
         }
@@ -235,6 +247,12 @@ class AddReportFragment : BasePhotoUplaodFragment() {
     }
 
     private fun setAdapter() {
+        insuraceId.takeIf { it.isNotEmpty() }?.let {
+            val index=   itemsInsurance.indexOfFirst { it._id==insuraceId }
+            val item=itemsInsurance.get(index)
+            itemsInsurance.removeAt(index)
+            itemsInsurance.add(0,item)
+        }
 
         spinnerInsuranceAdapter = InsuranceAdapter(this, itemsInsurance)
         binding.spnInsurance.adapter = spinnerInsuranceAdapter
@@ -252,7 +270,6 @@ class AddReportFragment : BasePhotoUplaodFragment() {
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().finish()
         }
-
 
         binding.spnInsurance.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -272,6 +289,8 @@ class AddReportFragment : BasePhotoUplaodFragment() {
             }
 
 
+
+
         binding.spnPrescriptionType.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -280,10 +299,8 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                     position: Int,
                     id: Long
                 ) {
-                    val selectedItem = parent?.getItemAtPosition(position).toString()
-//                  if (selectedItem == "Prescription") {
-//
-//                  }
+
+
                     if (position == 1) {
                         binding.spnInsurance.visible()
                         addPrescriptionViewModel.getInsurance()
@@ -317,7 +334,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                     } else if (position == 2) {
                         binding.clfillform.gone()
                         binding.clUploadPrescription.visible()
-                        filltype = "upload prescription"
+                        filltype = "upload-prescription"
                     }
                 }
 
@@ -332,8 +349,9 @@ class AddReportFragment : BasePhotoUplaodFragment() {
         }
 
         binding.btnAddMedicine.setOnClickListener {
-            val fragment = DialogMedicineFragment(this, isEditMedicine,request?.medicalReport?.prescription)
-            fragment.show(requireActivity().supportFragmentManager, fragment.tag)
+            val fragment =
+                DialogMedicineFragment(this, isEditMedicine, request?.medicalReport?.prescription)
+                fragment.show(requireActivity().supportFragmentManager, fragment.tag)
         }
 
 
@@ -437,6 +455,12 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                     progressDialog.setLoading(false)
                     itemsInsurance.clear()
                     itemsInsurance.addAll(it.data?.response ?: emptyList())
+                    insuraceId.takeIf { it.isNotEmpty() }?.let {
+                     val index=   itemsInsurance.indexOfFirst { it._id==insuraceId }
+                        val item=itemsInsurance.get(index)
+                        itemsInsurance.removeAt(index)
+                        itemsInsurance.add(0,item)
+                    }
                     spinnerInsuranceAdapter?.notifyDataSetChanged()
 
                 }

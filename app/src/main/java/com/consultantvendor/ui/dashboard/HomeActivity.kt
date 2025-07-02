@@ -17,6 +17,7 @@ import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -59,6 +60,7 @@ import com.consultantvendor.utils.UPDATE_NUMBER
 import com.consultantvendor.utils.USER_DATA
 import com.consultantvendor.utils.USER_ID
 import com.consultantvendor.utils.USER_NAME
+import com.consultantvendor.utils.applyInsets
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import com.consultantvendor.utils.isConnectedToInternet
 import com.consultantvendor.utils.longToast
@@ -75,6 +77,7 @@ import java.util.Locale
 import java.util.Timer
 import javax.inject.Inject
 import kotlin.concurrent.fixedRateTimer
+
 
 
 class HomeActivity : DaggerAppCompatActivity() {
@@ -123,9 +126,12 @@ class HomeActivity : DaggerAppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
+        enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, com.consultantvendor.R.layout.activity_home)
+        setContentView(binding.root)
+        applyInsets(binding.root)
 
         initialise()
         setNavigation()
