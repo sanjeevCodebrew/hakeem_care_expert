@@ -11,13 +11,13 @@ apply plugin: 'com.google.firebase.crashlytics'
 android {
 
     namespace "com.consultantvendor"
-    compileSdk 35
+    compileSdk 36
 
 
     defaultConfig {
         applicationId "com.hakeem.expert"
-        minSdk 24
-        targetSdk 35
+        minSdk 26
+        targetSdk 36
         versionCode 1
         versionName "1.0.0"
         multiDexEnabled true
@@ -51,8 +51,8 @@ android {
         consult {
             dimension "app"
             applicationId "com.hakeem.expert"
-            versionCode 55
-            versionName "2.2.0"
+            versionCode 70
+            versionName "2.2.1"
             buildConfigField 'String', 'APP_UNIQUE_ID', "\"3b7474e39d4a249a9ecc8aa24b7e8acd42\""
             /*buildConfigField 'String', 'BASE_URL', "\"https://devhakeemcare.hakeemcare.com/\""*/
             buildConfigField 'String', 'BASE_URL', "\"https://hakeemcare.hakeemcare.com/\""
@@ -248,7 +248,7 @@ dependencies {
 
     /*View full image*/
 //    implementation 'com.github.stfalcon:frescoimageviewer:0.5.0'
-    implementation 'com.github.stfalcon-studio:StfalconImageViewer:v1.0.1'
+//    implementation 'com.github.stfalcon-studio:StfalconImageViewer:v1.0.1'
     implementation 'com.facebook.fresco:fresco:3.6.0'
 
     // Jitsi Meet
@@ -307,6 +307,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.11.0'
 
     implementation 'com.karumi:dexter:6.2.3'
+
+    implementation 'com.github.mrmike:ok2curl:0.8.0'
 }
 
 

@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<paths>
-    <external-cache-path
-        name="external_cache_files"
-        path="." />
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- For files in getExternalFilesDir() -->
     <external-files-path
-        name="external_files_files"
-        path="." />
-    <external-path
         name="external_files"
         path="." />
+
+    <!-- Optional: support cache directory if needed -->
+    <external-cache-path
+        name="external_cache"
+        path="." />
+
+    <!-- Optional: public Pictures directory -->
+    <external-path
+        name="external_public"
+        path="." />
+
 </paths>

@@ -353,7 +353,7 @@
     <!--E-Prescription-->
     <string name="appointment">Appointment</string>
     <string name="doctor_name">Doctor Name :</string>
-    <string name="diagnosis">Diagnosis:</string>
+    <string name="diagnosis">Diagnosis</string>
     <string name="lab_test">Lab Tests</string>
     <string name="report_details">Report Details</string>
     <string name="add_reports_header">Add Reports</string>
@@ -369,8 +369,8 @@
     <string name="add_notes">Add notes</string>
     <string name="add_diagnosis">Add Diagnosis</string>
     <string name="add_labnotes">Add Lab Notes</string>
-    <string name="medicine_name">Medicine Name</string>
     <string name="prescriptions">Prescriptions</string>
+    <string name="prescription_type">Prescription Type</string>
     <string name="duration">Duration</string>
     <string name="dosage_type">Dosage Type</string>
     <string name="dosage_timings">Dosage Timings</string>
@@ -770,4 +770,54 @@
 
     <string name="downloading">Downloading…</string>
     <string name="sar">﷼</string>
+
+    <array name="prescription_type">
+        <item>@string/select_payment_type</item>
+        <item>Insurance</item>
+        <item>Cash</item>
+    </array>
+
+    <array name="fill_type">
+        <item>@string/fill_type</item>
+        <item>Fill Form</item>
+        <item>Upload Prescription</item>
+    </array>
+
+
+
+    <string name="select_payment_type">Select Payment Type</string>
+    <string name="fill_type">Fill Type</string>
+    <string name="duration_per_hour">Duration per hour</string>
+    <string name="select_fill_type">Select Fill Type</string>
+    <string name="select_diagnosis_code_and_title">Select diagnosis code and title</string>
+    <string name="add_medicine">Add Medicines</string>
+    <string name="upload_prescription">Upload Prescription</string>
+
+    <string name="add_doses">Add doses</string>
+    <string name="add_frequency">Add frequency</string>
+    <string name="add_duration">Add duration</string>
+    <string name="add_quantity">Add quantity</string>
+
+
+
+    <string name="medicine_name">Medicine Name</string>
+    <string name="doses_1">DOSES</string>
+    <string name="frequecy_1">FREQUENCY</string>
+    <string name="duration_1">DURATION</string>
+    <string name="quantity_1">QUANTITY</string>
+    <string name="action">ACTION</string>
+
+
+    <string name="done">Done</string>
+    <string name="search">Search</string>
+    <string name="code">CODE</string>
+    <string name="title_1">TITLE</string>
+
+    <string name="edit_precription">Edit Prescription</string>">
+
+
+
+
+
+
 </resources>

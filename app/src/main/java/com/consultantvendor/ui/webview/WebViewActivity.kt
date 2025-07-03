@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.webkit.*
+import androidx.activity.enableEdgeToEdge
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -53,8 +54,12 @@ class WebViewActivity : DaggerAppCompatActivity() {
     private val mHandler = Handler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_web_view)
+        setContentView(binding.root)
+        applyInsets(binding.root)
 
         initialise()
         bindViews()
@@ -74,6 +79,7 @@ class WebViewActivity : DaggerAppCompatActivity() {
             }
             intent.hasExtra(PDF_LINK) -> {
                 loadUrl = intent.getStringExtra(PDF_LINK) ?: ""
+
             }
             else -> {
                 loadUrl = "${appClientDetails.domain_url}/${intent.getStringExtra(LINK_URL)}"

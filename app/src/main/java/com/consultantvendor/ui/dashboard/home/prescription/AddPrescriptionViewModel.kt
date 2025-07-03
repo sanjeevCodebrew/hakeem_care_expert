@@ -11,6 +11,8 @@ import com.consultantvendor.data.network.responseUtil.ApiResponse
 import com.consultantvendor.data.network.responseUtil.ApiUtils
 import com.consultantvendor.data.network.responseUtil.Resource
 import com.consultantvendor.di.SingleLiveEvent
+import com.consultantvendor.ui.dashboard.home.prescription.model.InsuranceResponse
+import com.consultantvendor.ui.dashboard.home.prescription.model.ResponseInsurance
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,6 +27,10 @@ class AddPrescriptionViewModel @Inject constructor(private val webService: WebSe
     val getItemList by lazy { SingleLiveEvent<Resource<MedicineResponse>>() }
 
     val getdiagnosis by lazy { SingleLiveEvent<Resource<DiagnosisResponse>>() }
+
+    val getInsurance by lazy { SingleLiveEvent<Resource<InsuranceResponse>>() }
+
+    val addPrescription by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
 
     fun prescreptions(addPrescription: AddPrescription) {
         prescreptions.value = Resource.loading()
@@ -134,4 +140,85 @@ class AddPrescriptionViewModel @Inject constructor(private val webService: WebSe
 
             })
     }
+
+    fun addReports1(addPrescription: AddPrescription) {
+        addReports.value = Resource.loading()
+
+        webService.postMedicalReports1(addPrescription)
+            .enqueue(object : Callback<ApiResponse<CommonDataModel>> {
+
+                override fun onResponse(call: Call<ApiResponse<CommonDataModel>>,
+                                        response: Response<ApiResponse<CommonDataModel>>) {
+                    if (response.isSuccessful) {
+                        addReports.value = Resource.success(response.body()?.data)
+                    } else {
+                        addReports.value = Resource.error(
+                            ApiUtils.getError(response.code(),
+                                response.errorBody()?.string()))
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
+                    addReports.value = Resource.error(ApiUtils.failure(throwable))
+                }
+
+            })
+    }
+
+
+
+    fun getInsurance() {
+        getInsurance.value = Resource.loading()
+
+        webService.getInsurance()
+            .enqueue(object : Callback<InsuranceResponse> {
+
+
+                override fun onResponse(
+                    p0: Call<InsuranceResponse?>,
+                    response: Response<InsuranceResponse?>
+                ) {
+                    if (response.isSuccessful) {
+                        getInsurance.value = Resource.success(response.body())
+                    } else {
+                        getInsurance.value = Resource.error(
+                            ApiUtils.getError(response.code(),
+                                response.errorBody()?.string()))
+                    }
+                }
+
+                override fun onFailure(
+                    p0: Call<InsuranceResponse?>,
+                    p1: Throwable
+                ) {
+                    getInsurance.value = Resource.error(ApiUtils.failure(p1))
+                }
+
+            })
+    }
+
+    fun addPrescription(hashMap: HashMap<String, Any>) {
+        addPrescription.value = Resource.loading()
+
+        webService.postMedicalPrescription(hashMap)
+            .enqueue(object : Callback<ApiResponse<CommonDataModel>> {
+
+                override fun onResponse(call: Call<ApiResponse<CommonDataModel>>,
+                                        response: Response<ApiResponse<CommonDataModel>>) {
+                    if (response.isSuccessful) {
+                        addPrescription.value = Resource.success(response.body()?.data)
+                    } else {
+                        addPrescription.value = Resource.error(
+                            ApiUtils.getError(response.code(),
+                                response.errorBody()?.string()))
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
+                    addPrescription.value = Resource.error(ApiUtils.failure(throwable))
+                }
+
+            })
+    }
+
 }

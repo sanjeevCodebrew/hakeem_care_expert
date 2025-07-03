@@ -18,7 +18,7 @@ class LoginUserAdapter(
     private val onSelect: (position: Int) -> Unit
 ) : RecyclerView.Adapter<LoginUserAdapter.OptionViewHolder>() {
 
-    private val limitedUsers = users.takeLast(4).reversed()
+//    private val limitedUsers = users.takeLast(4).reversed()
 
     inner class OptionViewHolder(val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -58,7 +58,7 @@ class LoginUserAdapter(
 
     }
 
-    override fun getItemCount(): Int = limitedUsers.size
+    override fun getItemCount(): Int = users.size
 
 
 }

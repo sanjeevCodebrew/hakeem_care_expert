@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/dialogTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         android:paddingStart="@dimen/dp_8"
         android:paddingEnd="@dimen/dp_48"
         android:fontFamily="@font/campton_book"
-        android:hint="@string/search_hint"
+        android:hint="@string/search"
         android:imeOptions="actionSearch"
         android:inputType="textCapSentences"
         android:maxLength="50"
@@ -72,12 +72,51 @@
         app:layout_constraintTop_toBottomOf="@id/etSearch"
         app:layout_constraintEnd_toEndOf="@id/etSearch"/>
 
+
+    <!-- Header Row -->
+    <LinearLayout
+        android:id="@+id/headerRow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/dp_8"
+        android:paddingBottom="8dp"
+        app:layout_constraintTop_toBottomOf="@id/tvDone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/code"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_weight="1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/title_1"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_weight="2" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/action"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewDialog"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/tvDone"
+        app:layout_constraintTop_toBottomOf="@id/headerRow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/dp_12" />

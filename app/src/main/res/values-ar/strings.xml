@@ -1014,8 +1014,8 @@
     <string name="start_chat">ابدأ المحادثة</string>
     <string name="add_another_dr">أضف حساب طبيب آخر</string>
     <string name="maximum_user_limit">يمكنك إضافة ٤ حسابات كحد أقصى</string>
-    <string name="select_medicine">اختر الدواء</string>
-    <string name="select_diagnosis">اختر التشخيص</string>
+<!--    <string name="select_medicine">اختر الدواء</string>-->
+<!--    <string name="select_diagnosis">اختر التشخيص</string>-->
     <string name="download">تحميل</string>
 
     <string name="routes">الطرق</string>
@@ -1145,6 +1145,57 @@
     <string name="resident_id">رقمالهوية</string>
     <string name="insurance_name">اسم التأمين</string>
     <string name="sar">﷼</string>
+    <string name="prescription_type">نوع الوصفة الطبية</string>
+
+
+    <string name="select_medicine">اختر الدواء</string>
+    <string name="select_diagnosis">اختر التشخيص</string>
+
+
+
+    <array name="prescription_type">
+        <item>@string/select_payment_type</item>
+        <item>تأمين</item>
+        <item>نقداً</item>
+    </array>
+
+    <array name="fill_type">
+        <item>@string/fill_type</item>
+        <item>املأ النموذج</item>
+        <item>ارفع الوصفة الطبية</item>
+    </array>
+
+    <string name="select_payment_type">اختر نوع الدفع</string>
+    <string name="fill_type">نوع التعبئة</string>
+    <string name="duration_per_hour">المدة لكل ساعة</string>
+    <string name="select_fill_type">اختر نوع التعبئة</string>
+    <string name="select_diagnosis_code_and_title">اختر رمز وعنوان التشخيص</string>
+    <string name="add_medicine">أضف الأدوية</string>
+    <string name="upload_prescription">ارفع الوصفة الطبية</string>
+
+    <string name="add_doses">أضف الجرعات</string>
+    <string name="add_frequency">أضف التكرار</string>
+    <string name="add_duration">أضف المدة</string>
+    <string name="add_quantity">أضف الكمية</string>
+
+
+
+
+
+    <string name="doses_1">الجرعات</string>
+    <string name="frequecy_1">التكرار</string>
+    <string name="duration_1">المدة</string>
+    <string name="quantity_1">الكمية</string>
+    <string name="action">إجراء</string>
+
+    <string name="done">تم</string>
+    <string name="search">بحث</string>
+    <string name="code">الرمز</string>
+    <string name="title_1">العنوان</string>
+    <string name="diagnosis">التشخيص</string>
+    <string name="edit_precription">تعديل الوصفة الطبية</string>
+
+
 
 
 </resources>

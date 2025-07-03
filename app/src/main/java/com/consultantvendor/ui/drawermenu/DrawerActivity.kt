@@ -1,6 +1,7 @@
 package com.consultantvendor.ui.drawermenu
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.consultantvendor.R
@@ -21,6 +22,7 @@ import com.consultantvendor.ui.dashboard.home.prescription.manual.ManualPrescrip
 import com.consultantvendor.ui.dashboard.home.questions.QuestionsFragment
 import com.consultantvendor.ui.dashboard.home.questions.detail.QuestionDetailFragment
 import com.consultantvendor.ui.dashboard.home.reports.AddReportFragment
+import com.consultantvendor.ui.dashboard.home.reports.AddReportNewFragment
 import com.consultantvendor.ui.dashboard.language.LanguageFragment
 import com.consultantvendor.ui.dashboard.location.LocationFragment
 import com.consultantvendor.ui.dashboard.settings.contactlist.ContactListFragment
@@ -50,7 +52,11 @@ class DrawerActivity : DaggerAppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_container)
+        setContentView(binding.root)
+        applyInsets(binding.root)
 
         initialise()
     }
@@ -58,7 +64,7 @@ class DrawerActivity : DaggerAppCompatActivity() {
     private fun initialise() {
         LocaleHelper.setLocale(this, userRepository.getUserLanguage(), prefsManager)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_container)
+
 
 
         when (intent.getStringExtra(PAGE_TO_OPEN)) {
@@ -103,6 +109,7 @@ class DrawerActivity : DaggerAppCompatActivity() {
             PREGNANCY_CALCULATOR -> addFragment(PregnancyCalculatorFragment())
             CONTACT_LIST -> addFragment(ContactListFragment())
             ADD_REPORTS -> addFragment(AddReportFragment())
+            ADD_REPORT_NEW -> addFragment(AddReportNewFragment())
         }
     }
 
@@ -137,6 +144,7 @@ class DrawerActivity : DaggerAppCompatActivity() {
         const val BANK_INFO = "BANK_INFO"
         const val CONTACT_LIST = "CONTACT_LIST"
         const val ADD_REPORTS = "ADD_REPORTS"
+        const val ADD_REPORT_NEW = "ADD_REPORT_NEW"
     }
 
 }

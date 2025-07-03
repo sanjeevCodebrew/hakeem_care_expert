@@ -25,6 +25,7 @@ import com.consultantvendor.ui.adapter.MedicineAdapter
 import com.consultantvendor.ui.dashboard.home.prescription.AddPrescriptionViewModel
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.DiagnosisDialogFragment
+import com.consultantvendor.utils.dialogs.DiagnosisDialogNewFragment
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -69,7 +70,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
     private var isDiagnosis = false
 
-    private var diagnosisDialog: DiagnosisDialogFragment? = null
+    private var diagnosisDialog: DiagnosisDialogNewFragment? = null
 
     var duration = ""
     var quantity = ""
@@ -100,7 +101,6 @@ class DigitalPrescriptionFragment : DaggerFragment() {
     }
 
 
-    @SuppressLint("SetTextI18n")
     private fun initialise() {
         addPrescriptionViewModel = ViewModelProvider(this, viewModelFactory)[AddPrescriptionViewModel::class.java]
         progressDialog = ProgressDialog(requireActivity())
@@ -128,9 +128,9 @@ class DigitalPrescriptionFragment : DaggerFragment() {
         }
 
         loadImage(binding.ivPic, request?.from_user?.profile_image,
-                R.drawable.ic_profile_placeholder)
+            R.drawable.ic_profile_placeholder)
 
-        binding.tvAppointmentV.text = "${DateUtils.dateTimeFormatFromUTC(DateFormat.MON_DATE_YEAR, request?.bookingDateUTC)} · " +
+        binding.tvAppointmentV.text = "${DateUtils.dateTimeFormatFromUTC(DateFormat.MON_DATE_YEAR, request?.bookingDateUTC)} Â· " +
                 "${DateUtils.dateTimeFormatFromUTC(DateFormat.TIME_FORMAT, request?.bookingDateUTC)}"
 
         if (!request?.to_user?.name.isNullOrEmpty()) {
@@ -138,7 +138,6 @@ class DigitalPrescriptionFragment : DaggerFragment() {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun setEditPrescriptionData() {
         if (request?.pre_scription != null) {
             val prescription = request?.pre_scription
@@ -265,12 +264,13 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                                 prescription.dosage_timing?.add(digitalDose)
                             }
                         }
+
                         /*If edit item*/
                         if (binding.tvAdd.text == getString(R.string.edit))
                             itemPrescription.set(editPosition, prescription)
                         else
                             itemPrescription.add(prescription)
-                            prescriptionAdapter?.notifyDataSetChanged()
+                        prescriptionAdapter?.notifyDataSetChanged()
 
                         editPosition = -1
                         requireActivity().longToast(getString(R.string.prescription_added))
@@ -285,7 +285,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
                     }
 
-//                   else {
+//                    else {
 //                        binding.etMedicineName.showSnackBar(getString(R.string.select_dosage_timings))
 //                    }
                 }
@@ -324,9 +324,9 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                 binding.etNotes.text.toString().trim().isEmpty()->{
                     binding.etMedicineName.showSnackBar(getString(R.string.select_diagnosis))
                 }
-               /* binding.etPrescriptionNotes.text.toString().trim().isEmpty() -> {
-                    binding.tvDosagesType.showSnackBar(getString(R.string.add_notes))
-                }*/
+                /* binding.etPrescriptionNotes.text.toString().trim().isEmpty() -> {
+                     binding.tvDosagesType.showSnackBar(getString(R.string.add_notes))
+                 }*/
 //                binding.etNotes.text.toString().trim().isEmpty() -> {
 //                    binding.tvDosagesType.showSnackBar(getString(R.string.add_diagnosis))
 //                }
@@ -348,11 +348,12 @@ class DigitalPrescriptionFragment : DaggerFragment() {
             }
         }
 
+
         binding.etMedicineName.setOnClickListener {
-                binding.etMedicineName.setText("")
-                binding.etDoses.setText("")
-                binding.etfrequency.setText("")
-                hitApi(true, "", null, false)
+            binding.etMedicineName.setText("")
+            binding.etDoses.setText("")
+            binding.etfrequency.setText("")
+            hitApi(true, "", null, false)
         }
 
         binding.etNotes.setOnClickListener {
@@ -360,12 +361,12 @@ class DigitalPrescriptionFragment : DaggerFragment() {
         }
     }
 
-     fun hitApi(
-         firstHit: Boolean,
-         etSearch: String,
-         medicineAdapter: MedicineAdapter?,
-         isSelect: Boolean
-     ) {
+    fun hitApi(
+        firstHit: Boolean,
+        etSearch: String,
+        medicineAdapter: MedicineAdapter?,
+        isSelect: Boolean
+    ) {
         if (isConnectedToInternet(requireContext(), true)) {
             if (firstHit) {
                 isFirstPage = true
@@ -388,12 +389,12 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
     }
 
-     fun hitApiDiagnosis(
-         firstHit: Boolean,
-         etSearch: String,
-         diagnosisAdapter: DiagnosisAdapter?,
-         isSelectDiagnosis: Boolean
-     ) {
+    fun hitApiDiagnosis(
+        firstHit: Boolean,
+        etSearch: String,
+        diagnosisAdapter: DiagnosisAdapter?,
+        isSelectDiagnosis: Boolean
+    ) {
         if (isConnectedToInternet(requireContext(), true)) {
             if (firstHit) {
                 isFirstPage = true
@@ -429,7 +430,6 @@ class DigitalPrescriptionFragment : DaggerFragment() {
             binding.tvPrescriptions.gone()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun editPrescription(pos: Int) {
         binding.tvAdd.hideKeyboard()
 
@@ -491,7 +491,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                     progressDialog.setLoading(false)
 
                     itemMedicine.clear()
-                    itemMedicine.addAll(it.data?.response?:emptyList())
+                    itemMedicine.addAll(it.data?.response?: emptyList())
                     if (!isMedicineSelect) {
                         showDiagnosisDialog(isDiagnosis)
                     }else{
@@ -513,7 +513,6 @@ class DigitalPrescriptionFragment : DaggerFragment() {
             it ?: return@Observer
             when (it.status) {
                 Status.SUCCESS -> {
-
                     progressDialog.setLoading(false)
 
                     itemDiagnosis.clear()
@@ -521,8 +520,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                     if (!isDiagnosisSelect) {
                         showDiagnosisDialog(isDiagnosis)
                     }
-                    else
-                    {
+                    else{
                         adpterDiagnosis?.notifyDataSetChanged()
                     }
 
@@ -538,16 +536,8 @@ class DigitalPrescriptionFragment : DaggerFragment() {
         })
     }
 
-    fun setNotesText(note: String) {
-        binding.etMedicineName.setText(note)
-    }
-
     fun showDiagnosisDialog(isDiagnosis: Boolean) {
-        diagnosisDialog = DiagnosisDialogFragment(
-            onNoteSelected = { note ->
-                setNotesText(note)
-            },
-            this, itemMedicine, itemDiagnosis, isDiagnosis)
+        diagnosisDialog = DiagnosisDialogNewFragment(this, itemMedicine, itemDiagnosis, isDiagnosis)
         diagnosisDialog?.show(childFragmentManager, "DiagnosisDialog")
     }
 }

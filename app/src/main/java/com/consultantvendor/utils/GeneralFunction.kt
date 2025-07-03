@@ -32,9 +32,14 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
@@ -61,7 +66,7 @@ import com.google.firebase.dynamiclinks.ktx.iosParameters
 import com.google.firebase.dynamiclinks.ktx.shortLinkAsync
 import com.google.firebase.dynamiclinks.ktx.socialMetaTagParameters
 import com.google.firebase.ktx.Firebase
-import com.stfalcon.imageviewer.StfalconImageViewer
+//import com.stfalcon.imageviewer.StfalconImageViewer
 import droidninja.filepicker.FilePickerBuilder
 import droidninja.filepicker.models.sort.SortingTypes
 import id.zelory.compressor.Compressor
@@ -432,9 +437,9 @@ fun viewImageFull(activity: Activity, itemsImage: ArrayList<String>, pos: Int) {
         .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
         .show()*/
 
-    StfalconImageViewer.Builder(activity, itemsImage) { view, image ->
-        Glide.with(view.context).load(image).into(view)
-    }.show()
+//    StfalconImageViewer.Builder(activity, itemsImage) { view, image ->
+//        Glide.with(view.context).load(image).into(view)
+//    }.show()
 }
 
 fun placePicker(fragment: Fragment?, activityMain: Activity) {
@@ -884,14 +889,18 @@ fun getProteinUnit(activity: Activity, value: Int, unitNeeded: Boolean): String 
 fun openPdf(activity: Activity, link: String, prescription: Boolean = false,isReport: Boolean=false) {
     Log.e("PDG======", link)
     if (prescription) {
-        activity.startActivity(
+        /*activity.startActivity(
             Intent(activity, WebViewActivity::class.java)
                 .putExtra(
                     WebViewActivity.LINK_TITLE,
                     activity.getString(R.string.prescription_details)
                 )
                 .putExtra(WebViewActivity.PDF_LINK, link)
-        )
+        )*/
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setDataAndType(link.toUri(), "application/pdf")
+        intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        activity.startActivity(intent)
     }
     else if (isReport){
         activity.startActivity(
@@ -940,20 +949,17 @@ fun downloadFile(activity: Activity, url: String, imageRequestId: String? = null
     }
 }
 
-fun unicodeStringConvertion(unicodeString: String?): String? {
-//    val unicodeString = "\\u0645\\u062d\\u0627\\u062f\\u062b\\u0629"
-    val originalString = unicodeString
-        ?.replace("\\u", "")
-        ?.chunked(4)
-        ?.map { it.toInt(16).toChar() }
-        ?.joinToString("")
+fun AppCompatActivity.applyInsets(view: View, isLightStatusBar: Boolean = true) {
+    // Set status bar color to colorPrimary
+    window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
 
-    val regex = originalString?.toRegex()
-
-    return unicodeString?.let {
-        regex?.replace(it) { matchResult ->
-            val hexCode = matchResult.groupValues[1]
-            String(Character.toChars(hexCode.toInt(16)))
-        }
+    // Handle system bar insets (status + nav bars)
+    ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+        val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+        v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+        ViewCompat.onApplyWindowInsets(view, WindowInsetsCompat.CONSUMED)// don't consume so child views can handle insets too
     }
+
+    // Set light/dark status bar icons
+    WindowCompat.getInsetsController(window, view)?.isAppearanceLightStatusBars = isLightStatusBar
 }

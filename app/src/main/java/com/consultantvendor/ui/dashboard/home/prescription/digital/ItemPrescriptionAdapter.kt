@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.consultantvendor.R
 import com.consultantvendor.data.models.requests.DigitalPrescription
 import com.consultantvendor.databinding.RvItemPrescriptionBinding
+import com.consultantvendor.ui.dashboard.home.reports.AddReportFragment
 
 
 class ItemPrescriptionAdapter(private val fragment: DigitalPrescriptionFragment, private val items: ArrayList<DigitalPrescription>) :

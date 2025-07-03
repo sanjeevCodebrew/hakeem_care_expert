@@ -22,6 +22,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -71,6 +72,7 @@ import com.consultantvendor.utils.PermissionUtil
 import com.consultantvendor.utils.PrefsManager
 import com.consultantvendor.utils.USER_ID
 import com.consultantvendor.utils.USER_NAME
+import com.consultantvendor.utils.applyInsets
 import com.consultantvendor.utils.dialogs.BasePhotoUploadActivity
 import com.consultantvendor.utils.dialogs.FileUriUtils
 import com.consultantvendor.utils.dialogs.ProgressDialog
@@ -98,6 +100,7 @@ import org.json.JSONObject
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.util.Calendar
 import java.util.Timer
@@ -188,39 +191,63 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
 
     private var isRealChat = false
 
-    override fun getVideo(uri: String?, i: Int) {
-
-    }
-
-    override fun getPdf(uri: String?) {
-        val fileToUpload = File(uri)
-
-        val docImage = DocImage()
-        docImage.type = DocType.PDF
-        docImage.imageFile = fileToUpload
-        uploadFileOnServer(docImage)
-
+    override fun getPdf(uri: String) {
+        val file = File(uri)
+        if (file.exists()) {
+            val docImage = DocImage().apply {
+                type = DocType.PDF
+                imageFile = file
+            }
+            uploadFileOnServer(docImage)
+        } else {
+            Toast.makeText(this, "Invalid PDF file", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun getImage(uri: String?, data: Uri) {
+        val fileToUpload: File? = if (uri != null) {
+            File(uri)
+        } else {
+            // Fallback for Android 10+ if real path is null
+            try {
+                val inputStream = contentResolver.openInputStream(data)
+                val tempFile = File.createTempFile("image_", ".jpg", cacheDir)
+                val outputStream = FileOutputStream(tempFile)
+                inputStream?.copyTo(outputStream)
+                inputStream?.close()
+                outputStream.close()
+                tempFile
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
 
-        val fileToUpload = File(uri)
+        fileToUpload?.let {
+            val docImage = DocImage().apply {
+                type = DocType.IMAGE
+                imageFile = it
+            }
+            uploadFileOnServer(docImage)
+        } ?: run {
+            Toast.makeText(this, "Unable to process selected image", Toast.LENGTH_SHORT).show()
+        }
+    }
+    override fun getVideo(path: String, type: Int) {
 
-        val docImage = DocImage()
-        docImage.type = DocType.IMAGE
-        docImage.imageFile = fileToUpload
-
-        uploadFileOnServer(docImage)
     }
 
-    override fun getMultipleImage(uri: ArrayList<String>) {
-
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
         //LocaleHelper.setLocale(this, getUserLanguage())
+
+
+        enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_chat_detail)
+        setContentView(binding.root)
+        applyInsets(binding.root)
 
         setAdapter()
         initialise()

@@ -7,31 +7,32 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.consultantvendor.data.models.ResponseMedicine
 import com.consultantvendor.data.models.responses.Response
+import com.consultantvendor.databinding.ItemLayoutDiagnosisBinding
+import com.consultantvendor.ui.dashboard.home.prescription.digital.DigitalPrescriptionFragment
 
 class DiagnosisAdapter(
     private val items: ArrayList<Response>,
     private val onSelect: (Int) -> Unit
 ) : RecyclerView.Adapter<DiagnosisAdapter.ViewHolder>() {
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val text: TextView = itemView.findViewById(android.R.id.text1)
-
+    inner class ViewHolder(val binding: ItemLayoutDiagnosisBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
-            itemView.setOnClickListener {
+            binding.btnSelect.setOnClickListener {
                 onSelect(absoluteAdapterPosition)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(android.R.layout.simple_list_item_1, parent, false)
-        return ViewHolder(view)
+        val binding = ItemLayoutDiagnosisBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.text.text = items[position].title
+        val item = items[position]
+        holder.binding.tvCode.text = item.code
+        holder.binding.tvTitle.text = item.title
     }
 }

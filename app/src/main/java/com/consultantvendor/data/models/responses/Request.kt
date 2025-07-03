@@ -27,10 +27,11 @@ class Request : Serializable {
     var call_id: String? = null
     var is_prescription: Boolean? = null
     var is_report: Boolean? = null
+    var is_prescription_report: Boolean? = null
     var extra_detail: Extra_detail? = null
 
     var symptoms: List<Filter>? = null
-    var medical_reports: List<Reports>? = null
+//    var medical_reports: List<MedicalReport>? = null
     var symptom_details: String? = null
     var symptom_images: List<DocImage>? = null
 
@@ -47,12 +48,13 @@ class Request : Serializable {
     var remain_second:Long?=null
     // Added categoryData
     var categoryData: CategoryData? = null
+
+    var medicalReport: MedicalReport?=null
+
+    val prescriptionReport: PrescriptionReport?=null
+
+
 }
-
-class Reports {
-
-}
-
 
 class CategoryData : Serializable {
     var id: Int? = null
@@ -66,3 +68,12 @@ class CategoryData : Serializable {
     var enable: Boolean? = null
     var cat_slug: String? = null
 }
+
+class PrescriptionReport: Serializable  {
+    val created_at: String?=null
+    val id: Int?=null
+    val report_detals: String?=null
+    val request_id: Int?=null
+    val updated_at: String?=null
+}
+
