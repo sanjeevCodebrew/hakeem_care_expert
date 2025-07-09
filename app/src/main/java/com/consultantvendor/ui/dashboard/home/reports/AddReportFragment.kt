@@ -8,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.consultantvendor.R
 import com.consultantvendor.data.models.ResponseMedicine
 import com.consultantvendor.data.models.requests.DocImage
@@ -216,8 +218,18 @@ class AddReportFragment : BasePhotoUplaodFragment() {
             medicalReport.prescription_file?.isEmpty()?.let {
                 if (!it)
                     docUrl = medicalReport.prescription_file.toString()
-                binding.ivDoc.setImageResource(R.drawable.ic_pdf)
-                binding.tvFileName.text = docUrl
+
+
+                if (docUrl.endsWith(".pdf", ignoreCase = true)) {
+                    // It's a PDF
+                    binding.ivDoc.setImageResource(R.drawable.ic_pdf)
+                    binding.tvFileName.text = docUrl
+                } else {
+                    loadImage(binding.ivDoc,docUrl,R.drawable.image_placeholder)
+                    binding.tvFileName.text = docUrl
+                }
+
+
             }
 
         }
@@ -289,8 +301,6 @@ class AddReportFragment : BasePhotoUplaodFragment() {
             }
 
 
-
-
         binding.spnPrescriptionType.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -299,7 +309,6 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                     position: Int,
                     id: Long
                 ) {
-
 
                     if (position == 1) {
                         binding.spnInsurance.visible()
@@ -339,7 +348,6 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
-                    // Optional: handle if nothing is selected
                 }
             }
 
@@ -357,7 +365,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
 
 
         binding.clUploadPrescription.setOnClickListener {
-            showImageDialog(false, false, true)
+            showImageDialog(false, true, true,true)
         }
 
         binding.tvDone.setOnClickListener {
@@ -392,15 +400,15 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                 }
             }
 
-            if (binding.etNotes.text.toString().trim().isEmpty()) {
-                binding.etNotes.showSnackBar(getString(R.string.add_notes))
-                return@setOnClickListener
-            }
+//            if (binding.etNotes.text.toString().trim().isEmpty()) {
+//                binding.etNotes.showSnackBar(getString(R.string.add_notes))
+//                return@setOnClickListener
+//            }
 
             if (isConnectedToInternet(requireContext(), true)) {
                 val hashMap = HashMap<String, Any>()
                 hashMap["request_id"] = request?.id.toString()
-                hashMap["report_detals"] = binding.etNotes.text.toString()
+//                hashMap["report_detals"] = binding.etNotes.text.toString()
                 hashMap["prescription_type"] = prescription_type
                 hashMap["fill_type"] = filltype
                 hashMap["item_no"] = item_number
@@ -511,9 +519,20 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                 Status.SUCCESS -> {
                     progressDialogImage.setLoading(false)
 
-                    docUrl = it.data?.image_name.toString()
-                    binding.ivDoc.setImageResource(R.drawable.ic_pdf)
-                    binding.tvFileName.text = docUrl
+                    val imageUrl = it.data?.image_name
+
+                    if (imageUrl != null && imageUrl.endsWith(".pdf", ignoreCase = true)) {
+                        // It's a PDF
+                        docUrl = it.data?.image_name.toString()
+                        binding.ivDoc.setImageResource(R.drawable.ic_pdf)
+                        binding.tvFileName.text = docUrl
+                    } else {
+                        docUrl = it.data?.image_name.toString()
+                        loadImage(binding.ivDoc,docUrl,R.drawable.image_placeholder)
+                        binding.tvFileName.text = docUrl
+                    }
+
+
                 }
 
                 Status.ERROR -> {
@@ -579,6 +598,21 @@ class AddReportFragment : BasePhotoUplaodFragment() {
     }
 
     override fun getImage(uri: String?, data: Uri) {
+
+        var fileToUpload: File? = File(uri)
+
+        val selectedImageUri: Uri? = data
+        selectedImageUri?.let {
+            val file: File? = uriToFile( it)
+            file?.let {
+                val docImage = DocImage()
+                docImage.type = DocType.IMAGE
+                docImage.imageFile = it
+
+                fileToUpload = uri?.let { it1 -> File(it1) }
+                uploadFileOnServer(docImage)
+            }
+        }
 
     }
 

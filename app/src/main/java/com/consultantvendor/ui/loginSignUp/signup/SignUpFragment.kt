@@ -405,7 +405,7 @@ class SignUpFragment : BasePhotoUplaodFragment(), OnDateSelected {
                 storagePermissionLauncherLauncher.launch(cameraAndStorageAccess)
             }*/
 
-            showImageDialog(false,false,false)
+            showImageDialog(false,true,false,true)
         }
 
         binding.spnTitle.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
