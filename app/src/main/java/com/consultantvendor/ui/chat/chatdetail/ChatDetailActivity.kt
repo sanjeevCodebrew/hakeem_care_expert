@@ -442,7 +442,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                             }
                         }
                         else{
-                            generateNewMessage(getString(R.string.chat_first_message, userName))
+//                            generateNewMessage(getString(R.string.chat_first_message, userName))
                         }
                     }
 
