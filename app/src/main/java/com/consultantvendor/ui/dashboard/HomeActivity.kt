@@ -131,6 +131,7 @@ class HomeActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, com.consultantvendor.R.layout.activity_home)
         setContentView(binding.root)
+
         applyInsets(binding.root)
 
         initialise()

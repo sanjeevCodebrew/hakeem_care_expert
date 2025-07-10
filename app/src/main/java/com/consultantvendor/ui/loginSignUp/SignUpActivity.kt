@@ -1,6 +1,7 @@
 package com.consultantvendor.ui.loginSignUp
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.consultantvendor.R
@@ -31,7 +32,11 @@ class SignUpActivity : DaggerAppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_container)
+        setContentView(binding.root)
+        applyInsets(binding.root)
 
         initialise()
         //makeFullScreen(this)
@@ -40,7 +45,6 @@ class SignUpActivity : DaggerAppCompatActivity() {
     private fun initialise() {
         LocaleHelper.setLocale(this, userRepository.getUserLanguage(), prefsManager)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_container)
 
         val fragment: Fragment
         val bundle = Bundle()
@@ -49,26 +53,41 @@ class SignUpActivity : DaggerAppCompatActivity() {
                 fragment = SignUpFragment()
                 bundle.putBoolean(UPDATE_PROFILE, true)
             }
+
             intent.hasExtra(UPDATE_NUMBER) -> {
                 fragment = LoginFragment()
                 bundle.putBoolean(UPDATE_NUMBER, true)
             }
+
             intent.hasExtra(UPDATE_DOCUMENTS) -> {
                 fragment = DocumentsFragment()
                 bundle.putBoolean(UPDATE_DOCUMENTS, true)
-                bundle.putSerializable(CATEGORY_PARENT_ID, intent.getSerializableExtra(CATEGORY_PARENT_ID))
+                bundle.putSerializable(
+                    CATEGORY_PARENT_ID,
+                    intent.getSerializableExtra(CATEGORY_PARENT_ID)
+                )
             }
+
             intent.hasExtra(UPDATE_AVAILABILITY) -> {
                 fragment = ServiceFragment()
-                bundle.putSerializable(CATEGORY_PARENT_ID, intent.getSerializableExtra(CATEGORY_PARENT_ID))
+                bundle.putSerializable(
+                    CATEGORY_PARENT_ID,
+                    intent.getSerializableExtra(CATEGORY_PARENT_ID)
+                )
             }
+
             intent.hasExtra(UPDATE_CATEGORY) -> {
                 fragment = CategoryFragment()
             }
+
             intent.hasExtra(UPDATE_PREFRENCES) -> {
                 fragment = PrefrenceFragment()
-                bundle.putSerializable(CATEGORY_PARENT_ID, intent.getSerializableExtra(CATEGORY_PARENT_ID))
+                bundle.putSerializable(
+                    CATEGORY_PARENT_ID,
+                    intent.getSerializableExtra(CATEGORY_PARENT_ID)
+                )
             }
+
             else -> {
                 fragment = WelcomeFragment()
             }

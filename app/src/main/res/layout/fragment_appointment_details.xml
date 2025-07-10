@@ -559,9 +559,9 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/sp_16"
                     android:visibility="gone"
-                    app:layout_constraintStart_toEndOf="@id/tvAddPrescription"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                    app:layout_constraintTop_toBottomOf="@id/tvMarkComplete"
+                    app:layout_constraintTop_toBottomOf="@id/tvAddReports"
                     app:layout_goneMarginStart="@dimen/dp_0" />
 
                 <androidx.constraintlayout.widget.Barrier

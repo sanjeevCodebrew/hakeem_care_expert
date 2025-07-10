@@ -177,8 +177,9 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     fun showImageDialog(
         isVideo: Boolean = false,
-        showCamera: Boolean = true,
-        showPdf: Boolean = false
+        showCamera: Boolean = false,
+        showPdf: Boolean = false,
+        showGallary: Boolean = false
     ) {
         val dialog = Dialog(requireContext())
         val view = ItemDialogImageBinding.inflate(layoutInflater)
@@ -188,7 +189,7 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
 
         view.tvCamera.isVisible = showCamera
         view.tvPdf.isVisible = showPdf
-        view.tvGallery.isVisible = !showPdf
+        view.tvGallery.isVisible = showGallary
 
         view.ivClose.setOnClickListener { dialog.dismiss() }
 

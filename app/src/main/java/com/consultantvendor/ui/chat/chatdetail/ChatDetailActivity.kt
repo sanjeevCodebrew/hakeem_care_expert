@@ -424,12 +424,16 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                     hasMoreItems = if (pageBeforeAfter.isNullOrEmpty() || pageBeforeAfter == ApiKeys.AFTER)
                         data?.messages?.size == PER_PAGE_LOAD_CHAT
                     else true
+
                     /*Check for distinct list*/
                     distinctList(data?.messages)
                     /*Send chat start message*/
 
+                    if (data?.messages?.isEmpty() == true) {
+                        generateNewMessage(getString(R.string.chat_first_message, userName))
+                    }
                     showTimer(data?.request_status == CallAction.INPROGRESS, data)
-                    if (intent.hasExtra(EXTRA_IS_FIRST)) {
+                     if (intent.hasExtra(EXTRA_IS_FIRST)) {
                         if (!isCompleteChat) {
                             if (data?.end_chat==1){
                                 binding.rlChatInput.gone()
@@ -440,9 +444,6 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
 //                             generateNewMessage(getString(R.string.chat_first_message, userName))
                                 intent.removeExtra(EXTRA_IS_FIRST)
                             }
-                        }
-                        else{
-//                            generateNewMessage(getString(R.string.chat_first_message, userName))
                         }
                     }
 

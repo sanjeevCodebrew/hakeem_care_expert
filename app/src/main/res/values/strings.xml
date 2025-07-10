@@ -358,6 +358,7 @@
     <string name="report_details">Report Details</string>
     <string name="add_reports_header">Add Reports</string>
     <string name="add_prescription">+ Prescription</string>
+    <string name="add_prescription_header">Add Prescription</string>">
     <string name="add_reports">+ Reports</string>
     <string name="reports">Reports</string>
     <string name="add_manual_prescription">Add Manual Prescription</string>
@@ -814,6 +815,7 @@
     <string name="title_1">TITLE</string>
 
     <string name="edit_precription">Edit Prescription</string>">
+
 
 
 

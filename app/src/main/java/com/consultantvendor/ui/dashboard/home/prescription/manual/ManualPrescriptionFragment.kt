@@ -324,7 +324,7 @@ class ManualPrescriptionFragment : BasePhotoUplaodFragment(){
 //        } else {
 //            storagePermissionLauncherLauncher.launch(cameraAndStorageAccess)
 //        }
-        showImageDialog(false,false,false)
+//        showImageDialog(false,false,false)
     }
 
    /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
