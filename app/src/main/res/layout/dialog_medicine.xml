@@ -45,7 +45,7 @@
                     android:textColor="@color/textColor"
                     android:textDirection="locale"
                     android:textSize="@dimen/sp_14"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivCross"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 

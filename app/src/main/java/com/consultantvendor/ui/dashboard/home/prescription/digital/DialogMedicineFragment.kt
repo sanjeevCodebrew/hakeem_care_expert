@@ -235,8 +235,5 @@ class DialogMedicineFragment(
                 }
             }
         })
-
     }
-
-
 }

@@ -349,10 +349,10 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                     hashMap[ApiKeys.PER_PAGE] = PER_PAGE_LOAD_CHAT.toString()
                 }
 
-                items.isNotEmpty() && pageBeforeAfter == ApiKeys.BEFORE -> {
-                    hashMap[ApiKeys.BEFORE] = items[0].messageId.toString()
-                    hashMap[ApiKeys.PER_PAGE] = "1000"
-                }
+//                items.isNotEmpty() && pageBeforeAfter == ApiKeys.BEFORE -> {
+//                    hashMap[ApiKeys.BEFORE] = items[0].messageId.toString()
+//                    hashMap[ApiKeys.PER_PAGE] = "1000"
+//                }
 
                 else -> hashMap[ApiKeys.PER_PAGE] = PER_PAGE_LOAD_CHAT.toString()
             }
@@ -429,9 +429,9 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                     distinctList(data?.messages)
                     /*Send chat start message*/
 
-                    if (data?.messages?.isEmpty() == true) {
-                        generateNewMessage(getString(R.string.chat_first_message, userName))
-                    }
+//                    if (data?.messages?.isEmpty() == true) {
+//                        generateNewMessage(getString(R.string.chat_first_message, userName))
+//                    }
                     showTimer(data?.request_status == CallAction.INPROGRESS, data)
                      if (intent.hasExtra(EXTRA_IS_FIRST)) {
                         if (!isCompleteChat) {
@@ -441,7 +441,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                                 binding.rlChatInput.visible()
                                 binding.tvCompleteChat.visible()
                                 isRealChat = true
-//                             generateNewMessage(getString(R.string.chat_first_message, userName))
+//                              generateNewMessage(getString(R.string.chat_first_message, userName))
                                 intent.removeExtra(EXTRA_IS_FIRST)
                             }
                         }
@@ -508,7 +508,6 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
 
                     isCompleteChat = true
                     showTimer(false, null)
-
 
                 }
 
