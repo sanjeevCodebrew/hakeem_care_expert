@@ -181,8 +181,11 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 popup.setOnMenuItemClickListener { item ->
                     when (item.itemId) {
                         R.id.item_view -> {
-                            val link = "https://hakeemcare.hakeemcare.com/medical-report?request_id=${request.id}"
-                            openPdf(requireActivity(), link,false,true)
+                            if (request.id?.isNotEmpty() == true) {
+                                val link =
+                                    "https://hakeemcare.hakeemcare.com/medical-report?request_id=${request.id}"
+                                openPdf(requireActivity(), link, false, true)
+                            }
                         }
                         R.id.item_edit -> {
                             registerActivityResult.launch(
@@ -192,8 +195,11 @@ class AppointmentDetailsFragment : DaggerFragment() {
                             )
                         }
                         R.id.item_download -> {
-                            val link = "https://hakeemcare.hakeemcare.com/medical-report?request_id=${request.id}"
-                            openPdf(requireActivity(), link, false,true)
+                            if (request.id?.isNotEmpty()==true) {
+                                val link =
+                                    "https://hakeemcare.hakeemcare.com/medical-report?request_id=${request.id}"
+                                openPdf(requireActivity(), link, false, true)
+                            }
                         }
                     }
                     true
