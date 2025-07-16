@@ -48,6 +48,7 @@ import com.consultantvendor.utils.getRequestBody
 import com.consultantvendor.utils.gone
 import com.consultantvendor.utils.isConnectedToInternet
 import com.consultantvendor.utils.loadImage
+import com.consultantvendor.utils.longToast
 import com.consultantvendor.utils.showSnackBar
 import com.consultantvendor.utils.visible
 import com.google.gson.Gson
@@ -454,8 +455,6 @@ class AddReportFragment : BasePhotoUplaodFragment() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun bindObservers() {
-
-
         addPrescriptionViewModel.getInsurance.observe(requireActivity(), Observer {
             it ?: return@Observer
             when (it.status) {
@@ -598,23 +597,23 @@ class AddReportFragment : BasePhotoUplaodFragment() {
     }
 
     override fun getImage(uri: String?, data: Uri) {
-
         var fileToUpload: File? = File(uri)
+        uri?.let {
+            val rotatedFile = File(it) // this is the rotated image created earlier
+            if (rotatedFile.exists()) {
+                val docImage = DocImage().apply {
+                    type = DocType.IMAGE
+                    imageFile = rotatedFile
+                }
 
-        val selectedImageUri: Uri? = data
-        selectedImageUri?.let {
-            val file: File? = uriToFile( it)
-            file?.let {
-                val docImage = DocImage()
-                docImage.type = DocType.IMAGE
-                docImage.imageFile = it
-
-                fileToUpload = uri?.let { it1 -> File(it1) }
+                fileToUpload = rotatedFile
                 uploadFileOnServer(docImage)
+            } else {
+//                showError("Rotated image not found.")
             }
         }
-
     }
+
 
     private fun uploadFileOnServer(docImage: DocImage?) {
         val hashMap = HashMap<String, RequestBody>()

@@ -57,7 +57,7 @@ import java.util.Calendar
 abstract class BasePhotoUplaodFragment : DaggerFragment() {
 
     private lateinit var permissionUtil: PermissionUtil
-    private lateinit var cameraUri: Uri
+    private  var cameraUri: Uri?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +78,7 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
     private val captureImageLauncher =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
             if (success) {
-                handleImageResult(cameraUri)
+                cameraUri?.let { handleImageResult(it) }
             }
         }
 
@@ -125,12 +125,64 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
         cameraIntentVideo.launch(intent)
     }
 
+
+    private fun fixImageOrientation(context: Context, uri: Uri): File? {
+        return try {
+            val inputStream1 = context.contentResolver.openInputStream(uri)
+            val bitmap = BitmapFactory.decodeStream(inputStream1)
+            inputStream1?.close()
+
+            val exifInputStream = context.contentResolver.openInputStream(uri)
+            val exif = exifInputStream?.let { ExifInterface(it) }
+            exifInputStream?.close()
+
+            val orientation = exif?.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_NORMAL
+            ) ?: ExifInterface.ORIENTATION_NORMAL
+
+            Log.d("ImageFix", "EXIF orientation: $orientation")
+
+            val matrix = Matrix()
+            when (orientation) {
+                ExifInterface.ORIENTATION_ROTATE_90 -> matrix.postRotate(90f)
+                ExifInterface.ORIENTATION_ROTATE_180 -> matrix.postRotate(180f)
+                ExifInterface.ORIENTATION_ROTATE_270 -> matrix.postRotate(270f)
+                // no flip, only rotation
+            }
+
+            val rotatedBitmap = Bitmap.createBitmap(
+                bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true
+            )
+
+            // Save to file WITHOUT EXIF
+            val file = File(context.cacheDir, "final_upload_${System.currentTimeMillis()}.jpg")
+            FileOutputStream(file).use { out ->
+                rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
+            }
+
+            return file
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+
+
     private fun handleImageResult(uri: Uri) {
+        val rotatedFile = fixImageOrientation(requireContext(), uri)
+        rotatedFile?.let {
+            getImage(it.absolutePath, Uri.fromFile(it)) // send new rotated file path & uri
+        } ?: showError("Image rotation failed")
+    }
+
+   /* private fun handleImageResult(uri: Uri) {
         val file = uriToFile(uri)
         file?.let {
             getImage(it.absolutePath, uri)
         } ?: showError("Unable to get image file.")
-    }
+    }*/
 
     private fun handlePdfResult(uri: Uri) {
         val file = uriToFile(uri)
