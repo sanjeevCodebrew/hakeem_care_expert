@@ -118,7 +118,7 @@ class AddReportNewFragment : DaggerFragment() {
             binding.tvGender.append(request?.from_user?.profile?.gender)
         }
         if (!request?.id.isNullOrEmpty()) {
-            binding.tvId.append(request?.id)
+            binding.tvId.append(request?.from_user?.national_id)
         }
         if (!request?.from_user?.profile?.weight.isNullOrEmpty())
         {
