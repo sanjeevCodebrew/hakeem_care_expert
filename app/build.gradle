@@ -253,8 +253,9 @@ dependencies {
 
     // Jitsi Meet
 //    implementation('org.jitsi.react:jitsi-meet-sdk:2.9.3') { transitive = true }
-    implementation ('org.jitsi.react:jitsi-meet-sdk:5.1.0') { transitive = true }
+//    implementation ('org.jitsi.react:jitsi-meet-sdk:5.1.0') { transitive = true }
 //    implementation ('org.jitsi.react:jitsi-meet-sdk:10.1.2') { transitive = true }
+    implementation('org.jitsi.react:jitsi-meet-sdk:11.3.2') { transitive = true }
 
     /*PAGER INDICATOR*/
     implementation 'me.relex:circleindicator:2.1.4'
@@ -309,6 +310,9 @@ dependencies {
     implementation 'com.karumi:dexter:6.2.3'
 
     implementation 'com.github.mrmike:ok2curl:0.8.0'
+
+    implementation "androidx.media3:media3-exoplayer:1.2.0"
+    implementation "androidx.media3:media3-ui:1.2.0"
 }
 
 

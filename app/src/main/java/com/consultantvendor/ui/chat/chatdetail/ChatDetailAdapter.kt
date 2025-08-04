@@ -11,6 +11,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.databinding.DataBindingUtil
+import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
+import androidx.media3.common.Timeline
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.PlayerView
 import androidx.recyclerview.widget.RecyclerView
 import com.consultantvendor.R
 import com.consultantvendor.data.models.responses.chat.ChatMessage
@@ -19,11 +24,11 @@ import com.consultantvendor.databinding.ItemChatRightBinding
 import com.consultantvendor.databinding.ItemChatTypingBinding
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.DateUtils.dateFormatFromMillis
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.Timeline
-import com.google.android.exoplayer2.ui.PlayerView
+//import com.google.android.exoplayer2.ExoPlayer
+//import com.google.android.exoplayer2.MediaItem
+//import com.google.android.exoplayer2.Player
+//import com.google.android.exoplayer2.Timeline
+//import com.google.android.exoplayer2.ui.PlayerView
 import java.util.*
 
 class ChatDetailAdapter(

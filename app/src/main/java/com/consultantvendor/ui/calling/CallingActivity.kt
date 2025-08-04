@@ -27,6 +27,7 @@ import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.ActivityCallingBinding
 import com.consultantvendor.ui.calling.Constants.CALL_NOTIFICATION_ID
 import com.consultantvendor.ui.jitsimeet.JitsiActivity
+import com.consultantvendor.ui.jitsimeet.JitsiNewActivity
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import dagger.android.support.DaggerAppCompatActivity
@@ -75,31 +76,33 @@ class CallingActivity : DaggerAppCompatActivity() {
     }
 
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
-        if (intent?.action == Constants.ACTION_ACCEPT) {
+        if (intent.action == Constants.ACTION_ACCEPT) {
 
-            callInvite = intent.getSerializableExtra(Constants.INCOMING_CALL_INVITE) as PushData
+            val callInvite = intent.getSerializableExtra(Constants.INCOMING_CALL_INVITE) as PushData
 
-            Log.e("TAG", "onNewIntentEx: "+callInvite )
+            Log.e("TAG", "onNewIntentEx: $callInvite")
 
-            callId = callInvite.call_id
+            val callId = callInvite.call_id
 
-            /*Data for jitsi class*/
-            val jitsiClass = JitsiClass()
-            jitsiClass.id = callInvite.request_id
-            jitsiClass.call_id = callInvite.call_id
-            jitsiClass.callType = callInvite.main_service_type
-            jitsiClass.name = ""
+            val jitsiClass = JitsiClass().apply {
+                id = callInvite.request_id
+                this.call_id = callInvite.call_id
+                callType = callInvite.main_service_type
+                name = ""
+            }
 
-            val intentJitsi = Intent(this, JitsiActivity::class.java)
+            val intentJitsi = Intent(this, JitsiNewActivity::class.java)
             intentJitsi.putExtra(EXTRA_CALL_NAME, jitsiClass)
             startActivity(intentJitsi)
+
             clearNotification()
             finish()
             mHandler.removeCallbacksAndMessages(null)
-        } else if (intent?.action == Constants.ACTION_REJECT) {
+
+        } else if (intent.action == Constants.ACTION_REJECT) {
             finish()
             mHandler.removeCallbacksAndMessages(null)
         }
@@ -165,7 +168,7 @@ class CallingActivity : DaggerAppCompatActivity() {
             jitsiClass.callType = callInvite.main_service_type
             jitsiClass.name = ""
 
-            val intent = Intent(this, JitsiActivity::class.java)
+            val intent = Intent(this, JitsiNewActivity::class.java)
             intent.putExtra(EXTRA_CALL_NAME, jitsiClass)
             startActivity(intent)
             clearNotification()
