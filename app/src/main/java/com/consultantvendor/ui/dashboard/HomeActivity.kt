@@ -3,6 +3,7 @@ package com.consultantvendor.ui.dashboard
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -134,11 +135,48 @@ class HomeActivity : DaggerAppCompatActivity() {
 
         applyInsets(binding.root)
 
+        clearBadgeCount(this)
         initialise()
         setNavigation()
         bindObservers()
         getPendingRequest()
 
+    }
+
+    fun clearBadgeCount(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // For API 26+, use NotificationManager
+            val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.cancelAll()
+        }
+
+        // Reset count for Samsung, Xiaomi, etc.
+        try {
+            val intent = Intent("android.intent.action.BADGE_COUNT_UPDATE")
+            intent.putExtra("badge_count", 0)
+            intent.putExtra("badge_count_package_name", context.packageName)
+            intent.putExtra("badge_count_class_name", getLauncherClassName(context))
+            context.sendBroadcast(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun getLauncherClassName(context: Context): String? {
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_LAUNCHER)
+
+        val pm = context.packageManager
+        val resolveInfos = pm.queryIntentActivities(intent, 0)
+
+        for (resolveInfo in resolveInfos) {
+            val pkgName = resolveInfo.activityInfo.applicationInfo.packageName
+            if (pkgName.equals(context.packageName, ignoreCase = true)) {
+                return resolveInfo.activityInfo.name
+            }
+        }
+
+        return null
     }
 
 
