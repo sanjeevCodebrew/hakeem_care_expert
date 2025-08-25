@@ -88,8 +88,8 @@ class DialogMedicineFragment(
         if (!isEditMedicine) {
             hitApiMedicineList(true)
         }
-        else{
-
+        else
+        {
             if (fragment is AddReportFragment) {
                 binding.clOptions.visible()
                 fragment.itemMedicineList.clear()
