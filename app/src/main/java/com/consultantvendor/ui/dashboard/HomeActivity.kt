@@ -246,12 +246,12 @@ class HomeActivity : DaggerAppCompatActivity() {
             )
         }
 
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+      /*  firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
             val params = Bundle()
             params.putString("dev_name", "Zorawar")
             params.putString("dev_description", "Quality Tester")
             param(FirebaseAnalytics.Param.CONTENT_TYPE, "dev_test")
-        }
+        }*/
 
     }
 

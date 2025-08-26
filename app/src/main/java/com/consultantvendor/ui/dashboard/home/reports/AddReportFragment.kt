@@ -140,6 +140,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
             setEditPrescriptionData()
             listeners()
             bindObservers()
+
         }
         return rootView
     }
@@ -157,6 +158,8 @@ class AddReportFragment : BasePhotoUplaodFragment() {
         editTextScroll(binding.etPrescriptionNotes)
 
         request = requireActivity().intent.getSerializableExtra(EXTRA_REQUEST_ID) as Request
+
+        binding.clUploadPrescription.gone()
 
         binding.tvName.text = request?.from_user?.name
         binding.tvMobileNumber.text = request?.from_user?.phone
@@ -206,6 +209,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
         }
 
     }
+
 
     @SuppressLint("NotifyDataSetChanged")
     private fun setEditPrescriptionData() {
@@ -320,23 +324,37 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                     position: Int,
                     id: Long
                 ) {
-
-                    if (position == 1) {
+                    if (position == 1) { // Insurance
                         binding.spnInsurance.visible()
                         addPrescriptionViewModel.getInsurance()
                         prescription_type = "insurance"
-                    } else if (position == 2) {
+
+                        // 👉 Force fill type = "upload-prescription"
+                        binding.spnFillType.setSelection(
+                            2,
+                            false
+                        ) // assuming index 0 = Upload Prescription
+                        binding.clfillform.gone()
+                        binding.clUploadPrescription.visible()
+                        filltype = "upload-prescription"
+
+                    } else if (position == 2) { // Cash
                         binding.spnInsurance.visibility = View.GONE
                         prescription_type = "cash"
                         insuraceId = ""
+
+                        // 👉 Force fill type = "form"
+                        binding.spnFillType.setSelection(1, false) // assuming index 1 = Form
+                        binding.clfillform.visible()
+                        binding.clUploadPrescription.gone()
+                        filltype = "form"
                     }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
-                    // Optional: handle if nothing is selected
+
                 }
             }
-
 
         binding.spnFillType.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -346,21 +364,25 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                     position: Int,
                     id: Long
                 ) {
-
-                    if (position == 1) {
-                        binding.clfillform.visible()
-                        binding.clUploadPrescription.gone()
-                        filltype = "form"
-                    } else if (position == 2) {
-                        binding.clfillform.gone()
-                        binding.clUploadPrescription.visible()
-                        filltype = "upload-prescription"
+                    // Only apply manual changes if prescription_type != insurance
+                    if (!prescription_type.equals("insurance", ignoreCase = true)) {
+                        if (position == 1) { // Form
+                            binding.clfillform.visible()
+                            binding.clUploadPrescription.gone()
+                            filltype = "form"
+                        } else if (position == 0) { // Upload Prescription
+                            binding.clfillform.gone()
+                            binding.clUploadPrescription.visible()
+                            filltype = "upload-prescription"
+                        }
                     }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
+
                 }
             }
+
 
 
         binding.etDiagnosis.setOnClickListener {
