@@ -349,6 +349,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                         binding.clUploadPrescription.gone()
                         filltype = "form"
                     }
+
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -372,7 +373,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                             filltype = "form"
                         } else if (position == 0) { // Upload Prescription
                             binding.clfillform.gone()
-                            binding.clUploadPrescription.visible()
+//                            binding.clUploadPrescription.visible()
                             filltype = "upload-prescription"
                         }
                     }

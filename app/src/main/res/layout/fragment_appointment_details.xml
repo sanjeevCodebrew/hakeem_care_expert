@@ -507,8 +507,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/ivCancelAccept"
                     app:layout_goneMarginEnd="@dimen/dp_0" />
 
+
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvAddReports"
+                    android:id="@+id/tvPublishPrescription"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_20"
@@ -516,7 +517,7 @@
                     android:background="@drawable/drawable_alternate_button"
                     android:fontFamily="@font/campton_semibold"
                     android:gravity="center"
-                    android:text="@string/add_reports"
+                    android:text="@string/publish_prescription"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/sp_16"
                     android:visibility="gone"
@@ -544,6 +545,25 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvChat"
                     app:layout_goneMarginStart="@dimen/dp_0" />
 
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAddReports"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:layout_marginStart="@dimen/dp_4"
+                    android:background="@drawable/drawable_alternate_button"
+                    android:fontFamily="@font/campton_semibold"
+                    android:gravity="center"
+                    android:text="@string/add_reports"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/sp_16"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintEnd_toStartOf="@id/tvChat"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAddPrescription"
+                    app:layout_goneMarginEnd="@dimen/dp_0" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvChat"
                     android:layout_width="0dp"
@@ -559,9 +579,9 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/sp_16"
                     android:visibility="gone"
-                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintStart_toEndOf="@id/tvAddReports"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                    app:layout_constraintTop_toBottomOf="@id/tvAddReports"
+                    app:layout_constraintTop_toBottomOf="@id/tvAddPrescription"
                     app:layout_goneMarginStart="@dimen/dp_0" />
 
                 <androidx.constraintlayout.widget.Barrier

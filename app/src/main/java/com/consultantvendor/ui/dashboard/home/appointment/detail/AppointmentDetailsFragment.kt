@@ -239,6 +239,18 @@ class AppointmentDetailsFragment : DaggerFragment() {
             val fragment = BottomExtraChargesFragment(this)
             fragment.show(requireActivity().supportFragmentManager, fragment.tag)
         }
+
+        binding.tvPublishPrescription.setOnClickListener {
+            hitApiPublishPrescription()
+        }
+    }
+
+    private fun hitApiPublishPrescription() {
+
+        val hashMap = HashMap<String, String>()
+        hashMap["id"] = (request.medicalReport?.id ?: "").toString()
+        viewModel.publishPrescription(hashMap)
+
     }
 
     fun extraPayment(amount: String, description: String) {
@@ -339,10 +351,27 @@ class AppointmentDetailsFragment : DaggerFragment() {
             )
         )
 
-        if (request.is_report == true)
-            binding.tvAddPrescription.text = getString(R.string.prescriptions)
-        else
-            binding.tvAddPrescription.text = getString(R.string.add_prescription)
+        request.is_report?.let {
+            if (!it) {
+                binding.tvAddPrescription.text = getString(R.string.add_prescription)
+            }
+            else {
+                binding.tvAddPrescription.text = getString(R.string.prescriptions)
+            }
+        }
+
+        if (request.is_report == true && request.is_report_publish==0) {
+            binding.tvPublishPrescription.visible()
+            binding.tvPublishPrescription.text = getString(R.string.publish_prescription)
+            binding.tvPublishPrescription.isEnabled = true
+        }
+        else if (request.is_report_publish==1) {
+            binding.tvPublishPrescription.visible()
+            binding.tvPublishPrescription.text = getString(R.string.published)
+            binding.tvPublishPrescription.isEnabled = false
+        }
+
+
 
         if (request.is_prescription_report == true){
             binding.tvAddReports.text = getString(R.string.reports)
@@ -1018,6 +1047,28 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 }
             }
         })
+
+
+        viewModel.publishPrescription.observe(requireActivity(), Observer {
+            it ?: return@Observer
+            when (it.status) {
+                Status.SUCCESS -> {
+                    binding.clLoader.root.gone()
+                    binding.tvPublishPrescription.text = getString(R.string.published)
+                    binding.tvPublishPrescription.isEnabled = false
+                }
+
+                Status.ERROR -> {
+                    binding.clLoader.root.gone()
+                    ApisRespHandler.handleError(it.error, requireActivity(), prefsManager)
+                }
+
+                Status.LOADING -> {
+                    binding.clLoader.root.visible()
+                }
+            }
+        })
+
     }
 
     val registerActivityResult =

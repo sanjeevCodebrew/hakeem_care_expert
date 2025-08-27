@@ -273,7 +273,6 @@ class HomeActivity : DaggerAppCompatActivity() {
                     R.navigation.navigation_revenue,
                     R.navigation.navigation_profile
                 )
-
             else ->
                 listOf(
                     R.navigation.navigation_home,
@@ -556,8 +555,6 @@ class HomeActivity : DaggerAppCompatActivity() {
                                     intent = Intent(this, DrawerActivity::class.java)
                                         .putExtra(PAGE_TO_OPEN, CLASSES)
                                 }
-
-
                                 PushType.CALL_ACCEPTED -> {
                                     val callIntent = Intent(this, IncomingCallNotificationService::class.java)
                                     callIntent.action = Constants.ACTION_ACCEPT
@@ -588,11 +585,13 @@ class HomeActivity : DaggerAppCompatActivity() {
     }
 
     private fun handleCanceledCallInvite(pushData: PushData) {
+
         val intent = Intent(this, IncomingCallNotificationService::class.java)
         intent.action = Constants.ACTION_CANCEL_CALL
         intent.putExtra(Constants.INCOMING_CALL_INVITE, pushData)
         intent.putExtra(EXTRA_REQUEST_ID, pushData.call_id)
         startService(intent)
+
     }
 
 
@@ -608,6 +607,7 @@ class HomeActivity : DaggerAppCompatActivity() {
     }
 
     private fun registerReceiver() {
+
         if (!isReceiverRegistered) {
             val intentFilter = IntentFilter()
             intentFilter.addAction(PushType.BOOKING_REQUEST)
