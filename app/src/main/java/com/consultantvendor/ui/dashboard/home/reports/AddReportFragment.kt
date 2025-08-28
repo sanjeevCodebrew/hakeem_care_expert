@@ -208,6 +208,8 @@ class AddReportFragment : BasePhotoUplaodFragment() {
             binding.tvDoctorName.append(request?.to_user?.name)
         }
 
+        binding.spnFillType.isEnabled = false
+
     }
 
 
@@ -373,7 +375,6 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                             filltype = "form"
                         } else if (position == 0) { // Upload Prescription
                             binding.clfillform.gone()
-//                            binding.clUploadPrescription.visible()
                             filltype = "upload-prescription"
                         }
                     }
