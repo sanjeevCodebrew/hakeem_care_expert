@@ -26,6 +26,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -247,7 +249,9 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_chat_detail)
         setContentView(binding.root)
-        applyInsets(binding.root)
+//        applyInsets(binding.root)
+
+        binding.root.applyKeyboardInsets()
 
         setAdapter()
         initialise()
@@ -256,6 +260,24 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
         listeners()
         setButtonMicSend()
         checkNotSentMessage()
+    }
+
+
+    fun View.applyKeyboardInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(this) { v, insets ->
+            val insetsComposite = insets.getInsets(
+                WindowInsetsCompat.Type.systemBars()
+                        or WindowInsetsCompat.Type.displayCutout()
+                        or WindowInsetsCompat.Type.ime()
+            )
+            v.setPadding(
+                insetsComposite.left,
+                insetsComposite.top,
+                insetsComposite.right,
+                insetsComposite.bottom
+            )
+            insets
+        }
     }
 
 
