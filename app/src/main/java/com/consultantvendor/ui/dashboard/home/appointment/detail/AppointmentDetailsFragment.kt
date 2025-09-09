@@ -584,6 +584,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 }
 
                 override fun onCancelButtonClicked() {
+
                 }
             }).show()
 
