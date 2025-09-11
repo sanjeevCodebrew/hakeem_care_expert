@@ -114,15 +114,17 @@ class AddReportNewFragment : DaggerFragment() {
             binding.tvDob.append(request?.from_user?.profile?.dob)
         }
 //        binding.tvAge.text = "${getAge(request?.from_user?.profile?.dob)} ${getString(R.string.years_old)}"
-        if (!request?.from_user?.profile?.gender.isNullOrEmpty()) {
-            binding.tvGender.append(request?.from_user?.profile?.gender)
+
+        request?.from_user?.profile?.gender?.let { gender ->
+            binding.tvGender.append(gender)
         }
-        if (!request?.id.isNullOrEmpty()) {
-            binding.tvId.append(request?.from_user?.national_id)
+
+        request?.from_user?.national_id?.let { nationalId ->
+            binding.tvId.append(nationalId)
         }
-        if (!request?.from_user?.profile?.weight.isNullOrEmpty())
-        {
-            binding.tvWeight.append(request?.from_user?.profile?.weight)
+
+        request?.from_user?.profile?.weight?.let { weight ->
+            binding.tvWeight.append(weight)
         }
 
 
