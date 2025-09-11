@@ -35,6 +35,8 @@ class AppointmentViewModel @Inject constructor(private val webService: WebServic
 
     val updateCarePlan by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
 
+    val publishPrescription by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
+
     fun request(hashMap: HashMap<String, String>) {
         pendingRequest.value = Resource.loading()
 
@@ -321,5 +323,29 @@ class AppointmentViewModel @Inject constructor(private val webService: WebServic
                     }
 
                 })
+    }
+
+    fun publishPrescription(hashMap: HashMap<String, String>) {
+        publishPrescription.value = Resource.loading()
+
+        webService.publishPrescription(hashMap)
+            .enqueue(object : Callback<ApiResponse<CommonDataModel>> {
+
+                override fun onResponse(call: Call<ApiResponse<CommonDataModel>>,
+                                        response: Response<ApiResponse<CommonDataModel>>) {
+                    if (response.isSuccessful) {
+                        publishPrescription.value = Resource.success(response.body()?.data)
+                    } else {
+                        publishPrescription.value = Resource.error(
+                            ApiUtils.getError(response.code(),
+                                response.errorBody()?.string()))
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
+                    publishPrescription.value = Resource.error(ApiUtils.failure(throwable))
+                }
+
+            })
     }
 }

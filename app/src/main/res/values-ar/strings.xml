@@ -1194,5 +1194,8 @@
     <string name="diagnosis">التشخيص</string>
     <string name="edit_precription">تعديل الوصفة الطبية</string>
 
+    <string name="publish_prescription">نشر الوصفة</string>
+    <string name="published">تم النشر</string>
+
 
 </resources>

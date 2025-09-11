@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -55,6 +56,11 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
         //setContentView(R.layout.activity_jitsi)
 
         checkPermission()
+
+        onBackPressedDispatcher.addCallback(this) {
+
+
+        }
 
     }
 

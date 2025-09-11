@@ -110,22 +110,32 @@ class AddReportNewFragment : DaggerFragment() {
 
         binding.tvName.text = request?.from_user?.name
         binding.tvMobileNumber.text = request?.from_user?.phone
-        if (!request?.from_user?.profile?.dob.isNullOrEmpty()) {
-            binding.tvDob.append(request?.from_user?.profile?.dob)
-        }
-//        binding.tvAge.text = "${getAge(request?.from_user?.profile?.dob)} ${getString(R.string.years_old)}"
 
-        request?.from_user?.profile?.gender?.let { gender ->
-            binding.tvGender.append(gender)
-        }
+        request?.from_user?.profile?.dob
+            ?.takeIf { it.isNotEmpty() }
+            ?.let { dob ->
+                binding.tvDob.append(dob)
+                // if you want age, uncomment this:
+                // binding.tvAge.text = "${getAge(dob)} ${getString(R.string.years_old)}"
+            }
 
-        request?.from_user?.national_id?.let { nationalId ->
-            binding.tvId.append(nationalId)
-        }
+        request?.from_user?.profile?.gender
+            ?.takeIf { it.isNotEmpty() }
+            ?.let { gender ->
+                binding.tvGender.append(gender)
+            }
 
-        request?.from_user?.profile?.weight?.let { weight ->
-            binding.tvWeight.append(weight)
-        }
+        request?.id
+            ?.takeIf { it.isNotEmpty() }
+            ?.let {
+                binding.tvId.append(request?.from_user?.national_id ?: "")
+            }
+
+        request?.from_user?.profile?.weight
+            ?.takeIf { it.isNotEmpty() }
+            ?.let { weight ->
+                binding.tvWeight.append(weight)
+            }
 
 
         loadImage(binding.ivPic, request?.from_user?.profile_image,

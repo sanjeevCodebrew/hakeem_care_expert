@@ -344,7 +344,6 @@ class HomeFragment : DaggerFragment() {
                 )
             }
         }
-
     }
 
     private fun bindObservers() {
@@ -357,6 +356,7 @@ class HomeFragment : DaggerFragment() {
 
                     items.clear()
                     items.addAll(it.data?.requests ?: emptyList())
+                    Log.e("TAG", "bindObservers: ", )
 
                     adapter.notifyDataSetChanged()
                     adapter.setAllItemsLoaded(true)
@@ -484,8 +484,7 @@ class HomeFragment : DaggerFragment() {
                                     .putExtra(USER_NAME, requestItem?.from_user?.name)
                                     .putExtra(EXTRA_REQUEST_ID, requestItem?.id)
                                     .putExtra(EXTRA_IS_FIRST, true)
-                                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                            )
+                                    .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP))
                         }
 
                         ConsultType.AUDIO_CALL, ConsultType.VIDEO_CALL -> {
@@ -835,6 +834,7 @@ class HomeFragment : DaggerFragment() {
                 }
 
                 override fun onCancelButtonClicked() {
+
                 }
             }).show()
     }
