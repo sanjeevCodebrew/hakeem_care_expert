@@ -1197,5 +1197,9 @@
     <string name="publish_prescription">نشر الوصفة</string>
     <string name="published">تم النشر</string>
 
+    <string name="end_call_title">إنهاء المكالمة</string>
+    <string name="end_call_message">هل تريد إنهاء هذه المكالمة؟</string>
+    <string name="call_ended">انتهت المكالمة</string>
+
 
 </resources>

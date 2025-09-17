@@ -1,6 +1,7 @@
 package com.consultantvendor.ui.jitsimeet
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -58,10 +59,41 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
         checkPermission()
 
         onBackPressedDispatcher.addCallback(this) {
-
-
+           openDialog()
         }
 
+    }
+
+    private fun openDialog(){
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.end_call_title))
+            .setMessage(getString(R.string.end_call_message))
+            .setPositiveButton(getString(R.string.yes)) { dialog, _ ->
+
+                if (isConnectedToInternet(this, true) && jitsiClass?.isClass == false) {
+                    userRepository.callStatus(
+                        jitsiClass?.id ?: "", jitsiClass?.call_id ?: "",
+                        PushType.CALL_CANCELED
+                    )
+
+                    // Tell Jitsi to hang up
+                    val hangupIntent = Intent("org.jitsi.meet.HANG_UP")
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(hangupIntent)
+
+                    // Dispose of the Jitsi view
+                    jitsiMeetView?.dispose()
+
+                    // Finish the activity
+                    finish()
+                    longToast(getString(R.string.call_ended))
+                }
+
+                dialog.dismiss()
+            }
+            .setNegativeButton(getString(R.string.no)) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun intialise() {

@@ -819,6 +819,11 @@
     <string name="publish_prescription">Publish Prescription</string>
     <string name="published">Published</string>
 
+    <string name="end_call_title">End Call</string>
+    <string name="end_call_message">Do you want to end this call?</string>
+    <string name="call_ended">Call Ended</string>
+
+
 
 
 
