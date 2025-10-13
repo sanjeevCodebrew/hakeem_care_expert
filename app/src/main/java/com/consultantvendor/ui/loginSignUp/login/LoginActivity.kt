@@ -22,6 +22,7 @@ import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
+import androidx.core.view.isVisible
 
 class LoginActivity : DaggerAppCompatActivity() {
 
@@ -108,7 +109,7 @@ class LoginActivity : DaggerAppCompatActivity() {
                 binding.etMobileNumber.text.toString().isEmpty() || binding.etMobileNumber.text.toString().length < 6 -> {
                     binding.etMobileNumber.showSnackBar(getString(R.string.enter_moh_number))
                 }
-                binding.tvTerms.visibility==View.VISIBLE && !binding.tvTerms.isChecked -> {
+                binding.tvTerms.isVisible && !binding.tvTerms.isChecked -> {
                     binding.tvTerms.showSnackBar(getString(R.string.agree_to_terms))
                 }
                 isConnectedToInternet(this, true) -> {
@@ -121,7 +122,7 @@ class LoginActivity : DaggerAppCompatActivity() {
         }
     }
 
-
+    @SuppressLint("SuspiciousIndentation")
     private fun bindObservers() {
           viewModel.drLogin.observe(this, Observer {
           it ?: return@Observer

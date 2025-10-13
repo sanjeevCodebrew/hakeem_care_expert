@@ -130,10 +130,8 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
             throw RuntimeException("Invalid server URL!")
         }
 
-
         val defaultOptions = JitsiMeetConferenceOptions.Builder()
             .setServerURL(serverURL)
-//                .setWelcomePageEnabled(false)
             .setFeatureFlag("invite.enabled", false)
             .setFeatureFlag("chat.enabled", false)
             .setFeatureFlag("calendar.enabled", false)
@@ -234,8 +232,7 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
                 BroadcastEvent.Type.PARTICIPANT_JOINED.action -> {
                     // For participant events, the data is usually in a Serializable extra
                     val data = intent?.getSerializableExtra("data") as? kotlin.collections.HashMap<String, Any>
-                    Toast.makeText(this@JitsiNewActivity, "Participant joining", Toast.LENGTH_SHORT)
-                        .show()
+                    longToast("Participant joining")
                 }
 
                 BroadcastEvent.Type.AUDIO_MUTED_CHANGED.action -> {
@@ -243,7 +240,7 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
                     data?.let {
                         val participantId = it["participantId"] as? String
                         val muted = it["muted"] as? Boolean
-                        // Log.d("JitsiEvents", "Participant $participantId Audio Muted: $muted")
+                         Log.d("JitsiEvents", "Participant $participantId Audio Muted: $muted")
                     }
                 }
 
@@ -252,7 +249,7 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
                     data?.let {
                         val participantId = it["participantId"] as? String
                         val muted = it["muted"] as? Boolean
-                        // Log.d("JitsiEvents", "Participant $participantId Video Muted: $muted")
+                         Log.d("JitsiEvents", "Participant $participantId Video Muted: $muted")
                     }
                 }
                 // Add more `when` branches for other BroadcastEvent.Type actions as needed
@@ -293,7 +290,7 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
                 jitsiClass?.id ?: "", jitsiClass?.call_id ?: "",
                 PushType.CALL_CANCELED
             )
-            longToast("call ended")
+            longToast(getString(R.string.call_ended))
         }
 
         jitsiMeetView?.dispose()
@@ -314,7 +311,6 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
             }
 
         }
-
 
     private fun checkPermission() {
         val PERMISSIONS = arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA)
@@ -348,7 +344,6 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
         } catch (e: Exception) {
         }
     }
-
 
     override fun onStop() {
         super.onStop()
@@ -400,7 +395,6 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.getStringExtra(EXTRA_REQUEST_ID) == jitsiClass?.call_id) {
                 if (intent.action == Constants.ACTION_CANCEL_CALL || intent.action == PushType.REQUEST_COMPLETED) {
-
                     jitsiMeetView?.dispose()
                     finish()
                 }
