@@ -29,6 +29,7 @@ import com.facebook.react.modules.core.PermissionListener
 import dagger.android.support.DaggerAppCompatActivity
 import org.jitsi.meet.sdk.*
 import org.jitsi.meet.sdk.log.JitsiMeetLogger
+import timber.log.Timber
 import java.net.MalformedURLException
 import java.net.URL
 import javax.inject.Inject
@@ -302,7 +303,7 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
     }
 
     val audioPermissions =
-        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {   result ->
 
             if (result.all {
                     it.value
@@ -358,7 +359,6 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
         super.onDestroy()
     }
 
-
     private fun registerReceiver() {
         if (!isReceiverRegistered) {
             val intentFilter = IntentFilter()
@@ -377,9 +377,8 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
         kotlin.runCatching {
             JitsiMeetActivityDelegate.onHostPause(this)
         }
-        Log.d(TAG, "onPause: called ")
+        Timber.tag(TAG).d("onPause: called ")
     }
-
 
     private fun unregisterReceiver() {
         if (isReceiverRegistered) {

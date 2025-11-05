@@ -264,7 +264,11 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                 itemMedicineList.add(
                     ItemModelMedicine(
                         it.description,
-                        it.doses, it.frequency, it.duration, "", it.quantity
+                        it.doses,
+                        it.frequency,
+                        it.duration,
+                        "",
+                        it.quantity
                     )
                 )
             }
@@ -443,7 +447,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
             if (isConnectedToInternet(requireContext(), true)) {
                 val hashMap = HashMap<String, Any>()
                 hashMap["request_id"] = request?.id.toString()
-//                hashMap["report_detals"] = binding.etNotes.text.toString()
+                hashMap["report_detals"] = binding.etNotes.text.toString()
                 hashMap["prescription_type"] = prescription_type
                 hashMap["fill_type"] = filltype
                 hashMap["item_no"] = item_number
