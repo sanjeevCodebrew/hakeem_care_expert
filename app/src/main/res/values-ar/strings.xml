@@ -1201,5 +1201,7 @@
     <string name="end_call_message">هل تريد إنهاء هذه المكالمة؟</string>
     <string name="call_ended">انتهت المكالمة</string>
 
+    <string name="diagnosis_notes">ملاحظات التشخيص</string>
+
 
 </resources>

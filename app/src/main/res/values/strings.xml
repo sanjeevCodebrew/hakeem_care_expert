@@ -368,6 +368,7 @@
     <string name="add_digital_prescription">Add Digital Prescription</string>
     <string name="prescription_notes">Prescription Notes</string>
     <string name="add_notes">Add notes</string>
+    <string name="diagnosis_notes">Diagnosis notes</string>
     <string name="add_diagnosis">Add Diagnosis</string>
     <string name="add_labnotes">Add Lab Notes</string>
     <string name="prescriptions">Prescriptions</string>

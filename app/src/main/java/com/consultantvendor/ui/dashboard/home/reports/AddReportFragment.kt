@@ -352,7 +352,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                         // 👉 Force fill type = "form"
                         binding.spnFillType.setSelection(1, false) // assuming index 1 = Form
                         binding.clfillform.visible()
-                        binding.clUploadPrescription.gone()
+                        binding.clUploadPrescription.visible()
                         filltype = "form"
                     }
 
@@ -375,7 +375,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                     if (!prescription_type.equals("insurance", ignoreCase = true)) {
                         if (position == 1) { // Form
                             binding.clfillform.visible()
-                            binding.clUploadPrescription.gone()
+                            binding.clUploadPrescription.visible()
                             filltype = "form"
                         } else if (position == 0) { // Upload Prescription
                             binding.clfillform.gone()
@@ -400,8 +400,6 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                 DialogMedicineFragment(this, isEditMedicine, request?.medicalReport?.prescription)
                 fragment.show(requireActivity().supportFragmentManager, fragment.tag)
         }
-
-
 
         binding.clUploadPrescription.setOnClickListener {
             showImageDialog(false, true, true,true)
