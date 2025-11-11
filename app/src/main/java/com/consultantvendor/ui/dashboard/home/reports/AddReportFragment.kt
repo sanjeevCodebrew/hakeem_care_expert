@@ -430,12 +430,12 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                 }
             }
 
-            if (binding.spnFillType.selectedItemPosition == 2) {
-                if (docUrl.isEmpty()) {
-                    binding.ivDoc.showSnackBar(getString(R.string.upload_prescription))
-                    return@setOnClickListener
-                }
-            }
+//            if (binding.spnFillType.selectedItemPosition == 2) {
+//                if (docUrl.isEmpty()) {
+//                    binding.ivDoc.showSnackBar(getString(R.string.upload_prescription))
+//                    return@setOnClickListener
+//                }
+//            }
 
 //            if (binding.etNotes.text.toString().trim().isEmpty()) {
 //                binding.etNotes.showSnackBar(getString(R.string.add_notes))
