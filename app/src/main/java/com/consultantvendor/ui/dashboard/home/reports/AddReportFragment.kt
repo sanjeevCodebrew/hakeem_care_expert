@@ -229,6 +229,24 @@ class AddReportFragment : BasePhotoUplaodFragment() {
 
         if (medicalReport.fill_type == "form") {
             binding.spnFillType.setSelection(1)
+
+            medicalReport.prescription_file?.isEmpty()?.let {
+                if (!it)
+                    docUrl = medicalReport.prescription_file.toString()
+
+
+                if (docUrl.endsWith(".pdf", ignoreCase = true)) {
+                    // It's a PDF
+                    binding.ivDoc.setImageResource(R.drawable.ic_pdf)
+                    binding.tvFileName.text = docUrl
+                } else {
+                    loadImage(binding.ivDoc,docUrl,R.drawable.image_placeholder)
+                    binding.tvFileName.text = docUrl
+                }
+
+
+            }
+
         } else {
             binding.spnFillType.setSelection(2)
 
