@@ -16,11 +16,14 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.LocaleList
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -105,6 +108,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.Calendar
+import java.util.Locale
 import java.util.Timer
 import java.util.TimerTask
 import javax.inject.Inject
@@ -310,6 +314,11 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
         lan = userRepository.getUserLanguage()
         isFromTeleHealth = intent.getBooleanExtra(ISFROMTELEHEALTH, false)
 
+
+         if (userRepository.getUserLanguage()=="ar") {
+             val arabicLocale = Locale("ar")
+             binding.etMessage.imeHintLocales = LocaleList(arabicLocale)
+         }
 
 
     }
@@ -1224,11 +1233,28 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
         isActive = true
         registerReceiver()
 
+        binding.etMessage.showKeyboardWithLocale()
+
         otherUserID = intent.getStringExtra(USER_ID) ?: ""
 
         pageBeforeAfter = if (pageBeforeAfter == null) "" else ApiKeys.BEFORE
         getChatData()
     }
+
+    private fun applyKeyboardLocale(editText: EditText) {
+        val appLocale = userRepository.getUserLanguage()
+        if (appLocale == "ar") {
+            editText.setPrivateImeOptions("locale=ar")   // Request Arabic keyboard
+        } else {
+            editText.setPrivateImeOptions("locale=en")   // Request English keyboard
+        }
+    }
+    fun EditText.showKeyboardWithLocale() {
+        this.requestFocus()
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+    }
+
 
     private fun registerReceiver() {
         if (!isReceiverRegistered) {

@@ -140,7 +140,7 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
             .setFeatureFlag("live-streaming.enabled", false)
             .setFeatureFlag("recording.enabled", false)
             .setFeatureFlag("tile-view.enabled", false)
-            .setFeatureFlag("fullscreen.enabled", false) // Try setting this to false
+            .setFeatureFlag("fullscreen.enabled", false)
             .setFeatureFlag("meeting-password.enabled", false)
             .setFeatureFlag("pip.enabled", true)
             .setFeatureFlag("prejoinpage.enabled", false)
@@ -165,7 +165,6 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
                 .setUserInfo(userInfo)
                 .setRoom(roomName)
                 .setSubject(subjectName)
-
                 .setAudioOnly(setAudioOnly)
                 .build()
             // Launch the new activity with the given options. The launch() method takes care
@@ -177,7 +176,6 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
 
             setContentView(jitsiMeetView)
             jitsiMeetView?.let(::applyInsets)
-
 
             SoundPoolManager.getInstance(this)?.stopRinging()
         }
