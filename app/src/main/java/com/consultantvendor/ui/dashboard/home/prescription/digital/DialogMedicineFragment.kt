@@ -55,6 +55,10 @@ class DialogMedicineFragment(
 
     private var isFirstPage = true
 
+    private var isAddManualy = false
+
+    private var medicineName = ""
+
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
@@ -85,7 +89,7 @@ class DialogMedicineFragment(
         addPrescriptionViewModel = ViewModelProvider(this, viewModelFactory)[AddPrescriptionViewModel::class.java]
 
 
-        if (!isEditMedicine) {
+      /*  if (!isEditMedicine) {
             hitApiMedicineList(true)
         }
         else
@@ -102,7 +106,20 @@ class DialogMedicineFragment(
                 }
             }
 
+        }*/
+        if (fragment is AddReportFragment) {
+            if (isEditMedicine)
+            binding.clOptions.visible()
+            fragment.itemMedicineList.clear()
+            prescription?.forEach {
+                binding.etSearch.setText(it.description)
+                binding.etDoses.setText(it.doses)
+                binding.etFrequency.setText(it.frequency)
+                binding.etduration.setText(it.duration)
+                binding.etQuantity.setText(it.quantity)
+            }
         }
+
 
         binding.rvMedicine.isNestedScrollingEnabled = false
         binding.rvMedicine.setHasFixedSize(true)
@@ -124,6 +141,19 @@ class DialogMedicineFragment(
 
         binding.ivSearch.setOnClickListener {
             hitApiMedicineList(true)
+        }
+
+        binding.tvAddManualy.setOnClickListener {
+            binding.clOptions.visible()
+            binding.ilAddName.visible()
+            isAddManualy  = true
+        }
+
+        binding.tvGetFromList.setOnClickListener {
+            binding.clOptions.gone()
+            binding.ilAddName.gone()
+           hitApiMedicineList(true)
+            isAddManualy  = false
         }
 
         binding.rvMedicine.setOnTouchListener { _, event ->
@@ -152,11 +182,20 @@ class DialogMedicineFragment(
 
             }
 
+            if (isAddManualy){
+                medicineName = binding.etAddName.text.toString()
+                binding.ilAddName.visible()
+            }
+            else{
+                binding.ilAddName.gone()
+                medicineName = binding.etSearch.text.toString()
+            }
+
 
             if (fragment is AddReportFragment) {
                 fragment.itemMedicineList.add(
                     ItemModelMedicine(
-                        description = binding.etSearch.text.toString(),
+                        description = medicineName,
                         doses = binding.etDoses.text.toString(),
                         frequency = binding.etFrequency.text.toString(),
                         duration = binding.etduration.text.toString(),

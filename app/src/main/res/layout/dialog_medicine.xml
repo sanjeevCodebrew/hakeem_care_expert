@@ -75,6 +75,34 @@
                     app:layout_constraintTop_toBottomOf="@id/etSearch"
                     app:layout_constraintEnd_toEndOf="@id/etSearch"/>
 
+
+                <TextView
+                    android:id="@+id/tvAddManualy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_14"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/campton_book"
+                    android:text="@string/add_manualy"
+                    app:layout_constraintTop_toBottomOf="@id/tvDone"
+                    app:layout_constraintStart_toStartOf="@id/etSearch"
+                    app:layout_constraintEnd_toEndOf="@id/etSearch"/>
+
+                <TextView
+                    android:id="@+id/tvGetFromList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sp_14"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/campton_book"
+                    android:text="@string/get_from_list"
+                    app:layout_constraintTop_toBottomOf="@id/tvAddManualy"
+                    app:layout_constraintStart_toStartOf="@id/etSearch"
+                    app:layout_constraintEnd_toEndOf="@id/etSearch"/>
+
+
                 <TextView
                     android:id="@+id/tvAction"
                     android:layout_width="wrap_content"
@@ -88,7 +116,7 @@
                     android:textStyle="bold"
                     android:layout_marginEnd="@dimen/dp_10"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvDone" />
+                    app:layout_constraintTop_toBottomOf="@id/tvGetFromList" />
 
 
                 <TextView
@@ -104,7 +132,7 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/tvAction"
-                    app:layout_constraintTop_toBottomOf="@id/tvDone" />
+                    app:layout_constraintTop_toBottomOf="@id/tvGetFromList" />
 
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -127,6 +155,48 @@
                     android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@id/rvMedicine">
 
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAddName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_20"
+                        android:layout_marginEnd="@dimen/dp_20"
+                        android:alpha="0.7"
+                        android:visibility="gone"
+                        android:fontFamily="@font/campton_book"
+                        android:text="@string/add_name"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/sp_16"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ilAddName"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/dp_48"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tvAddName">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/etAddName"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_48"
+                            android:fontFamily="@font/campton_medium"
+                            android:hint="@string/add_name"
+                            android:imeOptions="actionDone"
+                            android:inputType="text"
+                            android:maxLength="100"
+                            android:textColor="@color/colorBlack"
+                            android:textDirection="locale"
+                            android:textSize="@dimen/sp_14" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvDoses"
                         android:layout_width="wrap_content"
@@ -140,7 +210,7 @@
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/sp_16"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toBottomOf="@id/ilAddName"/>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/ilDoses"
