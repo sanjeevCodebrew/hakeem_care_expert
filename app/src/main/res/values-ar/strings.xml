@@ -1204,9 +1204,10 @@
     <string name="diagnosis_notes">ملاحظات إضافية</string>
 
     <string name="add_manualy">أضف يدويًا</string>
-    <string name="get_from_list">اختر من القائمة</string>
 
     <string name="add_name">أضف الاسم</string>
+
+    <string name="get_from_list">احصل من قائمة ALDawa</string>
 
 
 </resources>

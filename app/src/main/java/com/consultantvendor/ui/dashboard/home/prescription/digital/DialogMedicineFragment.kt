@@ -84,6 +84,7 @@ class DialogMedicineFragment(
     }
 
 
+    @SuppressLint("SuspiciousIndentation")
     private fun initialise() {
 
         addPrescriptionViewModel = ViewModelProvider(this, viewModelFactory)[AddPrescriptionViewModel::class.java]
@@ -146,13 +147,19 @@ class DialogMedicineFragment(
         binding.tvAddManualy.setOnClickListener {
             binding.clOptions.visible()
             binding.ilAddName.visible()
+            binding.etSearch.setText("")
             isAddManualy  = true
         }
 
         binding.tvGetFromList.setOnClickListener {
             binding.clOptions.gone()
             binding.ilAddName.gone()
-           hitApiMedicineList(true)
+            binding.etSearch.setText("")
+            binding.etDoses.setText("")
+            binding.etFrequency.setText("")
+            binding.etduration.setText("")
+            binding.etQuantity.setText("")
+            hitApiMedicineList(true)
             isAddManualy  = false
         }
 
