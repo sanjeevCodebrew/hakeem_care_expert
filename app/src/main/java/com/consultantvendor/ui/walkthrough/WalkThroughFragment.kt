@@ -88,7 +88,7 @@ class WalkThroughFragment : DaggerFragment() {
 
         binding.viewPager.adapter = adapter
 
-        binding.pageIndicatorView.setViewPager(binding.viewPager)
+//        binding.pageIndicatorView.setViewPager(binding.viewPager)
     }
 
     private fun listeners() {

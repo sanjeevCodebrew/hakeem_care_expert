@@ -615,10 +615,10 @@ class HomeFragment : DaggerFragment() {
                         adapter.addTab("", HomeBannerFragment(this, it))
                     }
                     binding.viewPagerBanner.adapter = adapter
-                    binding.pageIndicatorView.setViewPager(binding.viewPagerBanner)
+//                    binding.pageIndicatorView.setViewPager(binding.viewPagerBanner)
 
                     binding.viewPagerBanner.hideShowView(itemsBanner.isNotEmpty())
-                    binding.pageIndicatorView.hideShowView(itemsBanner.size > 1)
+//                    binding.pageIndicatorView.hideShowView(itemsBanner.size > 1)
 
                 }
 

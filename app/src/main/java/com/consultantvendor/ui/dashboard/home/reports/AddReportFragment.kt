@@ -477,8 +477,6 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                 addPrescriptionViewModel.addReports(hashMap)
             }
         }
-
-
     }
 
     fun hitApiDiagnosis(

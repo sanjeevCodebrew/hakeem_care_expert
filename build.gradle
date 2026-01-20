@@ -28,7 +28,7 @@ buildscript {
     }
 }
 
-allprojects {
+/*allprojects {
     repositories {
         google()
         mavenCentral()
@@ -44,6 +44,21 @@ allprojects {
             url "https://raw.githubusercontent.com/Snap-Kit/release-maven/repo"
         }
 
+    }
+}*/
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }   // MUST be before scijava
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+
+        // ↓↓↓ keep these LAST ↓↓↓
+        maven { url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases" }
+        maven { url "https://raw.githubusercontent.com/Snap-Kit/release-maven/repo" }
+//        maven { url "https://maven.scijava.org/content/repositories/public/" }
+//        maven { url "https://jcenter.bintray.com" }
     }
 }
 

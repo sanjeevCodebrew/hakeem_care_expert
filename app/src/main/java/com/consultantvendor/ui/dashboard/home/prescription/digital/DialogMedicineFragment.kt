@@ -26,6 +26,7 @@ import com.consultantvendor.ui.dashboard.home.reports.AddReportFragment
 import com.consultantvendor.utils.PrefsManager
 import com.consultantvendor.utils.gone
 import com.consultantvendor.utils.isConnectedToInternet
+import com.consultantvendor.utils.longToast
 import com.consultantvendor.utils.showSnackBar
 import com.consultantvendor.utils.visible
 import dagger.android.support.DaggerDialogFragment
@@ -108,10 +109,26 @@ class DialogMedicineFragment(
             }
 
         }*/
-        if (fragment is AddReportFragment) {
-            if (isEditMedicine)
+     /*   if (fragment is AddReportFragment) {
+            if (isEditMedicine) {
+                binding.clOptions.visible()
+                fragment.itemMedicineList.clear()
+                prescription?.forEach {
+                    binding.etSearch.setText(it.description)
+                    binding.etDoses.setText(it.doses)
+                    binding.etFrequency.setText(it.frequency)
+                    binding.etduration.setText(it.duration)
+                    binding.etQuantity.setText(it.quantity)
+                }
+            }
+        }*/
+
+        if (fragment is AddReportFragment && isEditMedicine) {
+
             binding.clOptions.visible()
+
             fragment.itemMedicineList.clear()
+
             prescription?.forEach {
                 binding.etSearch.setText(it.description)
                 binding.etDoses.setText(it.doses)
@@ -120,7 +137,6 @@ class DialogMedicineFragment(
                 binding.etQuantity.setText(it.quantity)
             }
         }
-
 
         binding.rvMedicine.isNestedScrollingEnabled = false
         binding.rvMedicine.setHasFixedSize(true)
@@ -211,8 +227,6 @@ class DialogMedicineFragment(
                     )
 
                 )
-
-
                if (fragment.isEditMedicine){
                    fragment.isEditMedicine =false
                }
@@ -270,6 +284,11 @@ class DialogMedicineFragment(
 
                     itemMedicine.clear()
                     itemMedicine.addAll(it.data?.response?:emptyList())
+
+                    if (!itemMedicine.isNotEmpty()){
+                       requireActivity().longToast("Please search medicine using trade name only")
+                    }
+
                     medicineAdapter?.notifyDataSetChanged()
                 }
                 Status.ERROR -> {

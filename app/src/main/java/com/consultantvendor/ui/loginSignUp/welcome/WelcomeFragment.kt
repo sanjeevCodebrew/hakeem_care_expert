@@ -100,7 +100,7 @@ class WelcomeFragment : DaggerFragment() {
 
         if (BuildConfig.FLAVOR == "taradoc"){
             binding.viewPager.invisible()
-            binding.pageIndicatorView.invisible()
+//            binding.pageIndicatorView.invisible()
             binding.ivBanner.visible()
 //            binding.tvTitle.text= getString(R.string.join_community)
         }else{
@@ -130,8 +130,8 @@ class WelcomeFragment : DaggerFragment() {
         adapter.addTab("", BannerFragment())
         binding.viewPager.adapter = adapter
 
-        binding.pageIndicatorView.setViewPager(binding.viewPager)
-        binding.pageIndicatorView.hideShowView(adapter.fragments.count() > 1)
+//        binding.pageIndicatorView.setViewPager(binding.viewPager)
+//        binding.pageIndicatorView.hideShowView(adapter.fragments.count() > 1)
     }
 
     private fun listeners() {

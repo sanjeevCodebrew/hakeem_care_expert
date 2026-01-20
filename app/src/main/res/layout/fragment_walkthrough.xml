@@ -26,28 +26,29 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/pageIndicatorView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+<!--        app:layout_constraintBottom_toTopOf="@+id/pageIndicatorView"-->
 
-        <me.relex.circleindicator.CircleIndicator
-            android:id="@+id/pageIndicatorView"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_gravity="center|bottom"
-            app:ci_animator="@animator/scale_with_alpha"
-            app:ci_drawable="@drawable/drawable_walkthrough_selected"
-            app:ci_drawable_unselected="@drawable/drawable_walkthrough_unselected"
-            app:ci_gravity="center"
-            app:ci_height="@dimen/dp_6"
-            app:ci_margin="@dimen/dp_8"
-            app:ci_orientation="horizontal"
-            app:ci_width="@dimen/dp_6"
-            app:layout_constraintBottom_toTopOf="@+id/tvGetStarted"
-            app:layout_constraintEnd_toEndOf="@id/viewPager"
-            app:layout_constraintStart_toStartOf="@+id/viewPager" />
+
+<!--        <me.relex.circleindicator.CircleIndicator-->
+<!--            android:id="@+id/pageIndicatorView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="48dp"-->
+<!--            android:layout_gravity="center|bottom"-->
+<!--            app:ci_animator="@animator/scale_with_alpha"-->
+<!--            app:ci_drawable="@drawable/drawable_walkthrough_selected"-->
+<!--            app:ci_drawable_unselected="@drawable/drawable_walkthrough_unselected"-->
+<!--            app:ci_gravity="center"-->
+<!--            app:ci_height="@dimen/dp_6"-->
+<!--            app:ci_margin="@dimen/dp_8"-->
+<!--            app:ci_orientation="horizontal"-->
+<!--            app:ci_width="@dimen/dp_6"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/tvGetStarted"-->
+<!--            app:layout_constraintEnd_toEndOf="@id/viewPager"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/viewPager" />-->
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvGetStarted"
