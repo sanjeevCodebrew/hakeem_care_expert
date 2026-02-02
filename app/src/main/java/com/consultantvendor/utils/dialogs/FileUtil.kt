@@ -240,8 +240,8 @@ object FileUtil {
             when (file?.extension) {
 
                 "pdf" -> return getThumbnailPDF(uri, context)
-                "doc" -> return BitmapFactory.decodeResource(resources, R.drawable.doc)
-                "docx" -> return BitmapFactory.decodeResource(resources,R.drawable.doc)
+//                "doc" -> return BitmapFactory.decodeResource(resources, R.drawable.doc)
+//                "docx" -> return BitmapFactory.decodeResource(resources,R.drawable.doc)
                 "mp3" -> return BitmapFactory.decodeResource(resources,R.drawable.audio)
                 "eac3" -> return BitmapFactory.decodeResource(resources,R.drawable.audio)
                 "wav" -> return BitmapFactory.decodeResource(resources,R.drawable.audio)
