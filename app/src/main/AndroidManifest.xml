@@ -23,6 +23,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+<!--    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />-->
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
 
 
@@ -120,6 +123,7 @@
             android:exported="true"
             android:screenOrientation="portrait" />
 
+
         <service
             android:name=".pushNotifications.MessagingService"
             android:enabled="true"
@@ -193,7 +197,9 @@
         <service
             android:name=".ui.calling.IncomingCallNotificationService"
             android:exported="true"
-            android:enabled="true">
+            android:enabled="true"
+            android:foregroundServiceType="phoneCall|microphone"
+            >
             <intent-filter>
                 <action android:name="ACTION_ACCEPT" />
                 <action android:name="ACTION_REJECT" />
@@ -215,15 +221,30 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_places_api_key" />
 
+<!--        <service-->
+<!--            android:name="org.jitsi.meet.sdk.ConnectionService"-->
+<!--            android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"-->
+<!--            android:exported="true"-->
+<!--            tools:targetApi="o">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.telecom.ConnectionService" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
+
         <service
             android:name="org.jitsi.meet.sdk.ConnectionService"
             android:permission="android.permission.BIND_TELECOM_CONNECTION_SERVICE"
             android:exported="true"
-            tools:targetApi="o">
-            <intent-filter>
-                <action android:name="android.telecom.ConnectionService" />
-            </intent-filter>
-        </service>
+            android:foregroundServiceType="phoneCall|microphone"
+            tools:targetApi="o"/>
+
+        <service
+            android:name="org.jitsi.meet.services.OngoingCallService"
+            android:foregroundServiceType="phoneCall|microphone"
+            tools:replace="android:foregroundServiceType" />
+
+
+
 
 <!--        <receiver-->
 <!--            android:name="com.razorpay.RzpTokenReceiver"-->
