@@ -16,11 +16,11 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.consultantvendor.R
 import com.consultantvendor.data.apis.WebService
 import com.consultantvendor.data.models.PushData
-import com.consultantvendor.data.models.responses.UserData
 import com.consultantvendor.data.network.PushType
-import com.consultantvendor.data.network.responseUtil.ApiResponse
 import com.consultantvendor.data.repos.UserRepository
+import com.consultantvendor.ui.calling.CallingActivity
 import com.consultantvendor.ui.calling.Constants
+import com.consultantvendor.ui.calling.Constants.INCOMING_CALL_INVITE
 import com.consultantvendor.ui.calling.IncomingCallNotificationService
 import com.consultantvendor.ui.chat.chatdetail.ChatDetailActivity
 import com.consultantvendor.ui.dashboard.HomeActivity
@@ -32,9 +32,6 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.android.AndroidInjection
 import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 import javax.inject.Inject
 
@@ -144,7 +141,7 @@ class MessagingService : FirebaseMessagingService() {
         /*Final activity to open*/
 
 
-        val titleString = pushData.pushType.replace("_", " ").lowercase()
+        val titleString = pushData.pushType?.replace("_", " ")?.lowercase()
 
 
         val lineScan = Scanner(titleString)
@@ -155,7 +152,7 @@ class MessagingService : FirebaseMessagingService() {
 
         val msg = pushData.message
 
-        wakeDevice()
+//        wakeDevice()
 
         if (userRepository.getUser()?.moh_number == pushData.mohNumber == false) {
             switchUser(pushData)
@@ -164,7 +161,7 @@ class MessagingService : FirebaseMessagingService() {
         {
         when (pushData.pushType) {
             PushType.CHAT -> {
-                title = pushData.senderName
+                title = pushData.senderName.orEmpty()
                 intent = Intent(this, ChatDetailActivity::class.java)
                     .putExtra(USER_ID, pushData.senderId)
                     .putExtra(USER_NAME, pushData.senderName)
@@ -231,36 +228,22 @@ class MessagingService : FirebaseMessagingService() {
             }
 
             PushType.CALL_RINGING -> {
+//                showIncomingCallNotification(pushData)
                 return
             }
 
             PushType.CALL_ACCEPTED -> {
-                val callIntent = Intent(this, IncomingCallNotificationService::class.java)
-                callIntent.action = Constants.ACTION_ACCEPT
-                callIntent.putExtra(Constants.INCOMING_CALL_INVITE, pushData)
-
-                startService(callIntent)
-                return
+//                val callIntent = Intent(this, IncomingCallNotificationService::class.java)
+//                callIntent.action = Constants.ACTION_ACCEPT
+//                callIntent.putExtra(Constants.INCOMING_CALL_INVITE, pushData)
+//
+//                startService(callIntent)
+//                return
+                val intent = Intent("CALL_ACCEPTED_REMOTE")
+                intent.putExtra(INCOMING_CALL_INVITE,pushData)
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
             }
-            /*      PushType.REQUEST_LOGIN_ACCEPTED -> {
-                homeIntent.putExtra(EXTRA_TAB, "0")
 
-                val broadcastIntent = Intent()
-                broadcastIntent.action = pushData.pushType
-                broadcastIntent.putExtra(EXTRA_REQUEST_ID, pushData.request_id)
-
-                LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
-
-            }*/
-
-            /*      PushType.CANCELED_LOGIN_REQUEST -> {
-                prefsManager.remove(USER_DATA)
-                intent = Intent(this, LoginActivity::class.java)
-                val broadcastIntent = Intent()
-                broadcastIntent.action = pushData.pushType
-                LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent)
-            }
-            */
             PushType.CALL_CANCELED -> {
                 handleCanceledCallInvite(pushData)
                 return
@@ -322,6 +305,67 @@ class MessagingService : FirebaseMessagingService() {
             notificationManager.notify(requestID, notificationBuilder.build())
     }
 
+
+    private fun showIncomingCallNotification(data: PushData) {
+
+        val notificationId = System.currentTimeMillis().toInt()
+
+        val callData = PushData(
+            sender_name = data.senderName,
+            request_id = data.request_id
+        )
+
+        val acceptIntent = Intent(this, IncomingCallNotificationService::class.java).apply {
+            action = Constants.ACTION_ACCEPT
+            putExtra(Constants.INCOMING_CALL_INVITE, callData)
+            putExtra(Constants.INCOMING_CALL_NOTIFICATION_ID, notificationId)
+        }
+
+        val rejectIntent = Intent(this, IncomingCallNotificationService::class.java).apply {
+            action = Constants.ACTION_REJECT
+            putExtra(Constants.INCOMING_CALL_INVITE, callData)
+            putExtra(Constants.INCOMING_CALL_NOTIFICATION_ID, notificationId)
+        }
+
+        val piAccept = PendingIntent.getService(
+            this,
+            0,
+            acceptIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val piReject = PendingIntent.getService(
+            this,
+            1,
+            rejectIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val fullScreenIntent = Intent(this, CallingActivity::class.java)
+        val piFullScreen = PendingIntent.getActivity(
+            this,
+            2,
+            fullScreenIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val notification = NotificationCompat.Builder(this, "incoming_call_channel")
+            .setSmallIcon(R.drawable.ic_call_black_24dp)
+            .setContentTitle("Incoming Call")
+            .setContentText("${callData.sender_name} is calling")
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_CALL)
+            .setFullScreenIntent(piFullScreen, true)
+            .addAction(R.drawable.ic_call_black_24dp, "Accept", piAccept)
+            .addAction(R.drawable.ic_cancel_call_red, "Decline", piReject)
+            .setAutoCancel(true)
+            .build()
+
+        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        nm.notify(notificationId, notification)
+    }
+
+
     private fun switchUser(pushData: PushData) {
         val intent = Intent(this, HomeActivity::class.java)
         intent.putExtra("moh_number", pushData.mohNumber)
@@ -361,16 +405,6 @@ class MessagingService : FirebaseMessagingService() {
         val wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
                 "Consultant:")
         wl.acquire(25000)
-    }
-
-    private fun handleInvite(pushData: PushData, notificationId: Int) {
-        val intent = Intent(this, IncomingCallNotificationService::class.java)
-        intent.action = Constants.ACTION_INCOMING_CALL
-        intent.putExtra(Constants.INCOMING_CALL_NOTIFICATION_ID, notificationId)
-        intent.putExtra(Constants.INCOMING_CALL_INVITE, pushData)
-        intent.putExtra(EXTRA_REQUEST_ID, pushData.call_id)
-
-        startService(intent)
     }
 
     private fun handleCanceledCallInvite(pushData: PushData) {

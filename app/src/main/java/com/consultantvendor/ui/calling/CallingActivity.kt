@@ -103,6 +103,11 @@ class CallingActivity : DaggerAppCompatActivity() {
             mHandler.removeCallbacksAndMessages(null)
 
         } else if (intent.action == Constants.ACTION_REJECT) {
+//            finish()
+            val stopIntent = Intent(this, IncomingCallNotificationService::class.java)
+            stopIntent.action = Constants.ACTION_CANCEL_CALL
+            startService(stopIntent)
+
             finish()
             mHandler.removeCallbacksAndMessages(null)
         }
@@ -159,7 +164,7 @@ class CallingActivity : DaggerAppCompatActivity() {
             callInvite = intent.getSerializableExtra(Constants.INCOMING_CALL_INVITE) as PushData
             callId = callInvite.call_id
 
-            longToast(callInvite.call_id)
+            longToast(callInvite.call_id.toString())
 
             /*Data for jitsi class*/
             val jitsiClass = JitsiClass()
@@ -201,9 +206,6 @@ class CallingActivity : DaggerAppCompatActivity() {
                 finish()
             }
         }
-    }
-
-    override fun onBackPressed() {
     }
 
     private fun setAudioFocus(setFocus: Boolean) {
@@ -253,7 +255,45 @@ class CallingActivity : DaggerAppCompatActivity() {
         unregisterReceiver()
     }
 
+    private val callAcceptedReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            // Remote user accepted
+            callInvite = intent?.getSerializableExtra(Constants.INCOMING_CALL_INVITE) as PushData
+            onRemoteUserAccepted()
+        }
+    }
 
+    override fun onStart() {
+        super.onStart()
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(callAcceptedReceiver, IntentFilter("CALL_ACCEPTED_REMOTE"))
+    }
+
+    override fun onStop() {
+        LocalBroadcastManager.getInstance(this)
+            .unregisterReceiver(callAcceptedReceiver)
+        super.onStop()
+    }
+
+    private fun onRemoteUserAccepted() {
+        callId = callInvite.call_id
+
+        longToast(callInvite.call_id.toString())
+
+        /*Data for jitsi class*/
+        val jitsiClass = JitsiClass()
+        jitsiClass.id = callInvite.request_id
+        jitsiClass.call_id = callInvite.call_id
+        jitsiClass.callType = callInvite.main_service_type
+        jitsiClass.name = ""
+
+        val intent = Intent(this, JitsiNewActivity::class.java)
+        intent.putExtra(EXTRA_CALL_NAME, jitsiClass)
+        startActivity(intent)
+        clearNotification()
+        finish()
+        mHandler.removeCallbacksAndMessages(null)
+    }
     override fun onResume() {
         super.onResume()
         registerReceiver()
@@ -283,6 +323,9 @@ class CallingActivity : DaggerAppCompatActivity() {
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action == Constants.ACTION_CANCEL_CALL) {
                 if (intent.hasExtra(EXTRA_REQUEST_ID) && intent.getStringExtra(EXTRA_REQUEST_ID) == callId) {
+                    finish()
+                }
+                else if (intent.action == Constants.ACTION_CANCEL_CALL){
                     finish()
                 }
             }

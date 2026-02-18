@@ -25,8 +25,15 @@ class IncomingCallNotificationService : Service() {
             val notificationId = intent.getIntExtra(Constants.INCOMING_CALL_NOTIFICATION_ID, 0)
             when (action) {
                 Constants.ACTION_INCOMING_CALL -> handleIncomingCall(callInvite, notificationId)
-                Constants.ACTION_ACCEPT -> accept(callInvite, notificationId)
-                Constants.ACTION_REJECT -> reject(callInvite)
+//                Constants.ACTION_ACCEPT -> accept(callInvite, notificationId)
+                Constants.ACTION_ACCEPT -> {
+                    startCallForeground(notificationId, callInvite)
+                    openCallingActivity(callInvite, notificationId)
+                }
+//                Constants.ACTION_REJECT -> reject(callInvite)
+                Constants.ACTION_REJECT -> {
+                    stopSelf()
+                }
                 Constants.ACTION_CANCEL_CALL -> handleCancelledCall(intent)
                 else -> {
                 }
@@ -34,6 +41,51 @@ class IncomingCallNotificationService : Service() {
         }
         return START_NOT_STICKY
     }
+
+
+    private fun startCallForeground(notificationId: Int, callInvite: PushData) {
+        createCallChannel()
+        val notification = NotificationCompat.Builder(this, "active_call_channel")
+            .setSmallIcon(R.drawable.ic_call_black_24dp)
+            .setContentTitle("Call in progress")
+            .setContentText("Connected with ${callInvite.sender_name}")
+            .setCategory(NotificationCompat.CATEGORY_CALL)
+            .setOngoing(true)
+            .build()
+
+        startForeground(notificationId, notification)
+    }
+
+
+    override fun onDestroy() {
+        stopForeground(true)
+        super.onDestroy()
+    }
+    private fun openCallingActivity(callInvite: PushData, notificationId: Int) {
+        val intent = Intent(this, CallingActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            putExtra(Constants.INCOMING_CALL_INVITE, callInvite)
+            putExtra(Constants.INCOMING_CALL_NOTIFICATION_ID, notificationId)
+        }
+        startActivity(intent)
+    }
+
+    private fun createCallChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "active_call_channel",
+                "Active Call",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            channel.description = "Ongoing call"
+            channel.setSound(null, null)
+            channel.enableVibration(false)
+
+            val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            nm.createNotificationChannel(channel)
+        }
+    }
+
 
     override fun onBind(intent: Intent): IBinder? {
         return null
@@ -148,9 +200,17 @@ class IncomingCallNotificationService : Service() {
     }
 
     private fun handleCancelledCall(intent: Intent) {
-        endForeground()
-        SoundPoolManager.getInstance(this)?.stopRinging()
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+//        endForeground()
+//        SoundPoolManager.getInstance(this)?.stopRinging()
+//        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+
+        stopForeground(true)
+
+        val cancelIntent = Intent(Constants.ACTION_CANCEL_CALL)
+        cancelIntent.putExtra(Constants.INCOMING_CALL_INVITE, intent)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(cancelIntent)
+
+        stopSelf()
 
     }
 
@@ -163,6 +223,7 @@ class IncomingCallNotificationService : Service() {
 
     private fun endForeground() {
         stopForeground(true)
+        stopSelf()
     }
 
     @TargetApi(Build.VERSION_CODES.O)

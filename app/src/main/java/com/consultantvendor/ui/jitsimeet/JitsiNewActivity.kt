@@ -78,11 +78,15 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
                     )
 
                     // Tell Jitsi to hang up
-                    val hangupIntent = Intent("org.jitsi.meet.HANG_UP")
-                    LocalBroadcastManager.getInstance(this).sendBroadcast(hangupIntent)
+//                    val hangupIntent = Intent("org.jitsi.meet.HANG_UP")
+//                    LocalBroadcastManager.getInstance(this).sendBroadcast(hangupIntent)
 
                     // Dispose of the Jitsi view
-                    jitsiMeetView?.dispose()
+//                    jitsiMeetView?.dispose()
+
+                    runOnUiThread {
+                        jitsiMeetView?.dispose()   // Properly leave conference
+                    }
 
                     // Finish the activity
                     finish()
@@ -396,7 +400,12 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
                     finish()
                 }
             }
+            else if (intent.action == Constants.ACTION_CANCEL_CALL){
+                jitsiMeetView?.dispose()
+                finish()
+            }
         }
+
     }
 
 }
