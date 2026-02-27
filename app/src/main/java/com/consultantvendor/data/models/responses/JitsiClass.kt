@@ -8,5 +8,7 @@ class JitsiClass : Serializable {
     var call_id:String?=null
     var name: String? = null
     var callType: String? = null
+
+    var agora_token: String? = null
     var isClass = false
 }

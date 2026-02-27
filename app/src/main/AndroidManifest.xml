@@ -168,6 +168,15 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".ui.aghora.AghoraNewActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:resizeableActivity="true"
+            android:screenOrientation="portrait"
+            android:supportsPictureInPicture="true" />
+
+        <activity
             android:name=".ui.calling.CallingActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"

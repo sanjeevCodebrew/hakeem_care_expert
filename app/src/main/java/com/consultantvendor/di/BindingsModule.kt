@@ -1,6 +1,7 @@
 package com.consultantvendor.di
 
 import com.consultantvendor.ui.SplashActivity
+import com.consultantvendor.ui.aghora.AghoraNewActivity
 import com.consultantvendor.ui.calling.CallingActivity
 import com.consultantvendor.ui.chat.ChatFragment
 import com.consultantvendor.ui.chat.chatdetail.ChatDetailActivity
@@ -296,4 +297,6 @@ abstract class BindingsModule {
 
     @ContributesAndroidInjector
     abstract fun addReportNewFragment(): AddReportNewFragment
+    @ContributesAndroidInjector
+    abstract fun agoraNewActivity(): AghoraNewActivity
 }
