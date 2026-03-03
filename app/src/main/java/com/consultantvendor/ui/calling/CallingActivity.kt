@@ -93,8 +93,8 @@ class CallingActivity : DaggerAppCompatActivity() {
                 this.call_id = callInvite.call_id
                 callType = callInvite.main_service_type
                 agora_token = callInvite.agora_token
-
-                name = ""
+                profileImage = callInvite.sender_image
+                name = callInvite.sender_name
             }
 
             val intentJitsi = Intent(this, JitsiNewActivity::class.java)
@@ -175,7 +175,8 @@ class CallingActivity : DaggerAppCompatActivity() {
             jitsiClass.call_id = callInvite.call_id
             jitsiClass.callType = callInvite.main_service_type
             jitsiClass.agora_token = callInvite.agora_token
-            jitsiClass.name = ""
+            jitsiClass.name =  requestItem?.from_user?.name
+            jitsiClass.profileImage = requestItem?.from_user?.profile_image
 
             val intent = Intent(this, AghoraNewActivity::class.java)
             intent.putExtra(EXTRA_CALL_NAME, jitsiClass)
@@ -210,6 +211,7 @@ class CallingActivity : DaggerAppCompatActivity() {
                 finish()
             }
         }
+
     }
 
     private fun setAudioFocus(setFocus: Boolean) {
