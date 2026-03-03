@@ -25,6 +25,7 @@ import com.consultantvendor.data.models.responses.Request
 import com.consultantvendor.data.network.PushType
 import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.ActivityCallingBinding
+import com.consultantvendor.ui.aghora.AghoraNewActivity
 import com.consultantvendor.ui.calling.Constants.CALL_NOTIFICATION_ID
 import com.consultantvendor.ui.jitsimeet.JitsiActivity
 import com.consultantvendor.ui.jitsimeet.JitsiNewActivity
@@ -91,6 +92,8 @@ class CallingActivity : DaggerAppCompatActivity() {
                 id = callInvite.request_id
                 this.call_id = callInvite.call_id
                 callType = callInvite.main_service_type
+                agora_token = callInvite.agora_token
+
                 name = ""
             }
 
@@ -171,9 +174,10 @@ class CallingActivity : DaggerAppCompatActivity() {
             jitsiClass.id = callInvite.request_id
             jitsiClass.call_id = callInvite.call_id
             jitsiClass.callType = callInvite.main_service_type
+            jitsiClass.agora_token = callInvite.agora_token
             jitsiClass.name = ""
 
-            val intent = Intent(this, JitsiNewActivity::class.java)
+            val intent = Intent(this, AghoraNewActivity::class.java)
             intent.putExtra(EXTRA_CALL_NAME, jitsiClass)
             startActivity(intent)
             clearNotification()
@@ -285,9 +289,10 @@ class CallingActivity : DaggerAppCompatActivity() {
         jitsiClass.id = callInvite.request_id
         jitsiClass.call_id = callInvite.call_id
         jitsiClass.callType = callInvite.main_service_type
+        jitsiClass.agora_token = callInvite.agora_token
         jitsiClass.name = ""
 
-        val intent = Intent(this, JitsiNewActivity::class.java)
+        val intent = Intent(this, AghoraNewActivity::class.java)
         intent.putExtra(EXTRA_CALL_NAME, jitsiClass)
         startActivity(intent)
         clearNotification()

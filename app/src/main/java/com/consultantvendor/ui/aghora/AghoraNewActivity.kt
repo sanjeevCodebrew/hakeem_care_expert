@@ -50,13 +50,11 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
 
     private lateinit var binding: ActivityAghoraBinding
 
-    private val appId = ""  // same as jitsi_meet_url usage
+    private val aghoraAppId = "b25e3d53ae804174a0c341c3dcaa25cd"
 
     companion object {
         private const val TAG = "AgoraExpertActivity"
     }
-
-    // ================= PERMISSION =================
 
     private val audioPermissions =
         registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
@@ -157,16 +155,18 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
 
         jitsiClass = intent.getSerializableExtra(EXTRA_CALL_NAME) as JitsiClass
 
-        rtcEngine = RtcEngine.create(baseContext, appId, rtcEventHandler)
+        rtcEngine = RtcEngine.create(baseContext, aghoraAppId, rtcEventHandler)
         rtcEngine?.setChannelProfile(Constants.CHANNEL_PROFILE_COMMUNICATION)
         rtcEngine?.setClientRole(Constants.CLIENT_ROLE_BROADCASTER)
 
-        val channelName: String =
-            if (jitsiClass?.isClass == false) {
-                "Call_${appClientDetails.jitsi_id}_${jitsiClass?.id}"
-            } else {
-                "Class_${appClientDetails.jitsi_id}_${jitsiClass?.id}"
-            }
+//        val channelName: String =
+//            if (jitsiClass?.isClass == false) {
+//                "Call_${appClientDetails.jitsi_id}_${jitsiClass?.id}"
+//            } else {
+//                "Class_${appClientDetails.jitsi_id}_${jitsiClass?.id}"
+//            }
+
+        val channelName = jitsiClass?.id
 
         val isAudioOnly =
             jitsiClass?.callType?.lowercase() == ConsultType.AUDIO_CALL ||
@@ -178,6 +178,8 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
             rtcEngine?.enableVideo()
             setupLocalVideo()
         }
+
+        Log.e("TAG", "initialiseAgora: ${jitsiClass?.id}" )
 
         rtcEngine?.joinChannel(
             jitsiClass?.agora_token,
@@ -245,9 +247,7 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
 
     private val callCancelledReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-
             if (intent.getStringExtra(EXTRA_REQUEST_ID) == jitsiClass?.call_id) {
-
                 if (intent.action == com.consultantvendor.ui.calling.Constants.ACTION_CANCEL_CALL
                     || intent.action == PushType.REQUEST_COMPLETED
                 ) {

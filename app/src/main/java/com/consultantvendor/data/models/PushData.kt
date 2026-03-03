@@ -22,5 +22,6 @@ data class PushData(
     val sender_name: String?=null,
     val sender_image: String?=null,
     val vendor_category_name: String?=null,
-    val mohNumber: String?=null
+    val mohNumber: String?=null,
+    val agora_token: String?=null
 ) : Serializable
