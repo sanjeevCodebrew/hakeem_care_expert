@@ -202,7 +202,7 @@
                 android:id="@+id/recordView"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
-                app:counter_time_color="@color/catalyst_redbox_background"
+                app:counter_time_color="@color/colorBlack"
                 app:layout_constraintEnd_toStartOf="@+id/recordButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

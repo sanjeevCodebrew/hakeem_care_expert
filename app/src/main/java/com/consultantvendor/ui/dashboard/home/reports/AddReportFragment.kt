@@ -97,7 +97,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
 
     private var adpterDiagnosis: DiagnosisAdapter? = null
 
-    private var isSearchDiagnosis = false
+    var isSearchDiagnosis = false
 
     private var spinnerInsuranceAdapter: InsuranceAdapter? = null
 
@@ -410,7 +410,8 @@ class AddReportFragment : BasePhotoUplaodFragment() {
 
 
         binding.etDiagnosis.setOnClickListener {
-            hitApiDiagnosis(true, "", null, false)
+//            hitApiDiagnosis(true, "", null, false)
+            showDiagnosisDialog()
         }
 
         binding.btnAddMedicine.setOnClickListener {
@@ -437,10 +438,10 @@ class AddReportFragment : BasePhotoUplaodFragment() {
 
             if (binding.spnFillType.selectedItemPosition == 1) {
 
-                if (itemDiagnosisList.isEmpty()) {
-                    binding.etDiagnosis.showSnackBar(getString(R.string.select_diagnosis_code_and_title))
-                    return@setOnClickListener
-                }
+//                if (itemDiagnosisList.isEmpty()) {
+//                    binding.etDiagnosis.showSnackBar(getString(R.string.select_diagnosis_code_and_title))
+//                    return@setOnClickListener
+//                }
 
                 if (itemMedicineList.isEmpty()) {
                     binding.etDiagnosis.showSnackBar(getString(R.string.add_medicine))

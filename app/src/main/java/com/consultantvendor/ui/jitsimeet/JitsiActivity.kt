@@ -20,17 +20,18 @@ import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.ui.calling.Constants
 import com.consultantvendor.ui.calling.SoundPoolManager
 import com.consultantvendor.utils.*
-import com.facebook.react.modules.core.PermissionListener
 import dagger.android.support.DaggerAppCompatActivity
-import org.jitsi.meet.sdk.*
-import org.jitsi.meet.sdk.log.JitsiMeetLogger
+//import com.facebook.react.modules.core.PermissionListener
+//import dagger.android.support.DaggerAppCompatActivity
+//import org.jitsi.meet.sdk.*
+//import org.jitsi.meet.sdk.log.JitsiMeetLogger
 import java.net.MalformedURLException
 import java.net.URL
 import java.util.HashMap
 import javax.inject.Inject
 
 
-class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface {
+class JitsiActivity : DaggerAppCompatActivity(){
 
     //    @Inject
 //    lateinit var userRepository: UserRepository
@@ -267,12 +268,12 @@ class JitsiActivity : DaggerAppCompatActivity(), JitsiMeetActivityInterface {
         TODO("Not yet implemented")
     }
 
-    override fun requestPermissions(
-        permissions: Array<String>,
-        requestCode: Int,
-        listener: PermissionListener?
-    ) {
-        TODO("Not yet implemented")
-    }
+//    override fun requestPermissions(
+//        permissions: Array<String>,
+//        requestCode: Int,
+//        listener: PermissionListener?
+//    ) {
+//        TODO("Not yet implemented")
+//    }
 
 }

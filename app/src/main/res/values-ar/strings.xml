@@ -1208,6 +1208,11 @@
     <string name="add_name">أضف الاسم</string>
 
     <string name="get_from_list">احصل من القائمة</string>
+    <string name="get_from_list_diagnos">اختر من القائمة</string>
+
+    <string name="add_manualy_by_entering_code_and_medicine_name_in_search">
+أضف يدويًا عن طريق إدخال الرمز واسم الدواء في البحث ثم اضغط على تم
+</string>
 
 
 </resources>

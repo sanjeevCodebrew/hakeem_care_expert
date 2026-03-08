@@ -829,10 +829,8 @@
     <string name="get_from_list">Get from list</string>
 
     <string name="add_name">Add Name</string>
-
-
-
-
+    <string name="get_from_list_diagnos">Get From List</string>
+    <string name="add_manualy_by_entering_code_and_medicine_name_in_search">Add manualy by entering code and medicine name in search and click on done</string>
 
 
 </resources>

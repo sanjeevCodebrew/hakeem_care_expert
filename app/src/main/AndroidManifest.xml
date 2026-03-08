@@ -155,17 +155,17 @@
             android:supportsPictureInPicture="true"
             android:windowSoftInputMode="adjustResize" />
 
-        <activity
-            android:name=".ui.jitsimeet.JitsiNewActivity"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-            android:resizeableActivity="true"
-            android:screenOrientation="portrait"
-            android:showOnLockScreen="true"
-            android:showWhenLocked="true"
-            android:supportsPictureInPicture="true"
-            android:windowSoftInputMode="adjustResize" />
+<!--        <activity-->
+<!--            android:name=".ui.jitsimeet.JitsiActivity"-->
+<!--            android:exported="true"-->
+<!--            android:launchMode="singleTask"-->
+<!--            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"-->
+<!--            android:resizeableActivity="true"-->
+<!--            android:screenOrientation="portrait"-->
+<!--            android:showOnLockScreen="true"-->
+<!--            android:showWhenLocked="true"-->
+<!--            android:supportsPictureInPicture="true"-->
+<!--            android:windowSoftInputMode="adjustResize" />-->
 
         <activity
             android:name=".ui.aghora.AghoraNewActivity"

@@ -28,7 +28,7 @@ class DiagnosisDialogFragment(
     private var isSelectDiagnosis = false
 
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged", "MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,6 +36,7 @@ class DiagnosisDialogFragment(
     ): View {
         val view = inflater.inflate(R.layout.dialog_diagnosis_list, container, false)
         val tvTitle: TextView = view.findViewById(R.id.dialogTitle)
+        val tvGetFromList: TextView = view.findViewById(R.id.tvGetFromApi)
         val etSearch: EditText = view.findViewById(R.id.etSearch)
         val ivSearch: ImageView = view.findViewById(R.id.ivSearch)
         val ivCross: ImageView = view.findViewById(R.id.ivCancel)
@@ -66,13 +67,41 @@ class DiagnosisDialogFragment(
             )
         }
 
+        tvGetFromList.setOnClickListener {
+            fragment.isSearchDiagnosis = false
+            fragment.hitApiDiagnosis(true,"",null,false)
+        }
+
         ivCross.setOnClickListener {
             dialog?.dismiss()
         }
 
+//        tvDone.setOnClickListener {
+//            val searchText = etSearch.text.toString().trim()
+//           if (searchText.isNotEmpty()) {
+//              onNoteSelected(searchText)
+//              dialog?.dismiss()
+//            }
+//
+//        }
+
         tvDone.setOnClickListener {
             val searchText = etSearch.text.toString().trim()
+
             if (searchText.isNotEmpty()) {
+
+                val parts = searchText.split(" ", limit = 2)
+
+                val code = parts.getOrNull(0) ?: ""
+                val title = parts.getOrNull(1) ?: ""
+
+                fragment.itemDiagnosisList.add(
+                    ItemModelDiagnosis(
+                        code = code,
+                        title = title
+                    )
+                )
+
                 onNoteSelected(searchText)
                 dialog?.dismiss()
             }

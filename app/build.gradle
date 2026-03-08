@@ -54,8 +54,8 @@ android {
             versionCode 130
             versionName "2.3.6"
             buildConfigField 'String', 'APP_UNIQUE_ID', "\"3b7474e39d4a249a9ecc8aa24b7e8acd42\""
-            buildConfigField 'String', 'BASE_URL', "\"https://dev-api.hakeemcare.com/\""
-           /* buildConfigField 'String', 'BASE_URL', "\"https://hakeemcare.hakeemcare.com/\""*/
+         /*   buildConfigField 'String', 'BASE_URL', "\"https://dev-api.hakeemcare.com/\""*/
+            buildConfigField 'String', 'BASE_URL', "\"https://hakeemcare.hakeemcare.com/\""
         }
     }
 
@@ -268,7 +268,7 @@ dependencies {
 //    implementation('org.jitsi.react:jitsi-meet-sdk:2.9.3') { transitive = true }
 //    implementation ('org.jitsi.react:jitsi-meet-sdk:5.1.0') { transitive = true }
 //    implementation ('org.jitsi.react:jitsi-meet-sdk:10.1.2') { transitive = true }
-    implementation('org.jitsi.react:jitsi-meet-sdk:11.5.1') { transitive = true }
+//    implementation('org.jitsi.react:jitsi-meet-sdk:11.5.1') { transitive = true }
 
     /*PAGER INDICATOR*/
 //    implementation 'me.relex:circleindicator:2.1.4'

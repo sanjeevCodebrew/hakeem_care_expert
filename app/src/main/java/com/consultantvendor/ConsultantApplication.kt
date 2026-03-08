@@ -11,7 +11,7 @@ import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.di.DaggerAppComponent
 import com.consultantvendor.utils.AppSocket
 import com.consultantvendor.utils.PrefsManager
-import com.facebook.drawee.backends.pipeline.Fresco
+//import com.facebook.drawee.backends.pipeline.Fresco
 import com.google.android.libraries.places.api.Places
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
@@ -43,7 +43,7 @@ class ConsultantApplication : DaggerApplication(), LifecycleObserver {
         super.onCreate()
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
-        Fresco.initialize(this)
+//        Fresco.initialize(this)
         setsApplication(this)
         appSocket.init()
 

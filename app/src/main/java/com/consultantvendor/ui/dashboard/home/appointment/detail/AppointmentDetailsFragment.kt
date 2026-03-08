@@ -305,10 +305,10 @@ class AppointmentDetailsFragment : DaggerFragment() {
             binding.tvInsuranceName.visible()
             binding.tvInsuranceNameV.visible()
             binding.tvResidentId.visible()
-            binding.tvResidentIdV.visible()
+//            binding.tvResidentIdV.visible()
 
             binding.tvInsuranceNameV.text = request.insurance_name
-            binding.tvResidentIdV.text = request.insurance_number
+//            binding.tvResidentIdV.text = request.insurance_number
         }
 
         if (BuildConfig.FLAVOR == "nurseLynx" && !request.booking_end_date.isNullOrEmpty()) {

@@ -8,6 +8,7 @@ import android.view.SurfaceView
 import android.view.TextureView
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.consultantvendor.R
 import com.consultantvendor.data.models.responses.JitsiClass
 import com.consultantvendor.data.network.PushType
@@ -24,6 +25,10 @@ import io.agora.rtc2.IRtcEngineEventHandler
 import io.agora.rtc2.RtcEngine
 import io.agora.rtc2.RtcEngineConfig
 import io.agora.rtc2.video.VideoCanvas
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -43,6 +48,12 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
 
     private val agoraAppId = "b25e3d53ae804174a0c341c3dcaa25cd"
 
+    private var timerJob: Job? = null
+
+    private var seconds = 0
+
+    private var isAudioCall = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -58,6 +69,8 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
         checkPermissions()
         listners()
     }
+
+
 
     private fun listners() {
         binding.ivFlipCamera.setOnClickListener {
@@ -112,6 +125,7 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
 
         if (isAudioOnly) {
             setupAudioUI()
+            startCallTimer()
             rtcEngine?.disableVideo()
         } else {
             setupVideoUI()
@@ -251,6 +265,7 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
     }
 
     private fun leaveCall() {
+        stopCallTimer()
         userRepository.callStatus(
             jitsiClass?.id ?: "",
             jitsiClass?.call_id ?: "",
@@ -266,5 +281,29 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
         rtcEngine?.leaveChannel()
         RtcEngine.destroy()
         super.onDestroy()
+    }
+
+    private fun startCallTimer() {
+
+        timerJob = lifecycleScope.launch {
+
+            while (isActive) {
+
+                delay(1000)
+
+                seconds++
+
+                val minutes = seconds / 60
+                val sec = seconds % 60
+
+                val time = String.format("%02d:%02d", minutes, sec)
+
+                binding.tvTimer.text = time
+            }
+        }
+    }
+
+    private fun stopCallTimer() {
+        timerJob?.cancel()
     }
 }

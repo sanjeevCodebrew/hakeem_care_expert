@@ -25,7 +25,7 @@ import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.ActivityListingToolbarBinding
 import com.consultantvendor.ui.drawermenu.classes.addclass.AddClassFragment
 import com.consultantvendor.ui.jitsimeet.JitsiActivity
-import com.consultantvendor.ui.jitsimeet.JitsiNewActivity
+//import com.consultantvendor.ui.jitsimeet.JitsiNewActivity
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import dagger.android.support.DaggerFragment
@@ -275,7 +275,7 @@ class ClassesFragment : DaggerFragment() {
         jitsiClass.isClass = true
 
         if (classSelectedData?.status != ClassType.COMPLETED) {
-            startActivity(Intent(requireActivity(), JitsiNewActivity::class.java)
+            startActivity(Intent(requireActivity(), JitsiActivity::class.java)
                     .putExtra(EXTRA_CALL_NAME, jitsiClass))
         }
     }

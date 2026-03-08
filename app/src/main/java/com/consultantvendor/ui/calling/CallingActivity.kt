@@ -27,8 +27,8 @@ import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.ActivityCallingBinding
 import com.consultantvendor.ui.aghora.AghoraNewActivity
 import com.consultantvendor.ui.calling.Constants.CALL_NOTIFICATION_ID
-import com.consultantvendor.ui.jitsimeet.JitsiActivity
-import com.consultantvendor.ui.jitsimeet.JitsiNewActivity
+//import com.consultantvendor.ui.jitsimeet.JitsiActivity
+//import com.consultantvendor.ui.jitsimeet.JitsiNewActivity
 import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import dagger.android.support.DaggerAppCompatActivity
@@ -97,7 +97,7 @@ class CallingActivity : DaggerAppCompatActivity() {
                 name = callInvite.sender_name
             }
 
-            val intentJitsi = Intent(this, JitsiNewActivity::class.java)
+            val intentJitsi = Intent(this, AghoraNewActivity::class.java)
             intentJitsi.putExtra(EXTRA_CALL_NAME, jitsiClass)
             startActivity(intentJitsi)
 
@@ -292,7 +292,8 @@ class CallingActivity : DaggerAppCompatActivity() {
         jitsiClass.call_id = callInvite.call_id
         jitsiClass.callType = callInvite.main_service_type
         jitsiClass.agora_token = callInvite.agora_token
-        jitsiClass.name = ""
+        jitsiClass.name = callInvite.sender_name
+        jitsiClass.profileImage = callInvite.sender_image
 
         val intent = Intent(this, AghoraNewActivity::class.java)
         intent.putExtra(EXTRA_CALL_NAME, jitsiClass)

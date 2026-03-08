@@ -25,6 +25,30 @@
         app:layout_constraintBottom_toBottomOf="@+id/dialogTitle"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvGetFromApi"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="14sp"
+        android:fontFamily="@font/campton_medium"
+        android:text="@string/get_from_list_diagnos"
+        app:layout_constraintTop_toBottomOf="@id/dialogTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvAddManualy"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/campton_medium"
+        android:text="@string/add_manualy_by_entering_code_and_medicine_name_in_search"
+        app:layout_constraintTop_toBottomOf="@id/tvGetFromApi"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/etSearch"
         android:layout_width="0dp"
@@ -42,7 +66,7 @@
         android:textColor="@color/textColor"
         android:textDirection="locale"
         android:textSize="@dimen/sp_14"
-        app:layout_constraintTop_toBottomOf="@+id/dialogTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvAddManualy"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

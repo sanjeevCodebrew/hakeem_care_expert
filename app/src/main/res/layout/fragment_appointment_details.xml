@@ -411,20 +411,24 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvClinicNameV"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/campton_semibold"
                     android:textColor="@color/textColor"
                     android:textSize="@dimen/sp_14"
+                    android:gravity="end"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    app:layout_constraintStart_toEndOf="@id/tvClinicName"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                     app:layout_constraintTop_toTopOf="@+id/tvClinicName"
-                    tools:text="@string/service_type" />
+                    tools:text="Dr. Al-Fatih Hajlamin - General Practitioner"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvBookingPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_16"
+                    android:layout_marginTop="@dimen/dp_20"
                     android:fontFamily="@font/campton_medium"
                     android:text="@string/price"
                     android:textColor="@color/textColor"
