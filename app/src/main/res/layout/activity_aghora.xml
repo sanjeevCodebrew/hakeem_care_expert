@@ -213,7 +213,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="15dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:onClick="onSpeakerEnabledClick"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_speaker_disable" />

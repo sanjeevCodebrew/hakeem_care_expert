@@ -50,7 +50,7 @@ import com.consultantvendor.ui.drawermenu.history.HistoryFragment
 import com.consultantvendor.ui.drawermenu.notification.NotificationFragment
 import com.consultantvendor.ui.drawermenu.profile.ProfileFragment
 import com.consultantvendor.ui.jitsimeet.JitsiActivity
-//import com.consultantvendor.ui.jitsimeet.JitsiNewActivity
+import com.consultantvendor.ui.jitsimeet.JitsiNewActivity
 import com.consultantvendor.ui.loginSignUp.SignUpActivity
 import com.consultantvendor.ui.loginSignUp.availability.SetAvailabilityFragment
 import com.consultantvendor.ui.loginSignUp.category.CategoryFragment
@@ -158,8 +158,8 @@ abstract class BindingsModule {
     @ContributesAndroidInjector
     abstract fun jitsiActivity(): JitsiActivity
 
-//    @ContributesAndroidInjector
-//    abstract fun jitsiNewActivity(): JitsiNewActivity
+    @ContributesAndroidInjector
+    abstract fun jitsiNewActivity(): JitsiNewActivity
 
     @ContributesAndroidInjector
     abstract fun categoryFragment(): CategoryFragment

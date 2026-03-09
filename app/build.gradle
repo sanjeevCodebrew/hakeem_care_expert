@@ -268,7 +268,7 @@ dependencies {
 //    implementation('org.jitsi.react:jitsi-meet-sdk:2.9.3') { transitive = true }
 //    implementation ('org.jitsi.react:jitsi-meet-sdk:5.1.0') { transitive = true }
 //    implementation ('org.jitsi.react:jitsi-meet-sdk:10.1.2') { transitive = true }
-//    implementation('org.jitsi.react:jitsi-meet-sdk:11.5.1') { transitive = true }
+    implementation('org.jitsi.react:jitsi-meet-sdk:11.5.1') { transitive = true }
 
     /*PAGER INDICATOR*/
 //    implementation 'me.relex:circleindicator:2.1.4'

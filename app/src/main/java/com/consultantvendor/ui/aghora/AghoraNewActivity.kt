@@ -55,7 +55,7 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
 
     private var seconds = 0
 
-    private var isAudioCall = false
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -155,7 +155,7 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
 
         binding.audioBtn.visibility = View.VISIBLE
         binding.leaveBtn.visibility = View.VISIBLE
-        binding.speakerButton.visibility = View.GONE
+        binding.speakerButton.visibility = View.VISIBLE
 
         binding.ivFlipCamera.visibility = View.GONE
         binding.ivFlipCamera.visibility = View.GONE
@@ -176,7 +176,7 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
 
         binding.ivFlipCamera.visibility = View.VISIBLE
 
-        binding.speakerButton.visibility = View.GONE
+        binding.speakerButton.visibility = View.VISIBLE
         binding.videoBtn.visibility = View.GONE
         binding.ivSwitchVideoCall.visibility = View.GONE
         binding.ivBTSpeaker.visibility = View.GONE
@@ -197,9 +197,13 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
             if (isAudioOnly) {
                 speakerEnabled = false
                 rtcEngine?.setEnableSpeakerphone(false)
+                audioManager.isSpeakerphoneOn = false
                 binding.speakerButton.setImageResource(R.drawable.ic_speaker_disable)
             } else {
+                speakerEnabled = true
                 rtcEngine?.setEnableSpeakerphone(true)
+                audioManager.isSpeakerphoneOn = true
+                binding.speakerButton.setImageResource(R.drawable.ic_speaker)
             }
         }
 
@@ -257,6 +261,7 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
     fun onSpeakerEnabledClick(view: View) {
         speakerEnabled = !speakerEnabled
         rtcEngine?.setEnableSpeakerphone(speakerEnabled)
+        audioManager.isSpeakerphoneOn = speakerEnabled
 
         binding.speakerButton.setImageResource(
             if (speakerEnabled)
