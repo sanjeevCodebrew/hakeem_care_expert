@@ -59,9 +59,10 @@
             android:elevation="15dp"
             android:orientation="vertical"
             android:visibility="gone"
+            android:layout_marginStart="@dimen/album_dp_20"
             app:layout_constraintStart_toStartOf="@id/btnMinimize"
             app:layout_constraintTop_toBottomOf="@id/btnMinimize"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="15dp">
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvVideoUserVC"
                 android:layout_width="wrap_content"

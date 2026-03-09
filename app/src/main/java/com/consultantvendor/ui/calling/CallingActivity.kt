@@ -167,7 +167,7 @@ class CallingActivity : DaggerAppCompatActivity() {
             callInvite = intent.getSerializableExtra(Constants.INCOMING_CALL_INVITE) as PushData
             callId = callInvite.call_id
 
-            longToast(callInvite.call_id.toString())
+//            longToast(callInvite.call_id.toString())
 
             /*Data for jitsi class*/
             val jitsiClass = JitsiClass()
@@ -284,7 +284,7 @@ class CallingActivity : DaggerAppCompatActivity() {
     private fun onRemoteUserAccepted() {
         callId = callInvite.call_id
 
-        longToast(callInvite.call_id.toString())
+//        longToast(callInvite.call_id.toString())
 
         /*Data for jitsi class*/
         val jitsiClass = JitsiClass()

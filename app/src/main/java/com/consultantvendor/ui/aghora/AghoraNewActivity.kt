@@ -18,6 +18,7 @@ import com.consultantvendor.utils.ConsultType
 import com.consultantvendor.utils.EXTRA_CALL_NAME
 import com.consultantvendor.utils.PrefsManager
 import com.consultantvendor.utils.loadImage
+import com.consultantvendor.utils.visible
 import dagger.android.support.DaggerAppCompatActivity
 import io.agora.rtc2.ChannelMediaOptions
 import io.agora.rtc2.Constants
@@ -34,8 +35,10 @@ import javax.inject.Inject
 
 class AghoraNewActivity : DaggerAppCompatActivity() {
 
-    @Inject lateinit var userRepository: UserRepository
-    @Inject lateinit var prefsManager: PrefsManager
+    @Inject
+    lateinit var userRepository: UserRepository
+    @Inject
+    lateinit var prefsManager: PrefsManager
 
     private lateinit var binding: ActivityAghoraBinding
     private var rtcEngine: RtcEngine? = null
@@ -69,7 +72,6 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
         checkPermissions()
         listners()
     }
-
 
 
     private fun listners() {
@@ -125,7 +127,7 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
 
         if (isAudioOnly) {
             setupAudioUI()
-            startCallTimer()
+            startCallTimer(false)
             rtcEngine?.disableVideo()
         } else {
             setupVideoUI()
@@ -216,6 +218,10 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
 
         rtcEngine?.startPreview()
 
+        binding.llVc.visible()
+        binding.tvVideoUserVC.text = jitsiClass?.name
+        startCallTimer(true)
+
         val textureView = TextureView(this)
 
         binding.floatingVideoContainer.removeAllViews()
@@ -283,7 +289,7 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
         super.onDestroy()
     }
 
-    private fun startCallTimer() {
+    private fun startCallTimer(isFromVideo: Boolean) {
 
         timerJob = lifecycleScope.launch {
 
@@ -298,7 +304,11 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
 
                 val time = String.format("%02d:%02d", minutes, sec)
 
-                binding.tvTimer.text = time
+                if (isFromVideo) {
+                    binding.tvTimerVC.text = time
+                } else {
+                    binding.tvTimer.text = time
+                }
             }
         }
     }
