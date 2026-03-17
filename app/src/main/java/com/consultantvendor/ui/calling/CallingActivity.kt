@@ -27,6 +27,7 @@ import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.ActivityCallingBinding
 import com.consultantvendor.ui.aghora.AghoraNewActivity
 import com.consultantvendor.ui.calling.Constants.CALL_NOTIFICATION_ID
+import com.consultantvendor.ui.jitsimeet.JitsiNewActivity
 //import com.consultantvendor.ui.jitsimeet.JitsiActivity
 //import com.consultantvendor.ui.jitsimeet.JitsiNewActivity
 import com.consultantvendor.utils.*
@@ -169,6 +170,8 @@ class CallingActivity : DaggerAppCompatActivity() {
 
 //            longToast(callInvite.call_id.toString())
 
+            Log.e("TAG", "callPush: $callInvite")
+
             /*Data for jitsi class*/
             val jitsiClass = JitsiClass()
             jitsiClass.id = callInvite.request_id
@@ -283,8 +286,10 @@ class CallingActivity : DaggerAppCompatActivity() {
 
     private fun onRemoteUserAccepted() {
         callId = callInvite.call_id
+        
+//      longToast(callInvite.call_id.toString())
 
-//        longToast(callInvite.call_id.toString())
+        Log.e("TAG", "callPush: $callInvite")
 
         /*Data for jitsi class*/
         val jitsiClass = JitsiClass()
@@ -339,7 +344,6 @@ class CallingActivity : DaggerAppCompatActivity() {
             }
         }
     }
-
     private fun disconnectCall() {
         mHandler.postDelayed({
             binding.ivRejectCall.performClick()

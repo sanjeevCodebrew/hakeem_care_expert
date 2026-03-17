@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.os.Bundle
+import android.util.Log
 import android.view.SurfaceView
 import android.view.TextureView
 import android.view.View
@@ -120,6 +121,8 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
         val channelName = jitsiClass?.id ?: return
         val token = "${jitsiClass?.agora_token}=="
         val uid = 0
+
+       Log.e("TAG", "initialiseAgora: channelName:${channelName} token : ${token}")
 
         val isAudioOnly =
             jitsiClass?.callType?.lowercase() == ConsultType.AUDIO_CALL ||

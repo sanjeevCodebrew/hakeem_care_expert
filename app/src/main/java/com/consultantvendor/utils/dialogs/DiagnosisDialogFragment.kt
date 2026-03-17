@@ -103,6 +103,7 @@ class DiagnosisDialogFragment(
                 )
 
                 onNoteSelected(searchText)
+                fragment.adpterDiagnosisList?.notifyDataSetChanged()
                 dialog?.dismiss()
             }
         }
