@@ -3,6 +3,7 @@ package com.consultantvendor.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
+import android.app.Dialog
 import android.app.DownloadManager
 import android.app.NotificationManager
 import android.content.Context
@@ -54,6 +55,7 @@ import com.consultantvendor.ui.loginSignUp.login.LoginActivity
 import com.consultantvendor.ui.webview.WebViewActivity
 import com.consultantvendor.utils.DateUtils.dateFormatForBackend
 import com.consultantvendor.utils.dialogs.ProgressDialog
+import com.github.chrisbanes.photoview.PhotoView
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.libraries.places.api.model.Place
@@ -423,23 +425,36 @@ fun compressImage(activity: Activity?, actualImageFile: File?): File {
     return resultFile ?: File("")
 }
 
+//fun viewImageFull(activity: Activity, itemsImage: ArrayList<String>, pos: Int) {
+//
+//    /*val hierarchyBuilder = GenericDraweeHierarchyBuilder
+//        .newInstance(activity.resources)
+//        .setFailureImage(R.drawable.image_placeholder)
+//        .setProgressBarImage(R.drawable.image_placeholder)
+//        .setPlaceholderImage(R.drawable.image_placeholder)
+//
+//    ImageViewer.Builder(activity, itemsImage)
+//        .setStartPosition(pos)
+//        .hideStatusBar(false)
+//        .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
+//        .show()*/
+//
+////    StfalconImageViewer.Builder(activity, itemsImage) { view, image ->
+////        Glide.with(view.context).load(image).into(view)
+////    }.show()
+//}
+
 fun viewImageFull(activity: Activity, itemsImage: ArrayList<String>, pos: Int) {
+    val dialog = Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+    dialog.setContentView(R.layout.dialog_image)
 
-    /*val hierarchyBuilder = GenericDraweeHierarchyBuilder
-        .newInstance(activity.resources)
-        .setFailureImage(R.drawable.image_placeholder)
-        .setProgressBarImage(R.drawable.image_placeholder)
-        .setPlaceholderImage(R.drawable.image_placeholder)
+    val photoView = dialog.findViewById<PhotoView>(R.id.photoView)
 
-    ImageViewer.Builder(activity, itemsImage)
-        .setStartPosition(pos)
-        .hideStatusBar(false)
-        .setCustomDraweeHierarchyBuilder(hierarchyBuilder)
-        .show()*/
+    Glide.with(activity)
+        .load(itemsImage[pos])
+        .into(photoView)
 
-//    StfalconImageViewer.Builder(activity, itemsImage) { view, image ->
-//        Glide.with(view.context).load(image).into(view)
-//    }.show()
+    dialog.show()
 }
 
 fun placePicker(fragment: Fragment?, activityMain: Activity) {
