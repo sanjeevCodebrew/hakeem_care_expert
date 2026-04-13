@@ -154,8 +154,6 @@ class HomeFragment : DaggerFragment() {
 
         Log.e("TAG", "token: "+userRepository.getUser()?.token )
 
-
-
         //throw RuntimeException("Test Crash") // Force a crash
 
         /*Side Drawer*/

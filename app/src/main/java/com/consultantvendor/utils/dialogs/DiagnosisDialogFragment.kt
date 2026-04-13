@@ -12,7 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.consultantvendor.R
-import com.consultantvendor.data.models.responses.Response
+import com.consultantvendor.data.models.responses.IcdDiagnosisItem
 import com.consultantvendor.ui.adapter.DiagnosisAdapter
 import com.consultantvendor.ui.dashboard.home.prescription.digital.DigitalPrescriptionFragment
 import com.consultantvendor.ui.dashboard.home.prescription.model.ItemModelDiagnosis
@@ -21,7 +21,7 @@ import com.consultantvendor.ui.dashboard.home.reports.AddReportFragment
 class DiagnosisDialogFragment(
     private val onNoteSelected: (String) -> Unit,
     private val fragment: AddReportFragment,
-    private val itemDiagnosis: ArrayList<Response>,
+    private val itemDiagnosis: ArrayList<IcdDiagnosisItem>,
 ) : DialogFragment() {
 
     private var diagnosisAdapter: DiagnosisAdapter? = null
@@ -45,15 +45,18 @@ class DiagnosisDialogFragment(
 
             tvTitle.text = fragment.getString(R.string.select_diagnosis)
             diagnosisAdapter = DiagnosisAdapter(itemDiagnosis) { selectedItem ->
+                if (selectedItem < 0 || selectedItem >= itemDiagnosis.size) {
+                    dismissAllowingStateLoss()
+                    return@DiagnosisAdapter
+                }
                 fragment.itemDiagnosisList.add(
                     ItemModelDiagnosis(
-                        code = itemDiagnosis[selectedItem].code,
-                        title = itemDiagnosis[selectedItem].title
+                        code = itemDiagnosis[selectedItem].code_id,
+                        title = itemDiagnosis[selectedItem].ascii_desc
                     )
                 )
                 fragment.adpterDiagnosisList?.notifyDataSetChanged()
-
-                dialog?.dismiss()
+                ivCross.performClick()
             }
             recyclerView.adapter = diagnosisAdapter
 

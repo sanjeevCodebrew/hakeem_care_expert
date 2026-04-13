@@ -5,13 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.consultantvendor.data.models.ResponseMedicine
-import com.consultantvendor.data.models.responses.Response
+import com.consultantvendor.data.models.DrugItem
 import com.consultantvendor.databinding.ItemLayoutDiagnosisBinding
 import com.consultantvendor.databinding.ItemLayoutMedicineBinding
 
 class MedicineAdapter(
-    private val items: ArrayList<ResponseMedicine>,
+    private val items: ArrayList<DrugItem>,
     private val onSelect: (Int) -> Unit
 ) : RecyclerView.Adapter<MedicineAdapter.ViewHolder>() {
 
@@ -32,6 +31,6 @@ class MedicineAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.binding.tvTitle.text = item.description
+        holder.binding.tvTitle.text = item.ingredients
     }
 }

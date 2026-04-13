@@ -5,20 +5,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.consultantvendor.data.models.ResponseMedicine
-import com.consultantvendor.data.models.responses.Response
+import com.consultantvendor.data.models.responses.IcdDiagnosisItem
 import com.consultantvendor.databinding.ItemLayoutDiagnosisBinding
 import com.consultantvendor.ui.dashboard.home.prescription.digital.DigitalPrescriptionFragment
 
 class DiagnosisAdapter(
-    private val items: ArrayList<Response>,
+    private val items: ArrayList<IcdDiagnosisItem>,
     private val onSelect: (Int) -> Unit
 ) : RecyclerView.Adapter<DiagnosisAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemLayoutDiagnosisBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.btnSelect.setOnClickListener {
-                onSelect(absoluteAdapterPosition)
+                val pos = absoluteAdapterPosition
+                if (pos != RecyclerView.NO_POSITION) {
+                    onSelect(pos)
+                }
             }
         }
     }
@@ -32,7 +34,7 @@ class DiagnosisAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.binding.tvCode.text = item.code
-        holder.binding.tvTitle.text = item.title
+        holder.binding.tvCode.text = item.code_id
+        holder.binding.tvTitle.text = item.ascii_desc
     }
 }

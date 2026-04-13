@@ -11,12 +11,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.consultantvendor.R
-import com.consultantvendor.data.models.ResponseMedicine
+import com.consultantvendor.data.models.DrugItem
 import com.consultantvendor.data.models.requests.AddPrescription
 import com.consultantvendor.data.models.requests.DigitalPrescription
 import com.consultantvendor.data.models.requests.Doases
+import com.consultantvendor.data.models.responses.IcdDiagnosisItem
 import com.consultantvendor.data.models.responses.Request
-import com.consultantvendor.data.models.responses.Response
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.databinding.FragmentDigitalPrescriptionBinding
@@ -64,9 +64,9 @@ class DigitalPrescriptionFragment : DaggerFragment() {
 
     private var isFirstPage = true
 
-    private var itemMedicine = ArrayList<ResponseMedicine>()
+    private var itemMedicine = ArrayList<DrugItem>()
 
-    private var itemDiagnosis = ArrayList<Response>()
+    private var itemDiagnosis = ArrayList<IcdDiagnosisItem>()
 
     private var isDiagnosis = false
 
@@ -491,7 +491,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                     progressDialog.setLoading(false)
 
                     itemMedicine.clear()
-                    itemMedicine.addAll(it.data?.response?: emptyList())
+                    itemMedicine.addAll(it.data?.data?.data ?: emptyList())
                     if (!isMedicineSelect) {
                         showDiagnosisDialog(isDiagnosis)
                     }else{
@@ -516,7 +516,7 @@ class DigitalPrescriptionFragment : DaggerFragment() {
                     progressDialog.setLoading(false)
 
                     itemDiagnosis.clear()
-                    itemDiagnosis.addAll(it.data?.response?: emptyList())
+                    itemDiagnosis.addAll(it.data?.data?.data ?: emptyList())
                     if (!isDiagnosisSelect) {
                         showDiagnosisDialog(isDiagnosis)
                     }

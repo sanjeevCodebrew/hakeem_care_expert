@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.consultantvendor.R
-import com.consultantvendor.data.models.ResponseMedicine
+import com.consultantvendor.data.models.DrugItem
 import com.consultantvendor.data.models.responses.Prescription
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.responseUtil.Status
@@ -48,7 +48,7 @@ class DialogMedicineFragment(
 
     private lateinit var binding: DialogMedicineBinding
 
-    private var itemMedicine = ArrayList<ResponseMedicine>()
+    private var itemMedicine = ArrayList<DrugItem>()
 
     private var medicineAdapter: MedicineAdapter? = null
 
@@ -239,14 +239,14 @@ class DialogMedicineFragment(
 
     private fun setAdapter() {
         medicineAdapter = MedicineAdapter(itemMedicine) { selectedItem ->
-            binding.etSearch.setText(itemMedicine[selectedItem].description)
+            binding.etSearch.setText(itemMedicine[selectedItem].display)
             binding.rvMedicine.gone()
             binding.tvMedicineName.gone()
             binding.tvAction.gone()
             binding.clOptions.visible()
 
             if (fragment is AddReportFragment)
-            fragment.item_number = itemMedicine[selectedItem].sku
+            fragment.item_number = itemMedicine[selectedItem].code ?: ""
 
         }
         binding.rvMedicine.adapter = medicineAdapter
@@ -261,9 +261,11 @@ class DialogMedicineFragment(
                 isLastPage = false
             }
             val hashMap = HashMap<String, String>()
-            hashMap["page"] = "1"
-            hashMap["itemNumber"] = ""
-            hashMap["description"] = binding.etSearch.text.toString()
+//            hashMap["page"] = "1"
+//            hashMap["itemNumber"] = ""
+//            hashMap["description"] = binding.etSearch.text.toString()
+            hashMap["name"] = binding.etSearch.text.toString()
+            hashMap["code"] = ""
             addPrescriptionViewModel.getItemList(hashMap)
 
         }
@@ -283,7 +285,7 @@ class DialogMedicineFragment(
                     binding.tvAction.visible()
 
                     itemMedicine.clear()
-                    itemMedicine.addAll(it.data?.response?:emptyList())
+                    itemMedicine.addAll(it.data?.data?.data ?: emptyList())
 
                     if (!itemMedicine.isNotEmpty()){
                        requireActivity().longToast("Please search medicine using trade name only")

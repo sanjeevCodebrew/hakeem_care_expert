@@ -14,10 +14,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.consultantvendor.R
-import com.consultantvendor.data.models.ResponseMedicine
 import com.consultantvendor.data.models.requests.DocImage
+import com.consultantvendor.data.models.responses.IcdDiagnosisItem
 import com.consultantvendor.data.models.responses.Request
-import com.consultantvendor.data.models.responses.Response
 import com.consultantvendor.data.network.ApisRespHandler
 import com.consultantvendor.data.network.responseUtil.Status
 import com.consultantvendor.data.repos.UserRepository
@@ -88,7 +87,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
     private var isFirstPage = true
 
 
-    private var itemDiagnosis = ArrayList<Response>()
+    private var itemDiagnosis = ArrayList<IcdDiagnosisItem>()
 
     private var diagnosisDialog: DiagnosisDialogFragment? = null
 
@@ -497,9 +496,11 @@ class AddReportFragment : BasePhotoUplaodFragment() {
 
             val hashMap = HashMap<String, String>()
 
-            hashMap["page"] = "1"
+//            hashMap["page"] = "1"
+//            hashMap["code"] = etSearch
+//            hashMap["description"] = ""
+            hashMap["name"] = etSearch
             hashMap["code"] = etSearch
-            hashMap["description"] = ""
             addPrescriptionViewModel.getDiagnosis(hashMap)
 
         }
@@ -545,7 +546,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                     progressDialog.setLoading(false)
 
                     itemDiagnosis.clear()
-                    itemDiagnosis.addAll(it.data?.response ?: emptyList())
+                    itemDiagnosis.addAll(it.data?.data?.data ?: emptyList())
                     if (!isSearchDiagnosis) {
                         showDiagnosisDialog()
                     } else {

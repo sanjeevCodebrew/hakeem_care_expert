@@ -1,5 +1,6 @@
 package com.consultantvendor.data.apis
 
+import com.consultantvendor.data.models.DrugListResponse
 import com.consultantvendor.data.models.MedicineResponse
 import com.consultantvendor.data.models.requests.AddPrescription
 import com.consultantvendor.data.models.requests.UpdateDocument
@@ -113,8 +114,10 @@ interface WebService {
         private const val DRLOGIN = "/api/doctor-login"
         private const val NOTIFICATIONCOUNT = "/api/notifications-count"
         private const val GETPROFILE = "/api/profile"
-        private const val ITEMLIST = "/api/items-list"
-        private const val GETDIAGNOSISLIST = "/api/diagnosis-list"
+        //private const val ITEMLIST = "/api/items-list"
+        private const val ITEMLIST = "/api/drug-list"
+        //private const val GETDIAGNOSISLIST = "/api/diagnosis-list"
+        private const val GETDIAGNOSISLIST = "/api/icd-diagnosis-list"
         private const val MEDICAL_REPORT = "/api/medical-report"
         private const val INSURANCE_LIST = "api/insurance-list"
         private const val MEDICAL_PRESCRIPTION = "/api/medical-prescription"
@@ -450,10 +453,10 @@ interface WebService {
     fun getProfile(): Call<ApiResponse<CommonDataModel>>
 
     @GET(ITEMLIST)
-    fun getItemList(@QueryMap hashMap: Map<String, String>): Call<MedicineResponse>
+    fun getItemList(@QueryMap hashMap: Map<String, String>): Call<DrugListResponse>
 
     @GET(GETDIAGNOSISLIST)
-    fun getDiagnosisList(@QueryMap hashMap: Map<String, String>): Call<DiagnosisResponse>
+    fun getDiagnosisList(@QueryMap hashMap: Map<String, String>): Call<IcdDiagnosisListResponse>
 
 
     @FormUrlEncoded
