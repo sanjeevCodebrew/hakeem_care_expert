@@ -156,13 +156,17 @@ class AddReportNewFragment : DaggerFragment() {
                 }
                 isConnectedToInternet(requireContext(), true) -> {
                     val hashMap = HashMap<String, Any>()
-                    hashMap["report_detals"] = binding.etReportDescription.text.toString()
+                    hashMap["report_detals"] =
+                        binding.etReportDescription.text.toString().normalizeLineBreaks()
                     hashMap["request_id"] = request?.id.toString()
                     addPrescriptionViewModel.addPrescription(hashMap)
                 }
             }
         }
     }
+
+    private fun String.normalizeLineBreaks(): String =
+        this.replace("\r\n", "\n").replace("\r", "\n")
 
     private fun bindObservers() {
 

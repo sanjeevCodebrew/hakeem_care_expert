@@ -463,7 +463,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
             if (isConnectedToInternet(requireContext(), true)) {
                 val hashMap = HashMap<String, Any>()
                 hashMap["request_id"] = request?.id.toString()
-                hashMap["report_detals"] = binding.etNotes.text.toString()
+                hashMap["report_detals"] = binding.etNotes.text.toString().normalizeLineBreaks()
                 hashMap["prescription_type"] = prescription_type
                 hashMap["fill_type"] = filltype
                 hashMap["item_no"] = item_number
@@ -478,6 +478,9 @@ class AddReportFragment : BasePhotoUplaodFragment() {
             }
         }
     }
+
+    private fun String.normalizeLineBreaks(): String =
+        this.replace("\r\n", "\n").replace("\r", "\n")
 
     fun hitApiDiagnosis(
         firstHit: Boolean,
@@ -584,7 +587,6 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                         loadImage(binding.ivDoc,docUrl,R.drawable.image_placeholder)
                         binding.tvFileName.text = docUrl
                     }
-
 
                 }
 
