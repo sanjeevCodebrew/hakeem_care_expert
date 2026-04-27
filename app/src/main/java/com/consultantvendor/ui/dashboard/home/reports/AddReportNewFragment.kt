@@ -148,7 +148,6 @@ class AddReportNewFragment : DaggerFragment() {
         binding.toolbar.setNavigationOnClickListener {
             requireActivity().finish()
         }
-
         binding.tvDone.setOnClickListener {
             when {
                 binding.etReportDescription.text.toString().trim().isEmpty() -> {
