@@ -551,6 +551,22 @@
 
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvAddPatientFile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:background="@drawable/drawable_alternate_button"
+                    android:fontFamily="@font/campton_semibold"
+                    android:gravity="center"
+                    android:text="@string/add_patient_file"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/sp_16"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAddPrescription" />
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvAddReports"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -565,7 +581,7 @@
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
                     app:layout_constraintEnd_toStartOf="@id/tvChat"
-                    app:layout_constraintTop_toBottomOf="@+id/tvAddPrescription"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAddPatientFile"
                     app:layout_goneMarginEnd="@dimen/dp_0" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -585,7 +601,7 @@
                     android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@id/tvAddReports"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                    app:layout_constraintTop_toBottomOf="@id/tvAddPrescription"
+                    app:layout_constraintTop_toBottomOf="@id/tvAddPatientFile"
                     app:layout_goneMarginStart="@dimen/dp_0" />
 
                 <androidx.constraintlayout.widget.Barrier

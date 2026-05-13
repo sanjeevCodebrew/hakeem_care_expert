@@ -208,6 +208,14 @@ class AppointmentDetailsFragment : DaggerFragment() {
             }
         }
 
+        binding.tvAddPatientFile.setOnClickListener {
+            registerActivityResult.launch(
+                Intent(requireActivity(), DrawerActivity::class.java)
+                    .putExtra(PAGE_TO_OPEN, DrawerActivity.PATIENT_FILE)
+                    .putExtra(EXTRA_REQUEST_ID, request)
+            )
+        }
+
         binding.tvChat.setOnClickListener {
 //            registerActivityResult.launch(
 //                Intent(context, ChatDetailActivity::class.java)
@@ -276,6 +284,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvAccept.visible()
         binding.tvCancel.hideShowView(request.canCancel)
         binding.tvAddPrescription.gone()
+        binding.tvAddPatientFile.gone()
         binding.tvMarkComplete.gone()
         binding.tvAskPayment.gone()
 
@@ -473,6 +482,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 else
                 {
                     binding.tvAddPrescription.visible()
+                    binding.tvAddPatientFile.visible()
                     if (request.to_user?.categoryData?.parent_cat_name=="telehealth" || request.to_user?.categoryData?.parent_cat_name=="urgent-consultation"){
                     binding.tvChat.visible()
                     binding.tvAddReports.visible()

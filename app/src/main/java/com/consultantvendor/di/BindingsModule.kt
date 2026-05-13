@@ -29,6 +29,7 @@ import com.consultantvendor.ui.dashboard.home.prescription.digital.DigitalPrescr
 import com.consultantvendor.ui.dashboard.home.prescription.manual.ManualPrescriptionFragment
 import com.consultantvendor.ui.dashboard.home.questions.QuestionsFragment
 import com.consultantvendor.ui.dashboard.home.questions.detail.QuestionDetailFragment
+import com.consultantvendor.ui.dashboard.home.appointment.patientfile.PatientFileFragment
 import com.consultantvendor.ui.dashboard.home.reports.AddReportFragment
 import com.consultantvendor.ui.dashboard.home.reports.AddReportNewFragment
 import com.consultantvendor.ui.dashboard.language.LanguageFragment
@@ -297,6 +298,10 @@ abstract class BindingsModule {
 
     @ContributesAndroidInjector
     abstract fun addReportNewFragment(): AddReportNewFragment
+
+    @ContributesAndroidInjector
+    abstract fun patientFileFragment(): PatientFileFragment
+
     @ContributesAndroidInjector
     abstract fun agoraNewActivity(): AghoraNewActivity
 }

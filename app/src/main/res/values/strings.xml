@@ -832,5 +832,19 @@
     <string name="get_from_list_diagnos">Get From List</string>
     <string name="add_manualy_by_entering_code_and_medicine_name_in_search">Add manualy by entering code and medicine name in search and click on done</string>
 
+    <string name="add_patient_file">+ Patient File</string>
+    <string name="patient_file_header">Patient File</string>
+    <string name="patient_information">Patient Information</string>
+    <string name="basic_information">Basic Information</string>
+    <string name="medical_information">Medical Information</string>
+    <string name="brief_history">Brief History</string>
+    <string name="plan">Plan</string>
+    <string name="no_data">No data</string>
+    <string name="edit_patient_file">Edit Patient File</string>
+    <string name="attachments">Attachments</string>
+    <string name="add_attachment">+ Add Attachment</string>
+    <string name="upload_patient_files">Upload files related to the patient</string>
+    <string name="nationality">Nationality</string>
+
 
 </resources>

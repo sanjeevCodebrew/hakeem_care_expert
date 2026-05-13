@@ -21,6 +21,7 @@ import com.consultantvendor.ui.dashboard.home.prescription.digital.DigitalPrescr
 import com.consultantvendor.ui.dashboard.home.prescription.manual.ManualPrescriptionFragment
 import com.consultantvendor.ui.dashboard.home.questions.QuestionsFragment
 import com.consultantvendor.ui.dashboard.home.questions.detail.QuestionDetailFragment
+import com.consultantvendor.ui.dashboard.home.appointment.patientfile.PatientFileFragment
 import com.consultantvendor.ui.dashboard.home.reports.AddReportFragment
 import com.consultantvendor.ui.dashboard.home.reports.AddReportNewFragment
 import com.consultantvendor.ui.dashboard.language.LanguageFragment
@@ -110,6 +111,7 @@ class DrawerActivity : DaggerAppCompatActivity() {
             CONTACT_LIST -> addFragment(ContactListFragment())
             ADD_REPORTS -> addFragment(AddReportFragment())
             ADD_REPORT_NEW -> addFragment(AddReportNewFragment())
+            PATIENT_FILE -> addFragment(PatientFileFragment())
         }
     }
 
@@ -145,6 +147,7 @@ class DrawerActivity : DaggerAppCompatActivity() {
         const val CONTACT_LIST = "CONTACT_LIST"
         const val ADD_REPORTS = "ADD_REPORTS"
         const val ADD_REPORT_NEW = "ADD_REPORT_NEW"
+        const val PATIENT_FILE = "PATIENT_FILE"
     }
 
 }
