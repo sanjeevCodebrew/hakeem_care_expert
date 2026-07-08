@@ -498,7 +498,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_20"
-                    android:layout_marginEnd="@dimen/dp_8"
                     android:background="@drawable/drawable_alternate_button"
                     android:fontFamily="@font/campton_semibold"
                     android:gravity="center"
@@ -506,7 +505,7 @@
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/sp_16"
                     android:visibility="gone"
-                    app:layout_constraintEnd_toStartOf="@id/tvMarkComplete"
+                    app:layout_constraintEnd_toStartOf="@+id/tvPublishPrescription"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
                     app:layout_constraintTop_toBottomOf="@+id/ivCancelAccept"
                     app:layout_goneMarginEnd="@dimen/dp_0" />
@@ -528,8 +527,25 @@
                     app:layout_constraintStart_toEndOf="@id/tvAddPrescription"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                     app:layout_constraintTop_toBottomOf="@+id/ivCancelAccept"
-                    app:layout_goneMarginEnd="@dimen/dp_0" />
+                    app:layout_goneMarginStart="@dimen/dp_0" />
 
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSallaProducts"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:background="@drawable/drawable_alternate_button"
+                    android:fontFamily="@font/campton_semibold"
+                    android:gravity="center"
+                    android:text="@string/salla_products"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/sp_16"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAddPrescription"
+                    app:layout_goneMarginTop="@dimen/dp_0" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvMarkComplete"
@@ -564,7 +580,23 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/tvAddPrescription" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvSallaProducts" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvUploadedFile"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:background="@drawable/drawable_alternate_button"
+                    android:fontFamily="@font/campton_semibold"
+                    android:gravity="center"
+                    android:text="@string/uploaded_file"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/sp_16"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAddPatientFile" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvAddReports"
@@ -581,7 +613,7 @@
                     android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
                     app:layout_constraintEnd_toStartOf="@id/tvChat"
-                    app:layout_constraintTop_toBottomOf="@+id/tvAddPatientFile"
+                    app:layout_constraintTop_toBottomOf="@+id/tvUploadedFile"
                     app:layout_goneMarginEnd="@dimen/dp_0" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -601,7 +633,7 @@
                     android:visibility="gone"
                     app:layout_constraintStart_toEndOf="@id/tvAddReports"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
-                    app:layout_constraintTop_toBottomOf="@id/tvAddPatientFile"
+                    app:layout_constraintTop_toBottomOf="@id/tvUploadedFile"
                     app:layout_goneMarginStart="@dimen/dp_0" />
 
                 <androidx.constraintlayout.widget.Barrier

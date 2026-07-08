@@ -115,6 +115,7 @@
     <string name="accept_request">Accept request</string>
     <string name="accept_request_message">Are you sure you want to accept this request</string>
     <string name="mark_complete">Mark Complete</string>
+    <string name="uploaded_file">Uploaded File</string>
     <string name="mark_complete_message">Are you sure you want to complete this request</string>
     <string name="accepted">Accepted</string>
     <string name="inprogess">In progress</string>
@@ -834,6 +835,7 @@
 
     <string name="add_patient_file">+ Patient File</string>
     <string name="patient_file_header">Patient File</string>
+    <string name="patient_id">Patient ID</string>
     <string name="patient_information">Patient Information</string>
     <string name="basic_information">Basic Information</string>
     <string name="medical_information">Medical Information</string>
@@ -846,5 +848,31 @@
     <string name="upload_patient_files">Upload files related to the patient</string>
     <string name="nationality">Nationality</string>
 
+    <string name="pre_written_prescription">Pre-written Prescription</string>
+    <string name="add_pre_written_prescription">+ Add prescription</string>
+    <string name="no_pre_written_prescriptions">No pre-written prescriptions added yet</string>
+    <string name="salla_products">Salla Products</string>
+    <string name="checkout">Checkout</string>
+    <string name="select_option">Select Option</string>
+    <string name="next_label">Next</string>
+    <string name="code_label">Code: %s</string>
+    <string name="license_label">License: %s</string>
+
+    <!-- Patient File -->
+    <string name="doctor_notes">Doctor Notes</string>
+    <string name="vital_sign">Vital Sign</string>
+    <string name="chief_complain">Chief Complain</string>
+    <string name="diagnoses">Diagnoses</string>
+    <string name="search_diagnosis">Search diagnosis…</string>
+    <string name="temperature">Temperature</string>
+    <string name="pulse">Pulse</string>
+    <string name="respiratory_rate">Respiratory Rate</string>
+    <string name="please_enter_weight">Please enter weight</string>
+    <string name="weight_range_error">Weight should be between 15 and 450 kg</string>
+    <string name="please_enter_height">Please enter height</string>
+    <string name="please_enter_temperature">Please enter temperature</string>
+    <string name="please_enter_pulse">Please enter pulse</string>
+    <string name="please_enter_respiratory_rate">Please enter respiratory rate</string>
+    <string name="please_enter_chief_complain">Please enter chief complain</string>
 
 </resources>

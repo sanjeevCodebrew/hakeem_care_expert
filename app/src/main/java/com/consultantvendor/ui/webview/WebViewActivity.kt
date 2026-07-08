@@ -2,7 +2,9 @@ package com.consultantvendor.ui.webview
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.DownloadManager
 import android.content.BroadcastReceiver
+import android.os.Environment
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
@@ -10,7 +12,6 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.webkit.*
 import androidx.activity.enableEdgeToEdge
 import androidx.databinding.DataBindingUtil
@@ -28,9 +29,10 @@ import com.consultantvendor.ui.dashboard.wallet.WalletViewModel
 import com.consultantvendor.utils.*
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
+import timber.log.Timber
 
 
-class WebViewActivity : DaggerAppCompatActivity() {
+class                                                                                                                                                  WebViewActivity : DaggerAppCompatActivity() {
 
     @Inject
     lateinit var userRepository: UserRepository
@@ -50,6 +52,8 @@ class WebViewActivity : DaggerAppCompatActivity() {
     private var transactionId = ""
 
     private var loadUrl = ""
+    private var downloadUrl = ""
+    private var isDownloadTriggered = false
 
     private val mHandler = Handler()
 
@@ -79,7 +83,7 @@ class WebViewActivity : DaggerAppCompatActivity() {
             }
             intent.hasExtra(PDF_LINK) -> {
                 loadUrl = intent.getStringExtra(PDF_LINK) ?: ""
-
+                downloadUrl = intent.getStringExtra(DOWNLOAD_URL) ?: loadUrl
             }
             else -> {
                 loadUrl = "${appClientDetails.domain_url}/${intent.getStringExtra(LINK_URL)}"
@@ -100,6 +104,7 @@ class WebViewActivity : DaggerAppCompatActivity() {
         binding.webView.settings.setSupportZoom(true)
         binding.webView.settings.javaScriptEnabled = true
         binding.webView.webViewClient = object : WebViewClient() {
+
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
 
@@ -113,7 +118,6 @@ class WebViewActivity : DaggerAppCompatActivity() {
 
             @Deprecated("Deprecated in Java")
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-
                 if (url?.startsWith("whatsapp://") == true) {
                     view!!.context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                 }
@@ -121,7 +125,6 @@ class WebViewActivity : DaggerAppCompatActivity() {
                     view!!.context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                 }
                 else {
-//                    url?.let { view?.loadUrl(it) }
                     if (url != null) {
                         view?.loadUrl(url)
                     }
@@ -137,6 +140,7 @@ class WebViewActivity : DaggerAppCompatActivity() {
         binding.webView.settings.loadWithOverviewMode = true
         binding.webView.settings.useWideViewPort = true
         binding.webView.setInitialScale(100)
+        binding.webView.setDownloadListener { _, _, _, _, _ -> /* block automatic WebView downloads */ }
         binding.webView.webChromeClient = WebChromeClient()
 
 
@@ -153,7 +157,7 @@ class WebViewActivity : DaggerAppCompatActivity() {
                 // Return the app name after finish loading
                 if (progress == 100) {
                     binding.clLoader.root.gone()
-                    if (intent.hasExtra(PDF_LINK))
+                    if (intent.hasExtra(PDF_LINK) && !isDownloadTriggered)
                         binding.ivDownload.visible()
                 }
             }
@@ -164,9 +168,25 @@ class WebViewActivity : DaggerAppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener { finish() }
 
         binding.ivDownload.setOnClickListener {
-            downloadFile(this, loadUrl)
-            val chk = "$loadUrl&download"
-            Log.e("TAG", "chkUrl: "+chk)
+            if (isDownloadTriggered) return@setOnClickListener
+            isDownloadTriggered = true
+            binding.ivDownload.gone()
+            try {
+                val fileName = downloadUrl.substringAfterLast("/").substringBefore("?")
+                    .ifEmpty { "file_${System.currentTimeMillis()}.pdf" }
+                val request = DownloadManager.Request(Uri.parse(downloadUrl))
+                    .setTitle(fileName)
+                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                    .setAllowedOverMetered(true)
+                    .setAllowedOverRoaming(true)
+                (getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager).enqueue(request)
+                longToast(getString(R.string.downloading))
+            } catch (e: Exception) {
+                Timber.e(e)
+                isDownloadTriggered = false
+                binding.ivDownload.visible()
+            }
         }
 
     }
@@ -176,6 +196,7 @@ class WebViewActivity : DaggerAppCompatActivity() {
         const val LINK_URL = "LINK_URL"
         const val PAYMENT_URL = "PAYMENT_URL"
         const val PDF_LINK = "PDF_LINK"
+        const val DOWNLOAD_URL = "DOWNLOAD_URL"
     }
 
     override fun onResume() {

@@ -180,6 +180,24 @@
     <string name="accept_request_message">هل أنت متأكد أنك تريد قبول هذا الطلب</string>
 
     <string name="mark_complete">وضع علامة اكتمال</string>
+    <string name="uploaded_file">الملف المرفوع</string>
+    <string name="add_patient_file">+ ملف المريض</string>
+    <string name="patient_file_header">ملف المريض</string>
+    <string name="edit_patient_file">تعديل ملف المريض</string>
+    <string name="upload_patient_files">رفع الملفات المتعلقة بالمريض</string>
+    <string name="doctor_notes">ملاحظات الطبيب</string>
+    <string name="pre_written_prescription">الوصفة الجاهزة</string>
+    <string name="add_pre_written_prescription">+ إضافة وصفة</string>
+    <string name="no_pre_written_prescriptions">لا توجد وصفات جاهزة مضافة بعد</string>
+    <string name="vital_sign">العلامات الحيوية</string>
+    <string name="chief_complain">الشكوى الرئيسية</string>
+    <string name="brief_history">التاريخ المرضي المختصر</string>
+    <string name="diagnoses">التشخيصات</string>
+    <string name="search_diagnosis">ابحث عن التشخيص...</string>
+    <string name="plan">خطة العلاج</string>
+    <string name="temperature">درجة الحرارة</string>
+    <string name="pulse">النبض</string>
+    <string name="respiratory_rate">معدل التنفس</string>
 
     <string name="mark_complete_message">هل أنت متأكد أنك تريد إكمال هذا الطلب</string>
 

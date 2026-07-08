@@ -54,6 +54,8 @@ class Request : Serializable {
 
     val prescriptionReport: PrescriptionReport?=null
 
+    var admin_prescription_file: String? = null
+
 
 }
 

@@ -11,7 +11,6 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,13 +48,16 @@ import com.consultantvendor.ui.dashboard.home.appointment.medicalhistory.Medical
 import com.consultantvendor.ui.dashboard.home.prescription.BottomPrescriptionFragment
 import com.consultantvendor.ui.drawermenu.DrawerActivity
 import com.consultantvendor.ui.jitsimeet.JitsiActivity
+import com.consultantvendor.ui.webview.WebViewActivity
 import com.consultantvendor.utils.*
+import com.consultantvendor.utils.EXTRA_FROM_ACTIVE_CALL
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import dagger.android.support.DaggerFragment
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.HashMap
 import kotlin.collections.set
+import timber.log.Timber
 
 
 class AppointmentDetailsFragment : DaggerFragment() {
@@ -152,7 +154,67 @@ class AppointmentDetailsFragment : DaggerFragment() {
         }
 
         binding.tvAddPrescription.setOnClickListener {
-            proceedRequest()
+//            proceedRequest()
+            if (request.is_report == true) {
+
+                val popup = PopupMenu(requireContext(), binding.tvAddPrescription)
+                popup.menuInflater.inflate(R.menu.menu_prescription, popup.menu)
+
+                popup.setOnMenuItemClickListener { item ->
+                    when (item.itemId) {
+                        R.id.item_view -> {
+                            val link = "https://hakeemcare.hakeemcare.com/medical-prescription-report/generate-pdf?request_id=${request.id}&download"
+                            Timber.e("proceedRequest: "+link)
+                            openPdf(requireActivity(), link, true)
+                        }
+
+                        R.id.item_edit -> {
+                            registerActivityResult.launch(
+                                Intent(requireActivity(), DrawerActivity::class.java)
+                                    .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_REPORTS)
+                                    .putExtra(EXTRA_REQUEST_ID, request)
+                            )
+                        }
+
+                        R.id.item_download -> {
+                            val link = "https://hakeemcare.hakeemcare.com/medical-prescription-report/generate-pdf?request_id=${request.id}&download"
+
+                            Timber.e("proceedRequest: "+link)
+
+                            /*  val finalLink = if (link.contains("?")) "$link&download" else "$link?download"
+
+                              Timber.d("Enqueuing download for URL: $finalLink")
+
+                              val downloadRequest = DownloadManager.Request(Uri.parse(finalLink))
+                                  .setTitle("Downloading PDF")
+                                  .setDescription("Please wait while the PDF is downloading...")
+                                  .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                                  .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "report_${request.id}.pdf")
+                                  .setAllowedOverMetered(true)
+                                  .setAllowedOverRoaming(true)
+
+                              val downloadManager = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                              downloadManager.enqueue(downloadRequest)
+
+
+                              requireActivity().longToast("Downloading complete")*/
+
+                            openPdf(requireActivity(), link, true)
+                        }
+                    }
+                    true
+                }
+
+                popup.show()
+            }
+            else {
+//                    val fragment = BottomPrescriptionFragment(this, request)
+//                    fragment.show(requireActivity().supportFragmentManager, fragment.tag)
+                registerActivityResult.launch(
+                    Intent(requireActivity(), DrawerActivity::class.java)
+                        .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_REPORTS)
+                        .putExtra(EXTRA_REQUEST_ID, request))
+            }
         }
 
         binding.tvCancel.setOnClickListener {
@@ -163,6 +225,16 @@ class AppointmentDetailsFragment : DaggerFragment() {
             showMarkCompleteDialog()
         }
 
+        binding.tvUploadedFile.setOnClickListener {
+            val fileUrl = "https://hakeem-assests.s3.me-central-1.amazonaws.com/original/${request.admin_prescription_file}"
+            val viewerUrl = "https://docs.google.com/gview?embedded=true&url=$fileUrl"
+            startActivity(
+                Intent(requireActivity(), WebViewActivity::class.java)
+                    .putExtra(WebViewActivity.LINK_TITLE, getString(R.string.uploaded_file))
+                    .putExtra(WebViewActivity.PDF_LINK, viewerUrl)
+                    .putExtra(WebViewActivity.DOWNLOAD_URL, fileUrl)
+            )
+        }
 
         binding.tvAddReports.setOnClickListener {
 
@@ -184,7 +256,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                             if (request.id?.isNotEmpty() == true) {
                                 val link =
                                     "https://hakeemcare.hakeemcare.com/medical-report?request_id=${request.id}"
-                                openPdf(requireActivity(), link, false, true)
+                                    openPdf(requireActivity(), link, false, true)
                             }
                         }
                         R.id.item_edit -> {
@@ -251,6 +323,13 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvPublishPrescription.setOnClickListener {
             hitApiPublishPrescription()
         }
+
+        binding.tvSallaProducts.setOnClickListener {
+            startActivity(
+                Intent(requireActivity(), DrawerActivity::class.java)
+                    .putExtra(PAGE_TO_OPEN, DrawerActivity.SALLA_PRODUCTS)
+            )
+        }
     }
 
     private fun hitApiPublishPrescription() {
@@ -287,6 +366,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvAddPatientFile.gone()
         binding.tvMarkComplete.gone()
         binding.tvAskPayment.gone()
+        binding.tvSallaProducts.gone()
 
         binding.tvCall.hideShowView(BuildConfig.FLAVOR == "nurseLynx")
 
@@ -308,7 +388,6 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvLocation.text = request.extra_detail?.service_address
 
         binding.tvClinicNameV.text = request.to_user?.clinic_name
-
 
         if (request.insurance_name?.isNotEmpty()!! || request.insurance_number?.isNotEmpty()!!) {
             binding.tvInsuranceName.visible()
@@ -417,6 +496,9 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 binding.tvStatus.text = getString(R.string.accepted)
                 binding.tvAccept.text = getString(R.string.start_request)
                 binding.tvCancel.gone()
+                binding.tvAddPrescription.visible()
+                binding.tvSallaProducts.gone()
+                binding.tvAddPatientFile.visible()
 
                 if (request.to_user?.categoryData?.parent_cat_name=="telehealth"|| request.to_user?.categoryData?.parent_cat_name=="urgent-consultation"){
                     binding.tvChat.visible()
@@ -435,7 +517,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 binding.tvStatus.text = getString(R.string.inprogess)
                 binding.tvCancel.gone()
                 binding.tvAccept.gone()
-
+                binding.tvAddPatientFile.visible()
 
                 if (request.to_user?.categoryData?.parent_cat_name=="free-results-reading"){
                     binding.tvChat.visible()
@@ -482,6 +564,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 else
                 {
                     binding.tvAddPrescription.visible()
+                    binding.tvSallaProducts.gone()
                     binding.tvAddPatientFile.visible()
                     if (request.to_user?.categoryData?.parent_cat_name=="telehealth" || request.to_user?.categoryData?.parent_cat_name=="urgent-consultation"){
                     binding.tvChat.visible()
@@ -535,15 +618,27 @@ class AppointmentDetailsFragment : DaggerFragment() {
             }
         }
 
+        // If opened from an active call, hide the Start Request button —
+        // the doctor is already in the call, no need to start it again.
+        val fromActiveCall = requireActivity().intent
+            .getBooleanExtra(EXTRA_FROM_ACTIVE_CALL, false)
+        if (fromActiveCall) {
+            binding.tvAccept.gone()
+        }
+
+        binding.tvUploadedFile.hideShowView(!request.admin_prescription_file.isNullOrEmpty())
+
         /*Symptom*/
         binding.tvSymptomDec.text = request.symptom_details
         binding.tvSymptomDec.hideShowView(binding.tvSymptomDec.text.isNotEmpty())
 
         val symptomImages = ArrayList<DocImage>()
         symptomImages.addAll(request.symptom_images ?: emptyList())
+
         val adapterSymptomImage = ImagesDocumentAdapter(this, symptomImages)
         binding.rvSymptomDoc.adapter = adapterSymptomImage
         binding.rvSymptomDoc.hideShowView(symptomImages.isNotEmpty())
+
 
         binding.rvSymptomListing.layoutManager = GridLayoutManager(requireContext(), 3)
         val items = ArrayList<Filter>()
@@ -603,9 +698,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 }
             }).show()
 
-
     }
-
 
     private fun extraPayment() {
         if (request.extra_payment == null) {
@@ -658,66 +751,66 @@ class AppointmentDetailsFragment : DaggerFragment() {
             }
 
             CallAction.COMPLETED -> {
-                if (request.is_report == true) {
-
-                        val popup = PopupMenu(requireContext(), binding.tvAddPrescription)
-                        popup.menuInflater.inflate(R.menu.menu_prescription, popup.menu)
-
-                        popup.setOnMenuItemClickListener { item ->
-                            when (item.itemId) {
-                                R.id.item_view -> {
-                                    val link = "https://hakeemcare.hakeemcare.com/medical-prescription-report/generate-pdf?request_id=${request.id}&download"
-                                    Log.e("TAG", "proceedRequest: "+link )
-                                    openPdf(requireActivity(), link, true)
-                                }
-
-                                R.id.item_edit -> {
-                                    registerActivityResult.launch(
-                                        Intent(requireActivity(), DrawerActivity::class.java)
-                                            .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_REPORTS)
-                                            .putExtra(EXTRA_REQUEST_ID, request)
-                                    )
-                                }
-
-                                R.id.item_download -> {
-                                    val link = "https://hakeemcare.hakeemcare.com/medical-prescription-report/generate-pdf?request_id=${request.id}&download"
-
-                                    Log.e("TAG", "proceedRequest: "+link )
-
-                                  /*  val finalLink = if (link.contains("?")) "$link&download" else "$link?download"
-
-                                    Log.d("PDF_DOWNLOAD", "Enqueuing download for URL: $finalLink")
-
-                                    val downloadRequest = DownloadManager.Request(Uri.parse(finalLink))
-                                        .setTitle("Downloading PDF")
-                                        .setDescription("Please wait while the PDF is downloading...")
-                                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "report_${request.id}.pdf")
-                                        .setAllowedOverMetered(true)
-                                        .setAllowedOverRoaming(true)
-
-                                    val downloadManager = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-                                    downloadManager.enqueue(downloadRequest)
-
-
-                                    requireActivity().longToast("Downloading complete")*/
-
-                                    openPdf(requireActivity(), link, true)
-                                }
-                            }
-                            true
-                        }
-
-                        popup.show()
-                }
-                else {
-//                    val fragment = BottomPrescriptionFragment(this, request)
-//                    fragment.show(requireActivity().supportFragmentManager, fragment.tag)
-                    registerActivityResult.launch(
-                        Intent(requireActivity(), DrawerActivity::class.java)
-                            .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_REPORTS)
-                            .putExtra(EXTRA_REQUEST_ID, request))
-                }
+//                if (request.is_report == true) {
+//
+//                        val popup = PopupMenu(requireContext(), binding.tvAddPrescription)
+//                        popup.menuInflater.inflate(R.menu.menu_prescription, popup.menu)
+//
+//                        popup.setOnMenuItemClickListener { item ->
+//                            when (item.itemId) {
+//                                R.id.item_view -> {
+//                                    val link = "https://hakeemcare.hakeemcare.com/medical-prescription-report/generate-pdf?request_id=${request.id}&download"
+//                                    Timber.e("proceedRequest: "+link)
+//                                    openPdf(requireActivity(), link, true)
+//                                }
+//
+//                                R.id.item_edit -> {
+//                                    registerActivityResult.launch(
+//                                        Intent(requireActivity(), DrawerActivity::class.java)
+//                                            .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_REPORTS)
+//                                            .putExtra(EXTRA_REQUEST_ID, request)
+//                                    )
+//                                }
+//
+//                                R.id.item_download -> {
+//                                    val link = "https://hakeemcare.hakeemcare.com/medical-prescription-report/generate-pdf?request_id=${request.id}&download"
+//
+//                                    Timber.e("proceedRequest: "+link)
+//
+//                                  /*  val finalLink = if (link.contains("?")) "$link&download" else "$link?download"
+//
+//                                    Timber.d("Enqueuing download for URL: $finalLink")
+//
+//                                    val downloadRequest = DownloadManager.Request(Uri.parse(finalLink))
+//                                        .setTitle("Downloading PDF")
+//                                        .setDescription("Please wait while the PDF is downloading...")
+//                                        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+//                                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "report_${request.id}.pdf")
+//                                        .setAllowedOverMetered(true)
+//                                        .setAllowedOverRoaming(true)
+//
+//                                    val downloadManager = context?.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+//                                    downloadManager.enqueue(downloadRequest)
+//
+//
+//                                    requireActivity().longToast("Downloading complete")*/
+//
+//                                    openPdf(requireActivity(), link, true)
+//                                }
+//                            }
+//                            true
+//                        }
+//
+//                        popup.show()
+//                }
+//                else {
+////                    val fragment = BottomPrescriptionFragment(this, request)
+////                    fragment.show(requireActivity().supportFragmentManager, fragment.tag)
+//                    registerActivityResult.launch(
+//                        Intent(requireActivity(), DrawerActivity::class.java)
+//                            .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_REPORTS)
+//                            .putExtra(EXTRA_REQUEST_ID, request))
+//                }
             }
 
             CallAction.START, CallAction.REACHED -> {
@@ -740,6 +833,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
             object : AlertDialogUtil.OnOkCancelDialogListener {
                 override fun onOkButtonClicked() {
                     hitApiAcceptRequest()
+                    binding.tvAddPrescription.visible()
+                    binding.tvSallaProducts.gone()
                 }
 
                 override fun onCancelButtonClicked() {

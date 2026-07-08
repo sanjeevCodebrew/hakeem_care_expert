@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:layoutDirection="locale">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:elevation="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_back_white"
+            app:titleTextAppearance="@style/Toolbar.TitleText" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHeader"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:elevation="4dp"
+            android:fontFamily="@font/campton_semibold"
+            android:gravity="center"
+            android:text="@string/vital_sign"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvHeader">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="locale"
+                android:paddingBottom="@dimen/dp_24">
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/startGuideLine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="@dimen/dp_16" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/endGuideLine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="@dimen/dp_16" />
+
+                <!-- Patient info header -->
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/ivPic"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_profile_placeholder"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:riv_border_color="@color/lineColor"
+                    app:riv_border_width="2dp"
+                    app:riv_corner_radius="80dp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_12"
+                    android:fontFamily="@font/campton_semibold"
+                    android:textAlignment="viewStart"
+                    android:textDirection="locale"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toStartOf="@+id/tvPatientId"
+                    app:layout_constraintStart_toEndOf="@id/ivPic"
+                    app:layout_constraintTop_toTopOf="@+id/ivPic" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvGenderDob"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_12"
+                    android:alpha="0.7"
+                    android:fontFamily="@font/campton_medium"
+                    android:textAlignment="viewStart"
+                    android:textDirection="locale"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_13"
+                    app:layout_constraintEnd_toStartOf="@+id/tvPatientId"
+                    app:layout_constraintStart_toEndOf="@id/ivPic"
+                    app:layout_constraintTop_toBottomOf="@+id/tvName" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPatientId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/campton_semibold"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="@+id/ivPic"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintTop_toTopOf="@+id/ivPic" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:background="@color/lineColor"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/ivPic" />
+
+                <!-- Weight -->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvWeightLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:fontFamily="@font/campton_medium"
+                    android:text="@string/weight"
+                    android:textAlignment="viewStart"
+                    android:textDirection="locale"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etWeight"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:background="@drawable/drawable_grey_stroke"
+                    android:fontFamily="@font/campton_book"
+                    android:inputType="numberDecimal"
+                    android:padding="@dimen/dp_12"
+                    android:textAlignment="viewStart"
+                    android:textDirection="locale"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvWeightLabel" />
+
+                <!-- Height -->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvHeightLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:fontFamily="@font/campton_medium"
+                    android:text="@string/height"
+                    android:textAlignment="viewStart"
+                    android:textDirection="locale"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/etWeight" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etHeight"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:background="@drawable/drawable_grey_stroke"
+                    android:fontFamily="@font/campton_book"
+                    android:inputType="numberDecimal"
+                    android:padding="@dimen/dp_12"
+                    android:textAlignment="viewStart"
+                    android:textDirection="locale"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvHeightLabel" />
+
+                <!-- Temperature -->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTemperatureLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:fontFamily="@font/campton_medium"
+                    android:text="@string/temperature"
+                    android:textAlignment="viewStart"
+                    android:textDirection="locale"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/etHeight" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etTemperature"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:background="@drawable/drawable_grey_stroke"
+                    android:fontFamily="@font/campton_book"
+                    android:inputType="numberDecimal"
+                    android:padding="@dimen/dp_12"
+                    android:textAlignment="viewStart"
+                    android:textDirection="locale"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTemperatureLabel" />
+
+                <!-- Pulse -->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPulseLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:fontFamily="@font/campton_medium"
+                    android:text="@string/pulse"
+                    android:textAlignment="viewStart"
+                    android:textDirection="locale"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/etTemperature" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etPulse"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:background="@drawable/drawable_grey_stroke"
+                    android:fontFamily="@font/campton_book"
+                    android:inputType="numberDecimal"
+                    android:padding="@dimen/dp_12"
+                    android:textAlignment="viewStart"
+                    android:textDirection="locale"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPulseLabel" />
+
+                <!-- Respiratory Rate -->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvRespiratoryLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_16"
+                    android:fontFamily="@font/campton_medium"
+                    android:text="@string/respiratory_rate"
+                    android:textAlignment="viewStart"
+                    android:textDirection="locale"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/etPulse" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etRespiratoryRate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:background="@drawable/drawable_grey_stroke"
+                    android:fontFamily="@font/campton_book"
+                    android:inputType="numberDecimal"
+                    android:padding="@dimen/dp_12"
+                    android:textAlignment="viewStart"
+                    android:textDirection="locale"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRespiratoryLabel" />
+
+                <!-- Save Button -->
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSave"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:background="@drawable/drawable_alternate_button"
+                    android:fontFamily="@font/campton_semibold"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/dp_12"
+                    android:paddingBottom="@dimen/dp_12"
+                    android:text="@string/save"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/sp_16"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/etRespiratoryRate" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <include
+            android:id="@+id/clLoader"
+            layout="@layout/item_loader"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvHeader" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
