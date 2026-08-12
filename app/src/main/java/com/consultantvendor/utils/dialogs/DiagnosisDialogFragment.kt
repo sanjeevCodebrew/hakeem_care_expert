@@ -1,7 +1,6 @@
 package com.consultantvendor.utils.dialogs
 
 import android.annotation.SuppressLint
-import android.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,19 +13,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.consultantvendor.R
 import com.consultantvendor.data.models.responses.IcdDiagnosisItem
 import com.consultantvendor.ui.adapter.DiagnosisAdapter
-import com.consultantvendor.ui.dashboard.home.prescription.digital.DigitalPrescriptionFragment
 import com.consultantvendor.ui.dashboard.home.prescription.model.ItemModelDiagnosis
 import com.consultantvendor.ui.dashboard.home.reports.AddReportFragment
+import com.consultantvendor.ui.dashboard.settings.prewritten.AddPreWrittenPrescriptionFragment
 
 class DiagnosisDialogFragment(
     private val onNoteSelected: (String) -> Unit,
-    private val fragment: AddReportFragment,
+    private val fragment: androidx.fragment.app.Fragment,
     private val itemDiagnosis: ArrayList<IcdDiagnosisItem>,
 ) : DialogFragment() {
 
-    private var diagnosisAdapter: DiagnosisAdapter? = null
+    var diagnosisAdapter: DiagnosisAdapter? = null
     private var isSelectDiagnosis = false
-
 
     @SuppressLint("NotifyDataSetChanged", "MissingInflatedId")
     override fun onCreateView(
@@ -43,76 +41,76 @@ class DiagnosisDialogFragment(
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerViewDialog)
         val tvDone: TextView = view.findViewById(R.id.tvDone)
 
-            tvTitle.text = fragment.getString(R.string.select_diagnosis)
-            diagnosisAdapter = DiagnosisAdapter(itemDiagnosis) { selectedItem ->
-                if (selectedItem < 0 || selectedItem >= itemDiagnosis.size) {
-                    dismissAllowingStateLoss()
-                    return@DiagnosisAdapter
-                }
-                fragment.itemDiagnosisList.add(
-                    ItemModelDiagnosis(
-                        code = itemDiagnosis[selectedItem].code_id,
-                        title = itemDiagnosis[selectedItem].ascii_desc
-                    )
-                )
-                fragment.adpterDiagnosisList?.notifyDataSetChanged()
-                ivCross.performClick()
+        tvTitle.text = fragment.getString(R.string.select_diagnosis)
+        diagnosisAdapter = DiagnosisAdapter(itemDiagnosis) { selectedItem ->
+            if (selectedItem < 0 || selectedItem >= itemDiagnosis.size) {
+                dismissAllowingStateLoss()
+                return@DiagnosisAdapter
             }
-            recyclerView.adapter = diagnosisAdapter
+            val diagnosis = ItemModelDiagnosis(
+                code = itemDiagnosis[selectedItem].code_id,
+                title = itemDiagnosis[selectedItem].ascii_desc
+            )
+            if (fragment is AddReportFragment) {
+                fragment.itemDiagnosisList.add(diagnosis)
+                fragment.adpterDiagnosisList?.notifyDataSetChanged()
+            } else if (fragment is AddPreWrittenPrescriptionFragment) {
+                fragment.itemDiagnosisList.add(diagnosis)
+                fragment.adpterDiagnosisList?.notifyDataSetChanged()
+            }
+            dialog?.dismiss()
+        }
+        recyclerView.adapter = diagnosisAdapter
 
         ivSearch.setOnClickListener {
             isSelectDiagnosis = true
-            fragment.hitApiDiagnosis(
-                true,
-                etSearch.text.toString(),
-                diagnosisAdapter,
-                true
-            )
+            if (fragment is AddReportFragment) {
+                fragment.hitApiDiagnosis(true, etSearch.text.toString(), diagnosisAdapter, true)
+            } else if (fragment is AddPreWrittenPrescriptionFragment) {
+                fragment.hitApiDiagnosis(true, etSearch.text.toString(), diagnosisAdapter, true)
+            }
         }
 
         tvGetFromList.setOnClickListener {
-            fragment.isSearchDiagnosis = false
-            fragment.hitApiDiagnosis(true,"",null,false)
+            if (fragment is AddReportFragment) {
+                fragment.isSearchDiagnosis = false
+                fragment.hitApiDiagnosis(true, "", null, false)
+            } else if (fragment is AddPreWrittenPrescriptionFragment) {
+                fragment.hitApiDiagnosis(true, "", null, false)
+            }
         }
 
         ivCross.setOnClickListener {
             dialog?.dismiss()
         }
 
-//        tvDone.setOnClickListener {
-//            val searchText = etSearch.text.toString().trim()
-//           if (searchText.isNotEmpty()) {
-//              onNoteSelected(searchText)
-//              dialog?.dismiss()
-//            }
-//
-//        }
-
         tvDone.setOnClickListener {
             val searchText = etSearch.text.toString().trim()
 
             if (searchText.isNotEmpty()) {
-
                 val parts = searchText.split(" ", limit = 2)
-
                 val code = parts.getOrNull(0) ?: ""
                 val title = parts.getOrNull(1) ?: ""
+                val diagnosis = ItemModelDiagnosis(code = code, title = title)
 
-                fragment.itemDiagnosisList.add(
-                    ItemModelDiagnosis(
-                        code = code,
-                        title = title
-                    )
-                )
+                if (fragment is AddReportFragment) {
+                    fragment.itemDiagnosisList.add(diagnosis)
+                    fragment.adpterDiagnosisList?.notifyDataSetChanged()
+                } else if (fragment is AddPreWrittenPrescriptionFragment) {
+                    fragment.itemDiagnosisList.add(diagnosis)
+                    fragment.adpterDiagnosisList?.notifyDataSetChanged()
+                }
 
                 onNoteSelected(searchText)
-                fragment.adpterDiagnosisList?.notifyDataSetChanged()
                 dialog?.dismiss()
             }
         }
 
-
         return view
+    }
+
+    fun refreshAdapter() {
+        diagnosisAdapter?.notifyDataSetChanged()
     }
 
     override fun onStart() {
@@ -123,5 +121,3 @@ class DiagnosisDialogFragment(
         )
     }
 }
-
-

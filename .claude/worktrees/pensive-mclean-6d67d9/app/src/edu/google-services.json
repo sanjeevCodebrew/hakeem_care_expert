@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "985496364415",
+    "firebase_url": "https://royo-education.firebaseio.com",
+    "project_id": "royo-education",
+    "storage_bucket": "royo-education.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985496364415:android:d87fe71afb53698f14264a",
+        "android_client_info": {
+          "package_name": "com.edu.expert"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "985496364415-5jp747is72hccmjm2sosnjmp8f7eitt0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.edu.expert",
+            "certificate_hash": "3fee5aff71776031cbdc81d0b12cca08afa48d8a"
+          }
+        },
+        {
+          "client_id": "985496364415-0kv0l82pe2hr12s6ep66etcls77i8481.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBb2uXkk9gZp-oPIS0aP7bRu1ByDB4q1OE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "985496364415-f1jhbr1f65tfqrbdddfcuodqmc3fldgu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "985496364415-hbo403nmok8chuhihq2c2uk0kmvf2hj9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.codebrew.RoyoEducation"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:985496364415:android:0830dfcb3a8b49b814264a",
+        "android_client_info": {
+          "package_name": "com.edu.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "985496364415-bep6m3c8iaovpdfi855ljhvhuj3j6vt9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.edu.user",
+            "certificate_hash": "3fee5aff71776031cbdc81d0b12cca08afa48d8a"
+          }
+        },
+        {
+          "client_id": "985496364415-0kv0l82pe2hr12s6ep66etcls77i8481.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBb2uXkk9gZp-oPIS0aP7bRu1ByDB4q1OE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "985496364415-f1jhbr1f65tfqrbdddfcuodqmc3fldgu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "985496364415-hbo403nmok8chuhihq2c2uk0kmvf2hj9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.codebrew.RoyoEducation"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

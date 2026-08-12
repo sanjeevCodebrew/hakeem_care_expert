@@ -2,7 +2,7 @@ package com.consultantvendor.ui.chat.chatdetail
 
 
 import android.annotation.SuppressLint
-import android.app.Activity
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
@@ -145,9 +145,11 @@ class ChatDetailAdapter(
                 val chat = data[bindingAdapterPosition]
                 when (chat.messageType) {
                     DocType.IMAGE -> {
-                        val itemImages = ArrayList<String>()
-                        itemImages.add(getImageBaseUrl(ImageFolder.UPLOADS, chat.imageUrl ?: ""))
-                        viewImageFull(context as Activity, itemImages, 0)
+                        context.startActivity(
+                            Intent(context, ChatMediaDetailActivity::class.java)
+                                .putExtra(EXTRA_REQUEST_ID, chat.request_id ?: "")
+                                .putExtra(RECIEVER_ID, chat.receiverId ?: "")
+                        )
                     }
                 }
             }
@@ -302,9 +304,11 @@ class ChatDetailAdapter(
                 val chat = data[bindingAdapterPosition]
                 when (chat.messageType) {
                     DocType.IMAGE -> {
-                        val itemImages = ArrayList<String>()
-                        itemImages.add(getImageBaseUrl(ImageFolder.UPLOADS, chat.imageUrl))
-                        viewImageFull(context as Activity, itemImages, 0)
+                        context.startActivity(
+                            Intent(context, ChatMediaDetailActivity::class.java)
+                                .putExtra(EXTRA_REQUEST_ID, chat.request_id ?: "")
+                                .putExtra(RECIEVER_ID, chat.receiverId ?: "")
+                        )
                     }
                 }
             }

@@ -12,7 +12,6 @@ import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
@@ -34,6 +33,7 @@ import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
+import timber.log.Timber
 
 
 class CallingActivity : DaggerAppCompatActivity() {
@@ -85,7 +85,7 @@ class CallingActivity : DaggerAppCompatActivity() {
 
             val callInvite = intent.getSerializableExtra(Constants.INCOMING_CALL_INVITE) as PushData
 
-            Log.e("TAG", "onNewIntentEx: $callInvite")
+            Timber.e("onNewIntentEx: $callInvite")
 
             val callId = callInvite.call_id
 
@@ -170,7 +170,7 @@ class CallingActivity : DaggerAppCompatActivity() {
 
 //            longToast(callInvite.call_id.toString())
 
-            Log.e("TAG", "callPush: $callInvite")
+            Timber.e("callPush: $callInvite")
 
             /*Data for jitsi class*/
             val jitsiClass = JitsiClass()
@@ -289,7 +289,7 @@ class CallingActivity : DaggerAppCompatActivity() {
         
 //      longToast(callInvite.call_id.toString())
 
-        Log.e("TAG", "callPush: $callInvite")
+        Timber.e("callPush: $callInvite")
 
         /*Data for jitsi class*/
         val jitsiClass = JitsiClass()

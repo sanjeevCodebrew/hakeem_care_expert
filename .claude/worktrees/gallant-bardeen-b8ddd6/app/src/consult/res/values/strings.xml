@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">HakeemCareDr</string>
+
+    <!--Facebook keys-->
+    <string name="facebook_app_id" translatable="false">614826522700049</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb614826522700049</string>
+
+    <!--Deep Link-->
+    <string name="deep_link_url" translatable="false">hakeemcare.page.link</string>
+    <string name="host_url" translatable="false">hakeemcare.hakeemcare.com</string>
+    <string name="deep_link_user_profile" translatable="false">hakeemcare.page.link</string>
+    <string name="deep_link_ios_bundle" translatable="false">com.codebrew.RoyoConsultantVendor</string>
+
+    <!--Google-->
+<!--    <string name="google_places_api_key" translatable="false">AIzaSyCZ6vYaavuJ1AqqVZqacmSZWwYp8SrNDnE</string>-->
+    <string name="google_places_api_key" translatable="false">AIzaSyD84l1_EQSRnCJFdvFbsPChZdhVZYxUZ5c</string>
+    <string name="server_client_id" translatable="false">952614479078-892v5fage0p4pguerkht8krnpoo55dq3.apps.googleusercontent.com</string>
+
+
+    <string name="update_desc">You have new update for %s!</string>
+    <string name="create_a_account">Create a %s\naccount to continue</string>
+
+</resources>

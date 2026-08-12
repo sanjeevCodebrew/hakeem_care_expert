@@ -3,7 +3,6 @@ package com.consultantvendor.ui.dashboard.wallet.addmoney
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.core.content.ContextCompat
@@ -29,6 +28,7 @@ import com.consultantvendor.utils.dialogs.ProgressDialog
 import dagger.android.support.DaggerAppCompatActivity
 import org.json.JSONObject
 import javax.inject.Inject
+import timber.log.Timber
 
 class AddMoneyActivity : DaggerAppCompatActivity(){
 
@@ -401,7 +401,7 @@ class AddMoneyActivity : DaggerAppCompatActivity(){
             Toast.makeText(this,
                     "Payment failed $errorCode \n $response", Toast.LENGTH_LONG).show()
         } catch (e: Exception) {
-            Log.e(TAG, "Exception in onPaymentSuccess", e)
+            Timber.e(e, "Exception in onPaymentSuccess")
         }
     }
 
@@ -418,7 +418,7 @@ class AddMoneyActivity : DaggerAppCompatActivity(){
             *//*setResult(Activity.RESULT_OK)
             finish()*//*
         } catch (e: Exception) {
-            Log.e(TAG, "Exception in onPaymentSuccess", e)
+            Timber.e(e, "Exception in onPaymentSuccess")
         }
     }*/
 }

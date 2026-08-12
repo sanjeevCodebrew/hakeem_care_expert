@@ -12,7 +12,9 @@ import com.consultantvendor.databinding.ItemPagesTitleBinding
 import com.consultantvendor.databinding.ItemPagingLoaderBinding
 
 
-class PagesAdapter(private val fragment: SettingsFragment, private val items: List<Page>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PagesAdapter(private val fragment: SettingsFragment, items: List<Page>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val items = items.filter { it.isVisible }
 
     private var allItemsLoaded = true
 

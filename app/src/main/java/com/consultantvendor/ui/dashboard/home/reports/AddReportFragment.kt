@@ -32,6 +32,7 @@ import com.consultantvendor.ui.dashboard.home.prescription.digital.medicineListA
 import com.consultantvendor.ui.dashboard.home.prescription.model.ItemModelDiagnosis
 import com.consultantvendor.ui.dashboard.home.prescription.model.ItemModelMedicine
 import com.consultantvendor.ui.dashboard.home.prescription.model.ResponseInsurance
+import com.consultantvendor.ui.dashboard.settings.prewritten.PreWrittenPrescriptionBottomSheet
 import com.consultantvendor.utils.BasePhotoUplaodFragment
 import com.consultantvendor.utils.DateFormat
 import com.consultantvendor.utils.DateUtils
@@ -47,7 +48,6 @@ import com.consultantvendor.utils.getRequestBody
 import com.consultantvendor.utils.gone
 import com.consultantvendor.utils.isConnectedToInternet
 import com.consultantvendor.utils.loadImage
-import com.consultantvendor.utils.longToast
 import com.consultantvendor.utils.showSnackBar
 import com.consultantvendor.utils.visible
 import com.google.gson.Gson
@@ -108,6 +108,8 @@ class AddReportFragment : BasePhotoUplaodFragment() {
 
     private var filltype = ""
 
+    private var isPrefilling = false
+
     var adpterDiagnosisList: DiagnosisListAdapter? = null
 
     val itemDiagnosisList = ArrayList<ItemModelDiagnosis>()
@@ -121,6 +123,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
     var item_number = ""
 
     var isEditMedicine = false
+    var editMedicineIndex = 0
 
 
     override fun onCreateView(
@@ -347,16 +350,13 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                     position: Int,
                     id: Long
                 ) {
+                    if (isPrefilling) return
                     if (position == 1) { // Insurance
                         binding.spnInsurance.visible()
                         addPrescriptionViewModel.getInsurance()
                         prescription_type = "insurance"
 
-                        // 👉 Force fill type = "upload-prescription"
-                        binding.spnFillType.setSelection(
-                            2,
-                            false
-                        ) // assuming index 0 = Upload Prescription
+                        binding.spnFillType.setSelection(2, false)
                         binding.clfillform.gone()
                         binding.clUploadPrescription.visible()
                         filltype = "upload-prescription"
@@ -366,8 +366,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                         prescription_type = "cash"
                         insuraceId = ""
 
-                        // 👉 Force fill type = "form"
-                        binding.spnFillType.setSelection(1, false) // assuming index 1 = Form
+                        binding.spnFillType.setSelection(1, false)
                         binding.clfillform.visible()
                         binding.clUploadPrescription.visible()
                         filltype = "form"
@@ -388,7 +387,7 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                     position: Int,
                     id: Long
                 ) {
-                    // Only apply manual changes if prescription_type != insurance
+                    if (isPrefilling) return
                     if (!prescription_type.equals("insurance", ignoreCase = true)) {
                         if (position == 1) { // Form
                             binding.clfillform.visible()
@@ -419,8 +418,79 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                 fragment.show(requireActivity().supportFragmentManager, fragment.tag)
         }
 
+        binding.btnPreWrittenPrescription.setOnClickListener {
+            val sheet = PreWrittenPrescriptionBottomSheet { prescription ->
+                isPrefilling = true
+
+                // Set prescription_type variable and spinner (API returns mixed case)
+                val rawType = prescription.prescription_type?.lowercase() ?: ""
+                prescription_type = rawType
+                when {
+                    rawType == "insurance" -> {
+                        binding.spnPrescriptionType.setSelection(1, false)
+                        binding.spnInsurance.visible()
+                        addPrescriptionViewModel.getInsurance()
+                    }
+                    rawType == "cash" || rawType.isNotEmpty() -> {
+                        binding.spnPrescriptionType.setSelection(2, false)
+                        binding.spnInsurance.gone()
+                        prescription_type = "cash"
+                    }
+                }
+
+                // Set fill_type variable and spinner, then update UI
+                val rawFill = prescription.fill_type?.lowercase() ?: ""
+                filltype = rawFill
+                when {
+                    rawFill == "form" || rawFill == "self" -> {
+                        filltype = "form"
+                        binding.spnFillType.setSelection(1, false)
+                        binding.clfillform.visible()
+                        binding.clUploadPrescription.visible()
+                    }
+                    rawFill == "upload-prescription" || rawFill == "upload prescription" -> {
+                        filltype = "upload-prescription"
+                        binding.spnFillType.setSelection(2, false)
+                        binding.clfillform.gone()
+                        binding.clUploadPrescription.visible()
+                    }
+                }
+
+                isPrefilling = false
+
+                // Pre-fill diagnosis list
+                prescription.diagnosis?.let { diagList ->
+                    itemDiagnosisList.clear()
+                    itemDiagnosisList.addAll(diagList)
+                    adpterDiagnosisList?.notifyDataSetChanged()
+                }
+                // Pre-fill medicine list
+                prescription.prescription?.let { medList ->
+                    itemMedicineList.clear()
+                    itemMedicineList.addAll(medList)
+                    adpterMedicineList?.notifyDataSetChanged()
+                }
+                // Pre-fill notes
+                binding.etNotes.setText(prescription.report_detals ?: prescription.description)
+
+                // Pre-fill uploaded image/file
+                val fileUrl = prescription.prescription_file?.trim()
+                if (!fileUrl.isNullOrEmpty()) {
+                    docUrl = fileUrl
+                    binding.clUploadPrescription.visible()
+                    if (fileUrl.endsWith(".pdf", ignoreCase = true)) {
+                        binding.ivDoc.setImageResource(R.drawable.ic_pdf)
+                    } else {
+                        loadImage(binding.ivDoc, fileUrl, R.drawable.image_placeholder)
+                    }
+                    binding.tvFileName.text = fileUrl
+                }
+            }
+            sheet.show(childFragmentManager, sheet.tag)
+        }
+
         binding.clUploadPrescription.setOnClickListener {
-            showImageDialog(false, true, true,true)
+            showImageDialog(false, true, false, true)
         }
 
         binding.tvDone.setOnClickListener {
@@ -551,7 +621,8 @@ class AddReportFragment : BasePhotoUplaodFragment() {
                     itemDiagnosis.clear()
                     itemDiagnosis.addAll(it.data?.data?.data ?: emptyList())
                     if (!isSearchDiagnosis) {
-                        showDiagnosisDialog()
+                        // Refresh the already-open dialog instead of creating a new one on top
+                        diagnosisDialog?.refreshAdapter()
                     } else {
                         adpterDiagnosis?.notifyDataSetChanged()
                     }

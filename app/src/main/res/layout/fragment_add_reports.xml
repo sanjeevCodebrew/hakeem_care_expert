@@ -265,18 +265,36 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvAppointmentV" />
 
 
+                <!-- Pre-written Prescription button — top of form -->
+                <Button
+                    android:id="@+id/btnPreWrittenPrescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_24"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:drawableStart="@drawable/ic_pre_written"
+                    android:drawablePadding="@dimen/dp_4"
+                    android:fontFamily="@font/campton_medium"
+                    android:text="@string/pre_written_prescription"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDoctorName" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvPrescriptionType"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_32"
+                    android:layout_marginTop="@dimen/dp_20"
                     android:fontFamily="@font/campton_book"
                     android:text="@string/prescription_type"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toTopOf="@+id/tvDoctorName" />
+                    app:layout_constraintTop_toBottomOf="@+id/btnPreWrittenPrescription" />
 
                 <Spinner
                     android:id="@+id/spnPrescriptionType"
@@ -414,18 +432,27 @@
                                 android:textSize="16sp"
                                 android:textStyle="bold" />
 
-                            <!-- Add Medicine Button -->
-                            <Button
-                                android:id="@+id/btnAddMedicine"
-                                android:layout_width="wrap_content"
+                            <!-- Add Medicine + Pre-written Prescription Buttons -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
-                                android:backgroundTint="@color/colorPrimary"
-                                android:fontFamily="@font/campton_medium"
-                                android:text="@string/add_medicine"
-                                android:textAllCaps="false"
-                                android:textColor="@android:color/white"
-                                android:textSize="14sp" />
+                                android:orientation="horizontal"
+                                android:gravity="start">
+
+                                <Button
+                                    android:id="@+id/btnAddMedicine"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:backgroundTint="@color/colorPrimary"
+                                    android:fontFamily="@font/campton_medium"
+                                    android:text="@string/add_medicine"
+                                    android:textAllCaps="false"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp" />
+
+
+                            </LinearLayout>
 
 
                             <androidx.recyclerview.widget.RecyclerView

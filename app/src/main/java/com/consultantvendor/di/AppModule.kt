@@ -2,7 +2,8 @@ package com.consultantvendor.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import com.consultantvendor.ConsultantApplication
 import com.consultantvendor.pushNotifications.MessagingService
 import com.google.gson.FieldNamingPolicy
@@ -29,7 +30,35 @@ object AppModule {
     @Provides
     @Singleton
     @JvmStatic
-    fun sharedPreferences(context: Context): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    fun sharedPreferences(context: Context): SharedPreferences {
+        return createEncryptedPrefs(context)
+    }
+
+    private fun createEncryptedPrefs(context: Context): SharedPreferences {
+        val masterKey = MasterKey.Builder(context)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+        return try {
+            EncryptedSharedPreferences.create(
+                context,
+                "secure_prefs",
+                masterKey,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+        } catch (e: Exception) {
+            // Keystore key mismatch — happens after reinstall when the encrypted prefs file
+            // survives via Auto Backup but the original Keystore key is gone. Wipe and recreate.
+            context.deleteSharedPreferences("secure_prefs")
+            EncryptedSharedPreferences.create(
+                context,
+                "secure_prefs",
+                masterKey,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            )
+        }
+    }
 
     @Provides
     @Singleton

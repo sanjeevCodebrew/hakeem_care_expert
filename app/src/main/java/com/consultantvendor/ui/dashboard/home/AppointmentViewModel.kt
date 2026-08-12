@@ -2,6 +2,7 @@ package com.consultantvendor.ui.dashboard.home
 
 import androidx.lifecycle.ViewModel
 import com.consultantvendor.data.apis.WebService
+import com.consultantvendor.data.models.requests.DoctorNotesRequest
 import com.consultantvendor.data.models.responses.CommonDataModel
 import com.consultantvendor.data.models.responses.Extra_payment
 import com.consultantvendor.data.network.responseUtil.ApiResponse
@@ -36,6 +37,10 @@ class AppointmentViewModel @Inject constructor(private val webService: WebServic
     val updateCarePlan by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
 
     val publishPrescription by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
+
+    val saveVitalSigns by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
+
+    val saveDoctorNotes by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
 
     fun request(hashMap: HashMap<String, String>) {
         pendingRequest.value = Resource.loading()
@@ -323,6 +328,40 @@ class AppointmentViewModel @Inject constructor(private val webService: WebServic
                     }
 
                 })
+    }
+
+    fun saveVitalSigns(hashMap: HashMap<String, String>) {
+        saveVitalSigns.value = Resource.loading()
+        webService.saveVitalSigns(hashMap)
+            .enqueue(object : Callback<ApiResponse<CommonDataModel>> {
+                override fun onResponse(call: Call<ApiResponse<CommonDataModel>>, response: Response<ApiResponse<CommonDataModel>>) {
+                    if (response.isSuccessful) {
+                        saveVitalSigns.value = Resource.success(response.body()?.data)
+                    } else {
+                        saveVitalSigns.value = Resource.error(ApiUtils.getError(response.code(), response.errorBody()?.string()))
+                    }
+                }
+                override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
+                    saveVitalSigns.value = Resource.error(ApiUtils.failure(throwable))
+                }
+            })
+    }
+
+    fun saveDoctorNotes(request: DoctorNotesRequest) {
+        saveDoctorNotes.value = Resource.loading()
+        webService.saveDoctorNotes(request)
+            .enqueue(object : Callback<ApiResponse<CommonDataModel>> {
+                override fun onResponse(call: Call<ApiResponse<CommonDataModel>>, response: Response<ApiResponse<CommonDataModel>>) {
+                    if (response.isSuccessful) {
+                        saveDoctorNotes.value = Resource.success(response.body()?.data)
+                    } else {
+                        saveDoctorNotes.value = Resource.error(ApiUtils.getError(response.code(), response.errorBody()?.string()))
+                    }
+                }
+                override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
+                    saveDoctorNotes.value = Resource.error(ApiUtils.failure(throwable))
+                }
+            })
     }
 
     fun publishPrescription(hashMap: HashMap<String, String>) {

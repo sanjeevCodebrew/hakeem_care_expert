@@ -18,6 +18,8 @@ import com.consultantvendor.ui.dashboard.settings.contactlist.ContactViewModel
 import com.consultantvendor.ui.dashboard.wallet.BankViewModel
 import com.consultantvendor.ui.dashboard.wallet.WalletViewModel
 import com.consultantvendor.ui.drawermenu.classes.ClassesViewModel
+import com.consultantvendor.ui.dashboard.salla.SallaViewModel
+import com.consultantvendor.ui.dashboard.zid.ZidViewModel
 import com.consultantvendor.ui.loginSignUp.LoginViewModel
 import com.consultantvendor.ui.loginSignUp.availability.GetSlotsViewModel
 import dagger.Binds
@@ -130,5 +132,15 @@ abstract class ViewModelsModule {
     @IntoMap
     @ViewModelKey(LanguageViewModel::class)
     abstract fun languageViewModel(viewModel: LanguageViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SallaViewModel::class)
+    abstract fun sallaViewModel(viewModel: SallaViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ZidViewModel::class)
+    abstract fun zidViewModel(viewModel: ZidViewModel): ViewModel
 
 }

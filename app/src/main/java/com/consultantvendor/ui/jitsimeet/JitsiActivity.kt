@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -29,6 +28,7 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.util.HashMap
 import javax.inject.Inject
+import timber.log.Timber
 
 
 class JitsiActivity : DaggerAppCompatActivity(){
@@ -110,7 +110,7 @@ class JitsiActivity : DaggerAppCompatActivity(){
 //            userInfo.avatar = URL(getImageBaseUrl(ImageFolder.UPLOADS, userData?.profile_image))
 //            val setAudioOnly = jitsiClass?.callType?.lowercase() == ConsultType.AUDIO_CALL || jitsiClass?.callType?.lowercase() == ConsultType.CALL
 //
-//            Log.e("TAG", "intialiseJitsi: "+jitsiClass?.callType?.lowercase() )
+//            Timber.e("intialiseJitsi: "+jitsiClass?.callType?.lowercase() )
 //            val options = JitsiMeetConferenceOptions.Builder()
 //                .setUserInfo(userInfo)
 //                .setRoom(roomName)

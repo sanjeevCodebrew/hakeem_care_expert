@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.method.LinkMovementMethod
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +42,7 @@ import com.google.android.gms.common.api.ApiException
 //import com.snapchat.kit.sdk.core.controller.LoginStateController
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
+import timber.log.Timber
 
 
 class WelcomeFragment : DaggerFragment() {
@@ -194,11 +194,11 @@ class WelcomeFragment : DaggerFragment() {
             }
 
             override fun onCancel() {
-                Log.e("FBLOGIN_FAILD", "Cancel")
+                Timber.e("Cancel")
             }
 
             override fun onError(error: FacebookException) {
-                Log.e("FBLOGIN_FAILD", "ERROR", error)
+                Timber.e(error, "ERROR")
             }
         })
     }
@@ -211,16 +211,16 @@ class WelcomeFragment : DaggerFragment() {
 //
 //        SnapLogin.getLoginStateController(getContext()).addOnLoginStateChangedListener(object : LoginStateController.OnLoginStateChangedListener{
 //            override fun onLoginSucceeded() {
-//                Log.d("SnapKit Login", "Successful")
+//                Timber.d("Successful")
 //            }
 //
 //            override fun onLoginFailed() {
-//                Log.e("SnapKit Login", "Failed")
+//                Timber.e("Failed")
 ////                TODO("Not yet implemented")
 //            }
 //
 //            override fun onLogout() {
-//                Log.d("SnapKit Login", "Logout")
+//                Timber.d("Logout")
 ////                TODO("Not yet implemented")
 //            }
 //        });
@@ -282,7 +282,7 @@ class WelcomeFragment : DaggerFragment() {
                 }
 
             } catch (e: ApiException) {
-                Log.e("Google_FAILD", "ERROR", e)
+                Timber.e(e, "ERROR")
             }
         }
     }

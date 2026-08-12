@@ -7,7 +7,6 @@ import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import android.os.Environment
 import android.os.StatFs
-import android.util.Log
 import androidx.core.content.FileProvider
 import androidx.documentfile.provider.DocumentFile
 import com.consultantvendor.R
@@ -17,6 +16,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import timber.log.Timber
 
 
 object FileUtil {
@@ -235,8 +235,8 @@ object FileUtil {
 
         with(context) {
 
-            Log.e("file?.extension",""+file?.extension)
-            Log.e("file.path",""+file?.path)
+            Timber.e(""+file?.extension)
+            Timber.e(""+file?.path)
             when (file?.extension) {
 
                 "pdf" -> return getThumbnailPDF(uri, context)

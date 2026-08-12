@@ -57,8 +57,8 @@ allprojects {
         // ↓↓↓ keep these LAST ↓↓↓
         maven { url "https://github.com/jitsi/jitsi-maven-repository/raw/master/releases" }
         maven { url "https://raw.githubusercontent.com/Snap-Kit/release-maven/repo" }
+        // jcenter removed — PinView now served from JitPack (ChaosLeong/PinView)
 //        maven { url "https://maven.scijava.org/content/repositories/public/" }
-//        maven { url "https://jcenter.bintray.com" }
     }
 }
 

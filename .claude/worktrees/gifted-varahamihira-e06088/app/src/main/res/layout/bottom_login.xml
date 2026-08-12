@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/drawable_rounded_top">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clPreviousLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_4">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/ic_cross"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_4"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/ivClose"
+                tools:listitem="@layout/item_user" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clMain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/dp_10"
+                    android:background="@drawable/rounded_stroke_corner"
+                    app:layout_constraintTop_toBottomOf="@id/rvUser"
+                    android:padding="12dp">
+
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/ivAdd"
+                        android:layout_width="@dimen/album_dp_35"
+                        android:layout_height="@dimen/album_dp_35"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_add"
+                        app:riv_border_color="@color/lineColor"
+                        app:riv_border_width="2dp"
+                        app:riv_corner_radius="@dimen/album_dp_35"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvAddDr"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/campton_semibold"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_14"
+                        android:text="@string/add_another_dr"
+                        android:layout_marginStart="12dp"
+                        app:layout_constraintStart_toEndOf="@id/ivAdd"
+                        app:layout_constraintTop_toTopOf="@id/ivAdd"
+                        app:layout_constraintBottom_toBottomOf="@id/ivAdd"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

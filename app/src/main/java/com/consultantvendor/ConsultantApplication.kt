@@ -1,8 +1,8 @@
 package com.consultantvendor
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
+import timber.log.Timber
 import com.appsflyer.AppsFlyerLib
 import com.appsflyer.attribution.AppsFlyerRequestListener
 import com.consultantvendor.data.models.requests.AppFeatures
@@ -36,11 +36,17 @@ class ConsultantApplication : DaggerApplication(), LifecycleObserver {
     @Inject
     lateinit var appSocket: AppSocket
 
-    private var isReceiverRegistered = false
+//    private var isReceiverRegistered = false
 
 
     override fun onCreate() {
         super.onCreate()
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        } else {
+            Timber.plant(ReleaseTree())
+        }
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
 //        Fresco.initialize(this)
@@ -86,13 +92,10 @@ class ConsultantApplication : DaggerApplication(), LifecycleObserver {
                 AppsFlyerLib.getInstance().init(getString(R.string.apps_flyer_dev_key), null, this)
                 AppsFlyerLib.getInstance().start(applicationContext,null,object : AppsFlyerRequestListener{
                     override fun onSuccess() {
-                        Log.d("AppsFlyer", "Launch sent successfully, got 200 response code from server");
+                        Timber.d("Launch sent successfully, got 200 response code from server");
                     }
-
                     override fun onError(i: Int, s: String) {
-                        Log.d("AppsFlyer", "Launch failed to be sent:\n" +
-                                "Error code: " + i + "\n"
-                                + "Error description: " + s)
+                        Timber.d("Launch failed to be sent:\n" + "Error code: " + i + "\n" + "Error description: " + s)
                     }
                 })
 
@@ -125,6 +128,10 @@ class ConsultantApplication : DaggerApplication(), LifecycleObserver {
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> =
             DaggerAppComponent.builder().create(this)
+
+    private class ReleaseTree : Timber.Tree() {
+        override fun log(priority: Int, tag: String?, message: String, t: Throwable?) = Unit
+    }
 
     companion object {
         var isApplication: Application? = null

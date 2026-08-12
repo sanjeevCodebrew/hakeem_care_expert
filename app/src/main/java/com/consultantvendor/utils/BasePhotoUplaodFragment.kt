@@ -24,7 +24,6 @@ import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.provider.Settings
-import android.util.Log
 import android.view.Window
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -52,6 +51,7 @@ import dagger.android.support.DaggerFragment
 import java.io.*
 import java.lang.Long
 import java.util.Calendar
+import timber.log.Timber
 
 
 abstract class BasePhotoUplaodFragment : DaggerFragment() {
@@ -141,7 +141,7 @@ abstract class BasePhotoUplaodFragment : DaggerFragment() {
                 ExifInterface.ORIENTATION_NORMAL
             ) ?: ExifInterface.ORIENTATION_NORMAL
 
-            Log.d("ImageFix", "EXIF orientation: $orientation")
+            Timber.d("EXIF orientation: $orientation")
 
             val matrix = Matrix()
             when (orientation) {

@@ -1,10 +1,10 @@
 package com.consultantvendor.ui.aghora
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.AudioManager
 import android.os.Bundle
-import android.util.Log
 import android.view.SurfaceView
 import android.view.TextureView
 import android.view.View
@@ -15,8 +15,12 @@ import com.consultantvendor.data.models.responses.JitsiClass
 import com.consultantvendor.data.network.PushType
 import com.consultantvendor.data.repos.UserRepository
 import com.consultantvendor.databinding.ActivityAghoraBinding
+import com.consultantvendor.ui.drawermenu.DrawerActivity
 import com.consultantvendor.utils.ConsultType
 import com.consultantvendor.utils.EXTRA_CALL_NAME
+import com.consultantvendor.utils.EXTRA_FROM_ACTIVE_CALL
+import com.consultantvendor.utils.EXTRA_REQUEST_ID
+import com.consultantvendor.utils.PAGE_TO_OPEN
 import com.consultantvendor.utils.PrefsManager
 import com.consultantvendor.utils.loadImage
 import com.consultantvendor.utils.visible
@@ -32,6 +36,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import timber.log.Timber
 
 
 class AghoraNewActivity : DaggerAppCompatActivity() {
@@ -57,7 +62,6 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
     private var seconds = 0
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -78,6 +82,19 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
     private fun listners() {
         binding.ivFlipCamera.setOnClickListener {
             rtcEngine?.switchCamera()
+        }
+
+        binding.tvAddPrescriptionCall.setOnClickListener {
+            // Open AppointmentDetailsFragment while keeping the call alive in the background.
+            // AghoraNewActivity is only paused (not destroyed), so the Agora engine and
+            // audio/video streams continue running. Pressing back returns here.
+            val requestId = jitsiClass?.id ?: return@setOnClickListener
+            startActivity(
+                Intent(this, DrawerActivity::class.java)
+                    .putExtra(PAGE_TO_OPEN, DrawerActivity.APPOINTMENT_DETAILS)
+                    .putExtra(EXTRA_REQUEST_ID, requestId)
+                    .putExtra(EXTRA_FROM_ACTIVE_CALL, true)
+            )
         }
     }
 
@@ -122,7 +139,7 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
         val token = "${jitsiClass?.agora_token}=="
         val uid = 0
 
-       Log.e("TAG", "initialiseAgora: channelName:${channelName} token : ${token}")
+       Timber.e("initialiseAgora: channelName:${channelName} token : ${token}")
 
         val isAudioOnly =
             jitsiClass?.callType?.lowercase() == ConsultType.AUDIO_CALL ||
@@ -161,10 +178,13 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
         binding.speakerButton.visibility = View.VISIBLE
 
         binding.ivFlipCamera.visibility = View.GONE
-        binding.ivFlipCamera.visibility = View.GONE
         binding.videoBtn.visibility = View.GONE
         binding.ivSwitchVideoCall.visibility = View.GONE
         binding.ivBTSpeaker.visibility = View.GONE
+
+        // Prescription button must be explicitly elevated above clAudioCall (full-screen overlay)
+        binding.tvAddPrescriptionCall.visibility = View.VISIBLE
+        binding.tvAddPrescriptionCall.bringToFront()
     }
 
     private fun setupVideoUI() {
@@ -183,6 +203,8 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
         binding.videoBtn.visibility = View.GONE
         binding.ivSwitchVideoCall.visibility = View.GONE
         binding.ivBTSpeaker.visibility = View.GONE
+
+        binding.tvAddPrescriptionCall.visibility = View.VISIBLE
     }
 
     // ================= RTC EVENTS =================
@@ -291,6 +313,31 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
         finish()
     }
 
+    override fun onPause() {
+        super.onPause()
+        // Pause local camera preview when going to background (e.g. opening prescription screen).
+        // Audio streaming continues uninterrupted — only the local video preview is paused.
+        val isAudioOnly =
+            jitsiClass?.callType?.lowercase() == ConsultType.AUDIO_CALL ||
+                    jitsiClass?.callType?.lowercase() == ConsultType.CALL
+        if (!isAudioOnly) {
+            rtcEngine?.muteLocalVideoStream(true)
+            rtcEngine?.stopPreview()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Restore local camera preview when returning from the prescription screen.
+        val isAudioOnly =
+            jitsiClass?.callType?.lowercase() == ConsultType.AUDIO_CALL ||
+                    jitsiClass?.callType?.lowercase() == ConsultType.CALL
+        if (!isAudioOnly) {
+            rtcEngine?.muteLocalVideoStream(false)
+            rtcEngine?.startPreview()
+        }
+    }
+
     override fun onDestroy() {
         rtcEngine?.leaveChannel()
         RtcEngine.destroy()
@@ -298,20 +345,13 @@ class AghoraNewActivity : DaggerAppCompatActivity() {
     }
 
     private fun startCallTimer(isFromVideo: Boolean) {
-
         timerJob = lifecycleScope.launch {
-
             while (isActive) {
-
                 delay(1000)
-
                 seconds++
-
                 val minutes = seconds / 60
                 val sec = seconds % 60
-
                 val time = String.format("%02d:%02d", minutes, sec)
-
                 if (isFromVideo) {
                     binding.tvTimerVC.text = time
                 } else {

@@ -3,6 +3,7 @@ package com.consultantvendor.ui.chat
 import androidx.lifecycle.ViewModel
 import com.consultantvendor.data.apis.WebService
 import com.consultantvendor.data.models.responses.CommonDataModel
+import com.consultantvendor.data.models.responses.chat.chatMediaData
 import com.consultantvendor.data.network.responseUtil.ApiResponse
 import com.consultantvendor.data.network.responseUtil.ApiUtils
 import com.consultantvendor.data.network.responseUtil.Resource
@@ -19,6 +20,8 @@ class ChatViewModel @Inject constructor(private val webService: WebService): Vie
     val chatMessages by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
 
     val notifications by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
+
+    val chatMedia by lazy { SingleLiveEvent<Resource<chatMediaData>>() }
 
 
 
@@ -69,6 +72,30 @@ class ChatViewModel @Inject constructor(private val webService: WebService): Vie
                         }
                     }
                 })
+    }
+
+    fun getChatMedia(hashMap: HashMap<String, String>) {
+        chatMedia.value = Resource.loading()
+
+        webService.getChatMedia(hashMap)
+            .enqueue(object : Callback<ApiResponse<chatMediaData>> {
+                override fun onResponse(
+                    call: Call<ApiResponse<chatMediaData>>,
+                    response: Response<ApiResponse<chatMediaData>>
+                ) {
+                    if (response.isSuccessful) {
+                        chatMedia.value = Resource.success(response.body()?.data)
+                    } else {
+                        chatMedia.value = Resource.error(
+                            ApiUtils.getError(response.code(), response.errorBody()?.string())
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse<chatMediaData>>, throwable: Throwable) {
+                    chatMedia.value = Resource.error(ApiUtils.failure(throwable))
+                }
+            })
     }
 
     fun notifications(hashMap: HashMap<String, String>) {

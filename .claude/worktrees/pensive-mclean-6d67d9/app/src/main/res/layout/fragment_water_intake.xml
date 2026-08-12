@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.dashboard.settings.BmiCheckerFragment">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:elevation="@dimen/dp_4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_back_white"
+            app:titleTextAppearance="@style/Toolbar.TitleText" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHeader"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:fontFamily="@font/campton_semibold"
+            android:gravity="center"
+            android:text="@string/health_tool_2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:elevation="@dimen/dp_4"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_16" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSet"
+            android:layout_width="@dimen/dp_64"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:alpha="0.8"
+            android:padding="@dimen/dp_8"
+            android:elevation="@dimen/dp_4"
+            android:fontFamily="@font/campton_medium"
+            android:gravity="center"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:visibility="gone"
+            android:text="@string/plus_add"
+            android:textColor="@color/colorPrimary"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/toolbar" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvIntake"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_4"
+            android:alpha="0.8"
+            android:fontFamily="@font/campton_medium"
+            android:gravity="center"
+            android:text="@string/water_intake"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_14"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toStartOf="@+id/tvDailyLimit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDailyLimit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_4"
+            android:layout_marginEnd="@dimen/dp_4"
+            android:alpha="0.8"
+            android:fontFamily="@font/campton_medium"
+            android:gravity="center"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="@string/daily_limit"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toStartOf="@+id/tvDaysCompleted"
+            app:layout_constraintStart_toEndOf="@+id/tvIntake"
+            app:layout_constraintTop_toTopOf="@+id/tvIntake" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDaysCompleted"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_4"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:alpha="0.8"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:fontFamily="@font/campton_medium"
+            android:gravity="center"
+            android:text="@string/days_completed"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tvDailyLimit"
+            app:layout_constraintTop_toTopOf="@+id/tvIntake" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvIntakeV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:fontFamily="@font/campton_semibold"
+            android:gravity="center"
+            android:text=""
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_18"
+            app:layout_constraintEnd_toEndOf="@id/tvIntake"
+            app:layout_constraintStart_toStartOf="@id/tvIntake"
+            app:layout_constraintTop_toBottomOf="@id/tvIntake" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDailyLimitV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:fontFamily="@font/campton_semibold"
+            android:gravity="center"
+            android:text=""
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_18"
+            app:layout_constraintEnd_toEndOf="@id/tvDailyLimit"
+            app:layout_constraintStart_toStartOf="@id/tvDailyLimit"
+            app:layout_constraintTop_toBottomOf="@id/tvDailyLimit" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDaysCompletedV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:fontFamily="@font/campton_semibold"
+            android:gravity="center"
+            android:text=""
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_18"
+            app:layout_constraintEnd_toEndOf="@id/tvDaysCompleted"
+            app:layout_constraintStart_toStartOf="@id/tvDaysCompleted"
+            app:layout_constraintTop_toBottomOf="@id/tvDaysCompleted" />
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/tvDrink"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvIntakeV"
+            app:lottie_autoPlay="false"
+            app:lottie_colorFilter="@color/colorPrimary"
+            app:lottie_fileName="water_loader.json"
+            app:lottie_loop="false" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDrink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_24"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:background="@drawable/drawable_alternate_button"
+            android:fontFamily="@font/campton_semibold"
+            android:gravity="center"
+            android:paddingStart="@dimen/dp_24"
+            android:paddingEnd="@dimen/dp_24"
+            android:text="@string/drink"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintBottom_toTopOf="@+id/rvWaterIntake"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvWaterIntake"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_24"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:background="@color/colorLoginTag"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_16"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:listitem="@layout/item_water_intake" />
+
+        <include
+            android:id="@+id/clLoader"
+            layout="@layout/item_loader"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

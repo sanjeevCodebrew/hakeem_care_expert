@@ -545,7 +545,24 @@
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
                     app:layout_constraintTop_toBottomOf="@+id/tvAddPrescription"
-                    app:layout_goneMarginTop="@dimen/dp_0" />
+                    app:layout_goneMarginTop="@dimen/dp_8" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvZidProducts"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:background="@drawable/drawable_alternate_button"
+                    android:fontFamily="@font/campton_semibold"
+                    android:gravity="center"
+                    android:text="@string/zid_products"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/sp_16"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                    app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                    app:layout_constraintTop_toBottomOf="@+id/tvSallaProducts"
+                    app:layout_goneMarginTop="@dimen/dp_8" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvMarkComplete"
@@ -580,7 +597,7 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@id/endGuideLine"
                     app:layout_constraintStart_toStartOf="@id/startGuideLine"
-                    app:layout_constraintTop_toBottomOf="@+id/tvSallaProducts" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvZidProducts" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvUploadedFile"

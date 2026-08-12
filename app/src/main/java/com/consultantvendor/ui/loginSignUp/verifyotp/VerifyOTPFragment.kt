@@ -3,7 +3,6 @@ package com.consultantvendor.ui.loginSignUp.verifyotp
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +28,7 @@ import com.consultantvendor.utils.*
 import com.consultantvendor.utils.dialogs.ProgressDialog
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
+import timber.log.Timber
 
 class VerifyOTPFragment : DaggerFragment() {
 
@@ -259,7 +259,7 @@ class VerifyOTPFragment : DaggerFragment() {
                     progressDialog.setLoading(false)
 
                     prefsManager.save(USER_DATA, it.data)
-                    Log.e("TAG", "checkData: "+it.data)
+                    Timber.e("checkData: "+it.data)
 
                     if (userRepository.isUserLoggedIn()) {
 

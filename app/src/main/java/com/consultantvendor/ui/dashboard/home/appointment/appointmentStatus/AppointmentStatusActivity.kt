@@ -14,7 +14,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import android.view.WindowManager
 import android.view.animation.LinearInterpolator
 import androidx.activity.result.contract.ActivityResultContracts
@@ -71,6 +70,7 @@ import java.util.Timer
 import javax.inject.Inject
 import kotlin.concurrent.schedule
 import kotlin.math.sign
+import timber.log.Timber
 
 class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback {
 
@@ -327,7 +327,7 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
             //placeLatLng = LatLng(30.7457, 76.7332)
             drawPolyLineApi()
 
-            Log.e("Location", "Test")
+            Timber.e("Test")
         }
     }
 
@@ -363,7 +363,7 @@ class AppointmentStatusActivity : DaggerAppCompatActivity(), OnMapReadyCallback 
                 hashMap["key"] = getString(R.string.google_places_api_key)
                 viewModelDirection.directions(hashMap)
 
-                Log.e("Location", "Api")
+                Timber.e("Api")
             }
         }
     }

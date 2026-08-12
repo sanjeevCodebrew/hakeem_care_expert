@@ -23,7 +23,6 @@ import android.text.Spanned
 import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
@@ -81,6 +80,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Currency
 import java.util.Locale
+import timber.log.Timber
 
 fun View.gone() {
     visibility = View.GONE
@@ -121,7 +121,7 @@ fun View.showSnackBar(msg: String) {
 
 fun logoutUser(activity: Activity?, prefsManager: PrefsManager) {
 
-    Log.d("logoutCalled", "clearData")
+    Timber.d("clearData")
 
     val notificationManager =
         activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -369,7 +369,11 @@ fun getCurrency(amount: String?): String {
 
 fun getCurrencySymbol(): String {
     val format = NumberFormat.getCurrencyInstance()
-    format.currency = Currency.getInstance(appClientDetails.currency)
+    try {
+        format.currency = Currency.getInstance(appClientDetails.currency)
+    } catch (_: Exception) {
+
+    }
 
     return format.currency.symbol
 }
@@ -400,7 +404,7 @@ fun getUserRating(rating: String?): String {
 }
 
 fun compressImage(activity: Activity?, actualImageFile: File?): File {
-    Log.e("File Size", actualImageFile?.length().toString())
+    Timber.e(actualImageFile?.length().toString())
 
     /*mb approximate*/
     val resultFile: File? = when {
@@ -420,7 +424,7 @@ fun compressImage(activity: Activity?, actualImageFile: File?): File {
         }
     }
 
-    Log.e("File Size New", resultFile?.length().toString())
+    Timber.e(resultFile?.length().toString())
 
     return resultFile ?: File("")
 }
@@ -625,7 +629,7 @@ fun shareDeepLink(deepLink: String, activity: Activity, userData: UserData?) {
     progressDialog.setLoading(true)
 
     val longLink = "${Config.baseURL}${"https://hakeemcare.page.link/FgzB"}"
-    Log.e("TAG", "deeplincheck: " + longLink)
+    Timber.e("deeplincheck: " + longLink)
 
     val shortLinkTask = Firebase.dynamicLinks.shortLinkAsync {
         link = Uri.parse(longLink)
@@ -699,7 +703,7 @@ fun shareDeepLink1(deepLink: String, activity: Activity, userData: UserData?) {
 //            longLink = "${Config.baseURL}${deepLink}"
             longLink = "https://hakeemcare.page.link/FgzB"
 
-            Log.e("TAG", "shareDeepLink: " + longLink)
+            Timber.e("shareDeepLink: " + longLink)
 
             titleM = activity.getString(R.string.app_name)
             descriptionM = activity.getString(R.string.invite_text)
@@ -902,7 +906,7 @@ fun getProteinUnit(activity: Activity, value: Int, unitNeeded: Boolean): String 
 
 
 fun openPdf(activity: Activity, link: String, prescription: Boolean = false,isReport: Boolean=false) {
-    Log.e("PDG======", link)
+    Timber.e(link)
     if (prescription) {
         /*activity.startActivity(
             Intent(activity, WebViewActivity::class.java)

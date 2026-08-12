@@ -42,8 +42,15 @@ class medicineListAdapter(
 
         holder.binding.btnEdit.setOnClickListener {
             if (fragment is AddReportFragment) {
-                (fragment as AddReportFragment).isEditMedicine = true
-                (fragment as AddReportFragment).binding.btnAddMedicine.performClick()
+                val f = fragment as AddReportFragment
+                f.isEditMedicine = true
+                f.editMedicineIndex = position
+                f.binding.btnAddMedicine.performClick()
+            } else if (fragment is com.consultantvendor.ui.dashboard.settings.prewritten.AddPreWrittenPrescriptionFragment) {
+                val f = fragment as com.consultantvendor.ui.dashboard.settings.prewritten.AddPreWrittenPrescriptionFragment
+                f.isEditMedicine = true
+                f.editMedicineIndex = position
+                f.binding.btnAddMedicine.performClick()
             }
         }
 

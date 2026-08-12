@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">HealthCare For Experts</string>
+
+    <!--Facebook keys-->
+    <string name="facebook_app_id" translatable="false">3597982143546228</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb3597982143546228</string>
+
+    <!--Deep Link-->
+    <string name="deep_link_url" translatable="false">royohealthcare.page.link</string>
+    <string name="deep_link_ios_bundle" translatable="false"></string>
+
+    <!--Google-->
+    <string name="server_client_id" translatable="false">273447074175-iog9kg7n8dlsbp0a3r46bvsi1ltca7e5.apps.googleusercontent.com</string>
+
+    <string name="update_desc">You have new update for %s!</string>
+    <string name="create_a_account">Create a %s\naccount to continue</string>
+
+</resources>

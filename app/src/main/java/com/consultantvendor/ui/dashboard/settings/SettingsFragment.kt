@@ -104,6 +104,16 @@ class SettingsFragment : DaggerFragment() {
 
         items.add(Page(title = getString(R.string.chat), icon = R.drawable.ic_chat_profile))
         items.add(Page(title = getString(R.string.history), icon = R.drawable.ic_history))
+        items.add(Page(title = getString(R.string.pre_written_prescription), icon = R.drawable.ic_info))
+        items.add(
+            Page(
+                title = getString(R.string.notification),
+                icon = R.drawable.ic_notification_drawer
+            )
+        )
+        items.add(Page(title = getString(R.string.invite_people), icon = R.drawable.ic_invite))
+
+//        items.add(Page(title = getString(R.string.salla_products), icon = R.drawable.ic_info, isVisible = false))
 //        if (appFeatures.freeExpertAdvise)
 //            items.add(
 //                Page(
@@ -116,13 +126,7 @@ class SettingsFragment : DaggerFragment() {
 //            items.add(Page(title = getString(R.string.broadcasts), icon = R.drawable.ic_class_profile))
 //        else
 //            items.add(Page(title = getString(R.string.classes), icon = R.drawable.ic_class_profile))
-        items.add(
-            Page(
-                title = getString(R.string.notification),
-                icon = R.drawable.ic_notification_drawer
-            )
-        )
-        items.add(Page(title = getString(R.string.invite_people), icon = R.drawable.ic_invite))
+
 
         if (BuildConfig.FLAVOR != "taradoc") {
             val pages = appClientDetails.pages
@@ -200,6 +204,12 @@ class SettingsFragment : DaggerFragment() {
             }
             getString(R.string.history) -> {
                 openScreen(DrawerActivity.HISTORY)
+            }
+            getString(R.string.pre_written_prescription) -> {
+                openScreen(DrawerActivity.PRE_WRITTEN_PRESCRIPTION)
+            }
+            getString(R.string.salla_products) -> {
+                openScreen(DrawerActivity.SALLA_PRODUCTS)
             }
             getString(R.string.free_expert_advice) -> {
                 openScreen(DrawerActivity.MY_QUESTION)

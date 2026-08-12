@@ -127,15 +127,34 @@ class DialogMedicineFragment(
 
             binding.clOptions.visible()
 
-            fragment.itemMedicineList.clear()
-
-            prescription?.forEach {
-                binding.etSearch.setText(it.description)
-                binding.etDoses.setText(it.doses)
-                binding.etFrequency.setText(it.frequency)
-                binding.etduration.setText(it.duration)
-                binding.etQuantity.setText(it.quantity)
+            val medicines = fragment.itemMedicineList
+            val idx = fragment.editMedicineIndex
+            if (idx in medicines.indices) {
+                val m = medicines[idx]
+                binding.etSearch.setText(m.description)
+                binding.etDoses.setText(m.doses)
+                binding.etFrequency.setText(m.frequency)
+                binding.etduration.setText(m.duration)
+                binding.etQuantity.setText(m.quantity)
             }
+            fragment.itemMedicineList.clear()
+        }
+
+        if (fragment is com.consultantvendor.ui.dashboard.settings.prewritten.AddPreWrittenPrescriptionFragment && isEditMedicine) {
+
+            binding.clOptions.visible()
+
+            val medicines = fragment.itemMedicineList
+            val idx = fragment.editMedicineIndex
+            if (idx in medicines.indices) {
+                val m = medicines[idx]
+                binding.etSearch.setText(m.description)
+                binding.etDoses.setText(m.doses)
+                binding.etFrequency.setText(m.frequency)
+                binding.etduration.setText(m.duration)
+                binding.etQuantity.setText(m.quantity)
+            }
+            fragment.itemMedicineList.clear()
         }
 
         binding.rvMedicine.isNestedScrollingEnabled = false
@@ -225,12 +244,26 @@ class DialogMedicineFragment(
                         item_no = fragment.item_number,
                         quantity = binding.etQuantity.text.toString()
                     )
-
                 )
                if (fragment.isEditMedicine){
-                   fragment.isEditMedicine =false
+                   fragment.isEditMedicine = false
                }
                fragment.adpterMedicineList?.notifyDataSetChanged()
+            } else if (fragment is com.consultantvendor.ui.dashboard.settings.prewritten.AddPreWrittenPrescriptionFragment) {
+                fragment.itemMedicineList.add(
+                    ItemModelMedicine(
+                        description = medicineName,
+                        doses = binding.etDoses.text.toString(),
+                        frequency = binding.etFrequency.text.toString(),
+                        duration = binding.etduration.text.toString(),
+                        item_no = "",
+                        quantity = binding.etQuantity.text.toString()
+                    )
+                )
+                if (fragment.isEditMedicine) {
+                    fragment.isEditMedicine = false
+                }
+                fragment.adpterMedicineList?.notifyDataSetChanged()
             }
             dialog?.dismiss()
 
@@ -239,15 +272,19 @@ class DialogMedicineFragment(
 
     private fun setAdapter() {
         medicineAdapter = MedicineAdapter(itemMedicine) { selectedItem ->
-            binding.etSearch.setText(itemMedicine[selectedItem].display)
+            val drug = itemMedicine[selectedItem]
+            // Show generic name (ingredients) + strength — matches iOS design; avoids brand-name switch
+            val label = listOfNotNull(drug.ingredients, drug.strength)
+                .filter { it.isNotBlank() }
+                .joinToString(" ")
+            binding.etSearch.setText(label)
             binding.rvMedicine.gone()
             binding.tvMedicineName.gone()
             binding.tvAction.gone()
             binding.clOptions.visible()
 
             if (fragment is AddReportFragment)
-            fragment.item_number = itemMedicine[selectedItem].code ?: ""
-
+                fragment.item_number = drug.code ?: ""
         }
         binding.rvMedicine.adapter = medicineAdapter
     }

@@ -1,5 +1,6 @@
 package com.consultantvendor.ui.dashboard.home
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.BroadcastReceiver
@@ -7,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -73,6 +73,7 @@ import com.consultantvendor.utils.visible
 import com.makeramen.roundedimageview.RoundedImageView
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
+import timber.log.Timber
 
 
 class HomeFragment : DaggerFragment() {
@@ -152,7 +153,7 @@ class HomeFragment : DaggerFragment() {
         binding.tvLoggedMoh.text = userRepository.getUser()?.moh_number
 
 
-        Log.e("TAG", "token: "+userRepository.getUser()?.token )
+        Timber.e("authToken: %s", userRepository.getUser()?.token)
 
         //throw RuntimeException("Test Crash") // Force a crash
 
@@ -167,8 +168,6 @@ class HomeFragment : DaggerFragment() {
 //            binding.ivDrawer.gone()
 //            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
-
-        Log.e("TAG", "authToken: " + prefsManager.getObject(USER_DATA, UserData::class.java)?.token)
         val hashMap = HashMap<String, String>()
         val language = prefsManager.getString(USER_LANGUAGE, "")
         hashMap["language"] = language
@@ -197,7 +196,6 @@ class HomeFragment : DaggerFragment() {
         }
     }
 
-
     private fun setAdapter() {
         adapter = AppointmentAdapter(this, items)
         binding.rvListing.adapter = adapter
@@ -214,6 +212,7 @@ class HomeFragment : DaggerFragment() {
         /*Services*/
         itemsService.clear()
         val services = userRepository.getUser()?.services
+
         if ((services?.size ?: 0) > 1) {
             val service = Service()
             service.service_name = getString(R.string.all_requests)
@@ -222,6 +221,7 @@ class HomeFragment : DaggerFragment() {
             itemsService.add(service)
 
             itemsService.addAll(services ?: emptyList())
+
         }
 
         serviceAdapter = AppointmentServiceAdapter(this, itemsService)
@@ -262,17 +262,20 @@ class HomeFragment : DaggerFragment() {
         if (isConnectedToInternet(requireContext(), true)) {
             /*Home*/
             viewModelHome.home()
-
             if (BuildConfig.FLAVOR == "taradoc") {
                 viewModelHome.banners()
-            } else if (BuildConfig.FLAVOR == "nurseLynx") {
+            }
+            else if (BuildConfig.FLAVOR == "nurseLynx")
+            {
                 viewModelHome.banners()
             }
             hitRequestApi()
-        } else
+        } else {
             binding.swipeRefresh.isRefreshing = false
+        }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun hitRequestApi() {
         if (isConnectedToInternet(requireContext(), true)) {
             val hashMap = HashMap<String, String>()
@@ -281,7 +284,7 @@ class HomeFragment : DaggerFragment() {
 
             if (serviceId.isNotEmpty())
                 hashMap["service_id"] = serviceId
-            viewModel.request(hashMap)
+                viewModel.request(hashMap)
         }
     }
 
@@ -289,6 +292,7 @@ class HomeFragment : DaggerFragment() {
 //        binding.ivDrawer.setOnClickListener {
 //            binding.drawerLayout.openDrawer(GravityCompat.START)
 //        }
+
         binding.tvLoggedMoh.setOnClickListener {
             (activity as? HomeActivity)?.openBottomPreviousLogin()
         }
@@ -321,8 +325,7 @@ class HomeFragment : DaggerFragment() {
         binding.tvPostArticles.setOnClickListener {
             startActivityForResult(
                 Intent(requireActivity(), DrawerActivity::class.java)
-                    .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_ARTICLE), AppRequestCode.ARTICLE_CHANGES
-            )
+                    .putExtra(PAGE_TO_OPEN, DrawerActivity.ADD_ARTICLE), AppRequestCode.ARTICLE_CHANGES)
         }
 
         binding.tvPostBlogs.setOnClickListener {
@@ -344,6 +347,7 @@ class HomeFragment : DaggerFragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun bindObservers() {
         viewModel.pendingRequest.observe(requireActivity(), Observer {
             it ?: return@Observer
@@ -354,7 +358,7 @@ class HomeFragment : DaggerFragment() {
 
                     items.clear()
                     items.addAll(it.data?.requests ?: emptyList())
-                    Log.e("TAG", "bindObservers: ", )
+                    Timber.e("bindObservers: ")
 
                     adapter.notifyDataSetChanged()
                     adapter.setAllItemsLoaded(true)
@@ -369,13 +373,13 @@ class HomeFragment : DaggerFragment() {
                         binding.clNoData.ivNoData.setImageResource(R.drawable.ic_profile_empty_state)
                         binding.clNoData.tvNoData.text = getString(R.string.profile_unapproved)
                         binding.clNoData.tvNoDataDesc.text = getString(R.string.profile_unapproved_desc)
-                    } else {
+                    }
+                    else
+                    {
                         binding.clNoData.root.gone()
-
                         binding.clNoDataAppointment.root.hideShowView(items.isEmpty())
                         binding.clNoDataAppointment.tvNoData.text = getString(R.string.no_requests)
                         binding.clNoDataAppointment.tvNoDataDesc.text = getString(R.string.no_requests_desc)
-
                         binding.tvMoreAppointment.hideShowView(items.size >= 5)
                     }
                 }
@@ -451,7 +455,7 @@ class HomeFragment : DaggerFragment() {
                     progressDialog.setLoading(false)
 
                     hitApi()
-                    Log.e("TAG", "checkObservor: " + hitApi())
+                    Timber.e("checkObservor: " + hitApi())
                 }
 
                 Status.ERROR -> {
@@ -475,7 +479,6 @@ class HomeFragment : DaggerFragment() {
                     when (requestItem?.main_service_type) {
                         ConsultType.CHAT -> {
                             requireActivity().longToast(getString(R.string.starting_chat))
-
                             startActivity(
                                 Intent(requireActivity(), ChatDetailActivity::class.java)
                                     .putExtra(USER_ID, requestItem?.from_user?.id)
@@ -487,13 +490,11 @@ class HomeFragment : DaggerFragment() {
 
                         ConsultType.AUDIO_CALL, ConsultType.VIDEO_CALL -> {
                             requireActivity().longToast(getString(R.string.starting_call))
-
                             startActivity(
                                 Intent(requireContext(), CallingActivity::class.java)
                                     .addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                    .putExtra(EXTRA_REQUEST_ID, requestItem)
-                            )
+                                    .putExtra(EXTRA_REQUEST_ID, requestItem))
                         }
                     }
                 }
@@ -756,11 +757,9 @@ class HomeFragment : DaggerFragment() {
                 }
 
                 override fun onCancelButtonClicked() {
-
                 }
             }).show()
     }
-
 
     private fun showInitiateRequestDialog() {
         AlertDialogUtil.instance.createOkCancelDialog(requireActivity(), R.string.start_request,
@@ -840,6 +839,7 @@ class HomeFragment : DaggerFragment() {
     override fun onResume() {
         super.onResume()
         viewModelHome.notificationCount()
+
         viewModelHome.getprofile1()
         registerReceiver()
     }
@@ -883,7 +883,6 @@ class HomeFragment : DaggerFragment() {
             }
         }
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

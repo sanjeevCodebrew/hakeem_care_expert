@@ -1,0 +1,16 @@
+<resources>
+        <string name="app_name">MeetMd Pro</string>
+
+    <!--Facebook keys-->
+    <string name="facebook_app_id" translatable="false">4189038291210189</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb4189038291210189</string>
+
+    <!--Deep Link-->
+    <string name="deep_link_url" translatable="false">meetmd.page.link</string>
+    <string name="deep_link_ios_bundle" translatable="false">com.codebrew.RoyoConsultantVendor</string>
+
+    <!--Google-->
+    <string name="google_places_api_key" translatable="false">AIzaSyA1HmtrSWyGalB9gwzGYXJSDESmfFgj4WE</string>
+    <string name="server_client_id" translatable="false">993159905200-af1rtdpucd1g2lspn57kvh4qfbgdvf93.apps.googleusercontent.com</string>
+
+</resources>

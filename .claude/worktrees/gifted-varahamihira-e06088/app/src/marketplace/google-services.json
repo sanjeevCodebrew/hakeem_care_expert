@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "951128649711",
+    "firebase_url": "https://royo-marketplace-1600771175463.firebaseio.com",
+    "project_id": "royo-marketplace-1600771175463",
+    "storage_bucket": "royo-marketplace-1600771175463.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951128649711:android:775e8bd058f14f1f8d101a",
+        "android_client_info": {
+          "package_name": "com.marketplace.expert"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951128649711-h7qtl4tm3pvqmffnrdllbt9bb11ao509.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.marketplace.expert",
+            "certificate_hash": "3fee5aff71776031cbdc81d0b12cca08afa48d8a"
+          }
+        },
+        {
+          "client_id": "951128649711-udf97gh3rjpptkukpcv648f2fk19k79t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgEpPyXxBmchrRRVna4-Hr8EqTG2Jyf1g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951128649711-udf97gh3rjpptkukpcv648f2fk19k79t.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "951128649711-5bdmapeg2t7b6ubvdl2uq7qbs4kvq8r2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.codebrew.RoyoMarketPlaceExpert"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

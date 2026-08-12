@@ -1,0 +1,271 @@
+<resources>
+    <string name="app_name">Inhomed</string>
+
+    <string name="update_desc">لديك تحديث جديد لبرنامج %s!</string>
+    <string name="create_a_account"> أنت بحاجة إلى حساب %s\n للمتابعة</string>
+
+    <string name="with_experts">الطبيب الآن</string>
+    <string name="meet">اطلب</string>
+
+    <string name="allow">السماح</string>
+    <string name="deny">أنكر</string>
+    <string name="settings">إعدادات</string>
+    <string name="media_permission">تحتاج هذه الميزة إلى إذن لاستخدام الكاميرا ووحدة التخزين الخارجية.</string>
+    <string name="record_audio_permission">تحتاج هذه الميزة إلى إذن لاستخدام تسجيل الصوت والتخزين الخارجي.</string>
+
+    <string name="internet">الإنترنت</string>
+    <string name="check_internet">الرجاء التحقق من اتصال الانترنت الخاص بك</string>
+    <string name="ok">حسنا</string>
+    <string name="alert">إنذار</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="facebook">موقع التواصل الاجتماعي الفيسبوك</string>
+    <string name="google">جوجل</string>
+    <string name="login_using_email">تسجيل الدخول باستخدام البريد الإلكتروني</string>
+    <string name="signup_using_email">سجل باستخدام البريد الإلكتروني</string>
+    <string name="countinue_for_s">استمر في %s</string>
+    <string name="new_user">مستخدم جديد؟</string>
+    <string name="sign_up">سجل</string>
+    <string name="let_s_get_started">هيا بنا نبدأ!</string>
+    <string name="we_need_your_phone">نحتاج إلى رقم هاتفك للتعرف عليك.</string>
+    <string name="code_sent_to">تم إرسال الرمز إلى %s</string>
+    <string name="resend_code">أعد إرسال الرمز</string>
+    <string name="didn_t_receive_the_code_yet">ألم تتلق الرمز بعد؟</string>
+    <string name="verification">التحقق</string>
+    <string name="we_sent_you_a_code">لقد أرسلنا لك رمزًا إلى %s</string>
+    <string name="enter_otp">الرجاء إدخال otp</string>
+    <string name="location">موقعك</string>
+    <string name="chat">دردشة</string>
+    <string name="patients">العملاء</string>
+    <string name="experience">تجربة</string>
+    <string name="reviews">المراجعات</string>
+    <string name="about">حول</string>
+
+    <string name="home">الصفحة الرئيسية</string>
+    <string name="history">التاريخ</string>
+    <string name="notification">تنبيه</string>
+    <string name="logout">تسجيل خروج</string>
+    <string name="terms_and_conditions">الأحكام والشروط</string>
+    <string name="invite_people">ادعو الناس</string>
+    <string name="version">الإصدار %s</string>
+    <string name="you_are_running_the_latest_version">أنت تقوم بتشغيل أحدث إصدار</string>
+    <string name="appointments">تعيينات</string>
+    <string name="name">اسم</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="date_of_birth">تاريخ الولادة</string>
+    <string name="password">كلمه السر</string>
+    <string name="bio">السيرة الذاتية</string>
+    <string name="already_register">التسجيل بالفعل؟</string>
+    <string name="edit">تعديل</string>
+    <string name="age">عمر:</string>
+    <string name="enter_phone_number">أدخل رقم الهاتف</string>
+    <string name="phone_number">رقم الهاتف</string>
+    <string name="dob">DOB</string>
+    <string name="we_need_your_email_password">نحتاج إلى بريدك الإلكتروني &amp; ؛ كلمة مرور للتعرف عليك.</string>
+    <string name="didn_t_have_an_account">ليس لديك حساب؟</string>
+    <string name="forgot_password">هل نسيت كلمة المرور</string>
+    <string name="wallet">محفظة نقود</string>
+    <string name="enter_name">الرجاء إدخال الاسم</string>
+    <string name="select_dob">الرجاء تحديد DOB</string>
+    <string name="enter_email">الرجاء إدخال البريد الإلكتروني</string>
+    <string name="enter_correct_email">الرجاء إدخال البريد الإلكتروني الصحيح</string>
+    <string name="enter_password">يجب ألا يقل طول كلمة المرور عن 8 أحرف</string>
+    <string name="enter_bio">الرجاء إدخال السيرة الذاتية</string>
+
+    <string name="logout_dialog_message">هل أنت متأكد أنك تريد تسجيل الخروج?</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="no_data_found">لاتوجد بيانات</string>
+    <string name="no_slot_found">لا توجد فتحة متاحة</string>
+    <string name="select_image">اختر صورة</string>
+    <string name="select_document">حدد الوثيقة</string>
+    <string name="update">تحديث</string>
+    <string name="we_need_your_email">نحتاج إلى بريدك الإلكتروني المسجل للوصول إليك</string>
+    <string name="sent_password">لقد أرسلنا كلمة مرور مؤقتة في بريدك الإلكتروني. تفقد بريدك الالكتروني من فضلك.</string>
+    <string name="cancel">إلغاء</string>
+    <string name="available_balance">الرصيد المتوفر</string>
+    <string name="pay_out">سيصرف</string>
+    <string name="add_money">إضافة المال</string>
+    <string name="add">أضف</string>
+    <string name="enter_amount">الرجاء إدخال المبلغ</string>
+    <string name="added_to_wallet">يضاف إلى المحفظة</string>
+    <string name="add_card">إضافة بطاقة</string>
+    <string name="type_your_message_here">اكتب رسالتك…</string>
+    <string name="photo">صورة فوتوغرافية</string>
+    <string name="enter_message">أدخل رسالة</string>
+    <string name="today">اليوم</string>
+    <string name="yesterday">في الامس</string>
+    <string name="transactions">تاريخ المعاملات</string>
+    <string name="money_sent_from">دفع الثمن ل\n%s</string>
+    <string name="money_refund_from">استرداد من\n%s</string>
+    <string name="select_card">اختر البطاقة</string>
+    <string name="new_request">طلب جديد</string>
+    <string name="accepted">وافقت</string>
+    <string name="inprogess">في تقدم</string>
+    <string name="no_show">عدم الحضور</string>
+    <string name="canceled">ألغيت</string>
+    <string name="card_ending_with">%s بطاقة تنتهي بـ %s</string>
+    <string name="na">على</string>
+    <string name="write_down_your_review">اكتب تعليقاتك</string>
+    <string name="submit">إرسال</string>
+    <string name="please_give_feedback">يرجى تقديم ملاحظات</string>
+    <string name="error_select_rating">الرجاء تحديد التصنيف</string>
+    <string name="end_chat">نهاية المحادثة</string>
+    <string name="end_n_chat">إنهاء \n الدردشة</string>
+    <string name="end_chat_desc">هذا سينهي الدردشة. لن تتمكن من الدردشة بعد الآن</string>
+    <string name="years">سنوات</string>
+    <string name="rating">تقييم</string>
+    <string name="s_s_reviews">%s · %s المراجعات</string>
+    <string name="request_completed">اكتمل الطلب</string>
+    <string name="insufficient_amount">كمية غير كافية</string>
+    <string name="money_insufficient">تحتاج إلى الاحتفاظ برصيد كافٍ من %s لإنشاء الطلب</string>
+    <string name="schedule_request">طلب جدولة</string>
+    <string name="request_now">اطلب الآن</string>
+    <string name="select_date">حدد تاريخ</string>
+    <string name="select_time">حدد الوقت</string>
+
+    <string name="search_for_consultant">البحث عن %s</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="price_s">%s/<font size="8">%s</font></string>
+    <string name="set_prefrences">تعيين عامل التصفية</string>
+    <string name="choose_date_amp_time">اختر التاريخ &amp; ؛ زمن</string>
+    <string name="tomorrow">غدا</string>
+    <string name="clear_all">امسح الكل</string>
+    <string name="booking_details">تفاصيل الحجز</string>
+    <string name="appointment_date_timings">تاريخ التعيين &amp; ؛ توقيت</string>
+    <string name="confirm_booking">تأكيد الحجز</string>
+    <string name="date_time">%s  · %s</string>
+    <string name="phone_s_s">%s-%s</string>
+    <string name="add_coupon_code">أضف رمز القسيمة</string>
+    <string name="price_detail">تفاصيل السعر</string>
+    <string name="sub_total">المجموع الفرعي</string>
+    <string name="total">مجموع</string>
+    <string name="promo_applied">تم تطبيق العرض الترويجي</string>
+    <string name="you_agree_to_the_terms_conditions">بحجز هذا الموعد ، فإنك توافق على \n الشروط &amp; ؛ الظروف</string>
+    <string name="schedule_a_meeting">جدولة اجتماع</string>
+    <string name="consult">شاور</string>
+    <string name="consult_for">استشارة ل %s \n في %s</string>
+    <string name="edit_slot">تحرير الفتحة</string>
+    <string name="signup_with_phone_number">قم بالتسجيل باستخدام رقم الهاتف</string>
+    <string name="you_agree_to_our_terms">بالمتابعة ، أنت توافق على\n</string>
+    <string name="terms">شروط الخدمة</string>
+    <string name="terms2">شروط الخدمة</string>
+    <string name="and">و</string>
+    <string name="privacy">سياسة الخصوصية</string>
+    <string name="already_have_an_account">هل لديك حساب؟</string>
+    <string name="apply">تطبيق</string>
+    <string name="minute">دقيقة</string>
+    <string name="input_amount">كمية المدخلات</string>
+    <string name="pay">دفع</string>
+    <string name="cancel_appointment">إلغاء التعيين</string>
+    <string name="re_schedule">إعادة الجدولة</string>
+    <string name="consult_a_doctor">استشر الطبيب </string>
+    <string name="use_code_s"><![CDATA[ استخدم الكود: <b>%s</b> ]]></string>
+    <string name="s_user_remaining"><![CDATA[ <b>%s</b> مستخدم متبقي ]]></string>
+    <string name="code_text"><![CDATA[ <b>%s</b> خصم على الحجز أ <b>%s</b> إلى <b>%s</b> ]]></string>
+    <string name="add_valid_coupon">الرجاء إضافة قسيمة صالحة</string>
+    <string name="cancel_appointment_msg">هل أنت متأكد أنك تريد إلغاء الموعد؟</string>
+    <string name="failed_transaction">فشل الاجراء</string>
+    <string name="delete">حذف</string>
+    <string name="delete_message">هل أنت متأكد أنك تريد حذف هذه البطاقة؟</string>
+    <string name="edit_card">تحرير البطاقة</string>
+    <string name="rate">معدل</string>
+    <string name="morning">صباح</string>
+    <string name="evening">مساء</string>
+    <string name="afternoon">بعد الظهر</string>
+    <string name="book_again">احجز مرة أخرى</string>
+    <string name="connecting">توصيل…</string>
+    <string name="disconnecting">جاري قطع الاتصال …</string>
+    <string name="transaction_success">نجاح الصفقة</string>
+    <string name="transaction_failed">فشل الاجراء</string>
+
+    <!--Empty screen-->
+    <string name="no_category">لا تصنيف!</string>
+    <string name="no_category_desc">ستظهر الفئات هنا بمجرد إضافتها.</string>
+    <string name="no_requests">لا طلبات!</string>
+    <string name="no_requests_desc">ليس لديك أي طلبات تم إنشاؤها في الوقت الحالي.</string>
+    <string name="no_chat">لم تبدأ أي محادثة بعد!</string>
+    <string name="no_chat_desc">بمجرد قبول طلبات الدردشة الخاصة بك &amp; ؛ تبدأ المحادثة ، ستظهر المواضيع هنا. </string>
+    <string name="no_transaction">أعد شحن محفظتك لإنشاء حجز!</string>
+    <string name="no_transaction_desc">بمجرد إضافة الأموال أو أي خصم سيظهر هنا.</string>
+    <string name="no_notification">لا إخطارات حتى الآن!</string>
+    <string name="no_notification_desc">ستظهر هنا جميع الإخطارات المتعلقة بأنشطتك.</string>
+    <string name="no_history">لا يوجد تاريخ للمواعيد!</string>
+    <string name="no_history_desc">لا توجد مواعيد مجدولة.</string>
+    <string name="no_vendor">لا خبراء حتى الان!</string>
+    <string name="no_vendor_desc">لم يتم حاليًا تسجيل أي خبير ضمن \'%s\' ، لذا عد لاحقًا.</string>
+
+
+    <!--Share text-->
+    <string name="share">شارك</string>
+    <string name="post_sharing">تحقق من هذا المنصب</string>
+    <string name="invite_text">مرحبًا ، هنا تطبيق لمنصة الاستشارات عبر الإنترنت للأطباء وأخصائيي العلاج الطبيعي والمحاسبين والمحامين والاستشاريين وما إلى ذلك ، يجب عليك تجربته.</string>
+    <string name="payment">دفع</string>
+    <string name="address">عنوان</string>
+
+    <string name="view_all">مشاهدة الكل</string>
+    <string name="view_prescription">مشاهدة الوصفة الطبية</string>
+    <string name="all">الكل</string>
+    <string name="details">تفاصيل</string>
+
+    <!--Location permission-->
+    <string name="skip_for_now">تخطي في الوقت الراهن</string>
+    <string name="use_my_location">استخدم موقعي</string>
+    <string name="we_will_need_your_location">سنحتاج إلى موقعك لنمنحك تجربة أفضل</string>
+    <string name="allow_your_location">اسمح لموقعك</string>
+
+    <!--Calling-->
+    <string name="decline">انخفاض</string>
+    <string name="answer">إجابة</string>
+    <string name="login_with">تسجيل الدخول مع</string>
+
+    <!--Consult-->
+    <string name="consult_online">استشر عبر الإنترنت</string>
+    <string name="emergency_consultation">استشارة طارئة</string>
+    <string name="home_care_appointment">موعد الرعاية المنزلية</string>
+    <string name="clinic_appointment">موعد العيادة</string>
+
+    <!--Tracking-->
+    <string name="estimate_time_of_arrival_s">تقدير وقت الوصول : %s</string>
+    <string name="status">الحالة :</string>
+    <string name="on_the_way">فى الطريق</string>
+    <string name="reached_destination">وصلت إلى الوجهة</string>
+    <string name="arrived">وصل</string>
+    <string name="started">بدأت</string>
+    <string name="completed">منجز</string>
+    <string name="track_status">تتبع الحالة</string>
+    <string name="quit">استقال</string>
+    <string name="quit_message">هل أنت متأكد من أنك تريد الخروج؟ سوف يوقف التتبع الخاص بك</string>
+    <string name="we_will_need_call">سنحتاج إلى إذن الاتصال الخاص بك لمنحك تجربة أفضل</string>
+    <string name="service_completed">اكتملت الخدمة</string>
+    <string name="give_feedback">إعطاء ردود الفعل</string>
+    <string name="canceled_service">الخدمة الملغاة</string>
+
+    <!--Language-->
+    <string name="language">لغة</string>
+    <string name="please_choose_your_language">الرجاء اختيار لغتك</string>
+    <string name="english">English</string>
+    <string name="arabic">عربى</string>
+    <string name="account_setting">إعدادات الحساب</string>
+
+    <!--Success message-->
+    <string name="request_sent">تم إرسال الطلب بنجاح!</string>
+    <string name="password_changed_successfully">تم تغيير كلمة المرور الخاصة بك بنجاح!</string>
+    <string name="family_added_successfully">تمت إضافة المريض بنجاح!</string>
+
+    <!--Appointemt detail-->
+    <string name="view_map">إعرض الخريطة</string>
+    <string name="map_not_found">تطبيق خرائط جوجل غير موجود</string>
+    <string name="distance">مسافة</string>
+    <string name="date">تاريخ</string>
+    <string name="time">زمن</string>
+    <string name="service_type">نوع الخدمة</string>
+
+    <string name="slide_to_cancel">حرك للإلغاء</string>
+    <string name="view_details">عرض التفاصيل</string>
+    <string name="price">السعر</string>
+    <string name="prescription_details">تفاصيل الوصفة</string>
+    <string name="downloading">جارى التحميل…</string>
+    <string name="completing_your_payment">إتمام الدفع \nالرجاء الانتظار</string>
+    <string name="address_for_s">Address for %s</string>
+    <string name="tax">Tax</string>
+</resources>

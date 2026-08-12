@@ -98,4 +98,6 @@ class CommonDataModel {
     var notification_count: Int? = null
     var count : Int = 0
     var is_login_access: Int?=null
+
+    var pre_written_prescriptions: List<PreWrittenPrescription>? = null
 }

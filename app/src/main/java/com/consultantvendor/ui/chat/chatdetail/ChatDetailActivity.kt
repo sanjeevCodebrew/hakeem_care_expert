@@ -20,7 +20,6 @@ import android.os.LocaleList
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
@@ -628,7 +627,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
     private fun listeners() {
         binding.etMessage.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                Log.e("TextChanged", "afterTextChanged")
+                Timber.e("afterTextChanged")
             }
 
             override fun beforeTextChanged(
@@ -638,7 +637,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                Log.e("TextChanged", "onTextChanged")
+                Timber.e("onTextChanged")
                 setButtonMicSend()
 
                 timer = Timer()
@@ -665,7 +664,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
 
 
         if (lan == "ar") {
-            Log.e("TAG", "chkLan: " + lan)
+            Timber.e("chkLan: " + lan)
             binding.recordView.layoutDirection = View.LAYOUT_DIRECTION_LTR
             binding.recordButton.layoutDirection = View.LAYOUT_DIRECTION_LTR
             binding.rlChatInput.layoutDirection = View.LAYOUT_DIRECTION_LTR
@@ -717,7 +716,6 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
         }
 
         binding.recordView.setOnRecordListener(object : OnRecordListener {
-            @SuppressLint("LogNotTimber")
             override fun onFinish(recordTime: Long, isVisible: Boolean) {
                 binding.llChat.visible()
 
@@ -730,14 +728,14 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                     docImage.type = DocType.AUDIO
                     uploadFileOnServer(docImage)
                 }
-                Log.e("RECORDER", "onFinish")
+                Timber.e("onFinish")
             }
 
             override fun onLessThanSecond() {
                 binding.llChat.visible()
                 stopRecording()
                 setButtonMicSend()
-                Log.e("RECORDER", "Less than one second")
+                Timber.e("Less than one second")
 
             }
 
@@ -748,7 +746,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
             override fun onCancel() {
                 stopRecording()
                 binding.llChat.visible()
-                Log.e("RECORDER", "On Cancel")
+                Timber.e("On Cancel")
 
             }
 
@@ -758,7 +756,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                     binding.llChat.invisible()
                     startRecording()
                 }
-                Log.e("RECORDER", "On Start")
+                Timber.e("On Start")
             }
 
         })
@@ -959,7 +957,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
             this.status == NOT_SENT && this.senderId == userID && (currentTime - (this.sentAt ?: currentTime) > 8000)
         }
 
-        Log.e("messagesNotSent", Gson().toJson(messagesNotSent).toString())
+        Timber.e(Gson().toJson(messagesNotSent).toString())
 
         messagesNotSent.forEach {
             sendMessage(it, true)
@@ -986,7 +984,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
 
                 appSocket.emit(SEND_MESSAGE, jsonObject, Ack {
                     val data = it[0] as JSONObject
-                    Log.e("ack**", data.toString())
+                    Timber.e(data.toString())
 
                     /*If request completed end chat*/
                     if (data.optString("status") == PushType.REQUEST_COMPLETED) {
@@ -996,7 +994,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                         }
                     } else if (!data.optString("messageId").isNullOrEmpty()) {
                         runOnUiThread {
-                            Log.e("ack========", data.optString("messageId"))
+                            Timber.e(data.optString("messageId"))
 
                             val indexOfMessage = items.indexOf(chatMessage)
                             if (items[indexOfMessage].status == NOT_SENT) {
@@ -1310,7 +1308,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
             try {
                 prepare()
             } catch (e: IOException) {
-                Log.e("audioFileName", "prepare() failed")
+                Timber.e("prepare() failed")
             }
 
             start()
@@ -1346,7 +1344,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                 prepare()
                 start()
             } catch (e: IOException) {
-                Log.e("MediaPlayer", "prepare() failed")
+                Timber.e("prepare() failed")
             }
         }
 
@@ -1355,7 +1353,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
 
             isStopRight = true
             adapter.notifyDataSetChanged()
-            Log.e("TAG", "completeAudio: " + player)
+            Timber.e("completeAudio: " + player)
         })
 
 
@@ -1369,7 +1367,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
                 prepare()
                 start()
             } catch (e: IOException) {
-                Log.e("MediaPlayer", "prepare() failed")
+                Timber.e("prepare() failed")
             }
         }
 
@@ -1378,7 +1376,7 @@ class ChatDetailActivity : BasePhotoUploadActivity(), AppSocket.OnMessageReceive
 
             isStopLeft = true
             adapter.notifyDataSetChanged()
-            Log.e("TAG", "completeAudio: " + player)
+            Timber.e("completeAudio: " + player)
         })
     }
 

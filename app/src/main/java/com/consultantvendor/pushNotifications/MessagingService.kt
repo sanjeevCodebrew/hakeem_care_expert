@@ -9,7 +9,6 @@ import android.media.AudioAttributes
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -34,6 +33,7 @@ import dagger.android.AndroidInjection
 import org.json.JSONObject
 import java.util.*
 import javax.inject.Inject
+import timber.log.Timber
 
 
 class MessagingService : FirebaseMessagingService() {
@@ -68,16 +68,16 @@ class MessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        Log.e("fcmToken", token)
+        Timber.e(token)
 
         userRepository.pushTokenUpdate()
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.e("remoteMessage :", remoteMessage.data.toString())
+        Timber.e(remoteMessage.data.toString())
 
         val notificationData = JSONObject(remoteMessage.data as MutableMap<Any?, Any?>)
-        Log.e("TAG", "getNotificationData: " + notificationData)
+        Timber.e("getNotificationData: " + notificationData)
 
         if (userRepository.isUserLoggedIn()) {
             sendNotification(notificationData)
@@ -136,7 +136,7 @@ class MessagingService : FirebaseMessagingService() {
         //stackBuilder.addNextIntent(homeIntent)
 
 
-        Log.e("Notification", "Parent added")
+        Timber.e("Parent added")
         /*Final activity to open*/
 
 
@@ -300,7 +300,7 @@ class MessagingService : FirebaseMessagingService() {
             pushData.request_id == ChatDetailActivity.requestId
         ) {
             /*Don't generate push*/
-            Log.e("", "")
+            Timber.e("")
         } else
             notificationManager.notify(requestID, notificationBuilder.build())
     }

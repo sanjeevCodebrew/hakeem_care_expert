@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
@@ -162,7 +161,7 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
             val setAudioOnly =
                 jitsiClass?.callType?.lowercase() == ConsultType.AUDIO_CALL || jitsiClass?.callType?.lowercase() == ConsultType.CALL
 
-            Log.e("TAG", "intialiseJitsi: " + jitsiClass?.callType?.lowercase())
+            Timber.e("intialiseJitsi: " + jitsiClass?.callType?.lowercase())
 
             val options = JitsiMeetConferenceOptions.Builder()
                 .setUserInfo(userInfo)
@@ -206,7 +205,7 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
         override fun onReceive(context: Context?, intent: Intent?) {
             when (intent?.action) {
                 BroadcastEvent.Type.CONFERENCE_JOINED.action -> {
-                    Log.d(TAG, "onReceive: joined call  ")
+                    Timber.d("onReceive: joined call  ")
                     val list: List<Pair<String, Any?>>? = intent?.extras?.keySet()?.mapNotNull {
                         it to intent?.extras?.get(it)
                     }
@@ -219,7 +218,7 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
                 }
 
                 BroadcastEvent.Type.CONFERENCE_TERMINATED.action -> {
-                    Log.d(TAG, "onReceive: terminated call")
+                    Timber.d("onReceive: terminated call")
                     val list: List<Pair<String, Any?>>? = intent?.extras?.keySet()?.mapNotNull {
                         it to intent.extras?.get(it)
                     }
@@ -242,7 +241,7 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
                     data?.let {
                         val participantId = it["participantId"] as? String
                         val muted = it["muted"] as? Boolean
-                         Log.d("JitsiEvents", "Participant $participantId Audio Muted: $muted")
+                         Timber.d("Participant $participantId Audio Muted: $muted")
                     }
                 }
 
@@ -251,12 +250,12 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
                     data?.let {
                         val participantId = it["participantId"] as? String
                         val muted = it["muted"] as? Boolean
-                         Log.d("JitsiEvents", "Participant $participantId Video Muted: $muted")
+                         Timber.d("Participant $participantId Video Muted: $muted")
                     }
                 }
                 // Add more `when` branches for other BroadcastEvent.Type actions as needed
                 else -> {
-                    // Log.d("JitsiEvents", "Unhandled Broadcast: ${intent.action}")
+                    // Timber.d("Unhandled Broadcast: ${intent.action}")
                 }
             }
         }
@@ -356,7 +355,7 @@ class JitsiNewActivity: DaggerAppCompatActivity(), JitsiMeetActivityInterface {
         unregisterReceiver()
         JitsiMeetActivityDelegate.onHostDestroy(this)
         jitsiMeetView?.dispose()
-        Log.d(TAG, "onDestroy: ondestroy called")
+        Timber.d("onDestroy: ondestroy called")
         super.onDestroy()
     }
 

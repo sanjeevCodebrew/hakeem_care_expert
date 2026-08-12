@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/drawable_rounded_top">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/dp_36">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_24"
+                android:layout_marginTop="@dimen/dp_16"
+                android:layout_marginEnd="@dimen/dp_24"
+                android:fontFamily="@font/campton_semibold"
+                android:gravity="center"
+                android:text="@string/congratulations"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/sp_18"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="@dimen/dp_16"
+                android:background="@color/lineColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvHeader" />
+
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animationView"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="@dimen/dp_12"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="pregnant_women.json"
+                app:lottie_loop="true" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDueDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_24"
+                android:layout_marginTop="@dimen/dp_24"
+                android:layout_marginEnd="@dimen/dp_24"
+                android:fontFamily="@font/campton_medium"
+                android:gravity="center"
+                android:text="@string/your_due_date_is_s"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/animationView" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPregnancyDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_24"
+                android:layout_marginTop="@dimen/dp_4"
+                android:layout_marginEnd="@dimen/dp_24"
+                android:fontFamily="@font/campton_medium"
+                android:gravity="center"
+                android:text="@string/your_are_s_s_pregnant"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDueDate" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPregnancyTimeline"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_24"
+                android:layout_marginTop="@dimen/dp_32"
+                android:layout_marginEnd="@dimen/dp_24"
+                android:fontFamily="@font/campton_medium"
+                android:gravity="center"
+                android:text="@string/pregnancy_timeline"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/sp_18"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvPregnancyDate" />
+
+
+            <ProgressBar
+                android:id="@+id/progress1st"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_24"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:background="@color/primary_20"
+                android:max="100"
+                android:progress="45"
+                android:progressDrawable="@drawable/progress_completed"
+                app:layout_constraintEnd_toStartOf="@+id/progress2nd"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvPregnancyTimeline" />
+
+            <ProgressBar
+                android:id="@+id/progress2nd"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_24"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:background="@color/primary_20"
+                android:max="100"
+                android:progress="45"
+                android:progressDrawable="@drawable/progress_completed"
+                app:layout_constraintEnd_toStartOf="@+id/progress3rd"
+                app:layout_constraintStart_toEndOf="@+id/progress1st"
+                app:layout_constraintTop_toBottomOf="@+id/tvPregnancyTimeline" />
+
+            <ProgressBar
+                android:id="@+id/progress3rd"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_24"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:background="@color/primary_20"
+                android:max="100"
+                android:progress="45"
+                android:progressDrawable="@drawable/progress_completed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/progress2nd"
+                app:layout_constraintTop_toBottomOf="@+id/tvPregnancyTimeline" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTimeline1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                android:fontFamily="@font/campton_medium"
+                android:gravity="center"
+                android:text="@string/_1st_trimester"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintEnd_toEndOf="@id/progress1st"
+                app:layout_constraintStart_toStartOf="@id/progress1st"
+                app:layout_constraintTop_toBottomOf="@+id/progress1st" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTimeline1Date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_4"
+                android:fontFamily="@font/campton_medium"
+                android:gravity="center"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintEnd_toEndOf="@id/progress1st"
+                app:layout_constraintStart_toStartOf="@id/progress1st"
+                app:layout_constraintTop_toBottomOf="@+id/tvTimeline1" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTimeline2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                android:fontFamily="@font/campton_medium"
+                android:gravity="center"
+                android:text="@string/_2nd_trimester"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintEnd_toEndOf="@id/progress2nd"
+                app:layout_constraintStart_toStartOf="@id/progress2nd"
+                app:layout_constraintTop_toBottomOf="@+id/progress2nd" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTimeline2Date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_4"
+                android:fontFamily="@font/campton_medium"
+                android:gravity="center"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintEnd_toEndOf="@id/progress2nd"
+                app:layout_constraintStart_toStartOf="@id/progress2nd"
+                app:layout_constraintTop_toBottomOf="@+id/tvTimeline2" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTimeline3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                android:fontFamily="@font/campton_medium"
+                android:gravity="center"
+                android:text="@string/_3rd_trimester"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintEnd_toEndOf="@id/progress3rd"
+                app:layout_constraintStart_toStartOf="@id/progress3rd"
+                app:layout_constraintTop_toBottomOf="@+id/progress3rd" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTimeline3Date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_4"
+                android:fontFamily="@font/campton_medium"
+                android:gravity="center"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintEnd_toEndOf="@id/progress3rd"
+                app:layout_constraintStart_toStartOf="@id/progress3rd"
+                app:layout_constraintTop_toBottomOf="@+id/tvTimeline3" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvYourBaby"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_24"
+                android:layout_marginTop="@dimen/dp_32"
+                android:layout_marginEnd="@dimen/dp_24"
+                android:fontFamily="@font/campton_medium"
+                android:gravity="center"
+                android:text="@string/your_baby_will_be_a_s"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/sp_14"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTimeline3Date" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

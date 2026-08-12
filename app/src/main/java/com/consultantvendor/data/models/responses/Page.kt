@@ -16,6 +16,8 @@ data class Page(
         var question: String? = null,
         var answer: String? = null,
 
-        var status: String? = null
+        var status: String? = null,
+
+        var isVisible: Boolean = true
 
 ) : Serializable

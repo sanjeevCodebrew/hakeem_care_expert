@@ -1,7 +1,6 @@
 package com.consultantvendor.data.repos
 
 import android.app.Activity
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.consultantvendor.ConsultantApplication
 import com.consultantvendor.appClientDetails
@@ -20,6 +19,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
+import timber.log.Timber
 
 
 @Singleton
@@ -73,7 +73,7 @@ class UserRepository @Inject constructor(
             FirebaseMessaging.getInstance().token.addOnCompleteListener {
                 if (it.isComplete) {
 
-                    Log.d("FCMToken", it.result)
+                    Timber.d(it.result)
 
                     val hashMap = HashMap<String, Any>()
                     hashMap["fcm_id"] = it.result
@@ -83,14 +83,14 @@ class UserRepository @Inject constructor(
 
                                 override fun onResponse(call: Call<ApiResponse<UserData>>, response: Response<ApiResponse<UserData>>) {
                                     if (response.isSuccessful) {
-                                        Log.e("fcmToken", "Success")
+                                        Timber.e("Success")
                                     } else {
-                                        Log.e("fcmToken", "Faliure")
+                                        Timber.e("Faliure")
                                     }
                                 }
 
                                 override fun onFailure(call: Call<ApiResponse<UserData>>, throwable: Throwable) {
-                                    Log.e("fcmToken", "faliue 500")
+                                    Timber.e("faliue 500")
                                 }
                             })
 
@@ -112,15 +112,15 @@ class UserRepository @Inject constructor(
                     override fun onResponse(call: Call<ApiResponse<CommonDataModel>>,
                             response: Response<ApiResponse<CommonDataModel>>) {
                         if (response.isSuccessful) {
-                            Log.e("fcmToken", "Success")
+                            Timber.e("Success")
                         } else {
-                            Log.e("fcmToken", "Faliure")
+                            Timber.e("Faliure")
                         }
                     }
 
                     override fun onFailure(call: Call<ApiResponse<CommonDataModel>>,
                             throwable: Throwable) {
-                        Log.e("fcmToken", "faliue 500")
+                        Timber.e("faliue 500")
                     }
                 })
     }
@@ -145,7 +145,7 @@ class UserRepository @Inject constructor(
                             prefsManager.save(APP_DETAILS, appDetails)
                             appClientDetails = getAppSetting()
                         } else {
-                            Log.e("getPages", "Faliure")
+                            Timber.e("Faliure")
                         }
                     }
 
@@ -153,7 +153,7 @@ class UserRepository @Inject constructor(
                         call: Call<ApiResponse<CommonDataModel>>,
                         throwable: Throwable
                     ) {
-                        Log.e("getPages", "faliue 500")
+                        Timber.e("faliue 500")
                     }
                 })
 

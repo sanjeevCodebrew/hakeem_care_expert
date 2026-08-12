@@ -3,9 +3,11 @@ package com.consultantvendor.data.apis
 import com.consultantvendor.data.models.DrugListResponse
 import com.consultantvendor.data.models.MedicineResponse
 import com.consultantvendor.data.models.requests.AddPrescription
+import com.consultantvendor.data.models.requests.DoctorNotesRequest
 import com.consultantvendor.data.models.requests.UpdateDocument
 import com.consultantvendor.data.models.requests.UpdateServices
 import com.consultantvendor.data.models.responses.*
+import com.consultantvendor.data.models.responses.chat.chatMediaData
 import com.consultantvendor.data.models.responses.appdetails.AppVersion
 import com.consultantvendor.data.models.responses.directions.Direction
 import com.consultantvendor.data.network.responseUtil.ApiResponse
@@ -18,6 +20,12 @@ import retrofit2.http.*
 interface WebService {
     companion object {
 
+        private const val SALLA_PRODUCTS = "/api/salla/products"
+        private const val SALLA_CHECKOUT = "/api/salla/checkout"
+        private const val ZID_PRODUCTS = "/api/zid/products"
+        private const val ZID_CHECKOUT = "/api/zid/checkout"
+        private const val SAVE_VITAL_SIGNS = "/api/save-vital-signs"
+        private const val SAVE_DOCTOR_NOTES = "/api/save-doctor-notes"
         private const val LOGIN = "/api/login"
         private const val PROFILE = "/api/profile"
         private const val APP_VERSION = "/api/appversion"
@@ -55,6 +63,7 @@ interface WebService {
         private const val REQUEST_CHECK = "/api/request-check"
         private const val CHAT_LISTING = "/api/chat-listing"
         private const val CHAT_MESSAGES = "/api/chat-messages"
+        private const val GET_CHAT_MEDIA = "/api/get-chat-media"
         private const val BANK_ACCOUNTS = "/api/bank-accounts"
         private const val REVENUE = "/api/revenue"
         private const val NOTIFICATIONS = "/api/notifications"
@@ -122,6 +131,10 @@ interface WebService {
         private const val INSURANCE_LIST = "api/insurance-list"
         private const val MEDICAL_PRESCRIPTION = "/api/medical-prescription"
         private const val PUBLISH_PRESCRIPTION = "/api/medical-report-publish"
+        private const val GET_PRESCRIPTION = "/api/get-prescription"
+        private const val ADD_PRESCRIPTION = "/api/add-prescription"
+        private const val UPDATE_PRESCRIPTION = "/api/update-prescription"
+        private const val DELETE_PRESCRIPTION = "/api/delete-prescription/{id}"
 
     }
 
@@ -362,6 +375,9 @@ interface WebService {
     @GET(CHAT_MESSAGES)
     fun getChatMessage(@QueryMap hashMap: Map<String, String>): Call<ApiResponse<CommonDataModel>>
 
+    @GET(GET_CHAT_MEDIA)
+    fun getChatMedia(@QueryMap hashMap: Map<String, String>): Call<ApiResponse<chatMediaData>>
+
     @GET(BANK_ACCOUNTS)
     fun bankAccounts(@QueryMap hashMap: Map<String, String>): Call<ApiResponse<CommonDataModel>>
 
@@ -478,5 +494,37 @@ interface WebService {
     @POST(PUBLISH_PRESCRIPTION)
     fun publishPrescription(@FieldMap hashMap: HashMap<String, String>): Call<ApiResponse<CommonDataModel>>
 
+    @GET(GET_PRESCRIPTION)
+    fun getPreWrittenPrescriptions(@QueryMap params: HashMap<String, String>): Call<ApiResponse<PreWrittenPrescriptionListData>>
+
+    @FormUrlEncoded
+    @POST(ADD_PRESCRIPTION)
+    fun addPreWrittenPrescription(@FieldMap hashMap: HashMap<String, String>): Call<ApiResponse<CommonDataModel>>
+
+    @FormUrlEncoded
+    @POST(UPDATE_PRESCRIPTION)
+    fun updatePreWrittenPrescription(@FieldMap hashMap: HashMap<String, String>): Call<ApiResponse<CommonDataModel>>
+
+    @GET(DELETE_PRESCRIPTION)
+    fun deletePreWrittenPrescription(@Path("id") id: Int): Call<ApiResponse<CommonDataModel>>
+
+    @GET(SALLA_PRODUCTS)
+    fun getSallaProducts(@QueryMap params: HashMap<String, String>): Call<SallaProductsResponse>
+
+    @POST(SALLA_CHECKOUT)
+    fun sallaCheckout(@Body request: SallaCheckoutRequest): Call<ApiResponse<CommonDataModel>>
+
+    @GET(ZID_PRODUCTS)
+    fun getZidProducts(@QueryMap params: HashMap<String, String>): Call<ZidProductsResponse>
+
+    @POST(ZID_CHECKOUT)
+    fun zidCheckout(@Body request: ZidCheckoutRequest): Call<ZidCheckoutResponse>
+
+    @FormUrlEncoded
+    @POST(SAVE_VITAL_SIGNS)
+    fun saveVitalSigns(@FieldMap hashMap: HashMap<String, String>): Call<ApiResponse<CommonDataModel>>
+
+    @POST(SAVE_DOCTOR_NOTES)
+    fun saveDoctorNotes(@Body body: DoctorNotesRequest): Call<ApiResponse<CommonDataModel>>
 
 }

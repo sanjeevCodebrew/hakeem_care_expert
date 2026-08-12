@@ -3,11 +3,11 @@ package com.consultantvendor.utils
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.util.Log
 import android.view.View
 import android.widget.NumberPicker
 import android.widget.TimePicker
 import java.util.*
+import timber.log.Timber
 
 class CustomTimePickerDialog(context: Context, private val mTimeSetListener: OnTimeSetListener?,
                              hourOfDay: Int, minute: Int, is24HourView: Boolean) :
@@ -76,7 +76,7 @@ class CustomTimePickerDialog(context: Context, private val mTimeSetListener: OnT
                 .toTypedArray()
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e("Error===", e.toString())
+            Timber.e(e.toString())
         }
 
     }

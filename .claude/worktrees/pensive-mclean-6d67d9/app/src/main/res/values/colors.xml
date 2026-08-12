@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#17A86C</color>
+    <color name="colorPrimaryDark">#17A86C</color>
+    <color name="colorAccent">#17A86C</color>
+    <color name="colorAlternate">#17A86C</color>
+    <color name="colorAlternateButton">#17A86C</color>
+
+    <color name="textColor">#484848</color>
+    <color name="textTitleColor">#4A566C</color>
+    <color name="lineColor">#3D4A566C</color>
+    <color name="textColorGreen">#52D56A</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="primary_20">#3317A86C</color>
+    <color name="bgChat">#8477DF</color>
+    <color name="colorHomeTitle">#282525</color>
+    <color name="textAge">#5C6472</color>
+    <color name="textColor_50">#80484848</color>
+    <color name="colorPending">#FF8796</color>
+    <color name="colorPending_20">#33FF8796</color>
+    <color name="bgChat_20">#338477DF</color>
+    <color name="graph">#48D3B3</color>
+    <color name="colorLoginTag">#F0F9FF</color>
+    <color name="colorBanner">#39C6C0</color>
+    <color name="colorBgTransaction">#EFEFEF</color>
+    <color name="colorCancel">#FF5353</color>
+    <color name="colorLink">#0000A0</color>
+
+    <color name="colorReset">#F02525</color>
+    <color name="colorCalendar">#484848</color>
+    <color name="colorWalkThrough">#58595B</color>
+    <color name="colorWalkThroughUnselected">#A9A9A9</color>
+    <color name="colorBlack40">#66000000</color>
+    <color name="colorStroke">#A1A1A1</color>
+    <color name="colorConsultBg">#EDEDED</color>
+    <color name="colorServiceText">#9A9A9A</color>
+    <color name="colorServiceInactive">#EDEDED</color>
+    <color name="colorPink">#FAF2EB</color>
+</resources>

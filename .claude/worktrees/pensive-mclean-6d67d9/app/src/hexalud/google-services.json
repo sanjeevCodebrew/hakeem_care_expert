@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "847724593128",
+    "project_id": "hexalud-c3d45",
+    "storage_bucket": "hexalud-c3d45.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847724593128:android:4669a0f7f987ad42edee5d",
+        "android_client_info": {
+          "package_name": "com.hexalud.agent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "847724593128-norb2ea1ppc8eu8lje3l3noieb7tror4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCl7H8Jj01KGnUNEw3ppfOZ2OL31ytgcsM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "847724593128-norb2ea1ppc8eu8lje3l3noieb7tror4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847724593128:android:e8f69badb5688c9bedee5d",
+        "android_client_info": {
+          "package_name": "com.hexalud.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "847724593128-norb2ea1ppc8eu8lje3l3noieb7tror4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCl7H8Jj01KGnUNEw3ppfOZ2OL31ytgcsM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "847724593128-norb2ea1ppc8eu8lje3l3noieb7tror4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

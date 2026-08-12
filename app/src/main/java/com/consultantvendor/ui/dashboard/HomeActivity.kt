@@ -16,7 +16,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResult
@@ -78,6 +77,7 @@ import java.util.Locale
 import java.util.Timer
 import javax.inject.Inject
 import kotlin.concurrent.fixedRateTimer
+import timber.log.Timber
 
 
 
@@ -194,7 +194,6 @@ class HomeActivity : DaggerAppCompatActivity() {
         viewModel.drLogin(hashMap)
     }
 
-
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun initialise() {
         viewModel = ViewModelProvider(this, viewModelFactory)[LoginViewModel::class.java]
@@ -225,11 +224,10 @@ class HomeActivity : DaggerAppCompatActivity() {
             )
         }
 
-        Log.d("AccessToken", userRepository.getUser()?.token ?: "")
+        Timber.d(userRepository.getUser()?.token ?: "")
 
         /* Fetch Notification Token */
         userRepository.pushTokenUpdate()
-
 
         if (appFeatures.needLocation) {
             /*Ask for location*/
@@ -423,7 +421,9 @@ class HomeActivity : DaggerAppCompatActivity() {
                 hashMap["lat"] = lat
                 hashMap["long"] = lng
                 viewModel.updateProfile(hashMap)
-            } catch (e: Exception) {
+            }
+            catch (e: Exception) {
+
             }
         }
     }
@@ -441,7 +441,6 @@ class HomeActivity : DaggerAppCompatActivity() {
                             fragment.show(supportFragmentManager, fragment.tag)
                         }
                     }
-                    
                 }
 
                 Status.ERROR -> {
@@ -450,6 +449,7 @@ class HomeActivity : DaggerAppCompatActivity() {
                 }
 
                 Status.LOADING -> {
+
                 }
             }
         })
@@ -485,8 +485,8 @@ class HomeActivity : DaggerAppCompatActivity() {
                                 token = it.data?.token.toString(),
                                 username = it.data?.name.toString(),
                                 isSelect = true,
-                                profileImageUrl = it.data?.profile_image.toString()
-                            )
+                                profileImageUrl = it.data?.profile_image.toString())
+
                             MultiLoginManager.saveUser(this, loggedInUser)
 
                             when (pushData.pushType) {

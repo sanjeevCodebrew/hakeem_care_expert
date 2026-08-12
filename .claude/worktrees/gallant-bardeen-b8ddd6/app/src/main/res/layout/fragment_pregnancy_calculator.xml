@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.dashboard.home.pregnancycalculator.PregnancyCalculatorFragment">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/startGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/dp_16" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/endGuideLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/dp_16" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:elevation="@dimen/dp_4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_back_white"
+            app:titleTextAppearance="@style/Toolbar.TitleText" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHeader"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:fontFamily="@font/campton_semibold"
+            android:gravity="center"
+            android:text="@string/health_tool_4"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:elevation="@dimen/dp_4"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_16" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCalculationMethod"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorConsultBg"
+            android:fontFamily="@font/campton_book"
+            android:gravity="start"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_12"
+            android:paddingEnd="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_12"
+            android:text="@string/calculation_method"
+            android:textColor="@color/colorPrimary"
+            android:textDirection="locale"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/dp_8"
+            android:paddingEnd="@dimen/dp_8"
+            android:textDirection="locale"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCalculationMethod"
+            app:spanCount="2"
+            tools:itemCount="2"
+            tools:listitem="@layout/rv_item_check" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitleDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_16"
+            android:background="@color/colorConsultBg"
+            android:fontFamily="@font/campton_book"
+            android:gravity="start"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_12"
+            android:paddingEnd="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_12"
+            android:text="@string/the_first_day_of_your_last_period"
+            android:textColor="@color/colorPrimary"
+            android:textDirection="locale"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rvList" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDate"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_42"
+            android:layout_marginTop="@dimen/dp_16"
+            android:background="@drawable/drawable_grey_stroke"
+            android:fontFamily="@font/campton_medium"
+            android:gravity="center_vertical"
+            android:hint="@string/date"
+            android:padding="@dimen/dp_12"
+            android:textDirection="locale"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitleDate" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitle2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_16"
+            android:background="@color/colorConsultBg"
+            android:fontFamily="@font/campton_book"
+            android:gravity="start"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingTop="@dimen/dp_12"
+            android:paddingEnd="@dimen/dp_16"
+            android:paddingBottom="@dimen/dp_12"
+            android:text="@string/cycle_length"
+            android:textColor="@color/colorPrimary"
+            android:textDirection="locale"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDate" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCycle"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_42"
+            android:layout_marginTop="@dimen/dp_16"
+            android:background="@drawable/drawable_grey_stroke"
+            android:fontFamily="@font/campton_medium"
+            android:gravity="center_vertical"
+            android:hint="@string/date"
+            android:padding="@dimen/dp_12"
+            android:textColor="@color/textColor"
+            android:textDirection="locale"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+            app:layout_constraintStart_toStartOf="@id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle2" />
+
+        <Spinner
+            android:id="@+id/spnCycleLength"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/campton_medium"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLength="15"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_14"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@id/tvCycle"
+            app:layout_constraintStart_toStartOf="@id/tvCycle"
+            app:layout_constraintTop_toBottomOf="@+id/tvCycle" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvListIVF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/dp_8"
+            android:paddingEnd="@dimen/dp_8"
+            android:textDirection="locale"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCycle"
+            app:spanCount="2"
+            tools:itemCount="2"
+            tools:listitem="@layout/rv_item_check" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvWeek"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_42"
+            android:layout_marginTop="@dimen/dp_16"
+            android:background="@drawable/drawable_grey_stroke"
+            android:fontFamily="@font/campton_medium"
+            android:gravity="center_vertical"
+            android:hint="@string/date"
+            android:visibility="gone"
+            android:padding="@dimen/dp_12"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_14"
+            android:layout_marginEnd="@dimen/dp_8"
+            app:layout_constraintEnd_toStartOf="@+id/tvDay"
+            app:layout_constraintStart_toStartOf="@id/startGuideLine"
+            app:layout_constraintTop_toBottomOf="@+id/rvListIVF" />
+
+        <Spinner
+            android:id="@+id/spnWeek"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/campton_medium"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLength="15"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_14"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@id/tvWeek"
+            app:layout_constraintStart_toStartOf="@id/tvWeek"
+            app:layout_constraintTop_toBottomOf="@+id/tvWeek" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDay"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_42"
+            android:layout_marginTop="@dimen/dp_16"
+            android:background="@drawable/drawable_grey_stroke"
+            android:fontFamily="@font/campton_medium"
+            android:gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_8"
+            android:hint="@string/date"
+            android:visibility="gone"
+            android:textDirection="locale"
+            android:padding="@dimen/dp_12"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+            app:layout_constraintStart_toEndOf="@+id/tvWeek"
+            app:layout_constraintTop_toBottomOf="@+id/rvListIVF" />
+
+        <Spinner
+            android:id="@+id/spnDays"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/campton_medium"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLength="15"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_14"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@id/tvDay"
+            app:layout_constraintStart_toStartOf="@id/tvDay"
+            app:layout_constraintTop_toBottomOf="@+id/tvDay" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCalculate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:background="@drawable/drawable_alternate_button"
+            android:fontFamily="@font/campton_medium"
+            android:gravity="center"
+            android:paddingStart="@dimen/dp_24"
+            android:paddingEnd="@dimen/dp_24"
+            android:text="@string/calculate_my_due_date"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

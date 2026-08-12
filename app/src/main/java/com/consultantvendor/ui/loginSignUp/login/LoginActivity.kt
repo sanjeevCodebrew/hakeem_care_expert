@@ -23,6 +23,7 @@ import com.consultantvendor.utils.dialogs.ProgressDialog
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 import androidx.core.view.isVisible
+import timber.log.Timber
 
 class LoginActivity : DaggerAppCompatActivity() {
 
@@ -99,7 +100,7 @@ class LoginActivity : DaggerAppCompatActivity() {
         // get firebasetoken
    /*     FirebaseMessaging.getInstance().token.addOnCompleteListener {
             if (it.isComplete) {
-                Log.d("FCMToken", it.result)
+                Timber.d(it.result)
                 fcmId = it.result
             }
         }

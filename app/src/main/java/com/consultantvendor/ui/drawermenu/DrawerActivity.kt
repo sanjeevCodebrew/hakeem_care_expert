@@ -19,9 +19,13 @@ import com.consultantvendor.ui.dashboard.home.healthtool.protienintake.ProteinIn
 import com.consultantvendor.ui.dashboard.home.healthtool.waterintake.WaterIntakeFragment
 import com.consultantvendor.ui.dashboard.home.prescription.digital.DigitalPrescriptionFragment
 import com.consultantvendor.ui.dashboard.home.prescription.manual.ManualPrescriptionFragment
+import com.consultantvendor.ui.dashboard.settings.prewritten.AddPreWrittenPrescriptionFragment
+import com.consultantvendor.ui.dashboard.settings.prewritten.PreWrittenPrescriptionFragment
 import com.consultantvendor.ui.dashboard.home.questions.QuestionsFragment
 import com.consultantvendor.ui.dashboard.home.questions.detail.QuestionDetailFragment
 import com.consultantvendor.ui.dashboard.home.appointment.patientfile.PatientFileFragment
+import com.consultantvendor.ui.dashboard.home.appointment.patientfile.DoctorNotesFragment
+import com.consultantvendor.ui.dashboard.home.appointment.patientfile.VitalSignFragment
 import com.consultantvendor.ui.dashboard.home.reports.AddReportFragment
 import com.consultantvendor.ui.dashboard.home.reports.AddReportNewFragment
 import com.consultantvendor.ui.dashboard.language.LanguageFragment
@@ -36,6 +40,8 @@ import com.consultantvendor.ui.drawermenu.history.HistoryFragment
 import com.consultantvendor.ui.drawermenu.notification.NotificationFragment
 import com.consultantvendor.ui.drawermenu.profile.ProfileFragment
 import com.consultantvendor.ui.loginSignUp.changepassword.ChangePasswordFragment
+import com.consultantvendor.ui.dashboard.salla.SallaFragment
+import com.consultantvendor.ui.dashboard.zid.ZidFragment
 import com.consultantvendor.ui.walkthrough.WalkThroughFragment
 import com.consultantvendor.utils.*
 import dagger.android.support.DaggerAppCompatActivity
@@ -110,8 +116,14 @@ class DrawerActivity : DaggerAppCompatActivity() {
             PREGNANCY_CALCULATOR -> addFragment(PregnancyCalculatorFragment())
             CONTACT_LIST -> addFragment(ContactListFragment())
             ADD_REPORTS -> addFragment(AddReportFragment())
+            PRE_WRITTEN_PRESCRIPTION -> addFragment(PreWrittenPrescriptionFragment())
+            ADD_PRE_WRITTEN_PRESCRIPTION -> addFragment(AddPreWrittenPrescriptionFragment())
             ADD_REPORT_NEW -> addFragment(AddReportNewFragment())
             PATIENT_FILE -> addFragment(PatientFileFragment())
+            DOCTOR_NOTES -> addFragment(DoctorNotesFragment())
+            VITAL_SIGN -> addFragment(VitalSignFragment())
+            SALLA_PRODUCTS -> addFragment(SallaFragment())
+            ZID_PRODUCTS -> addFragment(ZidFragment())
         }
     }
 
@@ -148,6 +160,12 @@ class DrawerActivity : DaggerAppCompatActivity() {
         const val ADD_REPORTS = "ADD_REPORTS"
         const val ADD_REPORT_NEW = "ADD_REPORT_NEW"
         const val PATIENT_FILE = "PATIENT_FILE"
+        const val DOCTOR_NOTES = "DOCTOR_NOTES"
+        const val VITAL_SIGN = "VITAL_SIGN"
+        const val PRE_WRITTEN_PRESCRIPTION = "PRE_WRITTEN_PRESCRIPTION"
+        const val ADD_PRE_WRITTEN_PRESCRIPTION = "ADD_PRE_WRITTEN_PRESCRIPTION"
+        const val SALLA_PRODUCTS = "SALLA_PRODUCTS"
+        const val ZID_PRODUCTS = "ZID_PRODUCTS"
     }
 
 }

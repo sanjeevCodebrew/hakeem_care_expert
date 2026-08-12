@@ -10,7 +10,6 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.Lifecycle
@@ -18,6 +17,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.consultantvendor.R
 import com.consultantvendor.data.models.PushData
+import timber.log.Timber
 
 class IncomingCallNotificationService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -232,10 +232,10 @@ class IncomingCallNotificationService : Service() {
     @TargetApi(Build.VERSION_CODES.O)
     private fun setCallInProgressNotification(callInvite: PushData, notificationId: Int) {
         if (isAppVisible) {
-            Log.i(TAG, "setCallInProgressNotification - app is visible.")
+            Timber.i("setCallInProgressNotification - app is visible.")
             startForeground(notificationId, createNotification(callInvite, notificationId, NotificationManager.IMPORTANCE_LOW))
         } else {
-            Log.i(TAG, "setCallInProgressNotification - app is NOT visible.")
+            Timber.i("setCallInProgressNotification - app is NOT visible.")
             startForeground(notificationId, createNotification(callInvite, notificationId, NotificationManager.IMPORTANCE_HIGH))
         }
     }

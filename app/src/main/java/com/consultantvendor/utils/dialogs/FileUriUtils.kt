@@ -11,8 +11,8 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.provider.OpenableColumns
-import android.util.Log
 import java.io.*
+import timber.log.Timber
 
 
 object FileUriUtils {
@@ -69,7 +69,7 @@ object FileUriUtils {
                             )
                             getDataColumn(context, contentUri, null, null)
                         } catch (e: NumberFormatException) {
-                            Log.i("ImagePicker", e.message.toString())
+                            Timber.i(e.message.toString())
                             null
                         }
                     }
@@ -170,12 +170,12 @@ object FileUriUtils {
                 var pathString = getRealPathFromURI(context,uri)
                 extensions = pathString?.substring(pathString.lastIndexOf(".") + 1)
                 extensions = ".$extensions"
-                Log.e("pathString", "$pathString")
+                Timber.e("$pathString")
 
             }
 
 
-            Log.e("extensions", "$extensions")
+            Timber.e("$extensions")
 
 
             if (extensions.equals(".pdf", true)) {
@@ -305,11 +305,11 @@ object FileUriUtils {
         return "com.google.android.apps.photos.content" == uri.authority
     }
     fun getRealPathFromURI(context: Context?, contentUri: Uri?): String? {
-        Log.e("contentUri",""+contentUri)
+        Timber.e(""+contentUri)
 
 
         var splitUri = contentUri.toString().substring(contentUri.toString().lastIndexOf("/") + 1)
-        Log.e("splitUri ",""+splitUri)
+        Timber.e(""+splitUri)
 
 
 
@@ -317,7 +317,7 @@ object FileUriUtils {
 //        val out: OutputStream
         val file = File(getFileName(context,contentUri)!!)
         if (file != null){
-            Log.e("filePath","123:->>"+file.path)
+            Timber.e("123:->>"+file.path)
             return file.path
         }
        /* try {
@@ -355,7 +355,7 @@ object FileUriUtils {
         if (!mediaStorageDir.exists()) {
             mediaStorageDir.mkdirs()
         }
-        Log.e("mediaStorageDir",""+mediaStorageDir.path)
+        Timber.e(""+mediaStorageDir.path)
         var mImageName : String = ""
         if (splitUri.contains("image")){
 
@@ -389,7 +389,7 @@ object FileUriUtils {
                result = result!!.substring(cut + 1)
            }
        }
-       Log.e("result",""+result)
+       Timber.e(""+result)
        return result
    }
 }

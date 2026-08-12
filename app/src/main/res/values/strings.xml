@@ -812,6 +812,7 @@
 
 
     <string name="done">Done</string>
+    <string name="select_quantity">Select Quantity</string>
     <string name="search">Search</string>
     <string name="code">CODE</string>
     <string name="title_1">TITLE</string>
@@ -852,6 +853,11 @@
     <string name="add_pre_written_prescription">+ Add prescription</string>
     <string name="no_pre_written_prescriptions">No pre-written prescriptions added yet</string>
     <string name="salla_products">Salla Products</string>
+    <string name="zid_products">Zid Products</string>
+    <string name="in_stock">In Stock</string>
+    <string name="out_of_stock">Out of Stock</string>
+    <string name="copy">Copy</string>
+    <string name="link_copied">Link copied to clipboard</string>
     <string name="checkout">Checkout</string>
     <string name="select_option">Select Option</string>
     <string name="next_label">Next</string>

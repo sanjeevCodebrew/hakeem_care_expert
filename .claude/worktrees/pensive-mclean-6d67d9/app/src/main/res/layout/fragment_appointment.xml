@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorWhite"
+            android:elevation="4dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_back_white"
+            app:title="@string/appointments"
+            app:titleTextAppearance="@style/Toolbar.TitleText">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivNotification"
+                    android:layout_width="@dimen/dp_28"
+                    android:layout_height="@dimen/dp_28"
+                    android:layout_marginEnd="@dimen/dp_12"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:elevation="@dimen/dp_4"
+                    android:focusable="true"
+                    android:padding="@dimen/dp_1"
+                    android:src="@drawable/ic_notification_drawer"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvUnreadCount"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:background="@drawable/drawable_notification_red"
+                    android:elevation="@dimen/dp_4"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:textColor="@android:color/white"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="@+id/ivNotification"
+                    app:layout_constraintTop_toTopOf="@+id/ivNotification"
+                    tools:ignore="SmallSp"
+                    tools:text="99+" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivRemoveDate"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="@dimen/dp_4"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:elevation="@dimen/dp_4"
+                    android:focusable="true"
+                    android:padding="@dimen/dp_2"
+                    android:rotation="45"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvDate"
+                    app:layout_constraintEnd_toStartOf="@+id/ivNotification"
+                    app:layout_constraintTop_toTopOf="@+id/tvDate"
+                    app:srcCompat="@drawable/ic_add_post" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:elevation="@dimen/dp_4"
+                    android:fontFamily="@font/campton_semibold"
+                    android:gravity="center|center_vertical"
+                    android:hint="@string/select_date"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_13"
+                    app:layout_constraintEnd_toStartOf="@+id/ivRemoveDate"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvRequestType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp_6"
+                    android:drawableEnd="@drawable/ic_dropdown"
+                    android:elevation="@dimen/dp_4"
+                    android:fontFamily="@font/campton_semibold"
+                    android:gravity="center|center_vertical"
+                    android:hint="@string/all_requests"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_13"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/tvDate"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Spinner
+                    android:id="@+id/spnRequestType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="@dimen/dp_4"
+                    android:entries="@array/request_type"
+                    android:fontFamily="@font/campton_medium"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_14"
+                    android:visibility="invisible"
+                    app:layout_constraintStart_toStartOf="@+id/tvRequestType"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRequestType" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHeader"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:elevation="4dp"
+            android:fontFamily="@font/campton_semibold"
+            android:gravity="center"
+            android:text="@string/appointments"
+            android:textColor="@color/textColor"
+            android:textSize="@dimen/sp_16"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvServices"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_36"
+            android:layout_marginTop="@dimen/dp_16"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/dp_16"
+            android:paddingEnd="@dimen/dp_4"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rvServices">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvListing"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/ivEmergency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/colorCancel"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/ic_emergancy"
+            android:foregroundGravity="center"
+            app:borderWidth="@dimen/dp_0"
+            app:elevation="4dp"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <include
+            android:id="@+id/clNoData"
+            layout="@layout/item_no_data"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <include
+            android:id="@+id/clLoader"
+            layout="@layout/item_loader"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

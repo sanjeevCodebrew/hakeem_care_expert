@@ -1,6 +1,5 @@
 package com.consultantvendor.di
 
-import android.util.Log
 import com.consultantvendor.BuildConfig
 import com.consultantvendor.data.apis.WebService
 import com.consultantvendor.data.models.responses.UserData
@@ -21,6 +20,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import timber.log.Timber
 
 
 @Module
@@ -38,7 +38,7 @@ object NetworkModule {
             .cache(null)
             .addNetworkInterceptor(CurlInterceptor(object : Logger {
                 override fun log(message: String) {
-                    Log.v("Ok2Curl", message)
+                    Timber.v(message)
                 }
             }))
             .addInterceptor(getNetworkInterceptor(prefsManager))
@@ -75,7 +75,7 @@ object NetworkModule {
                 .addHeader("devicetype", ANDROID)
 
             val accessToken = prefsManager.getObject(USER_DATA, UserData::class.java)?.token
-            Log.e("accessToken", accessToken ?: "")
+            Timber.e(accessToken ?: "")
             if (!accessToken.isNullOrEmpty())
                 requestBuilder.addHeader("authorization", "Bearer $accessToken")
 

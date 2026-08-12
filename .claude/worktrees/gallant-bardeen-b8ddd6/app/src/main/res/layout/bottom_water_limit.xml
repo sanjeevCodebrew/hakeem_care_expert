@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/drawable_rounded_top"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/dp_36">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/startGuideLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/dp_24" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/endGuideLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/dp_24" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDailyLimit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_24"
+                android:layout_marginTop="@dimen/dp_24"
+                android:layout_marginEnd="@dimen/dp_24"
+                android:fontFamily="@font/campton_semibold"
+                android:gravity="center"
+                android:text="@string/set_you_water_limit"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ilWaterIntake"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_24"
+                android:hint="@string/water_intake_literes"
+                app:layout_constraintEnd_toEndOf="@id/endGuideLine"
+                app:layout_constraintStart_toStartOf="@id/startGuideLine"
+                app:layout_constraintTop_toBottomOf="@+id/tvDailyLimit">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etWaterIntake"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/campton_medium"
+                    android:imeOptions="actionDone"
+                    android:textDirection="locale"
+                    android:inputType="numberDecimal"
+                    android:maxLength="5"
+                    android:digits="0123456789."
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/sp_16" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSymbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.6"
+                android:text="@string/lt"
+                android:padding="@dimen/dp_4"
+                android:fontFamily="@font/campton_semibold"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintBottom_toBottomOf="@+id/ilWaterIntake"
+                app:layout_constraintEnd_toEndOf="@+id/ilWaterIntake"
+                app:layout_constraintTop_toTopOf="@+id/ilWaterIntake" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSetLimit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_24"
+                android:layout_marginTop="@dimen/dp_42"
+                android:layout_marginEnd="@dimen/dp_24"
+                android:background="@drawable/drawable_theme_stroke_60"
+                android:fontFamily="@font/campton_semibold"
+                android:gravity="center"
+                android:text="@string/set_daily_limit"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ilWaterIntake" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDateRight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/app_name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTextRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvDateRight"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="114dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:autoLink="web"
+            android:background="@drawable/drawable_chat_right"
+            android:elevation="4dp"
+            android:fontFamily="@font/campton_medium"
+            android:minWidth="48dp"
+            android:padding="8dp"
+            android:textColor="@android:color/white"
+            android:textColorLink="@color/colorWhite"
+            android:textSize="12sp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPdfRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTextRight"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="114dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/drawable_alternate_button"
+            android:clickable="true"
+            android:drawableStart="@drawable/ic_pdf"
+            android:drawablePadding="@dimen/dp_4"
+            android:elevation="4dp"
+            android:focusable="true"
+            android:fontFamily="@font/campton_medium"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:minWidth="48dp"
+            android:padding="8dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clTvAudioRight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvPdfRight"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="@dimen/dp_16"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/drawable_alternate_button">
+
+            <com.google.android.exoplayer2.ui.PlayerView
+                android:id="@+id/player_view"
+                android:layout_width="@dimen/album_dp_100"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAudioRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:clickable="true"
+                android:drawableStart="@drawable/ic_play"
+                android:drawablePadding="@dimen/dp_4"
+                android:elevation="4dp"
+                android:focusable="true"
+                android:fontFamily="@font/campton_medium"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:minWidth="48dp"
+                android:padding="8dp"
+                android:textColor="@color/colorWhite"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginEnd="@dimen/dp_10"
+                android:layout_marginBottom="0dp"
+                android:background="@color/colorWhite"
+                android:padding="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tvAudioRight"
+                app:layout_constraintEnd_toStartOf="@+id/tvAudioRight"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvAudioRight" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvImageRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/clTvAudioRight"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="2dp"
+            app:cardCornerRadius="16dp"
+            app:cardPreventCornerOverlap="true">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivImageRight"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image_placeholder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivTick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cvImageRight"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:visibility="visible"
+            app:srcCompat="@drawable/ic_wait" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTimeRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cvImageRight"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_toStartOf="@+id/ivTick"
+            android:fontFamily="@font/campton_medium"
+            android:textColor="@color/textColor"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+</layout>

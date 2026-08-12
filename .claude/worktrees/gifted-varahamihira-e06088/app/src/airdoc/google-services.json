@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "961139685643",
+    "project_id": "airdoc-37725",
+    "storage_bucket": "airdoc-37725.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961139685643:android:83becfe316e22829d20a0e",
+        "android_client_info": {
+          "package_name": "com.airdoc.expert"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "961139685643-epfg89f9mrgt6lp52l9l8sgbu9feh20g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.airdoc.expert",
+            "certificate_hash": "3fee5aff71776031cbdc81d0b12cca08afa48d8a"
+          }
+        },
+        {
+          "client_id": "961139685643-3ibjpm30psaociplr0c0ltt096lag0rd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRIdPYeDPzQ2FuWZMvqnnKzPBTu8PL_yQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "961139685643-3ibjpm30psaociplr0c0ltt096lag0rd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "961139685643-2rg4aq24vesm5quvs80nifgug3a43k51.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.airdoc.user"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961139685643:android:d9d2ca2e47e15152d20a0e",
+        "android_client_info": {
+          "package_name": "com.airdoc.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "961139685643-42lt5fvg94u6eu5e6vq34em502olbdkg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.airdoc.user",
+            "certificate_hash": "3fee5aff71776031cbdc81d0b12cca08afa48d8a"
+          }
+        },
+        {
+          "client_id": "961139685643-3ibjpm30psaociplr0c0ltt096lag0rd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRIdPYeDPzQ2FuWZMvqnnKzPBTu8PL_yQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "961139685643-3ibjpm30psaociplr0c0ltt096lag0rd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "961139685643-2rg4aq24vesm5quvs80nifgug3a43k51.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.airdoc.user"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,6 @@
 package com.consultantvendor.ui.loginSignUp.clinicCatogaries
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +24,7 @@ import com.consultantvendor.ui.loginSignUp.LoginViewModel
 import com.consultantvendor.utils.*
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
+import timber.log.Timber
 class ClinicCategoriesFragment : DaggerFragment() {
     @Inject
     lateinit var prefsManager: PrefsManager
@@ -65,7 +65,7 @@ class ClinicCategoriesFragment : DaggerFragment() {
         viewModel = ViewModelProvider(this, viewModelFactory)[ClassesViewModel::class.java]
         binding.rvListing.layoutManager = LinearLayoutManager(requireContext())
         categoryData = arguments?.getSerializable(CATEGORY_PARENT_ID) as Categories
-        Log.e("TAG", "checkCatogary: "+categoryData?.name)
+        Timber.e("checkCatogary: "+categoryData?.name)
         binding.tvTitle.text = getString(R.string.select_sub_category)
     }
     private fun setAdapter() {

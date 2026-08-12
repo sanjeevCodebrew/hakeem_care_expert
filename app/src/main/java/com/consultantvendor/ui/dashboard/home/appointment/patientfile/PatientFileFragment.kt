@@ -1,5 +1,6 @@
 package com.consultantvendor.ui.dashboard.home.appointment.patientfile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,9 @@ import androidx.databinding.DataBindingUtil
 import com.consultantvendor.R
 import com.consultantvendor.data.models.responses.Request
 import com.consultantvendor.databinding.FragmentPatientFileBinding
+import com.consultantvendor.ui.drawermenu.DrawerActivity
 import com.consultantvendor.utils.EXTRA_REQUEST_ID
+import com.consultantvendor.utils.PAGE_TO_OPEN
 import com.consultantvendor.utils.getAge
 import com.consultantvendor.utils.loadImage
 import dagger.android.support.DaggerFragment
@@ -48,21 +51,12 @@ class PatientFileFragment : DaggerFragment() {
 
         loadImage(binding.ivPic, user.profile_image, R.drawable.ic_profile_placeholder)
 
-        binding.tvName.text = user.name ?: ""
-        binding.tvPatientId.text = user.id ?: ""
-
         val profile = user.profile
-        val gender = profile?.gender ?: ""
-        val dob = profile?.dob ?: ""
+        val age = if (!profile?.dob.isNullOrEmpty()) getAge(profile?.dob).toString() else ""
         val country = profile?.country ?: ""
 
-        binding.tvGenderBasic.text = gender
-        binding.tvDobBasic.text = dob
-        binding.tvAge.text = if (dob.isNotEmpty()) getAge(dob).toString() else ""
-        binding.tvGender.text = gender
-        binding.tvDob.text = dob
-        binding.tvNationality.text = country
-        binding.tvPhone.text = user.phone ?: ""
+        binding.tvAge.text = if (age.isNotEmpty()) "${getString(R.string.age)} $age" else ""
+        binding.tvNationality.text = if (country.isNotEmpty()) "${getString(R.string.nationality)}: $country" else ""
     }
 
     private fun listeners() {
@@ -70,12 +64,20 @@ class PatientFileFragment : DaggerFragment() {
             requireActivity().finish()
         }
 
-        binding.tvEditPatientFile.setOnClickListener {
-            // Edit patient file functionality can be added here
+        binding.clDoctorNotes.setOnClickListener {
+            requireActivity().startActivity(
+                Intent(requireActivity(), DrawerActivity::class.java)
+                    .putExtra(PAGE_TO_OPEN, DrawerActivity.DOCTOR_NOTES)
+                    .putExtra(EXTRA_REQUEST_ID, request)
+            )
         }
 
-        binding.clAddAttachment.setOnClickListener {
-            // Add attachment functionality can be added here
+        binding.clVitalSign.setOnClickListener {
+            requireActivity().startActivity(
+                Intent(requireActivity(), DrawerActivity::class.java)
+                    .putExtra(PAGE_TO_OPEN, DrawerActivity.VITAL_SIGN)
+                    .putExtra(EXTRA_REQUEST_ID, request)
+            )
         }
     }
 }

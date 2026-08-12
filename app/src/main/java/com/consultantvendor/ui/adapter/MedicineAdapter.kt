@@ -31,7 +31,7 @@ class MedicineAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.binding.tvCode.text = item.ingredients
-        holder.binding.tvTitle.text = item.strength
+        holder.binding.tvCode.text = item.strength      // narrow left: dose/strength
+        holder.binding.tvTitle.text = item.ingredients  // wide right: full generic name
     }
 }

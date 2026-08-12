@@ -8,6 +8,12 @@ apply plugin: 'com.google.gms.google-services'
 
 apply plugin: 'com.google.firebase.crashlytics'
 
+def localProps = new Properties()
+def localPropsFile = rootProject.file('local.properties')
+if (localPropsFile.exists()) {
+    localPropsFile.withInputStream { localProps.load(it) }
+}
+
 android {
 
     namespace "com.consultantvendor"
@@ -27,23 +33,23 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file("consultapp.jks")
-            keyAlias "consultapp"
-            keyPassword "codebrew"
-            storePassword "codebrew"
+            storeFile file(localProps['KEY_STORE_FILE'] ?: 'consultapp.jks')
+            keyAlias localProps['KEY_ALIAS']
+            keyPassword localProps['KEY_PASSWORD']
+            storePassword localProps['STORE_PASSWORD']
         }
         release {
-            storeFile file("consultapp.jks")
-            keyAlias "consultapp"
-            keyPassword "codebrew"
-            storePassword "codebrew"
+            storeFile file(localProps['KEY_STORE_FILE'] ?: 'consultapp.jks')
+            keyAlias localProps['KEY_ALIAS']
+            keyPassword localProps['KEY_PASSWORD']
+            storePassword localProps['STORE_PASSWORD']
         }
 
-//        hakeemExpert creds
-     /*   storeFile file("hakeemcareExpert.jks")
-        keyAlias "hakeemcareExpert"
-        keyPassword "hakeemcareExpert"
-        storePassword "hakeemcareExpert"*/
+        /* hakeemExpert creds — set in local.properties:
+           KEY_STORE_FILE=hakeemcareExpert.jks
+           KEY_ALIAS=hakeemcareExpert
+           KEY_PASSWORD=<password>
+           STORE_PASSWORD=<password> */
     }
 
     flavorDimensions "app"
@@ -51,11 +57,10 @@ android {
         consult {
             dimension "app"
             applicationId "com.hakeem.expert"
-            versionCode 135
+            versionCode 142
             versionName "2.3.6"
-            buildConfigField 'String', 'APP_UNIQUE_ID', "\"3b7474e39d4a249a9ecc8aa24b7e8acd42\""
-         /*   buildConfigField 'String', 'BASE_URL', "\"https://dev-api.hakeemcare.com/\""*/
-            buildConfigField 'String', 'BASE_URL', "\"https://hakeemcare.hakeemcare.com/\""
+            buildConfigField 'String', 'APP_UNIQUE_ID', "\"${localProps['APP_UNIQUE_ID']}\""
+            buildConfigField 'String', 'BASE_URL', "\"${localProps['BASE_URL']}\""
         }
     }
 
@@ -158,11 +163,14 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.10'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.core:core-ktx:1.15.0'
+    implementation 'androidx.security:security-crypto:1.1.0-alpha06'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.8.8'
     implementation 'androidx.navigation:navigation-ui-ktx:2.8.8'
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'io.mockk:mockk:1.13.10'
+    testImplementation 'androidx.arch.core:core-testing:2.2.0'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
 
@@ -186,8 +194,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1'
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
 
-    /*PIN VIEW*/
-    implementation "com.chaos.view:pinview:1.4.3"
+    /*PIN VIEW — replaced with plain EditText; library was on dead JCenter repo*/
 
     /*RETROFIT*/
     implementation 'com.squareup.retrofit2:retrofit:2.11.0'
@@ -284,8 +291,8 @@ dependencies {
     /*Animations*/
     implementation 'com.airbnb.android:lottie:6.6.2'
 
-    /*Date Picker*/
-    implementation 'com.github.florent37:singledateandtimepicker:2.2.6'
+    /*Date Picker — replaced with MaterialDatePicker + MaterialTimePicker (already bundled in material:1.12.0)*/
+//    implementation 'com.github.florent37:singledateandtimepicker:2.2.6'
 
     /*Read More TextView*/
 //    implementation 'com.borjabravo:readmoretextview:2.1.0'
@@ -296,15 +303,15 @@ dependencies {
     /*Bmi*/
 //    implementation 'com.ekn.gruzer.gaugelibrary:gaugelibrary:0.1.0'
     implementation project(":gaugelibrary")
-    implementation 'pl.pawelkleczkowski.customgauge:CustomGauge:1.0.3'
+//    implementation 'pl.pawelkleczkowski.customgauge:CustomGauge:1.0.3' // not used; JCenter artifact gone
 
-    /*Contact Picker*/
-    implementation 'com.github.broakenmedia:MultiContactPicker:1.8.5'
+    /*Contact Picker — not used; disabled to avoid dead JCenter transitive deps*/
+//    implementation 'com.github.broakenmedia:MultiContactPicker:1.8.5'
 
-    //Twitter
-    implementation('com.twitter.sdk.android:twitter:3.3.0@aar') {
-        transitive = true
-    }
+    //Twitter (SDK repo is dead — removed)
+//    implementation('com.twitter.sdk.android:twitter:3.3.0@aar') {
+//        transitive = true
+//    }
 
     //snap kit
 //    implementation([
@@ -333,6 +340,7 @@ dependencies {
     implementation 'io.agora.rtc:full-sdk:4.6.3'
 
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.2'
 
 
 }

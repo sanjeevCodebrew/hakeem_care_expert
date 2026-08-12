@@ -104,6 +104,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#48000000"
+            android:clickable="false"
+            android:focusable="false"
             android:id="@+id/clAudioCall">
 
             <com.makeramen.roundedimageview.RoundedImageView
@@ -147,6 +149,26 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAddPrescriptionCall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/drawable_alternate_button"
+            android:drawableStart="@drawable/ic_add"
+            android:drawablePadding="6dp"
+            android:elevation="20dp"
+            android:fontFamily="@font/campton_semibold"
+            android:gravity="center"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:text="@string/add_prescription"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintBottom_toTopOf="@+id/llOptions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <LinearLayout
             android:id="@+id/llOptions"

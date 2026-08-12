@@ -2,9 +2,12 @@ package com.consultantvendor.di
 
 import com.consultantvendor.ui.SplashActivity
 import com.consultantvendor.ui.aghora.AghoraNewActivity
+import com.consultantvendor.ui.dashboard.salla.SallaFragment
+import com.consultantvendor.ui.dashboard.zid.ZidFragment
 import com.consultantvendor.ui.calling.CallingActivity
 import com.consultantvendor.ui.chat.ChatFragment
 import com.consultantvendor.ui.chat.chatdetail.ChatDetailActivity
+import com.consultantvendor.ui.chat.chatdetail.ChatMediaDetailActivity
 import com.consultantvendor.ui.dashboard.HomeActivity
 import com.consultantvendor.ui.dashboard.feeds.AddFeedFragment
 import com.consultantvendor.ui.dashboard.feeds.FeedDetailsFragment
@@ -31,6 +34,9 @@ import com.consultantvendor.ui.dashboard.home.questions.QuestionsFragment
 import com.consultantvendor.ui.dashboard.home.questions.detail.QuestionDetailFragment
 import com.consultantvendor.ui.dashboard.home.appointment.patientfile.PatientFileFragment
 import com.consultantvendor.ui.dashboard.home.reports.AddReportFragment
+import com.consultantvendor.ui.dashboard.settings.prewritten.AddPreWrittenPrescriptionFragment
+import com.consultantvendor.ui.dashboard.settings.prewritten.PreWrittenPrescriptionBottomSheet
+import com.consultantvendor.ui.dashboard.settings.prewritten.PreWrittenPrescriptionFragment
 import com.consultantvendor.ui.dashboard.home.reports.AddReportNewFragment
 import com.consultantvendor.ui.dashboard.language.LanguageFragment
 import com.consultantvendor.ui.dashboard.location.AddAddressActivity
@@ -143,6 +149,9 @@ abstract class BindingsModule {
 
     @ContributesAndroidInjector
     abstract fun chatDetailActivity(): ChatDetailActivity
+
+    @ContributesAndroidInjector
+    abstract fun chatMediaDetailActivity(): ChatMediaDetailActivity
 
     @ContributesAndroidInjector
     abstract fun payoutFragment(): PayoutFragment
@@ -303,5 +312,26 @@ abstract class BindingsModule {
     abstract fun patientFileFragment(): PatientFileFragment
 
     @ContributesAndroidInjector
+    abstract fun doctorNotesFragment(): com.consultantvendor.ui.dashboard.home.appointment.patientfile.DoctorNotesFragment
+
+    @ContributesAndroidInjector
+    abstract fun vitalSignFragment(): com.consultantvendor.ui.dashboard.home.appointment.patientfile.VitalSignFragment
+
+    @ContributesAndroidInjector
+    abstract fun preWrittenPrescriptionFragment(): PreWrittenPrescriptionFragment
+
+    @ContributesAndroidInjector
+    abstract fun addPreWrittenPrescriptionFragment(): AddPreWrittenPrescriptionFragment
+
+    @ContributesAndroidInjector
+    abstract fun preWrittenPrescriptionBottomSheet(): PreWrittenPrescriptionBottomSheet
+
+    @ContributesAndroidInjector
     abstract fun agoraNewActivity(): AghoraNewActivity
+
+    @ContributesAndroidInjector
+    abstract fun sallaFragment(): SallaFragment
+
+    @ContributesAndroidInjector
+    abstract fun zidFragment(): ZidFragment
 }

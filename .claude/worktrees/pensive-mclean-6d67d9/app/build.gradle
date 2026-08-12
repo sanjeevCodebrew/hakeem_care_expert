@@ -1,0 +1,345 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'com.google.gms.google-services'
+
+apply plugin: 'com.google.firebase.crashlytics'
+
+android {
+
+    namespace "com.consultantvendor"
+    compileSdk 36
+
+
+    defaultConfig {
+        applicationId "com.hakeem.expert"
+        minSdk 26
+        targetSdk 36
+        versionCode 1
+        versionName "1.0.0"
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("consultapp.jks")
+            keyAlias "consultapp"
+            keyPassword "codebrew"
+            storePassword "codebrew"
+        }
+        release {
+            storeFile file("consultapp.jks")
+            keyAlias "consultapp"
+            keyPassword "codebrew"
+            storePassword "codebrew"
+        }
+
+//        hakeemExpert creds
+     /*   storeFile file("hakeemcareExpert.jks")
+        keyAlias "hakeemcareExpert"
+        keyPassword "hakeemcareExpert"
+        storePassword "hakeemcareExpert"*/
+    }
+
+    flavorDimensions "app"
+    productFlavors {
+        consult {
+            dimension "app"
+            applicationId "com.hakeem.expert"
+            versionCode 135
+            versionName "2.3.6"
+            buildConfigField 'String', 'APP_UNIQUE_ID', "\"3b7474e39d4a249a9ecc8aa24b7e8acd42\""
+         /*   buildConfigField 'String', 'BASE_URL', "\"https://dev-api.hakeemcare.com/\""*/
+            buildConfigField 'String', 'BASE_URL', "\"https://hakeemcare.hakeemcare.com/\""
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            debuggable false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.debug
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
+
+    dataBinding {
+        enabled = true
+    }
+
+    bundle {
+        language {
+            // Specifies that the app bundle should not support
+            // configuration APKs for language resources. These
+            // resources are instead packaged with each base and
+            // dynamic feature APK.
+            enableSplit = false
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude("META-INF/*.kotlin_module")
+        jniLibs {
+            excludes += [
+                    "**/libgifimage.so",
+                    "**/libstatic-webp.so",
+//                    "**/libduktape.so"
+            ]
+        }
+    }
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
+    }
+    ndkVersion '29.0.14206865'
+// To inline the bytecode built with JVM target 1.8 into
+// bytecode that is being built with JVM target 1.6. (e.g. navArgs)
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' } // Used by multiple libraries
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://maven.google.com' }
+        maven { url = uri("https://jcenter.bintray.com") }
+        maven { url = uri("https://maven.scijava.org/content/repositories/public/") }
+    }
+}
+
+configurations.configureEach {
+    resolutionStrategy {
+        force 'com.google.android.gms:play-services-safetynet:17.0.0'
+    }
+    exclude group: 'com.google.android.gms', module: 'play-services-safetynet'
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.10'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.core:core-ktx:1.15.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.8.8'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.8.8'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+
+    implementation "androidx.multidex:multidex:2.0.1"
+
+    /*LIFECYCLE COMPONENTS*/
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7'
+
+    /*COUNTRY CODE PICKER*/
+    implementation 'com.hbb20:ccp:2.7.3'
+
+    /*ANDROID SUPPORT*/
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
+
+    /*MATERIAL COMPONENTS*/
+    implementation 'com.google.android.material:material:1.12.0'
+
+    /*KOTLIN*/
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
+
+    /*PIN VIEW*/
+    implementation "com.chaos.view:pinview:1.4.3"
+
+    /*RETROFIT*/
+    implementation 'com.squareup.retrofit2:retrofit:2.11.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.11.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.11.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.11.0'
+
+    /*OK HTTP*/
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
+
+    /*DAGGER*/
+    implementation 'com.google.dagger:dagger-android:2.55'
+    implementation 'com.google.dagger:dagger-android-support:2.55'
+    kapt 'com.google.dagger:dagger-android-processor:2.55'
+    kapt 'com.google.dagger:dagger-compiler:2.55'
+
+    /*TIMBER*/
+    implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    /*Firebase*/
+    implementation 'com.google.firebase:firebase-messaging:24.1.0'
+    implementation 'com.google.firebase:firebase-core:21.1.1'
+    implementation 'com.google.firebase:firebase-analytics-ktx:22.3.0'
+    implementation 'com.google.firebase:firebase-dynamic-links-ktx:22.1.0'
+
+    // Add the Firebase Crashlytics dependency.
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:19.4.1'
+
+    /*ROUNDED IMAGE VIEW*/
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    /*FACEBOOK*/
+    implementation 'com.facebook.android:facebook-android-sdk:18.0.2'
+
+//    implementation('com.facebook.soloader:soloader:0.12.1')
+
+    //Google sign in dependency
+    implementation 'com.google.android.gms:play-services-auth:21.3.0'
+    implementation 'com.google.firebase:firebase-auth:23.2.0'
+    implementation 'com.google.android.gms:play-services-location:21.3.0'
+    implementation 'com.google.android.libraries.places:places:4.1.0'
+
+    /*Chart*/
+    implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
+
+    /*Image Doc Picker*/
+//    implementation 'com.droidninja:filepicker:2.2.5'
+    implementation project(':filepicker')
+    /*GLIDE*/
+    implementation('com.github.bumptech.glide:glide:5.0.5') {
+        exclude group: 'com.github.bumptech.glide', module: 'animated-gif'
+        exclude group: 'com.github.bumptech.glide', module: 'animated-webp'
+        exclude group: 'com.github.bumptech.glide', module: 'webpdecoder'
+    }
+    kapt 'com.github.bumptech.glide:compiler:5.0.5'
+
+
+
+    /*PERMISSION DISPATCHER*/
+    /*implementation "com.github.hotchemi:permissionsdispatcher:4.8.0"
+    kapt "com.github.hotchemi:permissionsdispatcher-processor:4.1.0"*/
+
+    /*Socket*/
+    implementation('io.socket:socket.io-client:1.0.0') {
+        exclude group: 'org.json', module: 'json'
+    }
+
+    /*Compress image*/
+    implementation 'id.zelory:compressor:2.1.1'
+
+    /*View full image*/
+//    implementation 'com.github.stfalcon:frescoimageviewer:0.5.0'
+//    implementation 'com.github.stfalcon-studio:StfalconImageViewer:v1.0.1'
+//    implementation 'com.facebook.fresco:fresco:3.6.0'
+
+    // Jitsi Meet
+//    implementation('org.jitsi.react:jitsi-meet-sdk:2.9.3') { transitive = true }
+//    implementation ('org.jitsi.react:jitsi-meet-sdk:5.1.0') { transitive = true }
+//    implementation ('org.jitsi.react:jitsi-meet-sdk:10.1.2') { transitive = true }
+    implementation('org.jitsi.react:jitsi-meet-sdk:11.5.1') { transitive = true }
+
+    /*PAGER INDICATOR*/
+//    implementation 'me.relex:circleindicator:2.1.4'
+
+
+    /*Razor Pay*/
+    /*Crash in latest version*/
+//    implementation 'com.razorpay:checkout:1.6.7'
+
+    /*Card Form*/
+    implementation 'com.braintreepayments:card-form:5.4.0'
+
+    /*Animations*/
+    implementation 'com.airbnb.android:lottie:6.6.2'
+
+    /*Date Picker*/
+    implementation 'com.github.florent37:singledateandtimepicker:2.2.6'
+
+    /*Read More TextView*/
+//    implementation 'com.borjabravo:readmoretextview:2.1.0'
+    implementation 'kr.co.prnd:readmore-textview:1.0.0'
+    //recordView
+//    implementation 'com.devlomi.record-view:record-view:2.0.1'
+    implementation 'com.github.3llomi:RecordView:3.1.3'
+    /*Bmi*/
+//    implementation 'com.ekn.gruzer.gaugelibrary:gaugelibrary:0.1.0'
+    implementation project(":gaugelibrary")
+    implementation 'pl.pawelkleczkowski.customgauge:CustomGauge:1.0.3'
+
+    /*Contact Picker*/
+    implementation 'com.github.broakenmedia:MultiContactPicker:1.8.5'
+
+    //Twitter
+    implementation('com.twitter.sdk.android:twitter:3.3.0@aar') {
+        transitive = true
+    }
+
+    //snap kit
+//    implementation([
+//            'com.snapchat.kit.sdk:login:1.12.0',
+//            'com.snapchat.kit.sdk:core:1.12.0'
+//    ])
+
+    //AppsFlyer
+    implementation 'com.appsflyer:af-android-sdk:6.16.1'
+
+    // album camera
+    implementation('com.yanzhenjie:album:2.1.3') {
+        exclude group: 'com.github.bumptech.glide', module: 'animated-gif'
+    }
+    implementation 'androidx.work:work-runtime-ktx:2.10.0'
+
+    implementation 'com.google.android.material:material:1.11.0'
+
+    implementation 'com.karumi:dexter:6.2.3'
+
+    implementation 'com.github.mrmike:ok2curl:0.8.0'
+
+    implementation "androidx.media3:media3-exoplayer:1.2.0"
+    implementation "androidx.media3:media3-ui:1.2.0"
+
+    implementation 'io.agora.rtc:full-sdk:4.6.3'
+
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
+
+}
+
+
+
+//twitter app id 22568785
+//twitter api key HnSJ2ZcDhVw2ZDCFEs1BDBwEP
+//twitter secret api key qdhRPJdvdQLfoO77RLrX2fGJ0yIcjISw03D9gjnjJHI5ppac1v
+//bearer token AAAAAAAAAAAAAAAAAAAAAFFfWAEAAAAAApNpmAx8ZylDKb97ygL%2BpMXMp90%3DAvKHg6q5x32bJCyVapA8NzCqDC4aRUN1pD7wQCkUcmj4df8dBM

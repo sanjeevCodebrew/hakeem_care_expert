@@ -8,6 +8,7 @@ import com.consultantvendor.data.models.requests.AddPrescription
 import com.consultantvendor.data.models.responses.CommonDataModel
 import com.consultantvendor.data.models.responses.DiagnosisResponse
 import com.consultantvendor.data.models.responses.IcdDiagnosisListResponse
+import com.consultantvendor.data.models.responses.PreWrittenPrescriptionListData
 import com.consultantvendor.data.models.responses.UserData
 import com.consultantvendor.data.network.responseUtil.ApiResponse
 import com.consultantvendor.data.network.responseUtil.ApiUtils
@@ -33,6 +34,10 @@ class AddPrescriptionViewModel @Inject constructor(private val webService: WebSe
     val getInsurance by lazy { SingleLiveEvent<Resource<InsuranceResponse>>() }
 
     val addPrescription by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
+
+    val getPreWrittenPrescriptions by lazy { SingleLiveEvent<Resource<PreWrittenPrescriptionListData>>() }
+    val savePreWrittenPrescription by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
+    val deletePreWrittenPrescription by lazy { SingleLiveEvent<Resource<CommonDataModel>>() }
 
     fun prescreptions(addPrescription: AddPrescription) {
         prescreptions.value = Resource.loading()
@@ -194,6 +199,64 @@ class AddPrescriptionViewModel @Inject constructor(private val webService: WebSe
                     getInsurance.value = Resource.error(ApiUtils.failure(p1))
                 }
 
+            })
+    }
+
+    fun getPreWrittenPrescriptions(page: Int = 1) {
+        getPreWrittenPrescriptions.value = Resource.loading()
+        val params = hashMapOf("page" to page.toString())
+        webService.getPreWrittenPrescriptions(params)
+            .enqueue(object : Callback<ApiResponse<PreWrittenPrescriptionListData>> {
+                override fun onResponse(call: Call<ApiResponse<PreWrittenPrescriptionListData>>, response: Response<ApiResponse<PreWrittenPrescriptionListData>>) {
+                    if (response.isSuccessful) getPreWrittenPrescriptions.value = Resource.success(response.body()?.data)
+                    else getPreWrittenPrescriptions.value = Resource.error(ApiUtils.getError(response.code(), response.errorBody()?.string()))
+                }
+                override fun onFailure(call: Call<ApiResponse<PreWrittenPrescriptionListData>>, throwable: Throwable) {
+                    getPreWrittenPrescriptions.value = Resource.error(ApiUtils.failure(throwable))
+                }
+            })
+    }
+
+    fun savePreWrittenPrescription(hashMap: HashMap<String, String>) {
+        savePreWrittenPrescription.value = Resource.loading()
+        webService.addPreWrittenPrescription(hashMap)
+            .enqueue(object : Callback<ApiResponse<CommonDataModel>> {
+                override fun onResponse(call: Call<ApiResponse<CommonDataModel>>, response: Response<ApiResponse<CommonDataModel>>) {
+                    if (response.isSuccessful) savePreWrittenPrescription.value = Resource.success(response.body()?.data)
+                    else savePreWrittenPrescription.value = Resource.error(ApiUtils.getError(response.code(), response.errorBody()?.string()))
+                }
+                override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
+                    savePreWrittenPrescription.value = Resource.error(ApiUtils.failure(throwable))
+                }
+            })
+    }
+
+    fun deletePreWrittenPrescription(id: Int) {
+        deletePreWrittenPrescription.value = Resource.loading()
+        webService.deletePreWrittenPrescription(id)
+            .enqueue(object : Callback<ApiResponse<CommonDataModel>> {
+                override fun onResponse(call: Call<ApiResponse<CommonDataModel>>, response: Response<ApiResponse<CommonDataModel>>) {
+                    if (response.isSuccessful) deletePreWrittenPrescription.value = Resource.success(response.body()?.data)
+                    else deletePreWrittenPrescription.value = Resource.error(ApiUtils.getError(response.code(), response.errorBody()?.string()))
+                }
+                override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
+                    deletePreWrittenPrescription.value = Resource.error(ApiUtils.failure(throwable))
+                }
+            })
+    }
+
+    fun updatePreWrittenPrescription(id: Int, hashMap: HashMap<String, String>) {
+        savePreWrittenPrescription.value = Resource.loading()
+        hashMap["id"] = id.toString()
+        webService.updatePreWrittenPrescription(hashMap)
+            .enqueue(object : Callback<ApiResponse<CommonDataModel>> {
+                override fun onResponse(call: Call<ApiResponse<CommonDataModel>>, response: Response<ApiResponse<CommonDataModel>>) {
+                    if (response.isSuccessful) savePreWrittenPrescription.value = Resource.success(response.body()?.data)
+                    else savePreWrittenPrescription.value = Resource.error(ApiUtils.getError(response.code(), response.errorBody()?.string()))
+                }
+                override fun onFailure(call: Call<ApiResponse<CommonDataModel>>, throwable: Throwable) {
+                    savePreWrittenPrescription.value = Resource.error(ApiUtils.failure(throwable))
+                }
             })
     }
 

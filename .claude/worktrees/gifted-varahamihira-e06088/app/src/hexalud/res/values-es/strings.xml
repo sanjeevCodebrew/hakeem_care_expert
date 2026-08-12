@@ -1,0 +1,657 @@
+<resources>
+    <string name="update_desc">¡Tienes una nueva actualización para %s!</string>
+    <string name="create_a_account">Crea una %s\ncuenta para continuar</string>
+
+    <string name="allow">PERMITIR</string>
+    <string name="deny">Negar</string>
+    <string name="settings">Ajustes</string>
+    <string name="media_permission">Esta característica necesita permiso para usar la cámara y el almacenamiento externo.</string>
+    <string name="record_audio_permission">Esta característica necesita permiso para usar grabación de audio y almacenamiento externo.</string>
+
+    <string name="internet">Internet</string>
+    <string name="check_internet">Por favor revise su conexion a internet</string>
+    <string name="ok">OK</string>
+    <string name="alert">Alerta</string>
+
+    <string name="login">Acceso</string>
+    <string name="facebook">Facebook</string>
+    <string name="google">Google</string>
+    <string name="login_using_email">Iniciar sesión usando el correo electrónico</string>
+    <string name="signup_using_email">Regístrese usando el correo electrónico</string>
+    <string name="sign_up">Inscribirse</string>
+    <string name="enter_phone_number">Ingresa número telefónico</string>
+    <string name="we_need_your_phone">Necesitamos su número de teléfono para identificarlo.</string>
+    <string name="code_sent_to">Código enviado a %s</string>
+    <string name="resend_code">Reenviar codigo</string>
+    <string name="didn_t_receive_the_code_yet">¿Aún no recibiste el código?</string>
+    <string name="verification">Verificación</string>
+    <string name="we_sent_you_a_code">Te enviamos un código a %s</string>
+    <string name="enter_otp">Por favor ingrese otp</string>
+    <string name="location">Ubicación</string>
+    <string name="chat">Charlar</string>
+
+    <string name="patients">Pacientes</string>
+    <string name="experience">Experiencia</string>
+    <string name="reviews">Reseñas</string>
+    <string name="about">Sobre</string>
+
+    <string name="home">Hogar</string>
+    <string name="history">Historia</string>
+    <string name="notification">Notificación</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="terms_and_conditions">Términos y condiciones</string>
+    <string name="invite_people">Invitar a la gente</string>
+    <string name="version">Versión %s</string>
+    <string name="you_are_running_the_latest_version">Está ejecutando la última versión</string>
+    <string name="appointments">Equipo</string>
+    <string name="name">Nombre</string>
+    <string name="email">Correo electrónico</string>
+    <string name="date_of_birth">Fecha de nacimiento</string>
+    <string name="password">Clave</string>
+    <string name="re_enter_password">Escriba la contraseña otra vez</string>
+    <string name="bio">biografía</string>
+    <string name="edit">Editar</string>
+    <string name="view">Vista</string>
+    <string name="age">Años:</string>
+    <string name="phone_number">Número de teléfono</string>
+    <string name="dob">fecha de nacimiento</string>
+    <string name="we_need_your_email_password">Necesitamos su correo electrónico y amp; Contraseña para identificarte.</string>
+    <string name="didn_t_have_an_account">¿No tenías una cuenta?</string>
+    <string name="forgot_password">Has olvidado tu contraseña</string>
+    <string name="wallet">Cartera</string>
+    <string name="revenue">Ingresos</string>
+    <string name="calls">Llamadas</string>
+    <string name="available_balance">Saldo disponible</string>
+    <string name="pay_out">Pagar</string>
+
+    <string name="enter_name">Por favor ingrese el nombre</string>
+    <string name="select_dob">Seleccione fecha de nacimiento</string>
+    <string name="enter_email">Por favor ingrese el correo electrónico</string>
+    <string name="enter_correct_email">Por favor ingrese el correo electrónico correcto</string>
+    <string name="enter_password">La longitud de la contraseña debe tener al menos 8 caracteres</string>
+    <string name="enter_bio">Por favor ingrese biografía</string>
+
+    <string name="logout_dialog_message">¿Estás seguro de que quieres cerrar sesión?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="no_data_found">Datos no encontrados</string>
+    <string name="s_completed">% s completado</string>
+    <string name="unsuccessful">%s fallido</string>
+    <string name="select_image">Seleccionar imagen</string>
+    <string name="select_document">Seleccionar documento</string>
+    <string name="update">Actualizar</string>
+    <string name="we_need_your_email">Necesitamos su correo electrónico registrado para comunicarnos con usted</string>
+    <string name="sent_password">Hemos enviado una contraseña temporal a su correo electrónico. Por favor revise su correo electrónico.</string>
+    <string name="new_request">Nueva solicitud</string>
+    <string name="no_show">No show</string>
+    <string name="canceled">Cancelado</string>
+    <string name="cancel">Cancelar</string>
+    <string name="start_request">Solicitud de inicio</string>
+    <string name="check_request">Solicitud de cheque</string>
+    <string name="start_request_message">¿Estás seguro de que quieres proceder solicitud?</string>
+    <string name="add_money">Agregar dinero</string>
+    <string name="added_to_wallet">Agregado a la billetera</string>
+    <string name="failed_transaction">Transacción fallida</string>
+    <string name="accept_request">Aceptar petición</string>
+    <string name="accept_request_message">¿Estás seguro de que quieres aceptar esta solicitud?</string>
+    <string name="mark_complete">Marcar como completo</string>
+    <string name="mark_complete_message">¿Está seguro de que desea completar esta solicitud?</string>
+    <string name="accepted">Aceptado</string>
+    <string name="inprogess">En progreso</string>
+    <string name="starting_call">Iniciando una llamada…</string>
+    <string name="starting_chat">Comenzando un chat</string>
+    <string name="money_received_from">Recibido de\n%s</string>
+    <string name="na">NA</string>
+
+    <string name="typing">Mecanografía…</string>
+    <string name="today">Este Dia</string>
+    <string name="yesterday">El dia de ayer</string>
+    <string name="active_now">Activo ahora</string>
+    <string name="offline">Desconectado</string>
+    <string name="enter_message">Introducir mensaje</string>
+    <string name="type_your_message_here">Escribe tu mensaje…</string>
+    <string name="photo">Foto</string>
+    <string name="chat_first_message">Hola, %s\nEstoy disponible para chatear. Discutamos el problema.</string>
+    <string name="end_chat">Chat finalizado</string>
+    <string name="end_n_chat">Finalizar\nchat</string>
+    <string name="end_chat_desc">Esto finalizará el chat. Ya no podrás chatear</string>
+    <string name="bank_account">Aquí está la cuenta bancaria</string>
+    <string name="bank_info">Detalles del banco</string>
+    <string name="account_number">Número de cuenta</string>
+    <string name="account_name">Nombre del titular de la cuenta</string>
+    <string name="bank_name">Nombre del banco</string>
+    <string name="ifsc_code">código IFSC</string>
+    <string name="select_currency">Seleccione el tipo de moneda</string>
+    <string name="add_bank">Agregar banco</string>
+    <string name="edit_bank">Editar banco</string>
+    <string name="card_ending_with">Tarjeta %s que termina en %s</string>
+    <string name="years">años</string>
+    <string name="total_revenue_made">Ingresos totales realizados</string>
+    <string name="request_completed">Solicitud completada</string>
+    <string name="title">Título</string>
+    <string name="description">Descripción</string>
+
+
+    <!--Classes-->
+    <string name="classes">Clases</string>
+    <string name="broadcasts">transmisiones</string>
+    <string name="add_new">Añadir nuevo</string>
+    <string name="add_class">Agregar clase</string>
+    <string name="select_date">Seleccione fecha</string>
+    <string name="select_future_date">Seleccionar fecha futura</string>
+    <string name="select_previos_date">Seleccionar fecha anterior</string>
+    <string name="select_time">Seleccionar hora</string>
+    <string name="price_of_class">precio de clase</string>
+    <string name="class_name">Nombre de la clase</string>
+    <string name="class_time">Hora de clase</string>
+    <string name="class_price">Precio de clase</string>
+    <string name="start_class">Comenzar la clase</string>
+    <string name="select_category">selecciona una categoría</string>
+    <string name="category">Categoría</string>
+    <string name="start_class_message">Al iniciar CLASS, hará que esta clase esté disponible para todos los que la ocuparon. ¿Quieres empezar la clase?</string>
+    <string name="user_joined">Usuario unido</string>
+    <string name="complete_class">Clase completa</string>
+    <string name="complete_class_message">¿Seguro que quieres completar esta clase?</string>
+
+    <string name="s_s_reviews">%s · %s Reseñas</string>
+    <string name="greater_time">La hora de finalización debe ser mayor que la hora de inicio</string>
+    <string name="manage_availability">Administrar disponibilidad</string>
+    <string name="select_a_category">Seleccione una categoría</string>
+    <string name="let_us_know_who_you">Háganos saber qué categoría se adapta más a su perfil para continuar</string>
+    <string name="select_sub_category">Seleccionar subcategoría</string>
+    <string name="full_name">Nombre completo</string>
+    <string name="since_working">trabajando desde</string>
+    <string name="next">Próximo</string>
+    <string name="consultation_fees">Tarifas de consulta</string>
+    <string name="for_">Para</string>
+    <string name="add_availability">Añadir disponibilidad</string>
+    <string name="add_availability_s">Agregar disponibilidad para %s</string>
+    <string name="service_type">Tipo de servicio</string>
+    <string name="set_preferences">Establecer preferencias</string>
+    <string name="from">De</string>
+    <string name="new_interval">+ Nuevo Intervalo</string>
+    <string name="sunday_w">S</string>
+    <string name="monday_w">M</string>
+    <string name="tuesday_w">T</string>
+    <string name="wednesday_w">W</string>
+    <string name="thursday_w">T</string>
+    <string name="friday_w">F</string>
+    <string name="saturday_w">S</string>
+    <string name="week_days">Días de la semana</string>
+    <string name="select_availability">Seleccionar disponibilidad</string>
+    <string name="save">Ahorrar</string>
+    <string name="fixed_price">Precio fijo</string>
+    <string name="price_btw">Agregar precio en %s a %s</string>
+    <string name="edit_availability">Editar disponibilidad</string>
+    <string name="select_service">Por favor seleccione cualquier servicio</string>
+    <string name="add_price_for">Agregar precio para %s</string>
+    <string name="add_price__in_s">Agregar precio en %s a %s para %s</string>
+    <string name="enter_title">Por favor seleccione Título</string>
+    <string name="update_category">Actualizar categoría</string>
+    <string name="manage_preferences">Administrar preferencias</string>
+    <string name="tomorrow">Mañana</string>
+    <string name="for_s">para %s</string>
+    <string name="all_s">Todos los %s</string>
+    <string name="all_weekdays">Todos los días de la semana</string>
+
+    <array name="country">
+        <item>@string/select_country</item>
+        <item>IN</item>
+        <item>US</item>
+
+    </array>
+
+    <array name="currency">
+        <item>@string/select_currency</item>
+        <item>INR</item>
+        <item>USD</item>
+
+    </array>
+
+    <string name="dr">Dr.</string>
+    <string name="mr">Mr.</string>
+    <string name="mrs">Mrs.</string>
+    <string name="miss">Miss.</string>
+
+    <array name="dr_title">
+        <item>@string/title</item>
+        <item>@string/dr</item>
+        <item>@string/mr</item>
+        <item>@string/mrs</item>
+        <item>@string/miss</item>
+    </array>
+
+    <string name="profile">Perfil</string>
+    <string name="transactions">Historial de transacciones</string>
+    <string name="select_working_days">Por favor seleccione días laborables</string>
+    <string name="already_have_an_account">¿Ya tienes una cuenta?</string>
+    <string name="you_agree_to_our_terms">Al continuar, aceptas nuestros\n</string>
+    <string name="terms">Términos de servicio</string>
+    <string name="and">and</string>
+    <string name="privacy">Política de privacidad</string>
+    <string name="chat_online_with_top_doctors">Chatea en línea\ncon los mejores médicos</string>
+    <string name="at_20"><font size="14">En</font> %s20</string>
+    <string name="signup_with_phone_number">Regístrese con número de teléfono</string>
+    <string name="let_s_get_started">Empecemos !</string>
+    <string name="minute">Minuto </string>
+    <string name="min">mínimo</string>
+    <string name="hr">Hora</string>
+    <string name="cancel_appointment">Cancelar cita</string>
+    <string name="cancel_appointment_msg">¿Estás seguro de que deseas cancelar una cita?</string>
+    <string name="error_in_between_interval">Por favor, no agregue un intervalo entre los intervalos anteriores</string>
+    <string name="disconnecting">Desconectando…</string>
+    <string name="transaction_success">Éxito de la transacción</string>
+    <string name="transaction_failed">Transacción fallida</string>
+
+    <!--Empty screen-->
+    <string name="profile_unapproved">¡Tu perfil aún no ha sido aprobado!</string>
+    <string name="profile_unapproved_desc">Una vez que su perfil haya sido aprobado, comenzará a recibir solicitudes de los usuarios.</string>
+    <string name="no_requests">¡Sin solicitudes!</string>
+    <string name="no_requests_desc">No tienes ninguna solicitud generada en este momento.</string>
+    <string name="no_chat">¡Ningún chat ha comenzado todavía!</string>
+    <string name="no_chat_desc">Una vez que sus solicitudes de chat sean aceptadas &amp; inicias la conversación, los hilos aparecerán aquí. </string>
+    <string name="no_history">¡Sin historial de citas!</string>
+    <string name="no_history_desc">No hay citas programadas.</string>
+    <string name="no_transaction">¡Sin historial de transacciones!</string>
+    <string name="no_transaction_desc">Una vez que complete con éxito algunas solicitudes, sus transacciones aparecerán aquí.</string>
+    <string name="no_classes">¡No hay clases creadas por ti todavía!</string>
+    <string name="no_classes_desc">Haga clic en el botón Agregar para crear algunas clases que aparecerán aquí.</string>
+    <string name="no_notification">¡Aún no hay notificaciones!</string>
+    <string name="no_notification_desc">Todas las notificaciones relacionadas con tus actividades aparecerán aquí.</string>
+    <string name="no_question">No se encontró ningún experto!</string>
+    <string name="no_question_desc">Su consejo de experto se mostrará aquí una vez que alguien pregunte.</string>
+    <string name="no_answer">¡Aún no hay respuestas!</string>
+    <string name="no_answer_desc">Nadie aconsejó esto. Sé el primero.</string>
+    <string name="no_article">¡Sin artículo!</string>
+    <string name="no_article_desc">El artículo aparecerá aquí una vez agregado</string>
+    <string name="no_blog">¡Sin blogs!</string>
+    <string name="no_blog_desc">Los blogs aparecerán aquí una vez agregados</string>
+    <string name="no_medical_history">¡No se encontró historial médico!</string>
+    <string name="no_medical_history_desc">Sea el primer médico en escribir sobre este paciente.</string>
+    <string name="no_contact">¡Ningún contacto añadido!</string>
+    <string name="no_contact_desc">Ningún contacto añadido. Póngase en contacto con ll mostrar aquí una vez agregado.</string>
+
+
+    <!--Share text-->
+    <string name="share">Cuota</string>
+    <string name="invite_text">Oye, aquí hay una aplicación para tomar la plataforma de consultoría en línea para médicos, fisioterapeutas, contadores, abogados, consultores, etc. Deberías probarla.</string>
+    <string name="edit_card">editar tarjeta</string>
+    <string name="delete">Borrar</string>
+    <string name="pay">Pagar</string>
+    <string name="input_amount">Importe de entrada</string>
+    <string name="select_card">Seleccionar tarjeta</string>
+    <string name="add_card">Agregar tarjeta</string>
+    <string name="enter_amount">Ingrese la cantidad</string>
+    <string name="payment">Pago</string>
+    <string name="delete_message">¿Estás seguro de que quieres eliminar esta tarjeta?</string>
+    <string name="money_sent_account">Dinero enviado a cuenta bancaria\n(%s)</string>
+
+    <!--Insurance Address-->
+    <string name="start_your_journey">Comience su viaje ahora</string>
+    <string name="address">Dirección</string>
+    <string name="city">Ciudad</string>
+    <string name="country">País</string>
+    <string name="state">Estado</string>
+    <string name="zip">Código postal</string>
+    <string name="term_one">Acepto los Términos de servicio, la Política de privacidad, la Política de cookies y las Listas de tarifas.</string>
+    <string name="term_two">Entiendo que los proveedores de servicios y otros profesionales con los que estoy conectado en la aplicación, y entiendo que el servicio es solo una herramienta de comunicación.</string>
+    <string name="term_three">Entiendo que cada proveedor de servicios puede tener su propio programa de tarifas y tarifas de facturación.</string>
+    <string name="do_you_have_insurance">aceptas seguro</string>
+    <string name="if_yes_what_insurance">Si \'Sí\' qué Seguro</string>
+    <string name="select_insurance">Su seguro aceptado</string>
+    <string name="check_all_terms">Por favor revise todos los términos</string>
+    <string name="select_country">Seleccione un país</string>
+    <string name="select_state">Seleccione estado</string>
+    <string name="select_city">Ciudad selecta</string>
+    <string name="submit">Enviar</string>
+    <string name="add">Agregar</string>
+    <string name="plus_add">+ Agregar</string>
+    <string name="upload_documents">subir documentos</string>
+    <string name="please_add">Por favor añadir</string>
+    <string name="manage_documents">Administrar documentos</string>
+
+    <!--Articles-->
+    <string name="post">Correo</string>
+    <string name="post_article_plus">+ Publicar artículo</string>
+    <string name="post_article">+ Publicar artículo</string>
+    <string name="latest_articles">últimos artículos</string>
+    <string name="blogs">blogs</string>
+    <string name="articles">Artículos</string>
+    <string name="post_blog_plus">+ Publicar Blog</string>
+    <string name="post_blog">Publicar blog</string>
+    <string name="latest_blogs">Últimos blogs</string>
+    <string name="s_views">%s vistas</string>
+    <string name="favourites">Favoritos</string>
+    <string name="my_articles">Mis artículos</string>
+
+    <!--E-Prescription-->
+    <string name="appointment">Cita</string>
+    <string name="add_prescription">+ Receta</string>
+    <string name="add_manual_prescription">Añadir receta manual</string>
+    <string name="record_details">Detalles del registro</string>
+    <string name="record_title">Título del registro</string>
+    <string name="add_images">Añadir imágenes</string>
+    <string name="add_digital_prescription">Añadir Receta Digital</string>
+    <string name="prescription_notes">Notas de prescripción</string>
+    <string name="add_notes">Agregar notas</string>
+    <string name="medicine_name">Nombre del medicamento</string>
+    <string name="prescriptions">recetas</string>
+    <string name="duration">Duración</string>
+    <string name="dosage_type">Tipo de dosis</string>
+    <string name="dosage_timings">Tipo de dosis</string>
+    <string name="digital_prescription">Receta Digital</string>
+    <string name="manual_prescription">Receta Manual</string>
+    <string name="breakfast">Desayuno</string>
+    <string name="dosage">"Dosis"</string>
+    <string name="before">Antes</string>
+    <string name="after">Después</string>
+    <string name="with">Con</string>
+    <string name="reset">Reiniciar</string>
+    <string name="lunch">Almuerzo</string>
+    <string name="dinner">Cena</string>
+    <string name="years_old">años</string>
+    <string name="select_doasages_for">Seleccionar dosis para %s</string>
+    <string name="select_dosage_timings">Seleccione los tiempos de dosificación</string>
+    <string name="prescription_added">Receta añadida</string>
+    <string name="view_prescription">Ver prescripción</string>
+    <string name="view_all">Ver todo</string>
+    <string name="requests">Peticiones</string>
+    <string name="upload_banner">Subir pancarta</string>
+
+    <array name="duration">
+        <item>@string/select</item>
+        <item>1 día</item>
+        <item>2 días</item>
+        <item>3 días</item>
+        <item>4 dias</item>
+        <item>5 dias</item>
+        <item>6 días</item>
+        <item>7 días</item>
+        <item>8 dias</item>
+        <item>9 días</item>
+        <item>10 días</item>
+        <item>11días</item>
+        <item>12días</item>
+        <item>13días</item>
+        <item>14días</item>
+        <item>15días</item>
+        <item>16días</item>
+        <item>17días</item>
+        <item>18días</item>
+        <item>19días</item>
+        <item>10días</item>
+        <item>21días</item>
+        <item>22días</item>
+        <item>23días</item>
+        <item>24días</item>
+        <item>25días</item>
+        <item>26días</item>
+        <item>27días</item>
+        <item>28días</item>
+        <item>29días</item>
+        <item>30días</item>
+    </array>
+
+    <string name="select">Seleccionar</string>
+    <string name="tablet">tableta</string>
+    <string name="capsule">Cápsula</string>
+    <array name="dose_type">
+        <item>@string/select</item>
+        <item>@string/tablet</item>
+        <item>@string/capsule</item>
+    </array>
+
+    <string name="one">Uno</string>
+    <string name="two">Dos</string>
+    <string name="three">Tres</string>
+    <string name="four">cuatro</string>
+    <array name="doases">
+        <item>@string/select</item>
+        <item>@string/one</item>
+        <item>@string/two</item>
+        <item>@string/three</item>
+        <item>@string/four</item>
+    </array>
+
+
+    <!--Are you doctor-->
+    <string name="are_you_a_doctor_or_patient">¿Eres médico o paciente?</string>
+    <string name="doctor">Médico</string>
+    <string name="patient">Paciente</string>
+
+    <!--Walk Through-->
+    <string name="walkthrough_1">Chatear con el doctor</string>
+    <string name="walk_through_desc_1">Elige una especialidad y resuelve tus dudas a través de un Live chat realizado con Doctores</string>
+
+    <string name="walkthrough_2">Citas de video/audio</string>
+    <string name="walk_through_desc_2">Obtenga citas en segundos de los mejores médicos líderes a su alrededor y obtenga recetas </string>
+
+    <string name="walkthrough_3">Programar citas</string>
+    <string name="walk_through_desc_3">También puedes agendar tus citas con los mejores médicos líderes</string>
+
+    <string name="walkthrough_4">Doctor correcto</string>
+    <string name="walk_through_desc_4">Reserve una cita con el médico adecuado y obtenga el asesoramiento adecuado de ellos</string>
+
+    <string name="walkthrough_5">Otras cuentas</string>
+    <string name="walk_through_desc_5">Puede agregar cuentas para ancianos y niños y luego completar los detalles que definen su relación con usted  </string>
+
+
+    <string name="walkthrough_6">Visitas a domicilio</string>
+    <string name="walk_through_desc_6">Puedes tener tus citas directo a tu casa a tu gusto</string>
+
+    <string name="get_started">Empezar</string>
+    <string name="skip">Saltar</string>
+
+    <!--Location permission-->
+    <string name="skip_for_now">Saltar por ahora</string>
+    <string name="use_my_location">Usar mi ubicación</string>
+    <string name="we_will_need_your_location">Necesitaremos tu ubicación para darte una mejor experiencia.</string>
+    <string name="allow_your_location">Permitir tu ubicación</string>
+
+    <!--Calling-->
+    <string name="decline">Rechazar</string>
+    <string name="answer">Responder</string>
+    <string name="login_with">Iniciar con</string>
+
+    <string name="gender">Género</string>
+    <string name="select_gender">Seleccione género</string>
+    <string name="sign_up_as">Regístrate como</string>
+    <string name="choose_language">Elige lengua</string>
+
+    <!--Tracking-->
+    <string name="we_will_need_call">Necesitaremos su permiso de llamada para brindarle una mejor experiencia.</string>
+    <string name="reached_destination">Destino alcanzado</string>
+    <string name="status">Estado :</string>
+    <string name="start_service">Empieza el servicio</string>
+    <string name="cancel_service">Cancelar servicio</string>
+    <string name="service_status_update">Actualización del estado del servicio</string>
+    <string name="current_status">Estado actual</string>
+    <string name="status_update">Actualización de estado</string>
+    <string name="arrived">Llegado</string>
+    <string name="started">Empezado</string>
+    <string name="completed">Terminado</string>
+    <string name="change_service_status">Cambiar el estado del servicio</string>
+    <string name="pending">Pendiente</string>
+    <string name="update_status">Estado de actualización</string>
+    <string name="clear">Claro</string>
+    <string name="estimate_time_of_arrival_s">Hora estimada de llegada: %s</string>
+    <string name="quit">Abandonar</string>
+    <string name="quit_message">¿Seguro que quieres salir? Detendrá su seguimiento</string>
+    <string name="service_completed">Servicio completado</string>
+    <string name="track_status">Seguimiento del estado</string>
+    <string name="canceled_service">Servicio cancelado</string>
+
+    <string name="details">Detalles</string>
+    <string name="type_here">Escriba aquí…</string>
+    <string name="show_more">mostrar más</string>
+    <string name="show_less">Muestra menos</string>
+    <string name="free_expert_advice">Asesoramiento gratuito de expertos</string>
+
+    <!--Language-->
+    <string name="language">Idioma</string>
+    <string name="please_choose_your_language">Por favor elige tu idioma</string>
+    <string name="english">Inglés</string>
+    <string name="arabic">عربى</string>
+    <string name="account_setting">Configuración de cuenta</string>
+    <string name="change_password">Cambia la contraseña</string>
+    <string name="old_password">Contraseña anterior</string>
+    <string name="new_password">Nueva contraseña</string>
+    <string name="confirm_password">Confirmar nueva contraseña</string>
+
+    <!--Success message-->
+    <string name="success">¡Éxito!</string>
+    <string name="password_changed_successfully">¡Su contraseña cambió con éxito!</string>
+    <string name="view_map">Ver el mapa</string>
+    <string name="distance">Distancia</string>
+    <string name="date">Fecha</string>
+    <string name="time">Tiempo</string>
+    <string name="map_not_found">Aplicación de mapas de Google no encontrada</string>
+    <string name="all_requests">Todas las solicitudes</string>
+    <string name="pdf">pdf</string>
+    <string name="audio">Audio</string>
+    <string name="retry">Rever</string>
+
+    <!--Health Tools-->
+    <string name="health_tools">Herramientas de salud</string>
+    <string name="health_tool_1">Calculadora de IMC</string>
+    <string name="health_tool_1_desc">Calculadora de IMC</string>
+    <string name="health_tool_2">Calculadora de consumo de agua</string>
+    <string name="health_tool_2_desc">Calculadora de consumo de agua</string>
+    <string name="health_tool_3">Calculadora de ingesta de proteínas</string>
+    <string name="health_tool_3_desc">Calculadora de ingesta de proteínas</string>
+    <string name="health_tool_4">Calculadora de embarazo</string>
+    <string name="health_tool_4_desc">Calculadora de embarazo</string>
+
+    <string name="calculation_method">Método de cálculo</string>
+    <string name="calculate_my_due_date">Calcular mi fecha de vencimiento</string>
+    <string name="last_period">Último periodo</string>
+    <string name="ultrasound">Ultrasonido</string>
+    <string name="ivf">FIV</string>
+    <string name="conception_date">Fecha de concepción</string>
+
+    <string name="the_first_day_of_your_last_period">El primer día de tu último período.</string>
+    <string name="cycle_length">Duración del ciclo</string>
+    <string name="date_of_conception">Fecha de concepción</string>
+    <string name="date_of_transfer">Fecha de Transferencia</string>
+    <string name="ivf_transfer_date">Fecha de transferencia de FIV</string>
+    <string name="date_of_ultrasound">Fecha de ultrasonido</string>
+    <string name="congratulations">¡Felicidades!</string>
+    <string name="your_due_date_is_s">Su fecha de vencimiento es %s</string>
+    <string name="your_are_s_s_pregnant">Tiene %s semanas y %s días de embarazo</string>
+
+    <string name="i_dont_know">No sé</string>
+    <string name="days">días</string>
+    <string name="day">día</string>
+    <string name="weeks">semanas</string>
+    <string name="week">semana</string>
+    <string name="pregnancy_timeline">Cronología de su embarazo</string>
+    <string name="_1st_trimester">1er Trimestre</string>
+    <string name="_2nd_trimester">2do Trimestre</string>
+    <string name="_3rd_trimester">3er Trimestre</string>
+    <string name="your_baby_will_be_a_s">Tu bebé será un %s</string>
+    <string name="to">a</string>
+    <string name="aries">♈ Aries</string>
+    <string name="cancer_">♋Cáncer</string>
+    <string name="taurus">♉Tauro</string>
+    <string name="leo">♌León</string>
+    <string name="gemini">♊Geminis</string>
+    <string name="virgo">♍ Virgo</string>
+    <string name="libra">♎  </string>
+    <string name="capricorn">♑ Capricorn</string>
+    <string name="scorpio">♏ Scorpio</string>
+    <string name="aquarius">♒ Aquarius</string>
+    <string name="sagittarius">♐ Sagittarius</string>
+    <string name="pisces">♓ Pisces</string>
+
+    <array name="calculationMethod">
+        <item>@string/last_period</item>
+        <item>@string/conception_date</item>
+        <item>@string/ivf</item>
+        <item>@string/ultrasound</item>
+    </array>
+
+    <string name="drink">Beber agua</string>
+    <string name="select_amount">Seleccione la cantidad de agua</string>
+    <string name="set_you_water_limit">Establece tu límite de agua diario</string>
+    <string name="water_intake_literes">Consumo de agua (Litros)</string>
+    <string name="set_daily_limit">Establecer límite diario</string>
+    <string name="lt">Teniente</string>
+    <string name="ml">ml</string>
+    <string name="g">g</string>
+    <string name="kg">Kg</string>
+    <string name="water_intake">Consumo de agua</string>
+    <string name="daily_limit">Límite diario</string>
+    <string name="days_completed">Días completados</string>
+
+    <string name="protein_intake">Ingesta de proteínas</string>
+    <string name="take_protein">tomar proteína</string>
+    <string name="select_amount_protein">Seleccione la cantidad de proteína</string>
+    <string name="set_you_protein_limit">Establece tu límite diario de proteínas</string>
+    <string name="protein_intake_grams">Ingesta de proteínas (gramos)</string>
+
+    <!--Bmi-->
+    <string name="weight">Peso</string>
+    <string name="height">Altura</string>
+    <string name="your_bmi">Tu BMI</string>
+    <string name="weight_empty_validation">Por favor ingrese el peso</string>
+    <string name="error_empty_weight">Por favor ingrese el peso</string>
+    <string name="height_empty_validation">Por favor, introduzca la altura</string>
+    <string name="underweight">BAJO PESO</string>
+    <string name="normal">NORMAL</string>
+    <string name="overweight">EXCESO DE PESO</string>
+    <string name="range0to18">0 - 18.5</string>
+    <string name="range18to25">18.5 - 25</string>
+    <string name="range_above25">\>25</string>
+    <string name="male">Masculino</string>
+    <string name="female">Femenino</string>
+
+    <string name="symptoms">Síntomas</string>
+    <string name="slide_to_cancel">​​Deslizar para cancelar</string>
+    <string name="view_details">Ver detalles</string>
+    <string name="price">Precio</string>
+    <string name="prescription_details">Detalle de prescripción</string>
+    <string name="available_for_emergency">¿Está disponible para una consulta de emergencia?</string>
+    <string name="use_code">Código de uso: %s</string>
+    <string name="invite_code">Codigo de invitacion</string>
+    <string name="clinic_address">Dirección de %s</string>
+    <string name="select_clinic_address">Seleccione la dirección para %s</string>
+    <string name="request_for_payment">Solicitud de pago</string>
+    <string name="extra_payment">Pago extra</string>
+    <string name="enter_description">Introduce la descripción</string>
+    <string name="amount_s">Cantidad: %s</string>
+    <string name="reason">Razón</string>
+    <string name="reason_of_cancel">Razones</string>
+    <string name="agree_to_terms">Por favor, acepta los Términos</string>
+    <string name="cal_now">Llama ahora</string>
+    <string name="care_plan">Plan de cuidado</string>
+
+    <string name="mark_done">Marcar\nListo</string>
+
+    <!--Pre assessment-->
+    <string name="pre_assessment_questions">Cuestionarios de evaluación previa</string>
+    <string name="need_some_help">Necesito ayuda</string>
+    <string name="need_much_help">Necesito mucha ayuda</string>
+    <string name="medical_history">Historial médico</string>
+    <string name="appointment_date_s">Fecha de cita: %s</string>
+    <string name="write_patient_medical_condition">Escriba algo sobre la condición médica del paciente.</string>
+    <string name="age_atleast_16">La edad debe ser al menos 16</string>
+
+    <array name="request_type">
+        <item>@string/all_requests</item>
+        <item>@string/new_request</item>
+        <item>@string/completed</item>
+        <item>@string/canceled</item>
+    </array>
+
+    <string name="contacts">Contactos de emergencia</string>
+    <string name="select_contacts">Seleccione Contactos</string>
+    <string name="delete_contact">¿Está seguro de que desea eliminar este contacto \"%s\"?</string>
+    <string name="notify">Notificar</string>
+    <string name="notifying_to_contacts">¡Notificaremos a tus contactos que necesitas ayuda!</string>
+    <string name="notified">Notificado.</string>
+    <string name="notified_contacts">Notificamos a tus contactos que necesitas ayuda.</string>
+    <string name="practicing_since">practicando desde</string>
+    <string name="join_community">Únete a nuestra comunidad de \nWoman of Impact</string>
+</resources>
+
+

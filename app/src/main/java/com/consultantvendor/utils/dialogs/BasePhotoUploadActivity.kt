@@ -25,7 +25,6 @@ import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.provider.Settings
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Toast

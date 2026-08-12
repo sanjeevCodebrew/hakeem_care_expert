@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "115504612011",
+    "project_id": "taradoc-d4378",
+    "storage_bucket": "taradoc-d4378.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115504612011:android:ccdf3162433c699056adee",
+        "android_client_info": {
+          "package_name": "com.taradoc.expert"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115504612011-eig7d8v20lo9utvnagu8709602eoulkp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taradoc.expert",
+            "certificate_hash": "3fee5aff71776031cbdc81d0b12cca08afa48d8a"
+          }
+        },
+        {
+          "client_id": "115504612011-72l19995tb28l6t44mkeu05rame3305r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUmZkFFwJPVxRpfA8LFXk8q_GK09OHJ8w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "115504612011-72l19995tb28l6t44mkeu05rame3305r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "115504612011-tlvubqo507kflj6b4ka3na0sl67qql2t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.taradoc.user"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115504612011:android:5239b3f007d7ecf256adee",
+        "android_client_info": {
+          "package_name": "com.taradoc.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115504612011-38d0r1l6fmo7kl93o8dibmc55p3ij18h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taradoc.user",
+            "certificate_hash": "3fee5aff71776031cbdc81d0b12cca08afa48d8a"
+          }
+        },
+        {
+          "client_id": "115504612011-72l19995tb28l6t44mkeu05rame3305r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUmZkFFwJPVxRpfA8LFXk8q_GK09OHJ8w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "115504612011-72l19995tb28l6t44mkeu05rame3305r.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "115504612011-tlvubqo507kflj6b4ka3na0sl67qql2t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.taradoc.user"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

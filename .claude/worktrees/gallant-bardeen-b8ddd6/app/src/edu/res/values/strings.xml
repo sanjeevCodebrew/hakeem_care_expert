@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">RoyoEducation For Expert</string>
+
+    <!--Facebook keys-->
+    <string name="facebook_app_id" translatable="false">757819374777114</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb757819374777114</string>
+
+    <!--Deep Link-->
+    <string name="deep_link_url" translatable="false">royoeducation.page.link</string>
+    <string name="deep_link_ios_bundle" translatable="false">com.codebrew.RoyoEducationExpert</string>
+
+    <!--Google-->
+    <string name="google_places_api_key" translatable="false">AIzaSyBb2uXkk9gZp-oPIS0aP7bRu1ByDB4q1OE</string>
+    <string name="server_client_id" translatable="false">985496364415-f1jhbr1f65tfqrbdddfcuodqmc3fldgu.apps.googleusercontent.com</string>
+
+    <string name="update_desc">You have new update for %s!</string>
+    <string name="create_a_account">Create a %s\naccount to continue</string>
+
+</resources>

@@ -311,8 +311,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
             mapIntent(
                 requireActivity(), address?.service_address ?: "",
                 address?.lat?.toDouble() ?: 0.0,
-                address?.long?.toDouble() ?: 0.0
-            )
+                address?.long?.toDouble() ?: 0.0)
         }
 
         binding.tvAskPayment.setOnClickListener {
@@ -328,6 +327,15 @@ class AppointmentDetailsFragment : DaggerFragment() {
             startActivity(
                 Intent(requireActivity(), DrawerActivity::class.java)
                     .putExtra(PAGE_TO_OPEN, DrawerActivity.SALLA_PRODUCTS)
+                    .putExtra(EXTRA_REQUEST_ID,request.id)
+            )
+        }
+
+        binding.tvZidProducts.setOnClickListener {
+            startActivity(
+                Intent(requireActivity(), DrawerActivity::class.java)
+                    .putExtra(PAGE_TO_OPEN, DrawerActivity.ZID_PRODUCTS)
+                    .putExtra(EXTRA_REQUEST_ID,request.id)
             )
         }
     }
@@ -366,7 +374,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
         binding.tvAddPatientFile.gone()
         binding.tvMarkComplete.gone()
         binding.tvAskPayment.gone()
-        binding.tvSallaProducts.gone()
+        binding.tvSallaProducts.visible()
+        binding.tvZidProducts.visible()
 
         binding.tvCall.hideShowView(BuildConfig.FLAVOR == "nurseLynx")
 
@@ -497,7 +506,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 binding.tvAccept.text = getString(R.string.start_request)
                 binding.tvCancel.gone()
                 binding.tvAddPrescription.visible()
-                binding.tvSallaProducts.gone()
+                binding.tvSallaProducts.visible()
+                binding.tvZidProducts.visible()
                 binding.tvAddPatientFile.visible()
 
                 if (request.to_user?.categoryData?.parent_cat_name=="telehealth"|| request.to_user?.categoryData?.parent_cat_name=="urgent-consultation"){
@@ -564,7 +574,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 else
                 {
                     binding.tvAddPrescription.visible()
-                    binding.tvSallaProducts.gone()
+                    binding.tvSallaProducts.visible()
+                    binding.tvZidProducts.visible()
                     binding.tvAddPatientFile.visible()
                     if (request.to_user?.categoryData?.parent_cat_name=="telehealth" || request.to_user?.categoryData?.parent_cat_name=="urgent-consultation"){
                     binding.tvChat.visible()
@@ -598,6 +609,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 binding.tvAccept.gone()
                 binding.tvCancel.gone()
                 binding.tvCall.gone()
+                binding.tvSallaProducts.gone()
+                binding.tvZidProducts.gone()
             }
 
             CallAction.CANCEL_SERVICE -> {
@@ -610,6 +623,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 )
                 binding.tvCancel.gone()
                 binding.tvAccept.gone()
+                binding.tvSallaProducts.gone()
+                binding.tvZidProducts.gone()
                 binding.tvCall.gone()
             }
 
@@ -700,6 +715,7 @@ class AppointmentDetailsFragment : DaggerFragment() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun extraPayment() {
         if (request.extra_payment == null) {
             when (BuildConfig.FLAVOR) {
@@ -834,7 +850,8 @@ class AppointmentDetailsFragment : DaggerFragment() {
                 override fun onOkButtonClicked() {
                     hitApiAcceptRequest()
                     binding.tvAddPrescription.visible()
-                    binding.tvSallaProducts.gone()
+                    binding.tvSallaProducts.visible()
+                    binding.tvZidProducts.visible()
                 }
 
                 override fun onCancelButtonClicked() {

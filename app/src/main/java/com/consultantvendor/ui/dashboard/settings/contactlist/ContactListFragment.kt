@@ -3,9 +3,7 @@ package com.consultantvendor.ui.dashboard.settings.contactlist
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,12 +30,12 @@ import com.consultantvendor.utils.gone
 import com.consultantvendor.utils.hideShowView
 import com.consultantvendor.utils.isConnectedToInternet
 import com.consultantvendor.utils.visible
-import com.google.gson.Gson
-import com.wafflecopter.multicontactpicker.ContactResult
-import com.wafflecopter.multicontactpicker.LimitColumn
-import com.wafflecopter.multicontactpicker.MultiContactPicker
+//import com.wafflecopter.multicontactpicker.ContactResult
+//import com.wafflecopter.multicontactpicker.LimitColumn
+//import com.wafflecopter.multicontactpicker.MultiContactPicker
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
+import timber.log.Timber
 
 class ContactListFragment : DaggerFragment() {
 
@@ -235,32 +233,14 @@ class ContactListFragment : DaggerFragment() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 AppRequestCode.SELECT_CONTACT -> {
-                    val results: List<ContactResult> = MultiContactPicker.obtainResult(data)
-                    Log.d("MyTag", Gson().toJson(results).toString())
-
-                    hitApiContacts(results)
+                    // MultiContactPicker disabled — feature not in use
                 }
             }
         }
     }
 
-    private fun hitApiContacts(results: List<ContactResult>) {
-        if (isConnectedToInternet(requireContext(), true)) {
-            val contactList = ContactEmergency()
-            contactList.contacts = ArrayList()
-            results.forEach {
-                val contact = ContactEmergency()
-                contact.name = it.displayName
-                contact.phone_numbers = ArrayList()
-                it.phoneNumbers.forEach {
-                    contact.phone_numbers?.add(ContactEmergency(phone = it.number, type_label = it.typeLabel))
-                }
-
-                contactList.contacts?.add(contact)
-
-            }
-            viewModel.addContact(contactList)
-        }
+    private fun hitApiContacts(results: List<Any>) {
+        // MultiContactPicker disabled — feature not in use
     }
 
     fun deleteContact(contact: ContactEmergency) {
@@ -293,25 +273,6 @@ class ContactListFragment : DaggerFragment() {
     }
 
     private fun pickContact() {
-        //intent ti pick contact
-        MultiContactPicker.Builder(this) //Activity/fragment context
-            .theme(R.style.AppTheme) //Optional - default: MultiContactPicker.Azure
-            .hideScrollbar(false) //Optional - default: false
-            .showTrack(true) //Optional - default: true
-            .searchIconColor(Color.WHITE) //Option - default: White
-            .setChoiceMode(MultiContactPicker.CHOICE_MODE_MULTIPLE) //Optional - default: CHOICE_MODE_MULTIPLE
-            .handleColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary)) //Optional - default: Azure Blue
-            .bubbleColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary)) //Optional - default: Azure Blue
-            .bubbleTextColor(Color.WHITE) //Optional - default: White
-            .setTitleText(getString(R.string.select_contacts)) //Optional - default: Select Contacts
-            .setSelectedContacts("10", "5") //Optional - will pre-select contacts of your choice. String... or List<ContactResult>
-            .setLoadingType(MultiContactPicker.LOAD_ASYNC) //Optional - default LOAD_ASYNC (wait till all loaded vs stream results)
-            .limitToColumn(LimitColumn.NONE) //Optional - default NONE (Include phone + email, limiting to one can improve loading time)
-            .setActivityAnimations(
-                android.R.anim.fade_in, android.R.anim.fade_out,
-                android.R.anim.fade_in,
-                android.R.anim.fade_out
-            ) //Optional - default: No animation overrides
-            .showPickerForResult(AppRequestCode.SELECT_CONTACT)
+        // MultiContactPicker disabled — feature not in use
     }
 }
